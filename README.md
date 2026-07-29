@@ -53,6 +53,8 @@ Wishlist:
 
 6. Disable all auto-load features by default.
 
+7. Change to scale-and-scroll model so windows can be smaller than UI components inside them.
+
 ### Discussion Forum
 
 * https://krita-artists.org/
