@@ -39,7 +39,19 @@ https://api.kde.org/legacy/krita/html/index.html
 
 ### Bugs and Wishes
 
-https://bugs.kde.org/buglist.cgi?bug_status=UNCONFIRMED&bug_status=CONFIRMED&bug_status=ASSIGNED&bug_status=REOPENED&list_id=1315444&product=krita&query_format=advanced
+Wishlist:
+
+1. Change default tool on open from paint tool to hand tool.
+
+2. Smaller splash image on load.
+
+3. Two finger move of any open window.
+
+4. Reconfigure menu system and add built in show/hide for all menu items.
+
+5. Default to stripped down toolbox.
+
+6. Disable all auto-load features by default.
 
 ### Discussion Forum
 
