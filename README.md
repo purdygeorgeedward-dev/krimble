@@ -62,13 +62,16 @@ Caveat: several other tools also sit at priority 0 (Fill, Rectangle Select, Defa
 
 3. Two finger move of any open window.
 
-4. Reconfigure menu system and add built in show/hide for all menu items.
+4. Move right or remove Tools menu to make a Settings menu easier to reach.
 
 5. Default to stripped down toolbox.
 
 6. Disable all auto-load features by default.
 
 7. Change to scale-and-scroll model so windows can be smaller than UI components inside them.
+
+8. Reconfigure menu system and add built in show/hide for all menu items.
+
 
 ### Discussion Forum
 
