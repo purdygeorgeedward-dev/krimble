@@ -71,6 +71,10 @@ Caveat: several other tools also sit at priority 0 (Fill, Rectangle Select, Defa
 7. Change to scale-and-scroll model so windows can be smaller than UI components inside them.
 
 8. Reconfigure menu system and add built in show/hide for all menu items.
+9. Remove rotation from pinch zoom defaults.
+10. Limit transform default to scaling.
+11. Limit move default to selected layer or floating selection until changed by user.
+12. Implement more industry standard terms for tools or menu items as needed.
 
 
 ### Discussion Forum
