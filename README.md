@@ -43,13 +43,17 @@ Wishlist:
 
 1. Change default tool on open from paint tool to hand tool.
 
-done.
+DONE.
 
-2. Smaller splash image on load so it fits mobile screens, preferably just a logo splash.
+2. Smaller splash image on load so it fits mobile screens, preferably just a logo splash. 1000 PIXELS WIDE.
+
+DONE.
 
 3. Two finger move of any open window.
 
-4. Move right or remove Tools menu to make a Settings menu easier to reach.
+4. Remove Tools menu to make a Settings menu easier to reach.
+
+DONE.
 
 5. Default to stripped down toolbox.
 
@@ -58,9 +62,13 @@ done.
 7. Change to scale-and-scroll model so windows can be smaller than UI components inside them.
 
 8. Reconfigure menu system and add built in show/hide for all menu items.
+
 9. Remove rotation from pinch zoom defaults.
+
 10. Limit transform default to scaling.
+
 11. Limit move default to selected layer or floating selection until changed by user.
+
 12. Implement more industry standard terms for tools or menu items as needed.
 
 
