@@ -43,20 +43,7 @@ Wishlist:
 
 1. Change default tool on open from paint tool to hand tool.
 
-In plugins/tools/basictools/kis_tool_brush.h line 152, change:
-setPriority(0);
-
-to something higher than Pan's 2, e.g.:
-setPriority(20);
-
-Then in plugins/tools/basictools/kis_tool_pan.cpp line 94, change:
-setPriority(2);
-
-to:
-setPriority(0);
-
-That swaps them: Pan becomes the highest-priority "main tool" and wins the default-selection race in KoToolManager::Private::attachCanvas() on every new canvas/document open — regardless of what was last used.
-Caveat: several other tools also sit at priority 0 (Fill, Rectangle Select, Default/DefaultTool) — check they still make sense relative to Pan before you rebuild, since ties get resolved by iteration order over the tools list, which isn't guaranteed stable.
+done.
 
 2. Smaller splash image on load so it fits mobile screens, preferably just a logo splash.
 
