@@ -40,27 +40,21 @@ https://api.kde.org/legacy/krita/html/index.html
 
 Wishlist:
 
-1. Change default tool on open from paint tool to hand tool.
+1. Change default tool on open from paint tool to hand tool. (DONE.)
 
-(DONE.)
-
-2. Smaller splash image on load so it fits mobile screens, preferably just a logo splash. 1000 x 365
-
-(DONE.)
+2. Smaller splash image on load so it fits mobile screens, preferably just a logo splash. 1000 x 365 (DONE.)
 
 3. Two finger move of any open window.
 
-4. Remove Tools menu to make a Settings menu easier to reach.
+4. Remove Tools menu to make a Settings menu easier to reach. (DONE.)
 
-(DONE.)
+5. Change Toolbox defaults. (Done. Added new value setToolBoxPriority for control of toolbox placement separate from priority value which controls default tool behavior.)
 
-5. Default to stripped down toolbox.
-
-6. Disable all auto-load features by default.
+6. Disable certain autoload behaviors that dont work well on mobile.
 
 7. Change to scale-and-scroll model so windows can be smaller than UI components inside them.
 
-8. Reconfigure menu system and add built in show/hide for all menu items.
+8. Reconfigure menus. 
 
 9. Remove rotation from pinch zoom defaults.
 
@@ -68,13 +62,11 @@ Wishlist:
 
 11. Limit move default to selected layer or floating selection until changed by user.
 
-12. Implement industry standard terms for tools or menu items as needed. YMMV.
+12. Implement industry standard terms for tools or menu items as needed. (Toolbox tools DONE.)
 
-(Partially complete.)
+13. Default to Snapping OFF.
 
-13. Default to no snapping.
 
-14. Change tool defaults.
 
 ### Discussion Forum
 
