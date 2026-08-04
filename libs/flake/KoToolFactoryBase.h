@@ -162,7 +162,7 @@ protected:
      * @param newPriority the priority
      */
     void setPriority(int newPriority);
-
+    void setToolBoxPriority(int priority);
     /**
      * Set the id of the shape we can process.
      * This is the Id, as passed to the constructor of a KoShapeFactoryBase, that the tool
@@ -170,6 +170,7 @@ protected:
      * all tools that have its id set here will be added to the dynamic part of the toolbox.
      * @param activationShapeId the Id of the shape
      * @see activationShapeId()
+     * added new line void setToolBoxPriority(int priority);
      */
     void setActivationShapeId(const QString &activationShapeId);
 
