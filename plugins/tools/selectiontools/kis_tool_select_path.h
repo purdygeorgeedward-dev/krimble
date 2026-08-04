@@ -90,6 +90,7 @@ public:
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("tool_path_selection"));
         setPriority(6);
+        setToolBoxPriority(5);
     }
 
     ~KisToolSelectPathFactory() override {}
