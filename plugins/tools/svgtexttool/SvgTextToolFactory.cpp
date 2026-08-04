@@ -20,7 +20,7 @@ SvgTextToolFactory::SvgTextToolFactory()
 {
     setToolTip(i18n("Type Tool"));
     setIconName(koIconNameCStr("draw-text"));
-    setSection(ToolBoxSection::Main);
+    setSection(ToolBoxSection::Shape);
     setPriority(1);
     setActivationShapeId(QString("flake/always,%1").arg(KoSvgTextShape_SHAPEID));
 }
