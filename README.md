@@ -1,4 +1,4 @@
-![Picture](https://krita.org/images/krita-logo-light.svg)
+![Picture](http://purdy.design/logo_splash.jpg)
 
 | CI Name     | Master | Stable | Release |
 | ------------------- | ---------------- | ------ | ------- |
@@ -71,6 +71,7 @@ DONE.
 
 12. Implement more industry standard terms for tools or menu items as needed.
 
+(Partially complete.)
 
 ### Discussion Forum
 
