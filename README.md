@@ -66,7 +66,7 @@ Wishlist:
 
 13. Default to Snapping OFF.
 
-14. Default to 12 ot. Helvetica in UI.
+14. Default to 12 pt. Helvetica in UI.
     
 15. Create custom dedault toolbars.
 
