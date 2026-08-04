@@ -81,6 +81,7 @@ public:
         setSection(ToolBoxSection::Fill);
         setIconName(koIconNameCStr("krita_tool_smart_patch"));
         setPriority(4);
+        setToolBoxPriority(1);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     }
 
