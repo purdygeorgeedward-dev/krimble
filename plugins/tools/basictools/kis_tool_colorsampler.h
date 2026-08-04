@@ -121,7 +121,7 @@ class KisToolColorSamplerFactory : public KoToolFactoryBase
 public:
     KisToolColorSamplerFactory()
             : KoToolFactoryBase("KritaSelected/KisToolColorSampler") {
-        setToolTip(i18n("Color Sampler Tool"));
+        setToolTip(i18n("Eyedropper Tool"));
         setSection(ToolBoxSection::Fill);
         setPriority(2);
         setIconName(koIconNameCStr("krita_tool_color_sampler"));
