@@ -18,7 +18,7 @@
 SvgTextToolFactory::SvgTextToolFactory()
     : KoToolFactoryBase("SvgTextTool")
 {
-    setToolTip(i18n("SVG Text Tool"));
+    setToolTip(i18n("Type Tool"));
     setIconName(koIconNameCStr("draw-text"));
     setSection(ToolBoxSection::Main);
     setPriority(1);
