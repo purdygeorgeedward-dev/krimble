@@ -78,7 +78,7 @@ bool KisToolPan::wantsAutoScroll() const
 KisToolPanFactory::KisToolPanFactory()
     : KoToolFactoryBase("PanTool")
 {
-    setToolTip(i18n("Pan Tool"));
+    setToolTip(i18n("Hand Tool"));
     setSection(ToolBoxSection::Navigation);
     setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     setPriority(0);
