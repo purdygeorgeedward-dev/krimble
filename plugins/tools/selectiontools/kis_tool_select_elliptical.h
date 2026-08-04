@@ -52,6 +52,7 @@ public:
         setIconName(koIconNameCStr("tool_elliptical_selection"));
         setShortcut(QKeySequence(Qt::Key_J));
         setPriority(1);
+        setToolBoxPriority(2);
     }
 
     ~KisToolSelectEllipticalFactory() override {}
