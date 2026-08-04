@@ -242,6 +242,7 @@ public:
         setToolTip(i18n("Paint Bucket Tool"));
         setSection(ToolBoxSection::Fill);
         setPriority(0);
+        setToolBoxPriority(2);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("krita_tool_color_fill"));
         setShortcut( QKeySequence( Qt::Key_F ) );
