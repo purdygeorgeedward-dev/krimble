@@ -76,7 +76,7 @@ public:
         : KisToolPaintFactoryBase("KritaShape/KisToolSmartPatch")
     {
 
-        setToolTip(i18n("Smart Patch Tool"));
+        setToolTip(i18n("Patch Tool"));
 
         setSection(ToolBoxSection::Fill);
         setIconName(koIconNameCStr("krita_tool_smart_patch"));
