@@ -93,8 +93,10 @@ public:
      * @return The priority of this tool.
      */
     int priority() const;
+    int toolBoxPriority() const;
     /**
      * returns the section used to group tools in the toolbox
+     * added new value toolboxpriority so it is only for toolbox
      * @return the section
      */
     QString section() const;
