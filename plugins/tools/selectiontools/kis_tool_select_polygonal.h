@@ -45,7 +45,7 @@ public:
     KisToolSelectPolygonalFactory()
         : KisSelectionToolFactoryBase("KisToolSelectPolygonal")
     {
-        setToolTip(i18n("Polygonal Selection Tool"));
+        setToolTip(i18n("Polygonal Lasso Tool"));
         setSection(ToolBoxSection::Select);
         setIconName(koIconNameCStr("tool_polygonal_selection"));
         setPriority(2);
