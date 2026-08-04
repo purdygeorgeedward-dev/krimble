@@ -85,7 +85,7 @@ class KisToolSelectPathFactory : public KisSelectionToolFactoryBase
 public:
     KisToolSelectPathFactory()
         : KisSelectionToolFactoryBase("KisToolSelectPath") {
-        setToolTip(i18n("Bezier Curve Selection Tool"));
+        setToolTip(i18n("Path-Based Selection Tool"));
         setSection(ToolBoxSection::Select);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("tool_path_selection"));
