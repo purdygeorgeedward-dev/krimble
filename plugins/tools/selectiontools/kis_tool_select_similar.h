@@ -56,7 +56,7 @@ public:
     KisToolSelectSimilarFactory()
         : KisSelectionToolFactoryBase("KisToolSelectSimilar")
     {
-        setToolTip(i18n("Similar Color Selection Tool"));
+        setToolTip(i18n("Select Similar Tool"));
         setSection(ToolBoxSection::Select);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("tool_similar_selection"));
