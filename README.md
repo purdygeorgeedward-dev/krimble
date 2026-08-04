@@ -46,7 +46,7 @@ Wishlist:
 
 3. Two finger move of any open window.
 
-4. Remove Tools menu to make a Settings menu easier to reach. (DONE.)
+4. Remove Tools menu to make the Settings menu easier to reach. (DONE.)
 
 5. Change Toolbox defaults. (Done. Added new value setToolBoxPriority for control of toolbox placement separate from priority value which controls default tool behavior.)
 
@@ -66,7 +66,9 @@ Wishlist:
 
 13. Default to Snapping OFF.
 
-
+14. Default to 12 ot. Helvetica in UI.
+    
+15. Create custom dedault toolbars.
 
 ### Discussion Forum
 
