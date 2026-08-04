@@ -377,10 +377,12 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       <Action name="QMic"/>
       <Action name="QMicAgain"/>
     </Menu>
+<!--
     <Menu name="tools">
       <text>&amp;Tools</text>
       <Menu name="scripts"><text>Scripts</text></Menu>
     </Menu>
+-->
     <Menu name="settings">
       <text>Setti&amp;ngs</text>
       <Action name="options_configure"/>
