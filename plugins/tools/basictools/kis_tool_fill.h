@@ -239,7 +239,7 @@ class KisToolFillFactory : public KisToolPaintFactoryBase
 public:
     KisToolFillFactory()
             : KisToolPaintFactoryBase("KritaFill/KisToolFill") {
-        setToolTip(i18n("Fill Tool"));
+        setToolTip(i18n("Paint Bucket Tool"));
         setSection(ToolBoxSection::Fill);
         setPriority(0);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
