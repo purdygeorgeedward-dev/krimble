@@ -222,6 +222,7 @@ public:
         setSection(ToolBoxSection::Transform);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setPriority(11);
+        setToolBoxPriority(1);
         setIconName(koIconNameCStr("tool_crop"));
         setShortcut(QKeySequence("C"));
     }
