@@ -73,7 +73,7 @@ class KisToolPencilFactory : public KisToolPaintFactoryBase
 public:
     KisToolPencilFactory()
         : KisToolPaintFactoryBase("KisToolPencil") {
-        setToolTip(i18n("Freehand Path Tool"));
+        setToolTip(i18n("Pencil Tool"));
         setSection(ToolBoxSection::Shape);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("krita_tool_freehandvector"));
