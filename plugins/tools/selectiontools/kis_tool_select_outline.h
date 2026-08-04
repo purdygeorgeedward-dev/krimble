@@ -53,6 +53,7 @@ public:
         setSection(ToolBoxSection::Select);
         setIconName(koIconNameCStr("tool_outline_selection"));
         setPriority(3);
+        setToolBoxPriority(3);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     }
 
