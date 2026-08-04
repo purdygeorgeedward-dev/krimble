@@ -177,7 +177,7 @@ void KoToolBox::addButton(KoToolAction *toolAction)
         sectionWidget = new Section(this);
         d->addSection(sectionWidget, sectionToBeAddedTo);
     }
-    sectionWidget->addButton(button, toolAction->priority());
+    sectionWidget->addButton(button, toolAction->toolBoxPriority());
 
     d->buttonGroup->addButton(button);
     d->buttonsByToolId.insert(toolAction->id(), button);
