@@ -99,7 +99,7 @@ public:
     KisToolSelectMagneticFactory()
         : KisSelectionToolFactoryBase("KisToolSelectMagnetic")
     {
-        setToolTip(i18n("Magnetic Selection Tool"));
+        setToolTip(i18n("Magnetic Lasso Tool"));
         setSection(ToolBoxSection::Select);
         setIconName(koIconNameCStr("tool_magnetic_selection"));
         setPriority(8);
