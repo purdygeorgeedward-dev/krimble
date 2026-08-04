@@ -124,6 +124,7 @@ public:
         setToolTip(i18n("Eyedropper Tool"));
         setSection(ToolBoxSection::Fill);
         setPriority(2);
+        setToolBoxPriority(0);
         setIconName(koIconNameCStr("krita_tool_color_sampler"));
         setShortcut(QKeySequence(Qt::Key_P));
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
