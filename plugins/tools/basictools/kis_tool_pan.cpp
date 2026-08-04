@@ -82,6 +82,7 @@ KisToolPanFactory::KisToolPanFactory()
     setSection(ToolBoxSection::Navigation);
     setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     setPriority(0);
+    setToolBoxPriority(0);
     setIconName(koIconNameCStr("tool_pan"));
 }
 
