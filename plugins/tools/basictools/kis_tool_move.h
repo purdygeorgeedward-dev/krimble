@@ -184,6 +184,7 @@ public:
         setSection(ToolBoxSection::Transform);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setPriority(3);
+        setToolBoxPriority(0);
         setIconName(koIconNameCStr("krita_tool_move"));
         setShortcut(QKeySequence(Qt::Key_T));
     }
