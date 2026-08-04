@@ -94,7 +94,7 @@ public:
     KisToolSelectContiguousFactory()
         : KisSelectionToolFactoryBase("KisToolSelectContiguous")
     {
-        setToolTip(i18n("Contiguous Selection Tool"));
+        setToolTip(i18n("Magic Wand Tool"));
         setSection(ToolBoxSection::Select);
         setIconName(koIconNameCStr("tool_contiguous_selection"));
         setPriority(4);
