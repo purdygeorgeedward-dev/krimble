@@ -8,7 +8,7 @@ Note: Nightly builds are not covered by this table atm
 
 Krita Mobile is intended to be a mobile fork of Krita designed to be a graphics workhorse for Android phones instead of a paint app. The objective is to make a mobile version which is aware of the restrictions of limited screen real estate on mobile devices. Stripping away unnecessary UI components and scaling down others, creating default behaviors that show awareness of mobile users needs, and making the app a little more universal are objectives.
 
-If you are reading this on GitHub, be aware that this is just a mirror. Our real code repository is provided by KDE: https://invent.kde.org/graphics/krita.git
+If you are reading this on GitHub, be aware that this is just a mirror. The core code repository is provided by KDE: https://invent.kde.org/graphics/krita.git
 
 
 ### Repository Status
