@@ -53,6 +53,7 @@ public:
 
     QString section() const;        ///< The section the tool wants to be in.
     int priority() const;           ///< Lower number (higher priority) means coming first in the section.
+    int toolBoxPriority() const;    ///< Independent of priority(); controls toolbox position only.
     int buttonGroupId() const;      ///< A unique ID for this tool as passed by changedTool(), >= 0
     QString visibilityCode() const; ///< This tool should become visible when we Q_EMIT this string in toolCodesSelected()
 
