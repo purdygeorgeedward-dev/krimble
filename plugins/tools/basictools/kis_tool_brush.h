@@ -149,7 +149,7 @@ public:
         setSection(ToolBoxSection::Shape);
         setIconName(koIconNameCStr("krita_tool_freehand"));
         setShortcut(QKeySequence(Qt::Key_B));
-        setPriority(0);
+        setPriority(20);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     }
 
