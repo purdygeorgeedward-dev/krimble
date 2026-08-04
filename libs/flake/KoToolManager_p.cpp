@@ -74,6 +74,11 @@ int KoToolAction::priority() const
     return d->toolFactory->priority();
 }
 
+int KoToolAction::toolBoxPriority() const
+{
+    return d->toolFactory->toolBoxPriority();
+}
+
 QString KoToolAction::visibilityCode() const
 {
     return d->toolFactory->activationShapeId();
