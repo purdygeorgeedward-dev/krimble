@@ -53,6 +53,7 @@ public:
         setIconName(koIconNameCStr("tool_rect_selection"));
         setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
         setPriority(0);
+        setToolBoxPriority(1);
     }
 
     ~KisToolSelectRectangularFactory() override {}
