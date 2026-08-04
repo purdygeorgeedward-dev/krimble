@@ -98,6 +98,7 @@ public:
         setSection(ToolBoxSection::Select);
         setIconName(koIconNameCStr("tool_contiguous_selection"));
         setPriority(4);
+        setToolBoxPriority(4);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     }
 
