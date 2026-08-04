@@ -21,10 +21,12 @@ class Q_DECL_HIDDEN KoToolFactoryBase::Private
 public:
     Private(const QString &i)
         : priority(100),
+          toolBoxPriority(-1),
           id(i)
     {
     }
     int priority;
+    int toolBoxPriority;
     QString section;
     QString tooltip;
     QString activationId;
