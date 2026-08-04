@@ -142,6 +142,11 @@ int KoToolFactoryBase::priority() const
     return d->priority;
 }
 
+int KoToolFactoryBase::toolBoxPriority() const
+{
+    return d->toolBoxPriority >= 0 ? d->toolBoxPriority : d->priority;
+}
+
 QString KoToolFactoryBase::section() const
 {
     return d->section;
@@ -195,6 +200,11 @@ void KoToolFactoryBase::setIconName(const QString &iconName)
 void KoToolFactoryBase::setPriority(int newPriority)
 {
     d->priority = newPriority;
+}
+
+void KoToolFactoryBase::setToolBoxPriority(int priority)
+{
+    d->toolBoxPriority = priority;
 }
 
 void KoToolFactoryBase::setShortcut(const QKeySequence &shortcut)
