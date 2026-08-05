@@ -82,77 +82,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       <Separator/>
       <Action name="revert"/>
     </Menu>
-    <Menu name="view">
-      <text>&amp;View</text>
-      <Action name="view_show_canvas_only"/>
-      <Action name="fullscreen"/>
-      <Action name="view_detached_canvas"/>
-      <Action name="wrap_around_mode"/>
-      <Menu name="wrap_around_mode_direction">
-        <text>Wrap Around Mode Direction</text>
-        <Action name="wrap_around_hv_axis"/>
-        <Action name="wrap_around_h_axis"/>
-        <Action name="wrap_around_v_axis"/>
-      </Menu>
-      <Action name="level_of_detail_mode"/>
-      <Action name="softProof"/>
-      <Action name="gamutCheck"/>
-      <Separator/>
-      <Menu name="ZoomRotateMirror">
-          <text>&amp;Zoom, Rotate, and Mirror</text>
-          <Action name="view_zoom_in"/>
-          <Action name="view_zoom_out"/>
-          <Action name="zoom_to_100pct"/>
-          <Action name="zoom_to_fit"/>
-          <Action name="zoom_to_fit_width"/>
-          <Action name="zoom_to_fit_height"/>
-          <Separator/>
-          <Action name="rotate_canvas_right"/>
-          <Action name="rotate_canvas_left"/>
-          <Action name="reset_canvas_rotation"/>
-          <Separator/>
-          <Action name="mirror_canvas"/>
-          <Action name="mirror_canvas_around_cursor"/>
-          <Action name="mirror_canvas_around_canvas"/>
-          <Separator/>
-          <Action name="reset_display"/>
-      </Menu>
-      <Action name="view_print_size"/>
-      <Separator/>
-      <Action name="view_ruler"/>
-      <Action name="rulers_track_mouse"/>
-      <Action name="view_show_guides"/>
-      <Action name="view_lock_guides"/>
-      <Action name="showStatusBar" />
-      <Separator/>
-      <Action name="view_grid"/>
-      <Action name="view_pixel_grid"/>
 
-
-      <Separator/>
-      <Menu name="SnapTo">
-        <text>&amp;Snap To</text>
-        <Action name="view_snap_to_guides"/>
-            <Action name="view_snap_to_grid"/>
-            <Action name="view_snap_to_pixel"/>
-          <Action name="view_snap_orthogonal" />
-            <Action name="view_snap_node" />
-            <Action name="view_snap_extension" />
-            <Action name="view_snap_intersection" />
-            <Action name="view_snap_bounding_box" />
-            <Action name="view_snap_image_bounds" />
-             <Action name="view_snap_image_center" />
-      </Menu>
-      <Separator/>
-
-      <Action name="view_toggle_painting_assistants"/>
-      <Action name="view_toggle_assistant_previews"/>
-      <Action name="view_toggle_reference_images"/>
-      <Separator/>
-      <Action name="view_palette_action_menu"/>
-      <Separator/>
-      <Action name="refresh_canvas"/>
-    </Menu>
     <Menu name="Image">
       <text>&amp;Image</text>
       <Action name="adjust_filters"/>
@@ -378,6 +308,79 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       <Action name="QMic"/>
       <Action name="QMicAgain"/>
     </Menu>
+
+    <Menu name="view">
+      <text>&amp;View</text>
+      <Action name="view_show_canvas_only"/>
+      <Action name="fullscreen"/>
+      <Action name="view_detached_canvas"/>
+      <Action name="wrap_around_mode"/>
+      <Menu name="wrap_around_mode_direction">
+        <text>Wrap Around Mode Direction</text>
+        <Action name="wrap_around_hv_axis"/>
+        <Action name="wrap_around_h_axis"/>
+        <Action name="wrap_around_v_axis"/>
+      </Menu>
+      <Action name="level_of_detail_mode"/>
+      <Action name="softProof"/>
+      <Action name="gamutCheck"/>
+      <Separator/>
+      <Menu name="ZoomRotateMirror">
+          <text>&amp;Zoom, Rotate, and Mirror</text>
+          <Action name="view_zoom_in"/>
+          <Action name="view_zoom_out"/>
+          <Action name="zoom_to_100pct"/>
+          <Action name="zoom_to_fit"/>
+          <Action name="zoom_to_fit_width"/>
+          <Action name="zoom_to_fit_height"/>
+          <Separator/>
+          <Action name="rotate_canvas_right"/>
+          <Action name="rotate_canvas_left"/>
+          <Action name="reset_canvas_rotation"/>
+          <Separator/>
+          <Action name="mirror_canvas"/>
+          <Action name="mirror_canvas_around_cursor"/>
+          <Action name="mirror_canvas_around_canvas"/>
+          <Separator/>
+          <Action name="reset_display"/>
+      </Menu>
+      <Action name="view_print_size"/>
+      <Separator/>
+      <Action name="view_ruler"/>
+      <Action name="rulers_track_mouse"/>
+      <Action name="view_show_guides"/>
+      <Action name="view_lock_guides"/>
+      <Action name="showStatusBar" />
+      <Separator/>
+      <Action name="view_grid"/>
+      <Action name="view_pixel_grid"/>
+
+
+      <Separator/>
+      <Menu name="SnapTo">
+        <text>&amp;Snap To</text>
+        <Action name="view_snap_to_guides"/>
+            <Action name="view_snap_to_grid"/>
+            <Action name="view_snap_to_pixel"/>
+          <Action name="view_snap_orthogonal" />
+            <Action name="view_snap_node" />
+            <Action name="view_snap_extension" />
+            <Action name="view_snap_intersection" />
+            <Action name="view_snap_bounding_box" />
+            <Action name="view_snap_image_bounds" />
+             <Action name="view_snap_image_center" />
+      </Menu>
+      <Separator/>
+
+      <Action name="view_toggle_painting_assistants"/>
+      <Action name="view_toggle_assistant_previews"/>
+      <Action name="view_toggle_reference_images"/>
+      <Separator/>
+      <Action name="view_palette_action_menu"/>
+      <Separator/>
+      <Action name="refresh_canvas"/>
+    </Menu>
+
 <!--
     <Menu name="tools">
       <text>&amp;Tools</text>
