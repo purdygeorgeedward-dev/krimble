@@ -1338,10 +1338,10 @@
     </Action>
     <Action name="canvassize">
       <icon></icon>
-      <text>R&amp;esize Canvas...</text>
+      <text&amp;Canvas Size...</text>
       <whatsThis></whatsThis>
-      <toolTip>Resize Canvas</toolTip>
-      <iconText>Resize Canvas</iconText>
+      <toolTip>Canvas Size...</toolTip>
+      <iconText>Canvas Size...</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut>Ctrl+Alt+C</shortcut>
