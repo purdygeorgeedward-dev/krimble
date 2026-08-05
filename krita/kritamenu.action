@@ -1314,10 +1314,10 @@
     </Action>
     <Action name="imagesize">
       <icon></icon>
-      <text>Scale Image To &amp;New Size...</text>
+      <text>&amp;Image Size...</text>
       <whatsThis></whatsThis>
-      <toolTip>Scale Image To New Size</toolTip>
-      <iconText>Scale Image To New Size</iconText>
+      <toolTip>Image Size...</toolTip>
+      <iconText>Image Size...</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut>Ctrl+Alt+I</shortcut>
