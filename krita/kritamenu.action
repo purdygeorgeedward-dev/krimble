@@ -1290,10 +1290,10 @@
     </Action>
     <Action name="mirrorImageHorizontal">
       <icon>symmetry-horizontal</icon>
-      <text>&amp;Mirror Image Horizontally</text>
+      <text>&amp;Flip Horizontal</text>
       <whatsThis></whatsThis>
-      <toolTip>Mirror Image Horizontally</toolTip>
-      <iconText>Mirror Image Horizontally</iconText>
+      <toolTip>Flip Horizontal</toolTip>
+      <iconText>Flip Image Horizontal</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut></shortcut>
