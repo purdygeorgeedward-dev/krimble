@@ -113,10 +113,10 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       <Action name="mirrorImageHorizontal"/>
       <Action name="mirrorImageVertical"/>
       <Separator/>
-      <Action name="imagesize"/>
+      <!--Action name="imagesize"/-->
       <Action name="offsetimage"/>
-      <Action name="imageresolution"/>
-      <Action name="canvassize"/>
+      <!--Action name="imageresolution"/-->
+      <!--Action name="canvassize"/-->
       <Separator/>
       <Action name="imagesplit"/>
       <Action name="waveletdecompose"/>
