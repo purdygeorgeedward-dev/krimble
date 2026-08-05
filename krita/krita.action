@@ -260,10 +260,10 @@
     </Action>
     <Action name="invert_selection">
       <icon>select-invert</icon>
-      <text>&amp;Invert Selection</text>
+      <text>&amp;Inverse</text>
       <whatsThis/>
-      <toolTip>Invert current selection</toolTip>
-      <iconText>Invert Selection</iconText>
+      <toolTip>Inverse</toolTip>
+      <iconText>Inverse</iconText>
       <activationFlags>10000000000</activationFlags>
       <activationConditions>100</activationConditions>
       <shortcut>Ctrl+Shift+I</shortcut>
@@ -2623,10 +2623,10 @@
     </Action>
     <Action name="add_new_adjustment_layer">
       <icon>filterLayer</icon>
-      <text>Add &amp;Filter Layer...</text>
+      <text>New &amp;Adjustment Layer...</text>
       <whatsThis/>
-      <toolTip>Add a new Filter Layer</toolTip>
-      <iconText>Filter Layer</iconText>
+      <toolTip>New Adjustment Layer...</toolTip>
+      <iconText>New Adjustment Layer...</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut/>
@@ -3499,10 +3499,10 @@
     </Action>
     <Action name="merge_layer">
       <icon>merge-layer-below</icon>
-      <text>&amp;Merge with Layer Below</text>
+      <text>&amp;Merge Down</text>
       <whatsThis/>
-      <toolTip>Merge with Layer Below</toolTip>
-      <iconText>Merge with Layer Below</iconText>
+      <toolTip>Merge Down</toolTip>
+      <iconText>Merge Down</iconText>
       <activationFlags>100000</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut>Ctrl+E</shortcut>
