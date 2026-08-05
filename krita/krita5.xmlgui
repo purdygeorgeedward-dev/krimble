@@ -43,6 +43,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       <Separator/>
       <Action name="file_quit"/>
     </Menu>
+
     <Menu name="edit">
       <text>&amp;Edit</text>
       <Action name="edit_undo"/>
@@ -76,12 +77,9 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       <Separator/>
       <Action name="stroke_shapes"/>
       <Action name="stroke_selection"/>
-      <Action name="delete"/>
       <Separator/>
       <Action name="sample_screen_color"/>
       <Action name="sample_screen_color_real_canvas"/>
-      <Separator/>
-      <Action name="revert"/>
     </Menu>
 
     <Menu name="Image">
