@@ -1338,7 +1338,7 @@
     </Action>
     <Action name="canvassize">
       <icon></icon>
-      <text&amp;Canvas Size...</text>
+      <text>&amp;Canvas Size...</text>
       <whatsThis></whatsThis>
       <toolTip>Canvas Size...</toolTip>
       <iconText>Canvas Size...</iconText>
