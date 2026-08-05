@@ -89,10 +89,10 @@
     </Action>
     <Action name="file_export_file">
       <icon>document-export</icon>
-      <text>E&amp;xport...</text>
+      <text>Export &amp;As...</text>
       <whatsThis></whatsThis>
-      <toolTip>Export</toolTip>
-      <iconText>Export</iconText>
+      <toolTip>Export As.../toolTip>
+      <iconText>Export As...</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut></shortcut>
@@ -210,10 +210,10 @@
     </Action>
     <Action name="file_documentinfo">
       <icon>configure</icon>
-      <text>&amp;Document Information</text>
+      <text>&amp;File Info...</text>
       <whatsThis></whatsThis>
-      <toolTip>Document Information</toolTip>
-      <iconText>Document Information</iconText>
+      <toolTip>File Info...</toolTip>
+      <iconText>File Info...</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut></shortcut>
@@ -382,10 +382,10 @@
     </Action>
     <Action name="paste_into">
       <icon></icon>
-      <text>Paste into Active Layer</text>
+      <text>Paste &amp;Into</text>
       <whatsThis></whatsThis>
-      <toolTip>Paste into Active Layer</toolTip>
-      <iconText>Paste into Active Layer</iconText>
+      <toolTip>Paste Into</toolTip>
+      <iconText>Paste Into</iconText>
       <activationFlags>100000000000</activationFlags>
       <activationConditions>10</activationConditions>
       <shortcut>Ctrl+Shift+V</shortcut>
@@ -544,10 +544,10 @@
     </Action>
     <Action name="stroke_selection">
       <icon></icon>
-      <text>Stroke Selec&amp;tion...</text>
+      <text>&amp;Stroke...</text>
       <whatsThis></whatsThis>
-      <toolTip>Stroke selection</toolTip>
-      <iconText>Stroke selection</iconText>
+      <toolTip>Stroke...</toolTip>
+      <iconText>Stroke...</iconText>
       <activationFlags>10000000000</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut></shortcut>
@@ -709,30 +709,30 @@
     </Action>
     <Action name="softProof">
       <icon></icon>
-      <text>Soft Proofing</text>
+      <text>&amp;Proof Colors</text>
       <whatsThis></whatsThis>
-      <toolTip>Turns on Soft Proofing</toolTip>
-      <iconText>Turns on Soft Proofing</iconText>
+      <toolTip>Proof Colors</toolTip>
+      <iconText>Proof Colors</iconText>
       <shortcut>Ctrl+Y</shortcut>
       <isCheckable>true</isCheckable>
       <statusTip></statusTip>
     </Action>
     <Action name="gamutCheck">
       <icon></icon>
-      <text>Out of Gamut Warnings</text>
+      <text>&amp;Gamut Warning</text>
       <whatsThis></whatsThis>
-      <toolTip>Turns on warnings for colors out of proofed gamut, needs soft proofing to be turned on.</toolTip>
-      <iconText>Turns on warnings for colors out of proofed gamut, needs soft proofing to be turned on.</iconText>
+      <toolTip>Gamut Warning</toolTip>
+      <iconText>Gamut Warning</iconText>
       <shortcut>Ctrl+Shift+Y</shortcut>
       <isCheckable>true</isCheckable>
       <statusTip></statusTip>
     </Action>
     <Action name="mirror_canvas">
       <icon>mirror-view</icon>
-      <text>Mirror View</text>
+      <text>&amp;Flip Horizontal</text>
       <whatsThis></whatsThis>
-      <toolTip>Mirror View</toolTip>
-      <iconText>Mirror View</iconText>
+      <toolTip>Flip Horizontal</toolTip>
+      <iconText>Flip Horizontal</iconText>
       <shortcut>M</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
@@ -759,10 +759,10 @@
     </Action>
     <Action name="zoom_to_100pct">
       <icon>zoom-original</icon>
-      <text>&amp;Zoom to 100%</text>
+      <text>&amp;100%</text>
       <whatsThis></whatsThis>
-      <toolTip>Zoom to 100%</toolTip>
-      <iconText>Zoom to 100%</iconText>
+      <toolTip>100%</toolTip>
+      <iconText>100%</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut>Ctrl+0</shortcut>
@@ -795,10 +795,10 @@
     </Action>
     <Action name="zoom_to_fit">
       <icon>zoom-fit-best</icon>
-      <text>Fit to View</text>
+      <text>Fit on &amp;Screen</text>
       <whatsThis/>
-      <toolTip>Fit Canvas to View</toolTip>
-      <iconText>Fit to View</iconText>
+      <toolTip>Fit on Screen</toolTip>
+      <iconText>Fit on Screen</iconText>
       <shortcut/>
       <isCheckable>false</isCheckable>
       <statusTip/>
@@ -835,10 +835,10 @@
     </Action>
     <Action name="rotate_canvas_right">
       <icon>rotate-canvas-right</icon>
-      <text>Rotate &amp;Canvas Right</text>
+      <text>Rotate View &amp;Clockwise</text>
       <whatsThis></whatsThis>
-      <toolTip>Rotate Canvas Right</toolTip>
-      <iconText>Rotate Canvas Right</iconText>
+      <toolTip>Rotate View Clockwise</toolTip>
+      <iconText>Rotate View Clockwise</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut>Ctrl+]</shortcut>
@@ -847,10 +847,10 @@
     </Action>
     <Action name="rotate_canvas_left">
       <icon>rotate-canvas-left</icon>
-      <text>Rotate Canvas &amp;Left</text>
+      <text>Rotate View Co&amp;unterclockwise</text>
       <whatsThis></whatsThis>
-      <toolTip>Rotate Canvas Left</toolTip>
-      <iconText>Rotate Canvas Left</iconText>
+      <toolTip>Rotate View Counterclockwise</toolTip>
+      <iconText>Rotate View Counterclockwise</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut>Ctrl+[</shortcut>
@@ -891,10 +891,10 @@
     </Action>
     <Action name="view_ruler">
       <icon></icon>
-      <text>Show &amp;Rulers</text>
+      <text>&amp;Rulers</text>
       <whatsThis>The rulers show the horizontal and vertical positions of the mouse on the image and can be used to position your mouse at the right place on the canvas. &lt;p>Uncheck this to hide the rulers.&lt;/p></whatsThis>
-      <toolTip>Show Rulers</toolTip>
-      <iconText>Show Rulers</iconText>
+      <toolTip>Rulers</toolTip>
+      <iconText>Rulers</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut></shortcut>
@@ -1462,10 +1462,10 @@
     </Action>
     <Action name="featherselection">
       <icon></icon>
-      <text>&amp;Feather Selection...</text>
+      <text>&amp;Feather...</text>
       <whatsThis></whatsThis>
-      <toolTip>Feather Selection</toolTip>
-      <iconText>Feather Selection</iconText>
+      <toolTip>Feather...</toolTip>
+      <iconText>Feather...</iconText>
       <activationFlags>10000000000</activationFlags>
       <activationConditions>100</activationConditions>
       <shortcut>Shift+F6</shortcut>
@@ -1486,10 +1486,10 @@
     </Action>
     <Action name="selectionscale">
       <icon></icon>
-      <text>Sca&amp;le...</text>
+      <text>&amp;Transform Selection</text>
       <whatsThis></whatsThis>
-      <toolTip>Scale</toolTip>
-      <iconText>Scale</iconText>
+      <toolTip>Transform Selection</toolTip>
+      <iconText>Transform Selection</iconText>
       <activationFlags>100000000</activationFlags>
       <activationConditions>100</activationConditions>
       <shortcut></shortcut>
@@ -1498,10 +1498,10 @@
     </Action>
     <Action name="colorrange">
       <icon></icon>
-      <text>S&amp;elect from Color Range...</text>
+      <text>&amp;Color Range...</text>
       <whatsThis></whatsThis>
-      <toolTip>Select from Color Range</toolTip>
-      <iconText>Select from Color Range</iconText>
+      <toolTip>Color Range</toolTip>
+      <iconText>Color Range</iconText>
       <activationFlags>10000</activationFlags>
       <activationConditions>100</activationConditions>
       <shortcut></shortcut>
@@ -1558,10 +1558,10 @@
     </Action>
     <Action name="growselection">
       <icon></icon>
-      <text>&amp;Grow Selection...</text>
+      <text>&amp;Grow</text>
       <whatsThis></whatsThis>
-      <toolTip>Grow Selection</toolTip>
-      <iconText>Grow Selection</iconText>
+      <toolTip>Grow</toolTip>
+      <iconText>Grow</iconText>
       <activationFlags>10000000000</activationFlags>
       <activationConditions>100</activationConditions>
       <shortcut></shortcut>
@@ -1570,10 +1570,10 @@
     </Action>
     <Action name="shrinkselection">
       <icon></icon>
-      <text>S&amp;hrink Selection...</text>
+      <text>&amp;Contract...</text>
       <whatsThis></whatsThis>
-      <toolTip>Shrink Selection</toolTip>
-      <iconText>Shrink Selection</iconText>
+      <toolTip>Contract...</toolTip>
+      <iconText>Contract...</iconText>
       <activationFlags>10000000000</activationFlags>
       <activationConditions>100</activationConditions>
       <shortcut></shortcut>
@@ -1582,10 +1582,10 @@
     </Action>
     <Action name="borderselection">
       <icon></icon>
-      <text>&amp;Border Selection...</text>
+      <text>&amp;Border...</text>
       <whatsThis></whatsThis>
-      <toolTip>Border Selection</toolTip>
-      <iconText>Border Selection</iconText>
+      <toolTip>Border...</toolTip>
+      <iconText>Border...</iconText>
       <activationFlags>10000000000</activationFlags>
       <activationConditions>100</activationConditions>
       <shortcut></shortcut>
