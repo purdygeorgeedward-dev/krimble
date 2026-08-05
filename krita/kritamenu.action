@@ -1302,10 +1302,10 @@
     </Action>
     <Action name="mirrorImageVertical">
       <icon>symmetry-vertical</icon>
-      <text>Mirror Image &amp;Vertically</text>
+      <text>Flip &amp;Vertical</text>
       <whatsThis></whatsThis>
-      <toolTip>Mirror Image Vertically</toolTip>
-      <iconText>Mirror Image Vertically</iconText>
+      <toolTip>Flip Vertical</toolTip>
+      <iconText>Flip Vertical</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut></shortcut>
