@@ -195,7 +195,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
          <Action name="layersize" group="layer_transform_merge"/>
          <Action name="mirrorNodeX"/>
          <Action name="mirrorNodeY"/>
-         <Action name="layersize"/>
+         <!-- <Action name="layersize"/> -->
          <Menu name="Rotate">
              <text>&amp;Rotate</text>
              <Action name="rotatelayer"/>
@@ -266,7 +266,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       <Separator/>
       <Action name="toggle_display_selection"/>
       <Action name="show-global-selection-mask"/>
-      <Action name="selectionscale"/>
+      <!-- <Action name="selectionscale"/> -->
       <Separator/>
       <Action name="colorrange"/>
       <Menu name="selectopaquemenu">
