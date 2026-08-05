@@ -48,13 +48,13 @@ Wishlist:
 
 4. Remove Tools menu to make the Settings menu easier to reach. (DONE.)
 
-5. Change Toolbox defaults. (Done. Added new value setToolBoxPriority for control of toolbox placement separate from priority value which controls default tool behavior.)
+5. Change Toolbox defaults. (DONE. Added new value setToolBoxPriority for control of toolbox placement separate from priority value which controls default tool behavior.)
 
-6. Disable certain autoload behaviors that dont work well on mobile.
+6. Disable autoload behaviors.
 
 7. Change to scale-and-scroll model so windows can be smaller than UI components inside them.
 
-8. Reconfigure menus. 
+8. Reconfigure menus. (partially done.)
 
 9. Remove rotation from pinch zoom defaults.
 
@@ -69,6 +69,8 @@ Wishlist:
 14. Default to 12 pt. Helvetica in UI.
     
 15. Create custom dedault toolbars.
+    
+16. Add the Adjust-Brightness/Contrast dialog. 
 
 ### Discussion Forum
 
