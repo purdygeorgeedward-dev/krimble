@@ -155,6 +155,8 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     </Menu>
     <Menu name="Image">
       <text>&amp;Image</text>
+      <Action name="adjust_filters"/>
+      <Separator/>
       <Action name="image_properties"/>
       <Action name="image_color"/>
       <Action name="imagecolorspaceconversion"/>
@@ -362,7 +364,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       <Action name="filter_apply_reprompt"/>
       <Action name="filter_gallery"/>
       <Separator/>
-      <Action name="adjust_filters"/>
       <Action name="artistic_filters"/>
       <Action name="blur_filters"/>
       <Action name="color_filters"/>
