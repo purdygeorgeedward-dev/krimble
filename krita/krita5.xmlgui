@@ -188,6 +188,10 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="copy_layer_clipboard"/>
     <Action name="paste_layer_from_clipboard"/>
 
+<Separator/>
+<Action name="layer_style"/>
+<Separator/>
+
     <Separator/>
 
     <Menu name="LayerSelect">
@@ -279,7 +283,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 
     <Separator/>
 
-    <Action name="layer_style"/>
     <Action name="EditLayerMetaData"/>
     <Action name="histogram"/>
 
