@@ -52,7 +52,7 @@ Wishlist:
 
 6. Disable autoload behaviors.
 
-7. Add note about DPI setting.
+7. Add note about disabling HiDPI setting.
 
 8. Reconfigure menus. (DONE.)
 
