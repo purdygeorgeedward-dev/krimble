@@ -580,8 +580,8 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="edit_redo"/>
   </ToolBar>
 
-  <ToolBar name="BrushesAndStuff" position="top">
-    <Text>Brushes and Stuff</Text>
+  <ToolBar name="Back2Badics" position="top">
+    <Text>Back to Basics</Text>
     <Action name="gradients"/>
     <Action name="patterns"/>
     <Separator/>
