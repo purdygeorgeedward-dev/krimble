@@ -8,6 +8,7 @@ set(kritacolorsfilters_SOURCES
     kis_cross_channel_filter.cpp
     kis_color_balance_filter.cpp
     kis_desaturate_filter.cpp
+    kis_brightness_contrast_filter.cpp
     )
 
 ki18n_wrap_ui(kritacolorsfilters_SOURCES
@@ -15,6 +16,7 @@ ki18n_wrap_ui(kritacolorsfilters_SOURCES
     wdg_color_balance.ui
     wdg_hsv_adjustment.ui
     wdg_desaturate.ui
+    wdg_brightness_contrast.ui
 )
 
 kis_add_library(kritacolorsfilters MODULE ${kritacolorsfilters_SOURCES})
