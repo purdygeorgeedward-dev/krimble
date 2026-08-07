@@ -4,10 +4,10 @@
       <text>Tool Shortcuts</text>
     <Action name="KisToolSelectMagnetic">
       <icon>tool_magnetic_selection</icon>
-      <text>Magnetic Selection Tool</text>
+      <text>Magnetic Lasso Tool</text>
       <whatsThis></whatsThis>
-      <toolTip>Magnetic Curve Selection Tool</toolTip>
-      <iconText>Magnetic Curve Selection Tool</iconText>
+      <toolTip>Magnetic Lasso Tool</toolTip>
+      <iconText>Magnetic Lasso Tool</iconText>
       <shortcut></shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
