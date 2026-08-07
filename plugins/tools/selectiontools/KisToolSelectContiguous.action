@@ -4,10 +4,10 @@
       <text>Tool Shortcuts</text>
         <Action name="KisToolSelectContiguous">
       <icon>tool_contiguous_selection</icon>
-      <text>Contiguous Selection Tool</text>
+      <text>Magic Wand</text>
       <whatsThis></whatsThis>
-      <toolTip>Contiguous Selection Tool</toolTip>
-      <iconText>Contiguous Selection Tool</iconText>
+      <toolTip>Magic Wand </toolTip>
+      <iconText>Magic Wand</iconText>
       <shortcut></shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
