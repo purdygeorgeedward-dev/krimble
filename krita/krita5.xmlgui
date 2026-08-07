@@ -596,8 +596,8 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="expanding_spacer_1"/>
     <Action name="select_layout"/>
     <Action name="workspaces"/>
-    <Action name="view_show_canvas_only">
-    <Action name="fullscreen">
+    <Action name="view_show_canvas_only"/>
+    <Action name="fullscreen"/>
   </ToolBar>
 
   <ToolBar name="customToolBar1" fullWidth="false" position="top">
