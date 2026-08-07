@@ -50,7 +50,7 @@ Wishlist:
 
 5. Change Toolbox defaults. (DONE. Added new value setToolBoxPriority for control of toolbox placement separate from priority value which controls default tool behavior on file open.)
 
-6. Disable autoload behaviors.
+6. Disable autoload of file recovery on startup.
 
 7. Add note about disabling HiDPI setting.
 
