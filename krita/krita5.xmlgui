@@ -498,19 +498,19 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 <Action name="KisToolSelectPolygonal"/>
 <Action name="KisToolSelectContiguous"/>
 <Action name="KisToolCrop"/>
-<Action name="KisToolText"/>
-<Action name="KisToolPan"/>
-<Action name="KisToolZoom"/>
-<Action name="KisToolFill"/>
-<Action name="KisToolGradient"/>
-<Action name="KisToolColorSampler"/>
+<Action name="SvgTextTool"/>
+<Action name="PanTool"/>
+<Action name="ZoomTool"/>
+<Action name="KritaFill/KisToolFill"/>
+<Action name="KritaFill/KisToolGradient"/>
+<Action name="KritaSelected/KisToolColorSampler"/>
 <Action name="erase_action"/>
-<Action name="KisToolMultiBrush"/>
-<Action name="KisToolPath"/>
-<Action name="KisToolSelectShapes"/>
-<Action name="KisToolMove"/>
+<Action name="KritaShape/KisToolMultiBrush"/>
+<Action name="PathTool"/>
+<Action name="InteractionTool"/>
+<Action name="KritaTransform/KisToolMove"/>
 <Action name="KisToolTransform"/>
-<Action name="KisToolTransformStroke"/>
+<Action name="KisToolTransformFree"/>
     <Separator/>
     <Action name="dual"/>
     <Separator/>
@@ -529,20 +529,3 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
   </ToolBar>
 
 </kpartgui>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
