@@ -70,7 +70,7 @@ Wishlist:
     
 15. Create custom dedault toolbars in imitation of classic toolbars.
     
-16. Add the Adjust-Brightness/Contrast dialog (almost from scratch.)
+16. Add the Adjust-Brightness/Contrast dialog (Alpha completed.)
 
 17. Widen sizing gadgets on windows and sections to make touchscreen resizing easier.
 
