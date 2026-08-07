@@ -49,6 +49,7 @@
 #include "kis_perchannel_filter.h"
 #include "kis_cross_channel_filter.h"
 #include "kis_color_balance_filter.h"
+#include "kis_brightness_contrast_filter.h"
 #include "kis_desaturate_filter.h"
 
 K_PLUGIN_FACTORY_WITH_JSON(ColorsFiltersFactory, "kritacolorsfilter.json", registerPlugin<ColorsFilters>();)
