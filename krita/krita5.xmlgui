@@ -588,6 +588,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="dual"/>
     <Separator/>
     <Action name="toggle-selection-overlay-mode"/>
+    <Action name="show-global-selection-mask"/>
     <Action name="view_show_canvas_only"/>
     <Action name="fullscreen"/>
   </ToolBar>
