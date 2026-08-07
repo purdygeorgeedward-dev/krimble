@@ -392,18 +392,20 @@
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>
-    <Action name="paste_new">
-      <icon></icon>
-      <text>Paste into &amp;New Image</text>
-      <whatsThis></whatsThis>
-      <toolTip>Paste into New Image</toolTip>
-      <iconText>Paste into New Image</iconText>
-      <activationFlags>0</activationFlags>
-      <activationConditions>0</activationConditions>
-      <shortcut>Ctrl+Shift+N</shortcut>
-      <isCheckable>false</isCheckable>
-      <statusTip></statusTip>
-    </Action>
+
+  <Action name="paste_new">
+    <icon></icon>
+    <text>New From Clipboard</text>
+    <whatsThis>Create a new image from the contents of the clipboard.</whatsThis>
+    <toolTip>New From Clipboard</toolTip>
+    <iconText>New From Clipboard</iconText>
+    <activationFlags>0</activationFlags>
+    <activationConditions>0</activationConditions>
+    <shortcut>Ctrl+Shift+N</shortcut>
+    <isCheckable>false</isCheckable>
+    <statusTip>Create a new image from the clipboard.</statusTip>
+</Action>
+
     <Action name="paste_shape_style">
       <icon></icon>
       <text>Paste Shape Style</text>
