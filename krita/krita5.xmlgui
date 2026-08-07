@@ -587,15 +587,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Separator/>
     <Action name="dual"/>
     <Separator/>
-    <Action name="paintops"/>
-    <Action name="paintop_options"/>
-    <Action name="composite_actions"/>
-    <Action name="brushslider1"/>
-    <Action name="brushslider2"/>
-    <Action name="mirror_actions"/>
-    <Action name="expanding_spacer_1"/>
-    <Action name="select_layout"/>
-    <Action name="workspaces"/>
+    <Action name="toggle-selection-overlay-mode"/>
     <Action name="view_show_canvas_only"/>
     <Action name="fullscreen"/>
   </ToolBar>
