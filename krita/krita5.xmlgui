@@ -492,8 +492,25 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 
   <ToolBar name="BacktoBasics" position="top">
     <Text>Back to Basics</Text>
-    <Action name="gradients"/>
-    <Action name="patterns"/>
+<Action name="KisToolSelectRectangular"/>
+<Action name="KisToolSelectElliptical"/>
+<Action name="KisToolSelectOutline"/>
+<Action name="KisToolSelectPolygonal"/>
+<Action name="KisToolSelectContiguous"/>
+<Action name="KisToolCrop"/>
+<Action name="KisToolText"/>
+<Action name="KisToolPan"/>
+<Action name="KisToolZoom"/>
+<Action name="KisToolFill"/>
+<Action name="KisToolGradient"/>
+<Action name="KisToolColorSampler"/>
+<Action name="erase_action"/>
+<Action name="KisToolMultiBrush"/>
+<Action name="KisToolPath"/>
+<Action name="KisToolSelectShapes"/>
+<Action name="KisToolMove"/>
+<Action name="KisToolTransform"/>
+<Action name="KisToolTransformStroke"/>
     <Separator/>
     <Action name="dual"/>
     <Separator/>
