@@ -68,7 +68,7 @@ Wishlist:
 
 14. Default to 12 pt. Helvetica in UI.
     
-15. Create custom dedault toolbars in imitation of classic toolbars.
+15. Create custom default toolbars in imitation of classic toolbars.
     
 16. Add the Adjust-Brightness/Contrast dialog (Alpha completed.)
 
