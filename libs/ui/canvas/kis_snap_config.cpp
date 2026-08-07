@@ -14,7 +14,7 @@ KisSnapConfig::KisSnapConfig(bool loadValues)
       m_extension(false),
       m_intersection(false),
       m_boundingBox(false),
-      m_imageBounds(true),
+      m_imageBounds(false),
       m_imageCenter(false),
       m_toPixel(false)
 {
