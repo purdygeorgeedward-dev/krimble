@@ -133,37 +133,35 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 <Menu name="Layer">
     <text>&amp;Layer</text>
     <Menu name="LayerNew">
-    <text>&amp;New</text>
-    <Action name="add_new_paint_layer"/>
-    <Action name="add_new_group_layer"/>
-    <Action name="add_new_clone_layer"/>
-    <Action name="add_new_shape_layer"/>
-    <Action name="add_new_adjustment_layer"/>
-    <Action name="add_new_fill_layer"/>
-    <Action name="add_new_file_layer"/>
-    <Separator/>
-    <Action name="add_new_transparency_mask"/>
-    <Action name="add_new_filter_mask"/>
-    <Action name="add_new_colorize_mask"/>
-    <Action name="add_new_transform_mask"/>
-    <Action name="add_new_selection_mask"/>
-    <Separator/>
-    <Action name="new_from_visible"/>
-    <Separator/>
-    <Action name="cut_selection_to_new_layer"/>
-    <Action name="copy_selection_to_new_layer"/>
-</Menu>
+        <text>&amp;New</text>
+        <Action name="add_new_paint_layer"/>
+        <Action name="add_new_group_layer"/>
+        <Action name="add_new_clone_layer"/>
+        <Action name="add_new_shape_layer"/>
+        <Action name="add_new_adjustment_layer"/>
+        <Action name="add_new_fill_layer"/>
+        <Action name="add_new_file_layer"/>
+        <Separator/>
+        <Action name="add_new_transparency_mask"/>
+        <Action name="add_new_filter_mask"/>
+        <Action name="add_new_colorize_mask"/>
+        <Action name="add_new_transform_mask"/>
+        <Action name="add_new_selection_mask"/>
+        <Separator/>
+        <Action name="new_from_visible"/>
+        <Separator/>
+        <Action name="cut_selection_to_new_layer"/>
+        <Action name="copy_selection_to_new_layer"/>
+    </Menu>
     <Action name="duplicatelayer"/>
+    <Action name="layer_style"/>
     <Separator/>
     <Action name="cut_layer_clipboard"/>
     <Action name="copy_layer_clipboard"/>
     <Action name="paste_layer_from_clipboard"/>
-<Separator/>
-<Action name="layer_style"/>
-<Separator/>
     <Separator/>
     <Menu name="LayerSelect">
-        <text>&amp;Select</text>
+        <text>Select Layers</text>
         <Action name="select_all_layers"/>
         <Action name="select_visible_layers"/>
         <Action name="select_invisible_layers"/>
@@ -171,7 +169,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="select_unlocked_layers"/>
     </Menu>
     <Menu name="LayerGroup">
-        <text>&amp;Group</text>
+        <text>Group Layers</text>
         <Action name="create_quick_group"/>
         <Action name="create_quick_clipping_group"/>
         <Action name="quick_ungroup"/>
@@ -194,7 +192,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="offsetlayer"/>
     </Menu>
     <Menu name="LayerTransformAll">
-        <text>Transform &amp;All Layers</text>
+        <text>Transform &amp;All</text>
         <Action name="mirrorAllNodesX"/>
         <Action name="mirrorAllNodesY"/>
         <Action name="scaleAllLayers"/>
@@ -235,14 +233,14 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         </Menu>
     </Menu>
     <Separator/>
-    <Action name="EditLayerMetaData"/>
-    <Action name="histogram"/>
-    <Separator/>
     <Action name="merge_layer"/>
     <Action name="merge_selected_layers"/>
     <Action name="flatten_layer"/>
     <Action name="merge_all_shape_layers"/>
     <Action name="flatten_image"/>
+    <Separator/>
+    <Action name="EditLayerMetaData"/>
+    <Action name="histogram"/>
     <Separator/>
     <Menu name="LayerSplitAlpha">
         <text>S&amp;plit</text>
@@ -256,7 +254,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="clones_array"/>
     </Menu>
 </Menu>
-    </Menu>
 
 
     <Menu name="Select">
