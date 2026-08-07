@@ -328,10 +328,10 @@
     </Action>
     <Action name="docker_box">
       <icon></icon>
-      <text>Show Docker Box</text>
+      <text>Show Panel Box</text>
       <whatsThis/>
-      <toolTip>Show Docker Box</toolTip>
-      <iconText>Show Docker Box</iconText>
+      <toolTip>Show Panel Box</toolTip>
+      <iconText>Show Panel Box</iconText>
       <activationFlags>0</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut/>
@@ -752,12 +752,12 @@
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
-    <Action name="BrushesAndStuff">
+    <Action name="BacktoBadics">
       <icon/>
-      <text>Hide Brushes and Stuff Toolbar</text>
+      <text>Hide Back to Basics Toolbar</text>
       <whatsThis/>
-      <toolTip>Hide Brushes and Stuff Toolbar</toolTip>
-      <iconText>Hide Brushes and Stuff Toolbar</iconText>
+      <toolTip>Hide  Back to Basics Toolbar</toolTip>
+      <iconText>Hide  Back to Basics Toolbar</iconText>
       <shortcut/>
       <isCheckable>true</isCheckable>
       <statusTip/>
@@ -1010,12 +1010,10 @@
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
-    <Action name="convert_selection_to_shape">
-      <icon>convert_to_shape</icon>
-      <text>Convert &amp;to Shape</text>
-      <whatsThis/>
-      <toolTip>Convert to Shape</toolTip>
-      <iconText>Convert to Shape</iconText>
+<Action name="convert_selection_to_shape">
+    <text>Get Shape from &amp;Selection</text>
+    <toolTip>Get Shape from Selection</toolTip>
+    <iconText>Get Shape from Selection</iconText>
       <activationFlags>10000000000</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut/>
@@ -1026,7 +1024,7 @@
       <icon/>
       <text>&amp;Show Global Selection Mask</text>
       <whatsThis/>
-      <toolTip>Shows global selection as a usual selection mask in &lt;interface&gt;Layers&lt;/interface&gt; docker</toolTip>
+      <toolTip>Shows global selection as a usual selection mask in &lt;interface&gt;Layers&lt;/interface&gt; panel</toolTip>
       <iconText>Show Global Selection Mask</iconText>
       <activationFlags>100000</activationFlags>
       <activationConditions>100</activationConditions>
@@ -3271,10 +3269,10 @@
     </Action>
     <Action name="rotateLayerCW90">
       <icon>object-rotate-right</icon>
-      <text>Rotate &amp;Layers 90° to the Right</text>
+      <text>Rotate &amp;Layers 90Â° to the Right</text>
       <whatsThis/>
-      <toolTip>Rotate Layers 90° to the Right</toolTip>
-      <iconText>Rotate Layers 90° to the Right</iconText>
+      <toolTip>Rotate Layers 90Â° to the Right</toolTip>
+      <iconText>Rotate Layers 90Â° to the Right</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
@@ -3283,10 +3281,10 @@
     </Action>
     <Action name="rotateLayerCCW90">
       <icon>object-rotate-left</icon>
-      <text>Rotate Layers &amp;90° to the Left</text>
+      <text>Rotate Layers &amp;90Â° to the Left</text>
       <whatsThis/>
-      <toolTip>Rotate Layers 90° to the Left</toolTip>
-      <iconText>Rotate Layers 90° to the Left</iconText>
+      <toolTip>Rotate Layers 90Â° to the Left</toolTip>
+      <iconText>Rotate Layers 90Â° to the Left</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
@@ -3295,10 +3293,10 @@
     </Action>
     <Action name="rotateLayer180">
       <icon/>
-      <text>Rotate Layers &amp;180°</text>
+      <text>Rotate Layers &amp;180Â°</text>
       <whatsThis/>
-      <toolTip>Rotate Layers 180°</toolTip>
-      <iconText>Rotate Layers 180°</iconText>
+      <toolTip>Rotate Layers 180Â°</toolTip>
+      <iconText>Rotate Layers 180Â°</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
@@ -3367,10 +3365,10 @@
     </Action>
     <Action name="rotateAllLayersCW90">
       <icon>object-rotate-right</icon>
-      <text>Rotate All &amp;Layers 90° to the Right</text>
+      <text>Rotate All &amp;Layers 90Â° to the Right</text>
       <whatsThis/>
-      <toolTip>Rotate All Layers 90° to the Right</toolTip>
-      <iconText>Rotate All Layers 90° to the Right</iconText>
+      <toolTip>Rotate All Layers 90Â° to the Right</toolTip>
+      <iconText>Rotate All Layers 90Â° to the Right</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
@@ -3379,10 +3377,10 @@
     </Action>
     <Action name="rotateAllLayersCCW90">
       <icon>object-rotate-left</icon>
-      <text>Rotate All Layers &amp;90° to the Left</text>
+      <text>Rotate All Layers &amp;90Â° to the Left</text>
       <whatsThis/>
-      <toolTip>Rotate All Layers 90° to the Left</toolTip>
-      <iconText>Rotate All Layers 90° to the Left</iconText>
+      <toolTip>Rotate All Layers 90Â° to the Left</toolTip>
+      <iconText>Rotate All Layers 90Â° to the Left</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
@@ -3391,10 +3389,10 @@
     </Action>
     <Action name="rotateAllLayers180">
       <icon/>
-      <text>Rotate All Layers &amp;180°</text>
+      <text>Rotate All Layers &amp;180Â°</text>
       <whatsThis/>
-      <toolTip>Rotate All Layers 180°</toolTip>
-      <iconText>Rotate All Layers 180°</iconText>
+      <toolTip>Rotate All Layers 180Â°</toolTip>
+      <iconText>Rotate All Layers 180Â°</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
