@@ -4,10 +4,10 @@
 <text>Tool Shortcuts</text>
 <Action name="KisToolSelectOutline">
       <icon>tool_outline_selection</icon>
-      <text>Freehand Selection Tool</text>
+      <text>Lasso Tool</text>
       <whatsThis></whatsThis>
-      <toolTip>Freehand Selection Tool</toolTip>
-      <iconText>Freehand Selection Tool</iconText>
+      <toolTip>Lasso Tool</toolTip>
+      <iconText>Lasso Tool</iconText>
       <shortcut></shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
