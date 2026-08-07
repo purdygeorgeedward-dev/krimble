@@ -88,31 +88,30 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       <Action name="sample_screen_color_real_canvas"/>
     </Menu>
 
- <Menu name="Image">
+<Menu name="Image">
     <text>&amp;Image</text>
-    <Action name="adjust_filters"/>
-    <Separator/>
     <Menu name="Mode">
         <text>&amp;Mode</text>
         <Action name="image_color"/>
         <Action name="imagecolorspaceconversion"/>
     </Menu>
-    <Action name="image_properties"/>
+    <Action name="adjust_filters"/>
     <Separator/>
-    <Action name="imagesize" group="image_transform_merge"/>
+    <Action name="imagesize"/>
     <Action name="imageresolution"/>
-    <Action name="canvassize" group="canvas_resize_merge"/>
+    <Action name="canvassize"/>
     <Separator/>
-    <Menu name="Rotate">
-        <text>&amp;Rotate</text>
+    <Menu name="ImageRotation">
+        <text>Image &amp;Rotation</text>
         <Action name="rotateimage"/>
         <Separator/>
         <Action name="rotateImageCW90"/>
         <Action name="rotateImageCCW90"/>
         <Action name="rotateImage180"/>
+        <Separator/>
+        <Action name="mirrorImageHorizontal"/>
+        <Action name="mirrorImageVertical"/>
     </Menu>
-    <Action name="mirrorImageHorizontal"/>
-    <Action name="mirrorImageVertical"/>
     <Separator/>
     <Action name="trim_to_image"/>
     <Action name="resizeimagetolayer"/>
@@ -122,6 +121,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="shearimage"/>
     <Action name="offsetimage"/>
     <Separator/>
+    <Action name="image_properties"/>
     <Action name="purge_unused_image_data"/>
     <Separator/>
     <Action name="imagesplit"/>
