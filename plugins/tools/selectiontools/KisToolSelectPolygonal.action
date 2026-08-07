@@ -5,8 +5,8 @@
 <Action name="KisToolSelectPolygonal">
       <icon>tool_polygonal_selection</icon>
       <whatsThis></whatsThis>
-      <toolTip>Polygonal Selection Tool</toolTip>
-      <iconText>Polygonal Selection Tool</iconText>
+      <toolTip>Polygonal Lasso Tool</toolTip>
+      <iconText>Polygonal Lasso Tool</iconText>
       <shortcut></shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
