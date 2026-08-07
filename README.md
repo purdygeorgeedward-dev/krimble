@@ -52,7 +52,7 @@ Wishlist:
 
 6. Disable autoload behaviors.
 
-7. Change to scale-and-scroll model so windows can be smaller than UI components inside them? (HARD.)
+7. Add note about DPI setting.
 
 8. Reconfigure menus. (DONE.)
 
@@ -70,7 +70,7 @@ Wishlist:
     
 15. Create custom default toolbars in imitation of classic toolbars.
     
-16. Add the Adjust-Brightness/Contrast dialog (Alpha completed.)
+16. Add the Adjust-Brightness/Contrast dialog (core implementation done, untested.)
 
 17. Widen sizing gadgets on windows and sections to make touchscreen resizing easier.
 
