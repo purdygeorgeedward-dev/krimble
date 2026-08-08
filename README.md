@@ -50,7 +50,7 @@ Wishlist:
 
 5. Change Toolbox defaults. (DONE. Added new value setToolBoxPriority for control of toolbox placement separate from priority value which controls default tool behavior on file open.)
 
-6. Disable autoload of file recovery on startup.
+6. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit. (DONE.)
 
 7. Add note about disabling HiDPI setting.
 
@@ -64,7 +64,7 @@ Wishlist:
 
 12. Implement industry standard terms for tools or menu items as needed. (DONE.)
 
-13. Default to Snapping OFF.
+13. Default to Snapping OFF. (DONE.)
 
 14. Default to 12 pt. Helvetica in UI.
     
