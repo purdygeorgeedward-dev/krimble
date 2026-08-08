@@ -74,6 +74,7 @@ Wishlist:
 
 17. Widen sizing gadgets on windows and sections to make touchscreen resizing easier.
 
+18. Rework the text/type tool, which is very hard to use currently.
 
 ### Discussion Forum
 
