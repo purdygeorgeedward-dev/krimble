@@ -837,7 +837,7 @@ void GeneralTab::setDefault()
     m_chkTrimKra->setChecked(cfg.trimKra(true));
     m_chkTrimFramesImport->setChecked(cfg.trimFramesImport(true));
     chkZip64->setChecked(cfg.useZip64(true));
-    m_chkHiDPI->setChecked(true);
+    m_chkHiDPI->setChecked(false);
 #if defined(Q_OS_WIN) && defined(HAVE_HIGH_DPI_SCALE_FACTOR_ROUNDING_POLICY)
     m_chkHiDPIFractionalScaling->setChecked(true);
 #endif
