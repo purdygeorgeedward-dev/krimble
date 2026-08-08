@@ -60,7 +60,7 @@ Wishlist:
 
 10. Limit transform default to scaling. (DONE.)
 
-11. Limit move default to selected layer or floating selection until changed by user.
+11. Limit move default to selected layer or floating selection until deliberately changed by user. (DONE.)
 
 12. Implement industry standard terms for tools or menu items as needed. (DONE.)
 
