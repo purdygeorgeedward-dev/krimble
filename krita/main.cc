@@ -386,7 +386,7 @@ extern "C" MAIN_EXPORT int MAIN_FN(int argc, char **argv)
     bool openGLDebugSynchronous = false;
     bool logUsage = true;
     {
-        bool enableHighDpiScaling = kritarc.value("EnableHiDPI", true).toBool() || !qgetenv("KRITA_HIDPI").isEmpty();
+        bool enableHighDpiScaling = kritarc.value("EnableHiDPI", false).toBool() || !qgetenv("KRITA_HIDPI").isEmpty();
         // The AA_(Enable|Disable)HighDpiScaling attributes no longer have an
         // effect on Qt6, high-DPI scaling is always enabled. To "disable" it,
         // we need to use an environment variable instead, but we'll only do
