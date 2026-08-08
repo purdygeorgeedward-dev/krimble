@@ -1,30 +1,13 @@
 ![Picture](http://purdy.design/logo_splash.jpg)
 
-| CI Name     | Master | Stable | Release |
-| ------------------- | ---------------- | ------ | ------- |
-| Pipeline | [![pipeline status](https://invent.kde.org/graphics/krita/badges/master/pipeline.svg)](https://invent.kde.org/graphics/krita/-/commits/master) | [![pipeline status](https://invent.kde.org/graphics/krita/badges/krita/5.2/pipeline.svg)](https://invent.kde.org/graphics/krita/-/commits/krita/5.2) | [![Latest Release](https://invent.kde.org/graphics/krita/-/badges/release.svg)](https://invent.kde.org/graphics/krita/-/releases) |
+This (soon to be renamed) is a mobile-first fork of Krita designed to be a graphics workhorse for Android phones instead of a paint/animation app. The objective is to make a mobile version which is aware of the restrictions of limited screen real estate on mobile devices. Stripping away unnecessary UI components and scaling down others, creating new default behaviors that show awareness of mobile users needs, and making the UI a little more universal are objectives.
 
-Note: Nightly builds are not covered by this table atm
+I am a lifelong professional artist trained with a wide range of traditional media and digital tools from Deluxe Paint to Photoshop to 3DS Max, Mudbox, ZBrush, et al. and to me trying to "paint" with a phone is about as appealing as writing a novel on a window with a bar of soap. However, I find myself using Krita on my smartphone as a daily driver for graphics tasks, so I am motivated to modify it for my purposes. Sharing it, of course.
 
-Krita Mobile is intended to be a mobile fork of Krita designed to be a graphics workhorse for Android phones instead of a paint app. The objective is to make a mobile version which is aware of the restrictions of limited screen real estate on mobile devices. Stripping away unnecessary UI components and scaling down others, creating default behaviors that show awareness of mobile users needs, and making the app a little more universal are objectives.
-
-If you are reading this on GitHub, be aware that this is just a mirror. The core code repository is provided by KDE: https://invent.kde.org/graphics/krita.git
-
-
-### Repository Status
-
-For branch: `master`
-
-| Freeze type    | Status                                                               |
-|----------------|----------------------------------------------------------------------|
-| Feature Freeze | features are allowed                                                 |
-| String Freeze  | strings are allowed                                                  |
-
-
-### User Manual
+### Krita User Manual
 https://docs.krita.org/en/user_manual.html
 
-### Development Notes and Build Instructions
+### Krita Development Notes and Build Instructions
 
 Please follow [the online documentation](https://docs.krita.org/en/untranslatable_pages/building_krita.html).
 
@@ -78,51 +61,11 @@ Wishlist:
 
 19. Create alternate title and logo splash in case Krita org opposes use of "Krita" for mobile version or use of AI in rapid dev. (DONE.)
 
-### Discussion Forum
+20. Rewrite dialogs windows to fit small screens.
 
-* https://krita-artists.org/
-
-### IRC channel
-
-Most of the developers hang out here. If you are interested in helping with the project this is a great place to start.
-
-libera.chat, #krita
-
-### Project Website
+### Krita Project Website
 
 https://www.krita.org
-
-### Nightly builds
-
-#### Unstable Desktop Build
-
-* https://cdn.kde.org/ci-builds/graphics/krita/master/
-
-#### Stable Desktop Build
-
-* https://cdn.kde.org/ci-builds/graphics/krita/krita-5.2/
-
-#### Developers builds
-
-##### Linux build with debug symbols in Qt and Krita
-
-1) Go to Jobs section of Krita's CI: https://invent.kde.org/graphics/krita/-/jobs
-2) Search for the latest `linux-debug-weekly` job
-3) Enter the job and click on Artifacts->Browse
-4) Download the AppImage
-
-##### Linux build with ASAN in Qt and Krita
-
-1) Go to Jobs section of Krita's CI: https://invent.kde.org/graphics/krita/-/jobs
-2) Search for the latest `linux-asan-weekly` job
-3) Enter the job and click on Artifacts->Browse
-4) Download the AppImage
-5) Set up environment variable for ASAN:
-    ```bash
-        export ASAN_OPTIONS=new_delete_type_mismatch=0:detect_leaks=0
-    ```
-6) Run the AppImage in the modified environment
-
 
 ### License
 
@@ -130,4 +73,8 @@ Krita as a whole is licensed under the GNU Public License, Version 3. Individual
 
 ### AI
 
-Use common sense. Ignore cultural hysteria.
+Krita development has a moratorium on use of AI.
+
+I don't, and I'm more of an anarchist, so I'll do whatever I think works.
+
+
