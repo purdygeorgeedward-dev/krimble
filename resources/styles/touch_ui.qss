@@ -1,0 +1,42 @@
+/* Touch-friendly UI stylesheet
+   Increase min sizes and padding for common widgets to improve tap targets
+*/
+
+/* Buttons and toolbar buttons */
+QPushButton, QToolButton {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+/* Small repeaters/spinners/comboboxes */
+QSpinBox, QDoubleSpinBox, QComboBox, QLineEdit, QCheckBox, QRadioButton {
+    min-height: 40px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+/* Sliders and scrollbars */
+QSlider, QScrollBar {
+    min-height: 36px;
+}
+
+/* Menu items */
+QMenu::item {
+    min-height: 42px;
+    padding: 8px 12px;
+}
+
+/* Toolbars — increase spacing between items */
+QToolBar {
+    spacing: 6px;
+    padding: 4px;
+}
+
+/* Optional: increase hit area for small icon-only buttons */
+QToolButton[iconOnly="true"] {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 6px;
+}
