@@ -76,6 +76,8 @@ Wishlist:
 
 18. Rework the text/type tool, which is very hard to use currently.
 
+19. Create alternate title and logo splash in case Krita org opposes use of "Krita" for mobile version or use of AI in rapid dev. (DONE.)
+
 ### Discussion Forum
 
 * https://krita-artists.org/
