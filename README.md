@@ -75,6 +75,13 @@ Krita as a whole is licensed under the GNU Public License, Version 3. Individual
 
 Krita development has a moratorium on use of AI.
 
-I don't, and I'm more of an anarchist, so I'll do whatever I think works.
+I don't, and I'm more of an anarchist, so I'll do whatever I think works. Is it likely to cause problems? Yes.
+
+Move fast and break things.
+
+
+
+
+
 
 
