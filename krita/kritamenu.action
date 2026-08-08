@@ -91,7 +91,7 @@
       <icon>document-export</icon>
       <text>Export &amp;As...</text>
       <whatsThis></whatsThis>
-      <toolTip>Export As.../toolTip>
+      <toolTip>Export As...</toolTip>
       <iconText>Export As...</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
