@@ -52,7 +52,7 @@ Wishlist:
 
 6. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit. (DONE.)
 
-7. Add note about disabling HiDPI setting.
+7. Set HiDPI setting default to off. (DONE.)
 
 8. Reconfigure menus. (DONE.)
 
