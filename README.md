@@ -58,7 +58,7 @@ Wishlist:
 
 9. Remove rotation from pinch zoom defaults. (DONE.)
 
-10. Limit transform default to scaling.
+10. Limit transform default to scaling. (DONE.)
 
 11. Limit move default to selected layer or floating selection until changed by user.
 
