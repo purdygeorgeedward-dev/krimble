@@ -211,13 +211,12 @@ void KisFreeTransformStrategy::setTransformFunction(const QPointF &mousePos, boo
     qreal rotationHandleRadius = KisTransformUtils::effectiveHandleGrabRadius(m_d->converter);
 
 
-    StrokeFunction defaultFunction;
-    if (transformedPolygon.containsPoint(mousePos, Qt::OddEvenFill))
-        defaultFunction = MOVE;
-    else if (m_d->transaction.boundsRotationAllowed() && altModifierActive)
-        defaultFunction = ROTATEBOUNDS;
-    else
-        defaultFunction = ROTATE;
+       StrokeFunction defaultFunction;
+       if (transformedPolygon.containsPoint(mousePos, Qt::OddEvenFill))
+          defaultFunction = MOVE;
+       else if (m_d->transaction.boundsRotationAllowed() && altModifierActive)
+          defaultFunction = MOVE;
+    
     KisTransformUtils::HandleChooser<StrokeFunction>
         handleChooser(mousePos, defaultFunction);
 
