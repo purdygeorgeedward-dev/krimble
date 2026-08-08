@@ -630,10 +630,12 @@ bool KisApplication::start(const KisApplicationArguments &args)
         }
     }
 
-    // Check for autosave files that can be restored, if we're not running a batch run (test)
-    if (!d->batchRun) {
-        checkAutosaveFiles();
-    }
+/*
+// Check for autosave files that can be restored, if we're not running a batch run (test)
+if (!d->batchRun) {
+    checkAutosaveFiles();
+}
+*/
 
     setSplashScreenLoadingText(QString()); // done loading, so clear out label
 #ifdef Q_OS_ANDROID
