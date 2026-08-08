@@ -408,9 +408,8 @@ void KisToolMove::activate(const QSet<KoShape*> &shapes)
                                       this, SLOT(slotMoveDiscreteLeftMore()));
     m_actionConnections.addConnection(action("movetool-move-right-more"), SIGNAL(triggered(bool)),
                                       this, SLOT(slotMoveDiscreteRightMore()));
-
     m_canvasConnections.addUniqueConnection(qobject_cast<KisCanvas2*>(canvas())->viewManager()->nodeManager(), SIGNAL(sigUiNeedChangeSelectedNodes(KisNodeList)), this, SLOT(slotNodeChanged(KisNodeList)));
-    m_canvasConnections.addUniqueConnection(qobject_cast<KisCanvas2*>(canvas())->viewManager()->selectionManager(), SIGNAL(currentSelectionChanged()), this, SLOT(slotSelectionChanged()));
+    m_canvasConnections.addUniqueConnection(qobject_cast<KisCanvas2*>(canvas())->viewManager()->selectionManager(), SIGNAL(currentSelectionChanged()), this, SLOT(slotSelectionChanged());
 
     connect(m_showCoordinatesAction, SIGNAL(triggered(bool)), m_optionsWidget, SLOT(setShowCoordinates(bool)), Qt::UniqueConnection);
     connect(m_optionsWidget, SIGNAL(showCoordinatesChanged(bool)), m_showCoordinatesAction, SLOT(setChecked(bool)), Qt::UniqueConnection);
@@ -530,7 +529,7 @@ void KisToolMove::endAlternateAction(KoPointerEvent *event, AlternateAction acti
 
 void KisToolMove::mouseMoveEvent(KoPointerEvent *event)
 {
-    m_lastCursorPos = convertToPixelCoord(event).toPoint();
+    m_lastCursorPos = convertToPixelCoordAndSnap(event).toPoint();
     KisTool::mouseMoveEvent(event);
 
     if (moveToolMode() != MoveSelectedLayer ||
@@ -628,9 +627,32 @@ void KisToolMove::endStroke()
     m_strokeId.clear();
     m_changesTracker.reset();
     m_currentlyProcessingNodes.clear();
-    m_currentlyUsingSelection = false;
+
+    // Preserve selection-mode intent after finishing a selection move: if there
+    // is still a valid selection on the current paint layer, prefer staying in
+    // selection-move mode rather than forcing subsequent moves to act on the
+    // whole image.
+    {
+        KisResourcesSnapshotSP resources =
+            new KisResourcesSnapshot(image, currentNode(), canvas()->resourceManager());
+        KisSelectionSP selection = resources->activeSelection();
+        KisPaintLayerSP paintLayer = dynamic_cast<KisPaintLayer*>(currentNode().data());
+
+        const bool canUseSelectionMode =
+            paintLayer && selection &&
+            !selection->selectedRect().isEmpty() &&
+            !selection->selectedExactRect().isEmpty();
+
+        m_currentlyUsingSelection = canUseSelectionMode && nodeEditable();
+    }
+
     m_currentMode = MoveSelectedLayer;
     m_accumulatedOffset = QPoint();
+
+    // Update handles rect & GUI so the tool immediately reflects the selection
+    // state after the stroke has ended.
+    requestHandlesRectUpdate();
+
     qobject_cast<KisCanvas2*>(canvas())->updateCanvas();
 }
 
