@@ -56,7 +56,7 @@ Wishlist:
 
 8. Reconfigure menus. (DONE.)
 
-9. Remove rotation from pinch zoom defaults.
+9. Remove rotation from pinch zoom defaults. (DONE.)
 
 10. Limit transform default to scaling.
 
