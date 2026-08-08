@@ -110,8 +110,10 @@ void KisZoomAndRotateAction::inputEvent(QEvent *event)
             KoViewTransformStillPoint adjustedStillPoint = d->actionStillPoint;
             adjustedStillPoint.second = p0;
             controller->setZoom(KoZoomMode::ZOOM_CONSTANT, newZoom, adjustedStillPoint);
-            controller->rotateCanvas(rotationAngle, adjustedStillPoint);
-
+            
+            // Rotation removed from default pinch gesture - see wishlist #9.
+// controller->rotateCanvas(rotationAngle, adjustedStillPoint);
+            
             d->lastPosition = p0;
             d->lastDistance = dist;
 
