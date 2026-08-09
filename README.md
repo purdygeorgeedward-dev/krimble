@@ -61,7 +61,7 @@ Wishlist:
 
 19. Create alternate title and logo splash in case Krita org opposes use of "Krita" for new mobile version or use of AI in rapid dev. (DONE. Not added to codebase yet.)
 
-20. Rewrite dialogs windows to fit small screens.
+20. Rewrite larger dialogs windows to fit small screens.
 
 
 ### Krita Project Website
