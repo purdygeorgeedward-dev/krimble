@@ -1380,7 +1380,7 @@
     <text>Select</text>
     <Action name="select_all">
       <icon>select-all</icon>
-      <text>Select &amp;All</text>
+      <text>&amp;All</text>
       <whatsThis></whatsThis>
       <toolTip>Select All</toolTip>
       <iconText>Select All</iconText>
