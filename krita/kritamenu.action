@@ -334,7 +334,7 @@
     </Action>
     <Action name="copy_merged">
       <icon></icon>
-      <text>Copy &amp;merged</text>
+      <text>Copy &amp;Merged</text>
       <whatsThis></whatsThis>
       <toolTip>Copy merged</toolTip>
       <iconText>Copy merged</iconText>
