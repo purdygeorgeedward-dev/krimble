@@ -2730,7 +2730,7 @@ void KisMainWindow::updateWindowMenu()
     KisResourceModel resourceModel(ResourceType::Workspaces);
     KisResourceIterator resourceIterator(&resourceModel);
     KisMainWindow *m_this = this;
-
+   
     while (resourceIterator.hasNext()) {
         KisResourceItemSP resource = resourceIterator.next();
         QAction *action = workspaceMenu->addAction(resource->name());
@@ -2815,6 +2815,9 @@ void KisMainWindow::updateWindowMenu()
             d->windowMapper->setMapping(action, windows.at(i));
         }
     }
+
+   menu->addSeparator();
+    menu->addAction(d->dockWidgetMenu);
 
     bool showMdiArea = windows.count( ) > 0;
     if (!showMdiArea) {
