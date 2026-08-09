@@ -3269,10 +3269,10 @@
     </Action>
     <Action name="rotateLayerCW90">
       <icon>object-rotate-right</icon>
-      <text>Rotate &amp;Layers 90Â° to the Right</text>
+      <text>Rotate &amp;Layers 90° to the Right</text>
       <whatsThis/>
-      <toolTip>Rotate Layers 90Â° to the Right</toolTip>
-      <iconText>Rotate Layers 90Â° to the Right</iconText>
+      <toolTip>Rotate Layers 90° to the Right</toolTip>
+      <iconText>Rotate Layers 90° to the Right</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
@@ -3281,10 +3281,10 @@
     </Action>
     <Action name="rotateLayerCCW90">
       <icon>object-rotate-left</icon>
-      <text>Rotate Layers &amp;90Â° to the Left</text>
+      <text>Rotate Layers &amp;90° to the Left</text>
       <whatsThis/>
-      <toolTip>Rotate Layers 90Â° to the Left</toolTip>
-      <iconText>Rotate Layers 90Â° to the Left</iconText>
+      <toolTip>Rotate Layers 90° to the Left</toolTip>
+      <iconText>Rotate Layers 90° to the Left</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
@@ -3293,10 +3293,10 @@
     </Action>
     <Action name="rotateLayer180">
       <icon/>
-      <text>Rotate Layers &amp;180Â°</text>
+      <text>Rotate Layers &amp;180°</text>
       <whatsThis/>
-      <toolTip>Rotate Layers 180Â°</toolTip>
-      <iconText>Rotate Layers 180Â°</iconText>
+      <toolTip>Rotate Layers 180°</toolTip>
+      <iconText>Rotate Layers 180°</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
@@ -3365,10 +3365,10 @@
     </Action>
     <Action name="rotateAllLayersCW90">
       <icon>object-rotate-right</icon>
-      <text>Rotate All &amp;Layers 90Â° to the Right</text>
+      <text>Rotate All &amp;Layers 90° to the Right</text>
       <whatsThis/>
-      <toolTip>Rotate All Layers 90Â° to the Right</toolTip>
-      <iconText>Rotate All Layers 90Â° to the Right</iconText>
+      <toolTip>Rotate All Layers 90° to the Right</toolTip>
+      <iconText>Rotate All Layers 90° to the Right</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
@@ -3377,10 +3377,10 @@
     </Action>
     <Action name="rotateAllLayersCCW90">
       <icon>object-rotate-left</icon>
-      <text>Rotate All Layers &amp;90Â° to the Left</text>
+      <text>Rotate All Layers &amp;90° to the Left</text>
       <whatsThis/>
-      <toolTip>Rotate All Layers 90Â° to the Left</toolTip>
-      <iconText>Rotate All Layers 90Â° to the Left</iconText>
+      <toolTip>Rotate All Layers 90° to the Left</toolTip>
+      <iconText>Rotate All Layers 90° to the Left</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
@@ -3389,10 +3389,10 @@
     </Action>
     <Action name="rotateAllLayers180">
       <icon/>
-      <text>Rotate All Layers &amp;180Â°</text>
+      <text>Rotate All Layers &amp;180°</text>
       <whatsThis/>
-      <toolTip>Rotate All Layers 180Â°</toolTip>
-      <iconText>Rotate All Layers 180Â°</iconText>
+      <toolTip>Rotate All Layers 180°</toolTip>
+      <iconText>Rotate All Layers 180°</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>1</activationConditions>
       <shortcut/>
