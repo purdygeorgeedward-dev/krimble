@@ -409,10 +409,14 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <toolTip>Show or Hide Panels</toolTip>
         <iconText>Panels</iconText>
     </Action>
+
+<!--
     <Action name="settings_dockers_menu">
         <text>Panels</text>
         <toolTip>Panels</toolTip>
         <iconText>Panels</iconText>
+-->
+
     </Action>
     <Separator/>
     <Action name="manage_resources">
