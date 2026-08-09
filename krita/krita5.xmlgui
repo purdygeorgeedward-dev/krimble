@@ -57,6 +57,13 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="paste_layer_style"/>
     <Separator/>
     <Action name="sample_screen_color"/>
+    <Separator/>
+    <Action name="options_configure">
+        <text>&amp;Preferences...</text>
+        <toolTip>Preferences</toolTip>
+        <iconText>Preferences</iconText>
+    </Action>
+</Menu>
 </Menu>
 
 <Menu name="Image">
@@ -369,11 +376,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 
 <Menu name="settings">
     <text>Setti&amp;ngs</text>
-    <Action name="options_configure">
-        <text>&amp;Preferences...</text>
-        <toolTip>Preferences</toolTip>
-        <iconText>Preferences</iconText>
-    </Action>
     <Action name="change_interface_scale">
         <text>Interface Scale...</text>
         <toolTip>Interface Scale</toolTip>
