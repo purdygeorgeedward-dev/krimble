@@ -2,7 +2,7 @@
 
 This (soon to be renamed) is a mobile-first fork of Krita designed to be a graphics workhorse for Android phones instead of a paint/animation app. The objective is to make a mobile version which is aware of the restrictions of limited screen real estate on mobile devices. Stripping away unnecessary UI components and scaling down others, creating new default behaviors that show awareness of mobile users needs, and making the UI a little more universal are objectives.
 
-I am a lifelong professional artist trained with a wide range of traditional media and digital tools from Deluxe Paint to Photoshop to 3DS Max, Mudbox, ZBrush, et al. and to me trying to "paint" with a phone is about as appealing as writing a novel on a window with a bar of soap. However, I find myself using Krita on my smartphone as a daily driver for graphics tasks, so I am motivated to modify it for my purposes. Sharing it, of course.
+I am a lifelong professional artist trained with a wide range of traditional media and digital tools from Deluxe Paint to Photoshop to 3DS Max, Mudbox, ZBrush, et al. and to me trying to "paint" with a phone is about as appealing as writing a novel on a window with a bar of soap. However, I find myself using Krita on my smartphone as a daily driver for graphics tasks, so I am motivated to modify it for my own purposes. Sharing it, of course.
 
 ### Krita User Manual
 https://docs.krita.org/en/user_manual.html
@@ -27,7 +27,7 @@ Wishlist:
 
 2. Smaller splash image on load so it fits mobile screens. (DONE.)
 
-3. Two finger move of any open window? 
+3. Two finger move of any open window. (Implemented, untested.)
 
 4. Remove Tools menu to make the Settings menu easier to reach. (DONE.)
 
@@ -49,19 +49,20 @@ Wishlist:
 
 13. Default to Snapping OFF. (DONE.)
 
-14. Default to 12 pt. Helvetica in UI.
+14. Default to 12 pt. Helvetica in UI. (must check on Helvetica source)
     
 15. Create custom default toolbars in imitation of classic toolbars. (DONE.)
     
-16. Add the Adjust-Brightness/Contrast dialog (core implementation done, untested.)
+16. Add the Adjust-Brightness/Contrast dialog (implemented , untested.)
 
-17. Widen sizing gadgets on windows and sections to make touchscreen resizing easier.
+17. Widen sizing gadgets on windows and sections to make touchscreen resizing easier.(implemented, untested)
 
-18. Rework the text/type tool, which is very hard to use currently.
+18. Rework the text/type tool, which is very hard to use currently. (TBD)
 
-19. Create alternate title and logo splash in case Krita org opposes use of "Krita" for mobile version or use of AI in rapid dev. (DONE.)
+19. Create alternate title and logo splash in case Krita org opposes use of "Krita" for new mobile version or use of AI in rapid dev. (DONE. Not added to codebase yet.)
 
 20. Rewrite dialogs windows to fit small screens.
+
 
 ### Krita Project Website
 
