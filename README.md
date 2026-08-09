@@ -63,6 +63,8 @@ Wishlist:
 
 20. Rewrite larger dialogs windows to fit small screens.
 
+21. Create new icon for mobile version. (DONE.)
+
 
 ### Krita Project Website
 
