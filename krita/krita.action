@@ -3521,7 +3521,7 @@
     </Action>
     <Action name="flatten_image">
       <icon/>
-      <text>Flatten ima&amp;ge</text>
+      <text>Flatten Ima&amp;ge</text>
       <whatsThis/>
       <toolTip>Flatten image</toolTip>
       <iconText>Flatten image</iconText>
