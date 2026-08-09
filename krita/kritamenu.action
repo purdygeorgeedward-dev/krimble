@@ -731,10 +731,10 @@
     </Action>
     <Action name="mirror_canvas">
       <icon>mirror-view</icon>
-      <text>&amp;Flip Horizontal</text>
+      <text>&amp;Mirror View</text>
       <whatsThis></whatsThis>
-      <toolTip>Flip Horizontal</toolTip>
-      <iconText>Flip Horizontal</iconText>
+      <toolTip>Mirror View</toolTip>
+      <iconText>Mirror View</iconText>
       <shortcut>M</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
