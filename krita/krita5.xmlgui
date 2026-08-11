@@ -396,7 +396,8 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>&amp;Zoom</text>
         <Action name="view_zoom_in"/>
         <Action name="view_zoom_out"/>
-        <Action name="zoom_to_100pct"/>
+		<Action name="zoom_to_100pct"/>
+		<Action name="zoom_to_200pct"/>
         <Action name="zoom_to_fit"/>
         <Action name="zoom_to_fit_width"/>
         <Action name="zoom_to_fit_height"/>
