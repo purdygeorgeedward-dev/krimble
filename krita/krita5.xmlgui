@@ -62,15 +62,19 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 
     <Action name="copy_layer_style"/>
     <Action name="paste_layer_style"/>
+
     <Separator/>
+
     <Action name="sample_screen_color"/>
+
     <Separator/>
+
     <Action name="options_configure">
         <text>&amp;Preferences...</text>
         <toolTip>Preferences</toolTip>
         <iconText>Preferences</iconText>
     </Action>
-</Menu>
+
 </Menu>
 
 
