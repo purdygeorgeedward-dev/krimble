@@ -544,29 +544,26 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <iconText>Panels</iconText>
     </Action>
 
-
-
-<!--
     <Action name="settings_dockers_menu">
         <text>Panels</text>
         <toolTip>Panels</toolTip>
         <iconText>Panels</iconText>
--->
-
-
-
     </Action>
+
     <Separator/>
+
     <Action name="manage_resources">
         <text>Presets...</text>
         <toolTip>Manage Presets</toolTip>
         <iconText>Presets</iconText>
     </Action>
+
     <Action name="manage_bundles">
         <text>Resource Libraries...</text>
         <toolTip>Manage Resource Libraries</toolTip>
         <iconText>Resource Libraries</iconText>
     </Action>
+
     <Action name="manage_supporter_bundles"/>
 
     <Separator/>
