@@ -193,6 +193,7 @@ public:
     KisAction *showRulersAction {nullptr};
     KisAction *rulersTrackMouseAction {nullptr};
     KisAction *zoomTo100pct {nullptr};
+    KisAction *zoomTo200pct {nullptr};
     KisAction *zoomIn {nullptr};
     KisAction *zoomOut {nullptr};
     KisAction *zoomToFit {nullptr};
@@ -504,6 +505,7 @@ void KisViewManager::setCurrentView(KisView *view)
         d->viewConnections.addUniqueConnection(d->showRulersAction, SIGNAL(toggled(bool)), imageView->zoomManager(), SLOT(setShowRulers(bool)));
         d->viewConnections.addUniqueConnection(d->rulersTrackMouseAction, SIGNAL(toggled(bool)), imageView->zoomManager(), SLOT(setRulersTrackMouse(bool)));
         d->viewConnections.addUniqueConnection(d->zoomTo100pct, SIGNAL(triggered()), imageView->zoomManager(), SLOT(zoomTo100()));
+        d->viewConnections.addUniqueConnection(d->zoomTo200pct, SIGNAL(triggered()), imageView->zoomManager(), SLOT(zoomTo200()));
         d->viewConnections.addUniqueConnection(d->zoomIn, SIGNAL(triggered()), imageView->zoomManager(), SLOT(slotZoomIn()));
         d->viewConnections.addUniqueConnection(d->zoomOut, SIGNAL(triggered()), imageView->zoomManager(), SLOT(slotZoomOut()));
         d->viewConnections.addUniqueConnection(d->zoomToFit, SIGNAL(triggered()), imageView->zoomManager(), SLOT(slotZoomToFit()));
