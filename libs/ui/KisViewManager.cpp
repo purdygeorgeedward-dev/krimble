@@ -795,6 +795,8 @@ void KisViewManager::createActions()
 
     d->zoomTo100pct = actionManager()->createAction("zoom_to_100pct");
 
+    d->zoomTo200pct = actionManager()->createAction("zoom_to_200pct");
+
     d->zoomIn = actionManager()->createStandardAction(KStandardAction::ZoomIn, 0, "");
     d->zoomOut = actionManager()->createStandardAction(KStandardAction::ZoomOut, 0, "");
 
