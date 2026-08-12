@@ -297,6 +297,11 @@ void KisZoomManager::zoomTo100()
     m_canvasController->setZoom(KoZoomMode::ZOOM_CONSTANT, 1.0);
 }
 
+void KisZoomManager::zoomTo200()
+{
+    m_canvasController->setZoom(KoZoomMode::ZOOM_CONSTANT, 2.0);
+}
+
 void KisZoomManager::slotZoomIn()
 {
     m_canvasController->zoomIn();
