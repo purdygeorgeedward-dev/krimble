@@ -771,6 +771,18 @@
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>
+	<Action name="zoom_to_200pct">
+      <icon>zoom-original</icon>
+      <text>Zoom to 200%</text>
+      <whatsThis></whatsThis>
+      <toolTip>Zoom to 200%</toolTip>
+      <iconText>Zoom to 200%</iconText>
+      <activationFlags>1</activationFlags>
+      <activationConditions>0</activationConditions>
+      <shortcut></shortcut>
+      <isCheckable>false</isCheckable>
+      <statusTip></statusTip>
+    </Action>
     <Action name="view_zoom_in">
       <icon>zoom-in</icon>
       <text>Zoom &amp;In</text>
