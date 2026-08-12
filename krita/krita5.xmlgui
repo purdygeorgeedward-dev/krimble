@@ -6,8 +6,6 @@ version="543"
 xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org/standards/kxmlgui/1.0/kxmlgui.xsd">
 
 <MenuBar>
-
-
 <Menu name="file">
     <text>&amp;File</text>
 
@@ -487,6 +485,68 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         </Action>
     </Menu>
 </Menu>
+
+
+<Menu name="type">
+    <text>&amp;Type</text>
+    <Action name="SvgTextTool">
+        <text>Type Tool</text>
+    </Action>
+                     <Separator/>
+    <Action name="svg_insert_special_character">
+        <text>Glyph Palette...</text>
+    </Action>
+    <Action name="svg_paste_rich_text">
+        <text>Paste Rich Text</text>
+    </Action>
+    <Action name="svg_paste_plain_text">
+        <text>Paste Plain Text</text>
+    </Action>
+    <Action name="svg_clear_formatting">
+        <text>Clear Formatting</text>
+    </Action>
+                     <Separator/>
+    <Menu name="TextType">
+        <text>Type Setting</text>
+        <Action name="text_type_preformatted">
+            <text>Preformatted</text>
+        </Action>
+        <Action name="text_type_inline_wrap">
+            <text>Inline Wrapped</text>
+        </Action>
+        <Action name="text_type_pre_positioned">
+            <text>Pre-positioned</text>
+        </Action>
+    </Menu>
+                     <Separator/>
+    <Action name="svg_type_setting_move_selection_start_left_1_px">
+        <text>Move Text Selection Left 1 Pixel</text>
+    </Action>
+    <Action name="svg_type_setting_move_selection_start_right_1_px">
+        <text>Move Text Selection Right 1 Pixel</text>
+    </Action>
+    <Action name="svg_type_setting_move_selection_start_up_1_px">
+        <text>Move Text Selection Up 1 Pixel</text>
+    </Action>
+    <Action name="svg_type_setting_move_selection_start_down_1_px">
+        <text>Move Text Selection Down 1 Pixel</text>
+    </Action>
+                     <Separator/>
+    <Action name="svg_remove_transforms_from_range">
+        <text>Remove Character Transforms</text>
+    </Action>
+                     <Separator/>
+    <Action name="text_type_preformatted">
+        <text>Preformatted</text>
+    </Action>
+    <Action name="text_type_inline_wrap">
+        <text>Inline Wrapped</text>
+    </Action>
+    <Action name="text_type_pre_positioned">
+        <text>Pre-positioned</text>
+    </Action>
+</Menu>
+
 
 
 <Menu name="Select">
