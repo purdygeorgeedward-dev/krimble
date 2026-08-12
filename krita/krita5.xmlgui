@@ -492,7 +492,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="SvgTextTool">
         <text>Type Tool</text>
     </Action>
-                     <Separator/>
+    <Separator/>
     <Action name="svg_insert_special_character">
         <text>Glyph Palette...</text>
     </Action>
@@ -505,7 +505,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="svg_clear_formatting">
         <text>Clear Formatting</text>
     </Action>
-                     <Separator/>
+    <Separator/>
     <Menu name="TextType">
         <text>Type Setting</text>
         <Action name="text_type_preformatted">
@@ -518,7 +518,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
             <text>Pre-positioned</text>
         </Action>
     </Menu>
-                     <Separator/>
+    <Separator/>
     <Action name="svg_type_setting_move_selection_start_left_1_px">
         <text>Move Text Selection Left 1 Pixel</text>
     </Action>
@@ -531,19 +531,9 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="svg_type_setting_move_selection_start_down_1_px">
         <text>Move Text Selection Down 1 Pixel</text>
     </Action>
-                     <Separator/>
+    <Separator/>
     <Action name="svg_remove_transforms_from_range">
         <text>Remove Character Transforms</text>
-    </Action>
-                     <Separator/>
-    <Action name="text_type_preformatted">
-        <text>Preformatted</text>
-    </Action>
-    <Action name="text_type_inline_wrap">
-        <text>Inline Wrapped</text>
-    </Action>
-    <Action name="text_type_pre_positioned">
-        <text>Pre-positioned</text>
     </Action>
 </Menu>
 
