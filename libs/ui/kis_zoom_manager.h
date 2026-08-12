@@ -61,6 +61,7 @@ public Q_SLOTS:
     void mousePositionChanged(const QPoint &viewPos);
 
     void zoomTo100();
+    void zoomTo200();
     void slotZoomIn();
     void slotZoomOut();
     void slotZoomToFit();
