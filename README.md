@@ -69,6 +69,8 @@ Wishlist:
 
 22. Create Zoom 200% tool to match Zoom 100%. (DONE.)
 
+23. Trim list of available save formats. (DONE.)
+
 
 ### Krita Project Website
 
