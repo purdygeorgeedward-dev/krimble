@@ -71,6 +71,8 @@ Wishlist:
 
 23. Trim list of available save formats. (DONE.)
 
+24. New icon. (DONE.)
+
 
 ### Krita Project Website
 
