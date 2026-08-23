@@ -4,7 +4,7 @@ Krimble (formerly Krita Mobile) is a mobile-first fork of Krita designed to be a
 
 I am a lifelong professional artist trained with a wide range of traditional media and digital tools from Deluxe Paint to Photoshop to 3DS Max, Mudbox, ZBrush, et al. and to me trying to "paint" with a phone is about as appealing as writing a novel on a window with a bar of soap. However, I find myself using Krita on my smartphone as a daily driver for graphics tasks, so I am motivated to modify it for my own purposes. Sharing it, of course.
 
-(https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js)
+[![Buy Me a Coffee](https://krimble.org/buy-me-a-coffee.png)](https://www.buymeacoffee.com/GeorgeEdwardPurdy)
 
 https://krimble.org
 
