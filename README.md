@@ -61,7 +61,7 @@ Wishlist:
 
 17. Widen sizing gadgets on windows and sections to make touchscreen resizing easier.
 
-18. Rework the text/type tool, which is very hard to use currently. (TBD)
+18. Rework the text/type tool, which is very hard to use currently. (Added menu to menubar, but more to come)
 
 19. Create Krimble logo splash in case Krita org opposes use of "Krita" for new mobile version or use of AI in dev. (DONE.)
 
