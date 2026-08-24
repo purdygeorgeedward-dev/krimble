@@ -27,7 +27,7 @@ https://api.kde.org/legacy/krita/html/index.html
 
 Wishlist:
 
-1. Change default tool on open from paint tool to hand tool. (see below)
+1. Change default tool on open from paint tool to pan/hand tool. (see below)
 
 2. Smaller splash image on load so it fits mobile screens. (DONE.)
 
