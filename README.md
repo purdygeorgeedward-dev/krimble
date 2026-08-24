@@ -27,43 +27,43 @@ https://api.kde.org/legacy/krita/html/index.html
 
 Wishlist:
 
-1. Change default tool on open from paint tool to hand tool. (DONE.)
+1. Change default tool on open from paint tool to hand tool. (see below)
 
 2. Smaller splash image on load so it fits mobile screens. (DONE.)
 
-3. Two finger move of any open window. (Implemented, untested.)
+3. Two finger move of any open window.
 
 4. Remove Tools menu to make the Settings menu easier to reach. (DONE.)
 
-5. Change Toolbox defaults. (DONE. Added new value setToolBoxPriority for control of toolbox placement separate from priority value which controls default tool behavior on file open.)
+5. Change Toolbox default sort order.
 
-6. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit. (DONE.)
+6. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit.
 
-7. Set HiDPI setting default to off. (DONE.)
+7. (withdrawn)
 
 8. Reconfigure menus. (DONE.)
 
 9. Remove rotation from pinch zoom defaults. (DONE.)
 
-10. Limit transform default to scaling. (DONE.)
+10. Limit transform default to scaling. 
 
-11. Limit move default to selected layer or floating selection until deliberately changed by user. (DONE.)
+11. Limit move default to selected layer or floating selection until deliberately changed by user.
 
 12. Implement industry standard terms for tools or menu items as needed. (DONE.)
 
 13. Default to Snapping OFF. (DONE.)
 
-14. Default to 12 pt. Helvetica in UI. (must check on Helvetica source)
+14. (withdrawn)
     
-15. Create custom default toolbars in imitation of classic toolbars. (DONE.)
+15. Create custom default toolbar in imitation of classic toolbar. (DONE.)
     
 16. Add the Adjust-Brightness/Contrast dialog (implemented , untested.)
 
-17. Widen sizing gadgets on windows and sections to make touchscreen resizing easier.(implemented, untested)
+17. Widen sizing gadgets on windows and sections to make touchscreen resizing easier.
 
 18. Rework the text/type tool, which is very hard to use currently. (TBD)
 
-19. Create alternate title and logo splash in case Krita org opposes use of "Krita" for new mobile version or use of AI in rapid dev. (DONE. Not added to codebase yet.)
+19. Create Krimble logo splash in case Krita org opposes use of "Krita" for new mobile version or use of AI in dev. (DONE.)
 
 20. Rewrite larger dialogs windows to fit small screens.
 
