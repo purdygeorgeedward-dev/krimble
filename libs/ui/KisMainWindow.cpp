@@ -192,7 +192,7 @@ public:
         : q(parent)
         , id(id)
         , styleMenu(new KActionMenu(i18nc("@action:inmenu", "Styles"), parent))
-        , dockWidgetMenu(new KActionMenu(i18nc("@action:inmenu", "&Dockers"), parent))
+        , dockWidgetMenu(new KActionMenu(i18nc("@action:inmenu", "&Panels"), parent))
         , windowMenu(new KActionMenu(i18nc("@action:inmenu", "&Window"), parent))
         , documentMenu(new KActionMenu(i18nc("@action:inmenu", "New &View"), parent))
         , workspaceMenu(new KActionMenu(i18nc("@action:inmenu", "Wor&kspace"), parent))
