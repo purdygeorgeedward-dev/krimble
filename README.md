@@ -75,7 +75,7 @@ Wishlist:
 
 24. New icon. (DONE.)
 
-25. Default active tool on opening/creating an image changed from Brush to Move (`libs/ui/KisView.cpp`, was hardcoded to `KritaShape/KisToolBrush`, now `KritaTransform/KisToolMove`). (DONE.)
+25. Item 1 (default tool) had never actually been applied to code — the hardcoded call in `libs/ui/KisView.cpp` still forced `KritaShape/KisToolBrush` on every new view. Fixed to `PanTool` (hand tool) to match item 1. (DONE.)
 
 
 ### Krita Project Website

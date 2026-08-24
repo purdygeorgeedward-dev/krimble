@@ -365,7 +365,7 @@ void KisView::setViewManager(KisViewManager *view)
 
     d->viewManager->updateGUI();
 
-    KoToolManager::instance()->switchToolRequested("KritaTransform/KisToolMove");
+    KoToolManager::instance()->switchToolRequested("PanTool");
 }
 
 KisViewManager* KisView::viewManager() const
