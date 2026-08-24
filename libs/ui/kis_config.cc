@@ -2848,7 +2848,7 @@ void KisConfig::setZoomHorizontal(bool value)
 
 bool KisConfig::selectionActionBar(bool defaultValue) const
 {
-    return defaultValue ? true : m_cfg.readEntry("selectionActionBar", true);
+    return defaultValue ? true : m_cfg.readEntry("selectionActionBar", false);
 }
 
 void KisConfig::setSelectionActionBar(bool value)
