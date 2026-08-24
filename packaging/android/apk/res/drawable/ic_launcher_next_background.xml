@@ -9,7 +9,7 @@
       android:strokeWidth="0"
       android:fillColor="#ffffff"/>
   <path
-      android:pathData="M-0,-0 L1309,-0 1309,1309 0,1309Z"
+      android:pathData="m0,0 l1309,-0 0,1309 -1309,0z"
       android:strokeLineJoin="round"
       android:strokeWidth="4"
       android:strokeLineCap="square">
@@ -26,7 +26,7 @@
     </aapt:attr>
   </path>
   <path
-      android:pathData="M1309,1309 L-0,1309 0,0 1309,0Z"
+      android:pathData="M1309,-0 L1309,1309 0,1309 0,0Z"
       android:strokeLineJoin="round"
       android:strokeWidth="4"
       android:strokeLineCap="square">
@@ -43,7 +43,7 @@
     </aapt:attr>
   </path>
   <path
-      android:pathData="M0,1309L0,0L1309,0L1309,1309Z"
+      android:pathData="m0,1309l-0,-1309l1309,0l-0,1309z"
       android:strokeLineJoin="round"
       android:strokeWidth="4"
       android:strokeLineCap="square">

@@ -77,6 +77,10 @@ Wishlist:
 
 25. Item 1 (default tool) had never actually been applied to code — the hardcoded call in `libs/ui/KisView.cpp` still forced `KritaShape/KisToolBrush` on every new view. Fixed to `PanTool` (hand tool) to match item 1. (DONE.)
 
+26. Item 21/24 (new icon) only replaced `ic_launcher`/`ic_launcher_round` at every density. The app was still falling back to the separate `ic_launcher_next`/`ic_launcher_next_round` mipmaps AND the adaptive-icon foreground/background vector drawables (`ic_launcher_next_foreground.xml`, `ic_launcher_next_background.xml`), which still had the old placeholder Krita mark baked in as vector paths. All four Next-variant assets (mipmap webp x5 densities, plus the two adaptive vector drawables) now mirror the already-fixed regular assets. (DONE.)
+
+27. `KRITA_ALPHA` flag was left set in `CMakeLists.txt`, which drove the "DEV BUILD" welcome-screen label. Commented out. `KritaVersionWrapper::isDevelopersBuild()` also had a hardcoded Qt6 exception that ignored `KRITA_STABLE` entirely on Qt6 builds — removed so it works regardless of Qt major version. (DONE — confirm actual Qt version used on the build server.)
+
 
 ### Krita Project Website
 
