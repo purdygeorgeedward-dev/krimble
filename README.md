@@ -81,6 +81,8 @@ Wishlist:
 
 27. `KRITA_ALPHA` flag was left set in `CMakeLists.txt`, which drove the "DEV BUILD" welcome-screen label. Commented out. `KritaVersionWrapper::isDevelopersBuild()` also had a hardcoded Qt6 exception that ignored `KRITA_STABLE` entirely on Qt6 builds — removed so it works regardless of Qt major version. (DONE — confirm actual Qt version used on the build server.)
 
+28. Splash screen still showed "Artwork by: Tyson Tan" — hardcoded in `libs/ui/kis_splash_screen.cpp` regardless of which splash image resource was actually loaded, so replacing the splash graphic alone never removed it. Cleared the credit string since Krimble's splash is an original asset. (DONE.)
+
 
 ### Krita Project Website
 
