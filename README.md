@@ -19,7 +19,7 @@ Other developer guides, notes and wiki:
 
 https://docs.krita.org/en/untranslatable_pages.html
 
-Apidox:
+APIdox:
 
 https://api.kde.org/legacy/krita/html/index.html
 
@@ -39,9 +39,9 @@ Wishlist:
 
 6. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit.
 
-7. (withdrawn)
+7. Move Configure Krita menu and rename Preferences.
 
-8. Reconfigure menus. (DONE.)
+8. Reconfigure menus. (99% DONE.)
 
 9. Remove rotation from pinch zoom defaults. (DONE.)
 
@@ -53,11 +53,11 @@ Wishlist:
 
 13. Default to Snapping OFF. (DONE.)
 
-14. (withdrawn)
+14. Add zoom to 200% in menu. (DONE. TESTED. WORKS.)
     
 15. Create custom default toolbar in imitation of classic toolbar. (DONE.)
     
-16. Add the Adjust-Brightness/Contrast dialog (implemented , untested.)
+16. Add the Adjust-Brightness/Contrast dialog (DONE. TESTED. WORKS.)
 
 17. Widen sizing gadgets on windows and sections to make touchscreen resizing easier.
 
