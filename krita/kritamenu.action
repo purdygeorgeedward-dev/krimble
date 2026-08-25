@@ -763,7 +763,7 @@
       <icon>zoom-original</icon>
       <text>&amp;100%</text>
       <whatsThis></whatsThis>
-      <toolTip>zoom to 100%</toolTip>
+      <toolTip>Zoom to 100%</toolTip>
       <iconText>100%</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
