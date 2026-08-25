@@ -228,7 +228,7 @@
       <iconText>Close All</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
-      <shortcut>Ctrl+Shift+W</shortcut>
+      <shortcut>Ctrl+Alt+W</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>
@@ -388,7 +388,7 @@
       <iconText>Paste Into</iconText>
       <activationFlags>100000000000</activationFlags>
       <activationConditions>10</activationConditions>
-      <shortcut>Ctrl+Shift+V</shortcut>
+      <shortcut>Ctrl+Alt+Shift+V</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>
@@ -767,7 +767,7 @@
       <iconText>100%</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
-      <shortcut>Ctrl+0</shortcut>
+      <shortcut>Ctrl+1</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>
@@ -813,7 +813,7 @@
       <whatsThis/>
       <toolTip>Fit on Screen</toolTip>
       <iconText>Fit on Screen</iconText>
-      <shortcut/>
+      <shortcut>Ctrl+0</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
@@ -995,7 +995,7 @@
       <iconText>Show Grid</iconText>
       <activationFlags>1000</activationFlags>
       <activationConditions>0</activationConditions>
-      <shortcut>Ctrl+Shift+'</shortcut>
+      <shortcut>Ctrl+'</shortcut>
       <isCheckable>true</isCheckable>
       <statusTip></statusTip>
     </Action>

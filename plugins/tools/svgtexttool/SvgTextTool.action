@@ -24,7 +24,7 @@
     </Action>
     <Action name="svg_align_right">
       <iconText>Align Right</iconText>
-      <shortcut>Ctrl+Alt+R</shortcut>
+      <shortcut>Ctrl+Shift+R</shortcut>
       <toolTip>Align Right</toolTip>
       <icon>format-justify-right</icon>
       <whatsThis/>
@@ -34,7 +34,7 @@
     </Action>
     <Action name="svg_align_left">
       <iconText>Align Left</iconText>
-      <shortcut/>
+      <shortcut>Ctrl+Shift+L</shortcut>
       <toolTip>Align Left</toolTip>
       <icon>format-justify-left</icon>
       <whatsThis/>
@@ -44,7 +44,7 @@
     </Action>
     <Action name="svg_align_justified">
       <iconText>Align Block</iconText>
-      <shortcut>Ctrl+Alt+R</shortcut>
+      <shortcut>Ctrl+Shift+F</shortcut>
       <toolTip>Align Block</toolTip>
       <icon>format-justify-fill</icon>
       <whatsThis/>
@@ -54,7 +54,7 @@
     </Action>
     <Action name="svg_align_center">
       <iconText>Align Center</iconText>
-      <shortcut>Ctrl+Alt+C</shortcut>
+      <shortcut>Ctrl+Shift+C</shortcut>
       <toolTip>Align Center</toolTip>
       <icon>format-justify-center</icon>
       <whatsThis/>
@@ -64,7 +64,7 @@
     </Action>
     <Action name="svg_decrease_font_size">
       <iconText>Decrease Font Size</iconText>
-      <shortcut>Ctrl+&lt;</shortcut>
+      <shortcut>Ctrl+Shift+&lt;</shortcut>
       <toolTip>Decrease Font Size</toolTip>
       <icon/>
       <whatsThis/>
@@ -74,7 +74,7 @@
     </Action>
     <Action name="svg_increase_font_size">
       <iconText>Increase Font Size</iconText>
-      <shortcut>Ctrl+&gt;</shortcut>
+      <shortcut>Ctrl+Shift+&gt;</shortcut>
       <toolTip>Increase Font Size</toolTip>
       <icon/>
       <whatsThis/>

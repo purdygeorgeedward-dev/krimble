@@ -187,7 +187,7 @@ KisActionRegistry::KisActionRegistry()
     : d(new KisActionRegistry::Private(this))
 {
     KConfigGroup cg = KSharedConfig::openConfig()->group("Shortcut Schemes");
-    QString schemeName = cg.readEntry("Current Scheme", "Default");
+    QString schemeName = cg.readEntry("Current Scheme", "photoshop_compatible");
     QString schemeFileName = KisKShortcutSchemesHelper::schemeFileLocations().value(schemeName);
     if (!QFileInfo(schemeFileName).exists()) {
         schemeName = "Default";

@@ -2927,7 +2927,7 @@
       <iconText>Quick Ungroup</iconText>
       <activationFlags>100000</activationFlags>
       <activationConditions>0</activationConditions>
-      <shortcut>Ctrl+Alt+G</shortcut>
+      <shortcut>Ctrl+Shift+G</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
@@ -2939,7 +2939,7 @@
       <iconText>Quick Clipping Group</iconText>
       <activationFlags>100000</activationFlags>
       <activationConditions>0</activationConditions>
-      <shortcut>Ctrl+Shift+G</shortcut>
+      <shortcut>Ctrl+Alt+G</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
