@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ActionCollection version="2" name="SVG Tools">
   <Actions category="Text Tool">
-    <text>SVG Text Tool</text>
+    <text>Type</text>
     <Action name="SvgTextTool">
       <icon>draw-text</icon>
       <text>Text Tool</text>

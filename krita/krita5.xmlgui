@@ -441,7 +441,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     </Menu>
                      <Separator/>
     <Action name="merge_layer">
-        <text>Merge Layer</text>
+        <text>Merge Down</text>
     </Action>
     <Action name="merge_selected_layers">
         <text>Merge Selected Layers</text>
@@ -566,7 +566,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>Grow</text>
     </Action>
     <Action name="shrinkselection">
-        <text>Shrink</text>
+        <text>Contract...</text>
     </Action>
     <Action name="borderselection">
         <text>Border...</text>
