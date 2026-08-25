@@ -36,7 +36,7 @@ KritaEdgeDetectionFilter::~KritaEdgeDetectionFilter()
 {
 }
 
-KisEdgeDetectionFilter::KisEdgeDetectionFilter(): KisFilter(id(), FiltersCategoryEdgeDetectionId, i18n("&Edge Detection..."))
+KisEdgeDetectionFilter::KisEdgeDetectionFilter(): KisFilter(id(), FiltersCategoryStylizeId, i18n("&Edge Detection..."))
 {
     setSupportsPainting(true);
     setSupportsAdjustmentLayers(true);

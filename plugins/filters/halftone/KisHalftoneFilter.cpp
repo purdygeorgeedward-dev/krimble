@@ -40,7 +40,7 @@ KritaHalftone::~KritaHalftone()
 {}
 
 KisHalftoneFilter::KisHalftoneFilter()
-    : KisFilter(id(), FiltersCategoryArtisticId, i18n("&Halftone..."))
+    : KisFilter(id(), FiltersCategoryPixelateId, i18n("&Halftone..."))
 {
     setSupportsPainting(true);
 }

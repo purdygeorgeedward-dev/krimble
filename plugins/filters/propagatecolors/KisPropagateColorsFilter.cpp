@@ -23,7 +23,7 @@
 KisPropagateColorsFilter::KisPropagateColorsFilter()
     : KisFilter(KoID(KisPropagateColorsFilterConfiguration::defaultId(),
                      KisPropagateColorsFilterConfiguration::defaultName()),
-                FiltersCategoryColorId,
+                FiltersCategoryOtherId,
                 KisPropagateColorsFilterConfiguration::defaultMenuName())
 {
     setSupportsPainting(false);

@@ -40,7 +40,7 @@
 
 #include "widgets/kis_multi_integer_filter_widget.h"
 
-KisSmallTilesFilter::KisSmallTilesFilter() : KisFilter(id(), FiltersCategoryMapId, i18n("&Small Tiles..."))
+KisSmallTilesFilter::KisSmallTilesFilter() : KisFilter(id(), FiltersCategoryStylizeId, i18n("&Small Tiles..."))
 {
     setSupportsPainting(true);
     setSupportsThreading(false);

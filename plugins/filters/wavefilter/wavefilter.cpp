@@ -94,7 +94,7 @@ KritaWaveFilter::~KritaWaveFilter()
 {
 }
 
-KisFilterWave::KisFilterWave() : KisFilter(id(), FiltersCategoryOtherId, i18n("&Wave..."))
+KisFilterWave::KisFilterWave() : KisFilter(id(), FiltersCategoryDistortId, i18n("&Wave..."))
 {
     setColorSpaceIndependence(FULLY_INDEPENDENT);
     setSupportsPainting(false);

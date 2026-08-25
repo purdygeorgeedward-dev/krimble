@@ -39,7 +39,7 @@
 #include <KoProgressUpdater.h>
 
 
-KisRoundCornersFilter::KisRoundCornersFilter() : KisFilter(id(), FiltersCategoryMapId, i18n("&Round Corners..."))
+KisRoundCornersFilter::KisRoundCornersFilter() : KisFilter(id(), FiltersCategoryOtherId, i18n("&Round Corners..."))
 {
     setSupportsPainting(false);
 

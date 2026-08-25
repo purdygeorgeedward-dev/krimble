@@ -44,7 +44,7 @@
 #include <QRandomGenerator>
 
 KisRainDropsFilter::KisRainDropsFilter()
-    : KisFilter(id(), FiltersCategoryArtisticId, i18n("&Raindrops..."))
+    : KisFilter(id(), FiltersCategoryStylizeId, i18n("&Raindrops..."))
 {
     setSupportsPainting(false);
     setSupportsThreading(false);

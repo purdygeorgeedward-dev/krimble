@@ -40,7 +40,7 @@
 #include <KisSequentialIteratorProgress.h>
 
 
-KisEmbossFilter::KisEmbossFilter() : KisFilter(id(), FiltersCategoryEmbossId, i18n("&Emboss with Variable Depth..."))
+KisEmbossFilter::KisEmbossFilter() : KisFilter(id(), FiltersCategoryStylizeId, i18n("&Emboss with Variable Depth..."))
 {
     setSupportsPainting(false);
     setColorSpaceIndependence(TO_RGBA8);

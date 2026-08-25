@@ -40,7 +40,7 @@ Posterize::~Posterize()
 {
 }
 
-KisFilterPosterize::KisFilterPosterize() : KisColorTransformationFilter(id(), FiltersCategoryArtisticId, i18n("&Posterize..."))
+KisFilterPosterize::KisFilterPosterize() : KisColorTransformationFilter(id(), FiltersCategoryAdjustId, i18n("&Posterize..."))
 {
     setColorSpaceIndependence(FULLY_INDEPENDENT);
     setSupportsPainting(true);

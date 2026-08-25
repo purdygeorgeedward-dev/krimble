@@ -19,7 +19,7 @@
 #include "KisWdgFilterFastColorOverlay.h"
 
 KisFilterFastColorOverlay::KisFilterFastColorOverlay()
-    : KisFilter(id(), FiltersCategoryColorId, i18n("Fast Color &Overlay..."))
+    : KisFilter(id(), FiltersCategoryOtherId, i18n("Fast Color &Overlay..."))
 {
 }
 

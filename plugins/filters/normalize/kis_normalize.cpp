@@ -43,7 +43,7 @@ KritaNormalizeFilter::~KritaNormalizeFilter()
 
 KisFilterNormalize::KisFilterNormalize()
     : KisColorTransformationFilter(KoID("normalize", i18n("Normalize")),
-                                   FiltersCategoryMapId, i18n("&Normalize"))
+                                   FiltersCategoryAdjustId, i18n("&Normalize"))
 {
     setColorSpaceIndependence(FULLY_INDEPENDENT);
     setSupportsPainting(true);

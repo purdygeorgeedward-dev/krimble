@@ -30,7 +30,7 @@ IndexColors::~IndexColors()
 {
 }
 
-KisFilterIndexColors::KisFilterIndexColors() : KisColorTransformationFilter(id(), FiltersCategoryArtisticId, i18n("&Index Colors..."))
+KisFilterIndexColors::KisFilterIndexColors() : KisColorTransformationFilter(id(), FiltersCategoryAdjustId, i18n("&Index Colors..."))
 {
     setColorSpaceIndependence(FULLY_INDEPENDENT); // Technically it is TO_LAB16 but that would only display a warning we don't want
     // This filter will always degrade the color space, that is it's purpose

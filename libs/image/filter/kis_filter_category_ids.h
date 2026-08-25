@@ -12,13 +12,13 @@
 #include "kritaimage_export.h"
 
 extern const KoID KRITAIMAGE_EXPORT FiltersCategoryAdjustId;
-extern const KoID KRITAIMAGE_EXPORT FiltersCategoryArtisticId;
 extern const KoID KRITAIMAGE_EXPORT FiltersCategoryBlurId;
-extern const KoID KRITAIMAGE_EXPORT FiltersCategoryColorId;
-extern const KoID KRITAIMAGE_EXPORT FiltersCategoryEdgeDetectionId;
-extern const KoID KRITAIMAGE_EXPORT FiltersCategoryEmbossId;
-extern const KoID KRITAIMAGE_EXPORT FiltersCategoryEnhanceId;
-extern const KoID KRITAIMAGE_EXPORT FiltersCategoryMapId;
+extern const KoID KRITAIMAGE_EXPORT FiltersCategoryDistortId;
+extern const KoID KRITAIMAGE_EXPORT FiltersCategoryNoiseId;
+extern const KoID KRITAIMAGE_EXPORT FiltersCategoryPixelateId;
+extern const KoID KRITAIMAGE_EXPORT FiltersCategoryRenderId;
+extern const KoID KRITAIMAGE_EXPORT FiltersCategorySharpenId;
+extern const KoID KRITAIMAGE_EXPORT FiltersCategoryStylizeId;
 extern const KoID KRITAIMAGE_EXPORT FiltersCategoryOtherId;
 
 #endif // _KIS_FILTER_CATEGORY_IDS_H_

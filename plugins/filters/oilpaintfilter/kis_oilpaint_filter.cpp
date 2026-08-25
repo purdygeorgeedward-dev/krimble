@@ -41,7 +41,7 @@
 #include <KisGlobalResourcesInterface.h>
 
 
-KisOilPaintFilter::KisOilPaintFilter() : KisFilter(id(), FiltersCategoryArtisticId, i18n("&Oilpaint..."))
+KisOilPaintFilter::KisOilPaintFilter() : KisFilter(id(), FiltersCategoryStylizeId, i18n("&Oilpaint..."))
 {
     setSupportsPainting(true);
     setSupportsThreading(false);

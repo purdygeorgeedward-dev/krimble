@@ -29,7 +29,7 @@
 #include "KisGradientMapFilterDitherCachedGradient.h"
 
 KisGradientMapFilter::KisGradientMapFilter()
-    : KisFilter(id(), FiltersCategoryMapId, i18n("&Gradient Map..."))
+    : KisFilter(id(), FiltersCategoryAdjustId, i18n("&Gradient Map..."))
 {
     setSupportsPainting(true);
 }

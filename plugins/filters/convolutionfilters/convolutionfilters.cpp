@@ -45,7 +45,7 @@ KritaConvolutionFilters::~KritaConvolutionFilters()
 }
 
 KisSharpenFilter::KisSharpenFilter()
-        : KisConvolutionFilter(id(), FiltersCategoryEnhanceId, i18n("&Sharpen"))
+        : KisConvolutionFilter(id(), FiltersCategorySharpenId, i18n("&Sharpen"))
 {
     setSupportsPainting(true);
     setShowConfigurationWidget(false);
@@ -59,7 +59,7 @@ KisSharpenFilter::KisSharpenFilter()
 }
 
 KisMeanRemovalFilter::KisMeanRemovalFilter()
-        : KisConvolutionFilter(id(), FiltersCategoryEnhanceId, i18n("&Mean Removal"))
+        : KisConvolutionFilter(id(), FiltersCategorySharpenId, i18n("&Mean Removal"))
 {
     setSupportsPainting(false);
     setShowConfigurationWidget(false);
@@ -73,7 +73,7 @@ KisMeanRemovalFilter::KisMeanRemovalFilter()
 }
 
 KisEmbossLaplascianFilter::KisEmbossLaplascianFilter()
-        : KisConvolutionFilter(id(), FiltersCategoryEmbossId, i18n("Emboss (Laplacian)"))
+        : KisConvolutionFilter(id(), FiltersCategoryStylizeId, i18n("Emboss (Laplacian)"))
 {
     setSupportsPainting(false);
     setShowConfigurationWidget(false);
@@ -88,7 +88,7 @@ KisEmbossLaplascianFilter::KisEmbossLaplascianFilter()
 }
 
 KisEmbossInAllDirectionsFilter::KisEmbossInAllDirectionsFilter()
-        : KisConvolutionFilter(id(), FiltersCategoryEmbossId, i18n("Emboss in All Directions"))
+        : KisConvolutionFilter(id(), FiltersCategoryStylizeId, i18n("Emboss in All Directions"))
 {
     setSupportsPainting(false);
     setShowConfigurationWidget(false);
@@ -103,7 +103,7 @@ KisEmbossInAllDirectionsFilter::KisEmbossInAllDirectionsFilter()
 }
 
 KisEmbossHorizontalVerticalFilter::KisEmbossHorizontalVerticalFilter()
-        : KisConvolutionFilter(id(), FiltersCategoryEmbossId, i18n("Emboss Horizontal && Vertical"))
+        : KisConvolutionFilter(id(), FiltersCategoryStylizeId, i18n("Emboss Horizontal && Vertical"))
 {
     setSupportsPainting(false);
     setShowConfigurationWidget(false);
@@ -118,7 +118,7 @@ KisEmbossHorizontalVerticalFilter::KisEmbossHorizontalVerticalFilter()
 }
 
 KisEmbossVerticalFilter::KisEmbossVerticalFilter()
-        : KisConvolutionFilter(id(), FiltersCategoryEmbossId, i18n("Emboss Vertical Only"))
+        : KisConvolutionFilter(id(), FiltersCategoryStylizeId, i18n("Emboss Vertical Only"))
 {
     setSupportsPainting(false);
     setShowConfigurationWidget(false);
@@ -133,7 +133,7 @@ KisEmbossVerticalFilter::KisEmbossVerticalFilter()
 }
 
 KisEmbossHorizontalFilter::KisEmbossHorizontalFilter() :
-        KisConvolutionFilter(id(), FiltersCategoryEmbossId, i18n("Emboss Horizontal Only"))
+        KisConvolutionFilter(id(), FiltersCategoryStylizeId, i18n("Emboss Horizontal Only"))
 {
     setSupportsPainting(false);
     setShowConfigurationWidget(false);
@@ -148,7 +148,7 @@ KisEmbossHorizontalFilter::KisEmbossHorizontalFilter() :
 }
 
 KisEmbossDiagonalFilter::KisEmbossDiagonalFilter()
-        : KisConvolutionFilter(id(), FiltersCategoryEdgeDetectionId, i18n("Top Edge Detection"))
+        : KisConvolutionFilter(id(), FiltersCategoryStylizeId, i18n("Top Edge Detection"))
 {
     setSupportsPainting(false);
     setShowConfigurationWidget(false);

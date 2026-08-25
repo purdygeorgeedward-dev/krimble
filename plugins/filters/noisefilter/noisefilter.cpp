@@ -39,7 +39,7 @@ KritaNoiseFilter::~KritaNoiseFilter()
 {
 }
 
-KisFilterNoise::KisFilterNoise() : KisFilter(id(), FiltersCategoryOtherId, i18n("&Random Noise..."))
+KisFilterNoise::KisFilterNoise() : KisFilter(id(), FiltersCategoryNoiseId, i18n("&Random Noise..."))
 {
     setColorSpaceIndependence(FULLY_INDEPENDENT);
     setSupportsPainting(true);

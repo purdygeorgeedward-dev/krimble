@@ -23,7 +23,7 @@
 #include "kis_global.h"
 
 KisWaveletNoiseReduction::KisWaveletNoiseReduction()
-    : KisFilter(id(), FiltersCategoryEnhanceId, i18n("&Wavelet Noise Reducer..."))
+    : KisFilter(id(), FiltersCategoryNoiseId, i18n("&Wavelet Noise Reducer..."))
 {
     setSupportsPainting(false);
     setSupportsThreading(false);

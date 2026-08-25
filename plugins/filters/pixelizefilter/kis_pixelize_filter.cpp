@@ -42,7 +42,7 @@
 #include "kis_lod_transform.h"
 
 
-KisPixelizeFilter::KisPixelizeFilter() : KisFilter(id(), FiltersCategoryArtisticId, i18n("&Pixelize..."))
+KisPixelizeFilter::KisPixelizeFilter() : KisFilter(id(), FiltersCategoryPixelateId, i18n("&Pixelize..."))
 {
     setSupportsPainting(true);
     setSupportsThreading(true);

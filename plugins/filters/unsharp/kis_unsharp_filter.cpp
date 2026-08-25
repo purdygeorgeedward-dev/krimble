@@ -28,7 +28,7 @@
 #include <KisSequentialIteratorProgress.h>
 
 
-KisUnsharpFilter::KisUnsharpFilter() : KisFilter(id(), FiltersCategoryEnhanceId, i18n("&Unsharp Mask..."))
+KisUnsharpFilter::KisUnsharpFilter() : KisFilter(id(), FiltersCategorySharpenId, i18n("&Unsharp Mask..."))
 {
     setSupportsPainting(true);
     setSupportsAdjustmentLayers(true);

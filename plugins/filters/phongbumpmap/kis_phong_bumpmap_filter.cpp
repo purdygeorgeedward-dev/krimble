@@ -23,7 +23,7 @@
 
 KisFilterPhongBumpmap::KisFilterPhongBumpmap()
                       : KisFilter(KoID("phongbumpmap", i18n("Phong Bumpmap")),
-                                  FiltersCategoryMapId, i18n("&Phong Bumpmap..."))
+                                  FiltersCategoryRenderId, i18n("&Phong Bumpmap..."))
 {
     setColorSpaceIndependence(TO_LAB16);
     setSupportsPainting(true);

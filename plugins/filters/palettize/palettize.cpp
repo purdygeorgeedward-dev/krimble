@@ -187,7 +187,7 @@ KisConfigWidget* KisFilterPalettize::createConfigurationWidget(QWidget *parent, 
 /*                      KisFilterPalettize                                     */
 /*******************************************************************************/
 
-KisFilterPalettize::KisFilterPalettize() : KisFilter(id(), FiltersCategoryMapId, i18n("&Palettize..."))
+KisFilterPalettize::KisFilterPalettize() : KisFilter(id(), FiltersCategoryAdjustId, i18n("&Palettize..."))
 {
     setColorSpaceIndependence(FULLY_INDEPENDENT);
     setSupportsPainting(true);

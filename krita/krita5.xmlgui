@@ -645,32 +645,26 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>Filter Gallery...</text>
     </Action>
                      <Separator/>
-    <Action name="artistic_filters">
-        <text>Artistic</text>
-    </Action>
     <Action name="blur_filters">
         <text>Blur</text>
     </Action>
-    <Action name="color_filters">
-        <text>Color</text>
+    <Action name="distort_filters">
+        <text>Distort</text>
     </Action>
-    <Action name="decor_filters">
-        <text>Decor</text>
+    <Action name="noise_filters">
+        <text>Noise</text>
     </Action>
-    <Action name="edge_filters">
-        <text>Edge</text>
+    <Action name="pixelate_filters">
+        <text>Pixelate</text>
     </Action>
-    <Action name="emboss_filters">
-        <text>Emboss</text>
+    <Action name="render_filters">
+        <text>Render</text>
     </Action>
-    <Action name="enhance_filters">
+    <Action name="sharpen_filters">
         <text>Sharpen</text>
     </Action>
-    <Action name="map_filters">
-        <text>Map</text>
-    </Action>
-    <Action name="nonphotorealistic_filters">
-        <text>Non-Photorealistic</text>
+    <Action name="stylize_filters">
+        <text>Stylize</text>
     </Action>
     <Action name="other_filters">
         <text>Other</text>

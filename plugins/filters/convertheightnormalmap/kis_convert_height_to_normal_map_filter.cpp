@@ -26,7 +26,7 @@ KritaConvertHeightToNormalMapFilter::~KritaConvertHeightToNormalMapFilter()
 {
 }
 
-KisConvertHeightToNormalMapFilter::KisConvertHeightToNormalMapFilter(): KisFilter(id(), FiltersCategoryEdgeDetectionId, i18n("&Height to Normal Map..."))
+KisConvertHeightToNormalMapFilter::KisConvertHeightToNormalMapFilter(): KisFilter(id(), FiltersCategoryOtherId, i18n("&Height to Normal Map..."))
 {
     setSupportsPainting(true);
     setSupportsAdjustmentLayers(true);
