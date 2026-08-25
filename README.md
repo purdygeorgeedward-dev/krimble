@@ -35,13 +35,13 @@ Wishlist:
 
 4. Remove Tools menu to make the Settings menu easier to reach. (DONE.)
 
-5. Change Toolbox default sort order.
+5. Change Toolbox default sort order. (DONE. Pan tool given lowest `priority`/`toolBoxPriority` in `kis_tool_pan.cpp`. Also found and fixed a separate bug forcing the Brush tool active every time a pixel layer was selected, in `KisNodeManager::slotUiActivatedNode` — that logic is now disabled with a comment rather than forcing any tool.)
 
 6. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit.
 
-7. Move Configure Krita menu and rename Preferences.
+7. Move Configure Krita menu and rename Preferences. (DONE. Preferences now lives under the Edit menu in `krita5.xmlgui`, matching Photoshop's placement.)
 
-8. Reconfigure menus. (99% DONE.)
+8. Reconfigure menus. (DONE. Full pass against Photoshop's actual menu bar (`krita5.xmlgui`): Select > Shrink renamed to Contract..., Layer > Merge Layer renamed to Merge Down, Filter menu categories remapped from Krita's own taxonomy (Artistic/Colors/Edge Detection/Emboss/Enhance/Map) to Photoshop's (Blur/Distort/Noise/Pixelate/Render/Sharpen/Stylize/Other), two dead menu categories with zero registered filters removed (Decor, Non-Photorealistic), and five color-adjustment filters — Index Colors, Posterize, Gradient Map, Palettize, Normalize — moved out of the Filter menu into Image > Adjustments to match where Photoshop puts them.)
 
 9. Remove rotation from pinch zoom defaults. (DONE.)
 
@@ -82,6 +82,14 @@ Wishlist:
 27. `KRITA_ALPHA` flag was left set in `CMakeLists.txt`, which drove the "DEV BUILD" welcome-screen label. Commented out — this was the actual cause, confirmed on the build server (Qt5, `BUILD_WITH_QT6` was never enabled, defaults OFF). Originally suspected a Qt6-specific carve-out in `KritaVersionWrapper::isDevelopersBuild()` was involved; it wasn't, since the build has been Qt5 all along, but the carve-out was removed anyway so the check no longer depends on Qt major version. Decision: stick with Qt5 (Qt6 isn't production-ready upstream either). (DONE.)
 
 28. Splash screen still showed "Artwork by: Tyson Tan" — hardcoded in `libs/ui/kis_splash_screen.cpp` regardless of which splash image resource was actually loaded, so replacing the splash graphic alone never removed it. Cleared the credit string since Krimble's splash is an original asset. (DONE.)
+
+29. Aligned every hardcoded keyboard shortcut default to Photoshop where a non-colliding key exists. Corrected ~200 shortcuts baked into `.action` XML files (which override the `photoshop_compatible.shortcuts` scheme when that scheme doesn't explicitly list them), synced the scheme file itself, and set `photoshop_compatible` as the default scheme in `kis_action_registry.cpp` instead of Krita's own `Default`. (DONE.)
+
+30. Reassigned tool-selection shortcuts to match Photoshop exactly where possible: Move (V), Marquee (M/Shift+M), Lasso (L/Shift+L), Magic Wand/Similar (W/Shift+W), Crop (C), Eyedropper (I), Brush (B), Gradient (G), Pen (P), Type (T), Zoom (Z), Hand/Pan (H). Where a Krita-only global shortcut already held the letter Photoshop needed (brush opacity, brush color lighter, mirror canvas, MyPaint shade selector, instant preview mode, wrap-around mode, common colors), relocated those seven Krita-only actions to modifier-heavy combos instead of settling for an approximate tool key, so the exact Photoshop letter is free. Note: Photoshop cycles multiple tools under one key via repeated presses (e.g. Shift+M twice); Krimble's toolbox binds one key per tool with no cycling, so this is an exact-key match, not full cycling behavior. (DONE.)
+
+31. Replaced "docker" with "panel" everywhere it appeared as user-facing text — menu labels, tooltips, dialog strings, translatable UI strings (18 files). Left internal class/widget/object names and the `plugins/dockers/` directory structure untouched since renaming those has no user-visible benefit and risks breaking signal/slot wiring. (DONE.)
+
+32. Two-finger move of any open window/panel (see item 3) was scoped but intentionally not implemented — real conflict risk with canvas pan/zoom's own two-finger gesture handling, and the tool-cycling gap from item 30 both need a design decision before building. Deferred.
 
 
 ### Krita Project Website
