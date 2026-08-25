@@ -863,9 +863,12 @@ void KisNodeManager::slotUiActivatedNode(KisNodeSP node)
             }
         }
         else {
-            if (vectorTools.contains(KoToolManager::instance()->activeToolId())) {
-                KoToolManager::instance()->switchToolRequested("KritaShape/KisToolBrush");
-            }
+            // Purdy Design: disabled forced tool switch on pixel-layer activation.
+            // Was: KoToolManager::instance()->switchToolRequested("KritaShape/KisToolBrush");
+            // Activating a layer should not auto-switch the active tool.
+            // if (vectorTools.contains(KoToolManager::instance()->activeToolId())) {
+            //     KoToolManager::instance()->switchToolRequested("KritaShape/KisToolBrush");
+            // }
         }
     }
 
