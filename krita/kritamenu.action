@@ -773,10 +773,10 @@
     </Action>
 	<Action name="zoom_to_200pct">
       <icon>zoom-original</icon>
-      <text>Zoom to 200%</text>
+      <text>200%</text>
       <whatsThis></whatsThis>
       <toolTip>Zoom to 200%</toolTip>
-      <iconText>Zoom to 200%</iconText>
+      <iconText>200%</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut></shortcut>
