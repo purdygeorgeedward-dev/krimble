@@ -657,7 +657,7 @@
       <iconText>Wrap Around Mode</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
-      <shortcut>Shift+W</shortcut>
+      <shortcut>Ctrl+Alt+Shift+W</shortcut>
       <isCheckable>true</isCheckable>
       <statusTip></statusTip>
     </Action>
@@ -705,7 +705,7 @@
       <iconText>Instant Preview Mode</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
-      <shortcut>Shift+L</shortcut>
+      <shortcut>Ctrl+Alt+Shift+O</shortcut>
       <isCheckable>true</isCheckable>
       <statusTip></statusTip>
     </Action>
@@ -735,7 +735,7 @@
       <whatsThis></whatsThis>
       <toolTip>Mirror View</toolTip>
       <iconText>Mirror View</iconText>
-      <shortcut>M</shortcut>
+      <shortcut>Ctrl+Alt+N</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>

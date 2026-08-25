@@ -8,7 +8,7 @@
       <whatsThis></whatsThis>
       <toolTip>Elliptical Selection Tool</toolTip>
       <iconText>Elliptical Selection Tool</iconText>
-      <shortcut>Ctrl+Shift+M</shortcut>
+      <shortcut>Shift+M</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>

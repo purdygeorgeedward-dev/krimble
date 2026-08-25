@@ -8,7 +8,7 @@
       <whatsThis></whatsThis>
       <toolTip>Lasso Tool</toolTip>
       <iconText>Lasso Tool</iconText>
-      <shortcut>Ctrl+Alt+L</shortcut>
+      <shortcut>L</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>

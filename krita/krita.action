@@ -86,7 +86,7 @@
       <whatsThis/>
       <toolTip>Show MyPaint shade selector</toolTip>
       <iconText>Show MyPaint shade selector</iconText>
-      <shortcut>Shift+M</shortcut>
+      <shortcut>Ctrl+Alt+Shift+N</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
@@ -116,7 +116,7 @@
       <whatsThis/>
       <toolTip>Show common colors</toolTip>
       <iconText>Show common colors</iconText>
-      <shortcut>U</shortcut>
+      <shortcut>Ctrl+Alt+Shift+U</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
@@ -349,7 +349,7 @@
       <iconText>Make brush color lighter</iconText>
       <activationFlags>0</activationFlags>
       <activationConditions>0</activationConditions>
-      <shortcut>L</shortcut>
+      <shortcut>Ctrl+Shift+K</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
@@ -465,7 +465,7 @@
       <iconText>Decrease Opacity</iconText>
       <activationFlags>0</activationFlags>
       <activationConditions>0</activationConditions>
-      <shortcut>I</shortcut>
+      <shortcut>Ctrl+Alt+Shift+I</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>

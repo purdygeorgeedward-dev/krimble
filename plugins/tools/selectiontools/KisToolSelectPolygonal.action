@@ -7,7 +7,7 @@
       <whatsThis></whatsThis>
       <toolTip>Polygonal Lasso Tool</toolTip>
       <iconText>Polygonal Lasso Tool</iconText>
-      <shortcut>Ctrl+Alt+Shift+L</shortcut>
+      <shortcut>Shift+L</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>

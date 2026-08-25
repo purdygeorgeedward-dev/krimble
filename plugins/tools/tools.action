@@ -18,7 +18,7 @@
       <whatsThis/>
       <toolTip>Rectangle Tool</toolTip>
       <iconText>Rectangle Tool</iconText>
-      <shortcut>Alt+U</shortcut>
+      <shortcut>U</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
@@ -75,7 +75,7 @@
       <whatsThis/>
       <toolTip>Sample a color from the image or current layer</toolTip>
       <iconText>Color Sampler</iconText>
-      <shortcut>Alt+I</shortcut>
+      <shortcut>I</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
