@@ -8,7 +8,7 @@
       <whatsThis></whatsThis>
       <toolTip>Magic Wand </toolTip>
       <iconText>Magic Wand</iconText>
-      <shortcut></shortcut>
+      <shortcut>W</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>

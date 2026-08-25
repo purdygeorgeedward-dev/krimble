@@ -8,7 +8,7 @@
       <whatsThis></whatsThis>
       <toolTip>Rectangular Selection Tool</toolTip>
       <iconText>Rectangular Selection Tool</iconText>
-      <shortcut>Ctrl+R</shortcut>
+      <shortcut>Ctrl+Alt+M</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>

@@ -18,7 +18,7 @@
       <whatsThis/>
       <toolTip>Rectangle Tool</toolTip>
       <iconText>Rectangle Tool</iconText>
-      <shortcut>Shift+R</shortcut>
+      <shortcut>Alt+U</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
@@ -56,7 +56,7 @@
       <whatsThis/>
       <toolTip>Pan Tool</toolTip>
       <iconText>Pan Tool</iconText>
-      <shortcut/>
+      <shortcut>H</shortcut>
       <statusTip/>
     </Action>
     <Action name="InteractionTool">
@@ -75,7 +75,7 @@
       <whatsThis/>
       <toolTip>Sample a color from the image or current layer</toolTip>
       <iconText>Color Sampler</iconText>
-      <shortcut>P</shortcut>
+      <shortcut>Alt+I</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
@@ -105,7 +105,7 @@
       <whatsThis/>
       <toolTip>Ellipse Tool</toolTip>
       <iconText>Ellipse Tool</iconText>
-      <shortcut>Shift+J</shortcut>
+      <shortcut>Shift+U</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
@@ -145,7 +145,7 @@
       <whatsThis/>
       <toolTip>Move a layer</toolTip>
       <iconText>Move Tool</iconText>
-      <shortcut>T</shortcut>
+      <shortcut>V</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
@@ -165,7 +165,7 @@
       <whatsThis/>
       <toolTip>Edit Shapes Tool</toolTip>
       <iconText>Edit Shapes Tool</iconText>
-      <shortcut/>
+      <shortcut>A</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
@@ -175,7 +175,7 @@
       <whatsThis/>
       <toolTip>Zoom Tool</toolTip>
       <iconText>Zoom Tool</iconText>
-      <shortcut/>
+      <shortcut>Z</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>

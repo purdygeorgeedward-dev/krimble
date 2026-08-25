@@ -106,7 +106,7 @@
       <whatsThis/>
       <toolTip>Show color history</toolTip>
       <iconText>Show color history</iconText>
-      <shortcut>H</shortcut>
+      <shortcut>Shift+H</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>

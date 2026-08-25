@@ -8,7 +8,7 @@
       <whatsThis></whatsThis>
       <toolTip>Magnetic Lasso Tool</toolTip>
       <iconText>Magnetic Lasso Tool</iconText>
-      <shortcut></shortcut>
+      <shortcut>Alt+L</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>

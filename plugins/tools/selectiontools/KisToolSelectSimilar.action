@@ -8,7 +8,7 @@
       <whatsThis></whatsThis>
       <toolTip>Similar Color Selection Tool</toolTip>
       <iconText>Similar Color Selection Tool</iconText>
-      <shortcut></shortcut>
+      <shortcut>Ctrl+Shift+W</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>

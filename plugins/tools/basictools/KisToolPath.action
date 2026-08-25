@@ -8,7 +8,7 @@
       <whatsThis></whatsThis>
       <toolTip>Bezier Curve Tool. Shift-mouseclick or double-click ends the curve.</toolTip>
       <iconText>Bezier Curve Tool. Shift-mouseclick or double-click ends the curve.</iconText>
-      <shortcut></shortcut>
+      <shortcut>P</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>
