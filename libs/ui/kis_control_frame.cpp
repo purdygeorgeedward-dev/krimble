@@ -200,7 +200,7 @@ void KisControlFrame::setup(QWidget *parent)
     createDockerBox(m_viewManager);
 
     action = new QWidgetAction(this);
-    action->setText(i18n("&Docker Box"));
+    action->setText(i18n("&Panel Box"));
     m_viewManager->actionCollection()->addAction("dockerBox", action);
     action->setDefaultWidget(m_dockerPopupButton);
 }
@@ -355,13 +355,13 @@ void KisControlFrame::createDockerBox(KisViewManager * view)
 
     m_dockerPopupButton = new KisIconWidget();
     m_dockerPopupButton->setIcon(KisIconUtils::loadIcon("view-list-details"));
-    m_dockerPopupButton->setToolTip(i18n("Docker box"));
+    m_dockerPopupButton->setToolTip(i18n("Panel box"));
     m_dockerPopupButton->setFixedSize(buttonsize, buttonsize);
     m_dockerPopupButton->setIconSize(QSize(iconsize, iconsize));
     m_dockerPopupButton->setAutoRaise(true);
     m_dockerPopupButton->setArrowVisible(false);
 
-    m_dockerPopup = new KisDockerHud(i18n("Toolbar Docker Box"), "toolbar");
+    m_dockerPopup = new KisDockerHud(i18n("Toolbar Panel Box"), "toolbar");
     // Set a reasonable minimum size so that dockers capable of being tiny are not,
     // but are not too big either
     m_dockerPopup->setMinimumHeight(300);

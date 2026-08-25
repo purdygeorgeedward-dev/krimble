@@ -9,7 +9,7 @@
 #include "TouchDockerWidget.h"
 
 TouchDockerDock::TouchDockerDock()
-    : QDockWidget(i18n("Touch Docker"))
+    : QDockWidget(i18n("Touch Panel"))
 {
     m_page = new TouchDockerWidget(this);
     setWidget(m_page);

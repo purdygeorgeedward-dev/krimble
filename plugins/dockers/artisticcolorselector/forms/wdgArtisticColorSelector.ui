@@ -92,7 +92,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Docker settings</string>
+        <string>Panel settings</string>
        </property>
        <property name="text">
         <string/>

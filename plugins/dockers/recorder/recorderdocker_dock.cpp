@@ -389,7 +389,7 @@ public:
 };
 
 RecorderDockerDock::RecorderDockerDock()
-    : QDockWidget(i18nc("Title of the docker", "Recorder"))
+    : QDockWidget(i18nc("Title of the panel", "Recorder"))
     , exportSettings(new RecorderExportSettings())
     , d(new Private(*exportSettings, this))
 {

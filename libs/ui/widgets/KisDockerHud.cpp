@@ -57,7 +57,7 @@ KisDockerHud::KisDockerHud(QString borrowerName, QString configId)
     // so it cannot go offscreen in case of a wide widget.
     m_d->dockerMenu = new QToolButton();
     m_d->dockerMenu->setAutoRaise(true);
-    m_d->dockerMenu->setToolTip(i18n("Configure docker panel"));
+    m_d->dockerMenu->setToolTip(i18n("Configure panel"));
     connect(m_d->dockerMenu, SIGNAL(clicked()), this, SLOT(showDockerConfig()));
     menuLayout->addWidget(m_d->dockerMenu);
 
@@ -212,8 +212,8 @@ void KisDockerHud::showDockerConfig()
         }
     }
 
-    KisDlgListPicker config = KisDlgListPicker(i18nc("%1 is the name of the widget", "Configure %1 dockers", m_d->borrowerName),
-                                                    i18n("Available dockers"), i18n("Current dockers"),
+    KisDlgListPicker config = KisDlgListPicker(i18nc("%1 is the name of the widget", "Configure %1 panels", m_d->borrowerName),
+                                                    i18n("Available panels"), i18n("Current panels"),
                                                     dockerNames, dockerIds, currentDockerNames, currentDockerIds, mainWindow);
 
     if (config.exec() == QDialog::Accepted) {

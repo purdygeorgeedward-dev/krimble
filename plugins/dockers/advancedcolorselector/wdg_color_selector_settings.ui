@@ -39,7 +39,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="dockerColorSettingsLabel">
      <property name="text">
-      <string>Docker:</string>
+      <string>Panel:</string>
      </property>
     </widget>
    </item>
@@ -271,7 +271,7 @@
            <enum>Qt::LeftToRight</enum>
           </property>
           <property name="text">
-           <string>When Docker Resizes: </string>
+           <string>When Panel Resizes: </string>
           </property>
          </widget>
         </item>

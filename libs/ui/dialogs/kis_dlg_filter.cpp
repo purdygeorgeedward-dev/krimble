@@ -110,7 +110,7 @@ KisDlgFilter::KisDlgFilter(KisViewManager *view, KisNodeSP node, KisFilterManage
         }
     });
 
-    d->uiFilterDialog.chkFilterSelectedFrames->setToolTip(i18n("In addition to filtering the currently visible frame, \nfilter all other keyframe selected in the Animation Timeline docker."));
+    d->uiFilterDialog.chkFilterSelectedFrames->setToolTip(i18n("In addition to filtering the currently visible frame, \nfilter all other keyframe selected in the Animation Timeline panel."));
 
     restoreGeometry(KisConfig(true).readEntry("filterdialog/geometry", QByteArray()));
     connect(&d->updateCompressor, SIGNAL(timeout()), this, SLOT(updatePreview()));

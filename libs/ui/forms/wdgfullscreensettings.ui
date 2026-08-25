@@ -46,7 +46,7 @@
    <item row="3" column="1">
     <widget class="QCheckBox" name="chkDockers">
      <property name="text">
-      <string>Toolbox and dockers</string>
+      <string>Toolbox and panels</string>
      </property>
     </widget>
    </item>

@@ -295,7 +295,7 @@ void StoryboardView::slotContextMenuRequested(const QPoint &point)
             contextMenu.addAction(i18nc("Add scene before active scene", "Add Scene Before"), [index, pModel] {pModel->insertItem(index, false); });
         }
 
-        contextMenu.addAction(i18nc("Duplicate current scene from storyboard docker", "Duplicate Scene"), [index, pModel] {
+        contextMenu.addAction(i18nc("Duplicate current scene from storyboard panel", "Duplicate Scene"), [index, pModel] {
            int row = index.row();
            KisDuplicateStoryboardCommand *command = new KisDuplicateStoryboardCommand(row, pModel);
            command->redo();

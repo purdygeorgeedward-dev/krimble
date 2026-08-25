@@ -1832,10 +1832,10 @@
     </Action>
     <Action name="view_toggledockers">
       <icon></icon>
-      <text>&amp;Show Dockers</text>
+      <text>&amp;Show Panels</text>
       <whatsThis></whatsThis>
-      <toolTip>Show Dockers</toolTip>
-      <iconText>Show Dockers</iconText>
+      <toolTip>Show Panels</toolTip>
+      <iconText>Show Panels</iconText>
       <activationFlags>1</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut></shortcut>
@@ -1844,10 +1844,10 @@
     </Action>
     <Action name="view_toggledockertitlebars">
       <icon></icon>
-      <text>Sho&amp;w Docker Titlebars</text>
+      <text>Sho&amp;w Panel Titlebars</text>
       <whatsThis></whatsThis>
-      <toolTip>Show Docker Titlebars</toolTip>
-      <iconText>Show Docker Titlebars</iconText>
+      <toolTip>Show Panel Titlebars</toolTip>
+      <iconText>Show Panel Titlebars</iconText>
       <activationFlags>0</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut></shortcut>
@@ -1868,10 +1868,10 @@
     </Action>
     <Action name="settings_dockers_menu">
       <icon></icon>
-      <text>Dockers</text>
+      <text>Panels</text>
       <whatsThis></whatsThis>
-      <toolTip>Dockers</toolTip>
-      <iconText>Dockers</iconText>
+      <toolTip>Panels</toolTip>
+      <iconText>Panels</iconText>
       <shortcut></shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>

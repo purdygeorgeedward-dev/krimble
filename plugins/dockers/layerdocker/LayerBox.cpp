@@ -348,7 +348,7 @@ LayerBox::LayerBox()
     connect(thumbnailSizeSlider, SIGNAL(valueChanged(int)), &m_thumbnailSizeCompressor, SLOT(start()));
     connect(&m_thumbnailSizeCompressor, SIGNAL(timeout()), SLOT(slotUpdateThumbnailIconSize()));
 
-    configureMenu->addSection(i18nc("@item:inmenu Layers Docker settings, slider", "Tree Indentation"));
+    configureMenu->addSection(i18nc("@item:inmenu Layers Panel settings, slider", "Tree Indentation"));
 
     // add horizontal slider
     indentationSlider = new QSlider(Qt::Horizontal, this);
@@ -371,17 +371,17 @@ LayerBox::LayerBox()
 
     // Layer info-text settings:
     // blending info-text style combobox
-    configureMenu->addSection(i18nc("@item:inmenu Layers Docker settings, combobox", "Blending Info Style"));
+    configureMenu->addSection(i18nc("@item:inmenu Layers Panel settings, combobox", "Blending Info Style"));
     infoTextCombobox = new QComboBox(this);
     infoTextCombobox->setToolTip(i18nc("@item:tooltip", "None: Show nothing.\n"
                                                         "Simple: Show changed opacities or blending modes.\n"
                                                         "Balanced: Show both opacity and blending mode if either are changed.\n"
                                                         "Detailed: Show both opacity and blending mode even if unchanged."));
     infoTextCombobox->insertItems(0, QStringList ({
-        i18nc("@item:inlistbox Layer Docker blending info style", "None"),
-        i18nc("@item:inlistbox Layer Docker blending info style", "Simple"),
-        i18nc("@item:inlistbox Layer Docker blending info style", "Balanced"),
-        i18nc("@item:inlistbox Layer Docker blending info style", "Detailed"),
+        i18nc("@item:inlistbox Layer Panel blending info style", "None"),
+        i18nc("@item:inlistbox Layer Panel blending info style", "Simple"),
+        i18nc("@item:inlistbox Layer Panel blending info style", "Balanced"),
+        i18nc("@item:inlistbox Layer Panel blending info style", "Detailed"),
     }));
     infoTextCombobox->setCurrentIndex((int)cfg.layerInfoTextStyle());
 
@@ -412,7 +412,7 @@ LayerBox::LayerBox()
     connect(&m_infoTextOpacityCompressor, SIGNAL(timeout()), SLOT(slotUpdateLayerInfoTextOpacity()));
 
     // info-text inline checkbox
-    infoTextInlineChkbox = new QCheckBox(i18nc("@item:inmenu Layers Docker settings, checkbox", "Inline"), this);
+    infoTextInlineChkbox = new QCheckBox(i18nc("@item:inmenu Layers Panel settings, checkbox", "Inline"), this);
     infoTextInlineChkbox->setChecked(cfg.useInlineLayerInfoText());
     infoTextInlineChkbox->setToolTip(i18nc("@item:tooltip", "If enabled, show blending info beside layer names.\n"
                                                             "If disabled, show below layer names (when enough space)."));
@@ -426,7 +426,7 @@ LayerBox::LayerBox()
     connect(infoTextInlineChkbox, SIGNAL(stateChanged(int)), SLOT(slotUpdateUseInlineLayerInfoText()));
 
     layerSelectionCheckBox = new QCheckBox(
-        i18nc("@item:inmenu Layers Docker settings, checkbox", "Checkbox for Selecting Layers"), this);
+        i18nc("@item:inmenu Layers Panel settings, checkbox", "Checkbox for Selecting Layers"), this);
     layerSelectionCheckBox->setToolTip(i18nc("@item:tooltip", "Show checkbox to select/unselect layers."));
     layerSelectionCheckBox->setChecked(cfg.useLayerSelectionCheckbox());
 

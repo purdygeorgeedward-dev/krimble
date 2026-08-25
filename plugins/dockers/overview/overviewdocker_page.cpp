@@ -156,7 +156,7 @@ void OverviewDockerPage::setCanvas(KoCanvasBase * canvas)
         m_pinControlsButton->setCheckable(true);
         m_pinControlsButton->setChecked(m_pinControls);
         m_pinControlsButton->setToolTip(
-            i18nc("Make the controls in the overview docker auto-hide or always visible", "Pin navigation controls")
+            i18nc("Make the controls in the overview panel auto-hide or always visible", "Pin navigation controls")
         );
         m_pinControlsButton->setIcon(KisIconUtils::loadIcon("krita_tool_reference_images"));
         m_pinControlsButton->setAutoRaise(true);
