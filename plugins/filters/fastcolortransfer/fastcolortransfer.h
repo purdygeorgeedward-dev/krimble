@@ -32,7 +32,7 @@ public:
                      const KisFilterConfigurationSP config,
                      KoUpdater* progressUpdater) const override;
     static inline KoID id() {
-        return KoID("colortransfer", i18n("Color Transfer"));
+        return KoID("colortransfer", i18n("Match Color"));
     }
 
 public:

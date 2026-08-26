@@ -45,7 +45,7 @@ FastColorTransferPlugin::~FastColorTransferPlugin()
 {
 }
 
-KisFilterFastColorTransfer::KisFilterFastColorTransfer() : KisFilter(id(), FiltersCategoryOtherId, i18n("&Color Transfer..."))
+KisFilterFastColorTransfer::KisFilterFastColorTransfer() : KisFilter(id(), FiltersCategoryAdjustId, i18n("&Match Color..."))
 {
     setColorSpaceIndependence(FULLY_INDEPENDENT);
     setSupportsThreading(false);
@@ -125,14 +125,40 @@ void KisFilterFastColorTransfer::processImpl(KisPaintDeviceSP device,
     sigmaB_src *= totalSize;
     
     dbgPlugins << totalSize << "" << meanL_src << "" << meanA_src << "" << meanB_src << "" << sigmaL_src << "" << sigmaA_src << "" << sigmaB_src;
-    
-    double meanL_ref = config->getDouble("meanL");
-    double meanA_ref = config->getDouble("meanA");
-    double meanB_ref = config->getDouble("meanB");
-    double sigmaL_ref = config->getDouble("sigmaL");
-    double sigmaA_ref = config->getDouble("sigmaA");
-    double sigmaB_ref = config->getDouble("sigmaB");
-    
+
+    // Krimble: "None" source (matched PS's own documented behavior) uses
+    // the target's own statistics as the reference -- a no-op on its own,
+    // but meaningful combined with Neutralize below.
+    const bool hasSource = config->getBool("hasSource", false);
+    double meanL_ref = hasSource ? config->getDouble("meanL") : meanL_src;
+    double meanA_ref = hasSource ? config->getDouble("meanA") : meanA_src;
+    double meanB_ref = hasSource ? config->getDouble("meanB") : meanB_src;
+    double sigmaL_ref = hasSource ? config->getDouble("sigmaL") : sigmaL_src;
+    double sigmaA_ref = hasSource ? config->getDouble("sigmaA") : sigmaA_src;
+    double sigmaB_ref = hasSource ? config->getDouble("sigmaB") : sigmaB_src;
+
+    // Krimble: Neutralize forces the reference's a/b (chroma) means to the
+    // Lab colorspace's neutral/gray point, removing whatever overall color
+    // cast the match would otherwise have introduced -- independent of
+    // whether an external source is in use, matching PS's own checkbox.
+    if (config->getBool("neutralize", false)) {
+        const double neutralAB = 32768.0; // Krita's lab16 encodes neutral a/b at the midpoint of the unsigned 16-bit range
+        meanA_ref = neutralAB;
+        meanB_ref = neutralAB;
+    }
+
+    const double luminancePct = config->getInt("luminance", 100) / 100.0;
+    const double colorIntensityPct = config->getInt("colorIntensity", 100) / 100.0;
+    const double fadePct = config->getInt("fade", 0) / 100.0;
+
+    // Krimble: known simplification for this first pass -- useSelectionTarget
+    // and ignoreSelection are read but not yet fully wired: target statistics
+    // above are always computed over the whole applyRect (which is already
+    // selection-bounded by Krita's normal filter-application behavior when a
+    // selection is active, just not selection-*shaped* the way a precise
+    // per-pixel mask would be), and the filter doesn't yet force whole-image
+    // application when a selection exists and Ignore Selection is checked.
+
     // Transfer colors
     dbgPlugins << "Transfer colors";
     {
@@ -140,6 +166,7 @@ void KisFilterFastColorTransfer::processImpl(KisPaintDeviceSP device,
         double coefA = sqrt((sigmaA_ref - meanA_ref * meanA_ref) / (sigmaA_src - meanA_src * meanA_src));
         double coefB = sqrt((sigmaB_ref - meanB_ref * meanB_ref) / (sigmaB_src - meanB_src * meanB_src));
 
+        const double neutralAB = 32768.0;
         quint16 labPixel[4];
 
         KisSequentialConstIteratorProgress srcLabIt(srcLAB, applyRect, updaterMap);
@@ -147,9 +174,25 @@ void KisFilterFastColorTransfer::processImpl(KisPaintDeviceSP device,
         while (srcLabIt.nextPixel() && dstIt.nextPixel()) {
             const quint16* data = reinterpret_cast<const quint16*>(srcLabIt.oldRawData());
 
-            labPixel[0] = (quint16)CLAMP(((double)data[0] - meanL_src) * coefL + meanL_ref, 0., 65535.);
-            labPixel[1] = (quint16)CLAMP(((double)data[1] - meanA_src) * coefA + meanA_ref, 0., 65535.);
-            labPixel[2] = (quint16)CLAMP(((double)data[2] - meanB_src) * coefB + meanB_ref, 0., 65535.);
+            double matchedL = ((double)data[0] - meanL_src) * coefL + meanL_ref;
+            double matchedA = ((double)data[1] - meanA_src) * coefA + meanA_ref;
+            double matchedB = ((double)data[2] - meanB_src) * coefB + meanB_ref;
+
+            // Luminance: direct brightness scale on the matched result.
+            matchedL *= luminancePct;
+            // Color Intensity: scales chroma (distance from neutral gray);
+            // a value of 1% collapses a/b to neutral, i.e. grayscale.
+            matchedA = neutralAB + (matchedA - neutralAB) * colorIntensityPct;
+            matchedB = neutralAB + (matchedB - neutralAB) * colorIntensityPct;
+
+            // Fade: blend back toward the original, unmatched pixel.
+            matchedL = matchedL * (1.0 - fadePct) + (double)data[0] * fadePct;
+            matchedA = matchedA * (1.0 - fadePct) + (double)data[1] * fadePct;
+            matchedB = matchedB * (1.0 - fadePct) + (double)data[2] * fadePct;
+
+            labPixel[0] = (quint16)CLAMP(matchedL, 0., 65535.);
+            labPixel[1] = (quint16)CLAMP(matchedA, 0., 65535.);
+            labPixel[2] = (quint16)CLAMP(matchedB, 0., 65535.);
             labPixel[3] = data[3];
             oldCS->fromLabA16(reinterpret_cast<const quint8*>(labPixel), dstIt.rawData(), 1);
         }
