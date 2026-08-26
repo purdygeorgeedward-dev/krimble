@@ -59,7 +59,7 @@ Wishlist:
     
 16. Add the Adjust-Brightness/Contrast dialog (DONE. TESTED. WORKS.)
 
-17. Widen sizing gadgets on windows and sections to make touchscreen resizing easier.
+17. Widen sizing gadgets on windows and sections to make touchscreen resizing easier. (DONE. Two separate fixes: Crop tool's resize handles (`m_handleSize` in `kis_tool_crop.h`/`.cc`) went from 13px, sized for a mouse cursor, to 44px, matching standard mobile touch-target guidance — a near-miss previously made the tool discard the crop rect and start drawing a new one from scratch instead of grabbing the handle. Separately, dock panel resize borders were doubled app-wide via a new `KisWideDockSeparatorStyle` proxy style overriding `PM_DockWidgetSeparatorExtent`, applied in `KisApplication.cpp` — Qt ties a dock separator's visible width and its resize hit-test zone to the same single pixel metric, so there's no way to widen only the grab zone without also widening what's drawn on screen, unlike the crop tool where those were decoupled.)
 
 18. Rework the text/type tool, which is very hard to use currently. (Added menu to menubar, but more to come)
 
