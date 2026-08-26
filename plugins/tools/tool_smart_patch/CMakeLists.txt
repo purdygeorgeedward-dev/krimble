@@ -3,7 +3,6 @@ set(kritatoolSmartPatch_SOURCES
     kis_tool_smart_patch.cpp
     kis_tool_smart_patch_options_widget.cpp
     kis_inpaint.cpp
-    kis_filter_content_aware_fill.cpp
     )
 
 ki18n_wrap_ui(kritatoolSmartPatch_SOURCES kis_tool_smart_patch_options_widget.ui)

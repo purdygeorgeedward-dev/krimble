@@ -3219,6 +3219,18 @@
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
+    <Action name="content_aware_fill">
+      <icon/>
+      <text>&amp;Content-Aware Fill...</text>
+      <whatsThis/>
+      <toolTip>Fill the active selection using nearby image content</toolTip>
+      <iconText>Content-Aware Fill</iconText>
+      <activationFlags>1000</activationFlags>
+      <activationConditions>1</activationConditions>
+      <shortcut/>
+      <isCheckable>false</isCheckable>
+      <statusTip/>
+    </Action>
     <Action name="waveletdecompose">
       <icon/>
       <text>Wavelet Decompose ...</text>

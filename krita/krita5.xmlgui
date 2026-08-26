@@ -101,6 +101,9 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="fill_selection_pattern">
             <text>Pattern</text>
         </Action>
+        <Action name="content_aware_fill">
+            <text>Content-Aware...</text>
+        </Action>
                      <Separator/>
         <Action name="stroke_selection">
             <text>Stroke...</text>
