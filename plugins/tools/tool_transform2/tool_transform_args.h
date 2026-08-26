@@ -326,6 +326,9 @@ public:
     bool meshScaleHandles() const;
     void setMeshScaleHandles(bool meshScaleHandles);
 
+    bool allowShear() const;
+    void setAllowShear(bool allowShear);
+
     void scale3dSrcAndDst(qreal scale);
 
 private:
@@ -376,6 +379,7 @@ private:
     bool m_meshShowHandles = true;
     bool m_meshSymmetricalHandles = true;
     bool m_meshScaleHandles = false;
+    bool m_allowShear = false; // Krimble: shear disabled by default, matching item 10 (default to scale)
 
     /**
      * When we continue a transformation, m_continuedTransformation

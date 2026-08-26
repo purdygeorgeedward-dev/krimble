@@ -112,6 +112,7 @@ public Q_SLOTS:
     void slotMeshShowHandlesChanged();
     void slotMeshSymmetricalHandlesChanged();
     void slotMeshScaleHandlesChanged();
+    void slotAllowShearChanged();
 
     void slotPreviewChanged(int index);
 

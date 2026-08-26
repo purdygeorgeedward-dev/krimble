@@ -680,6 +680,16 @@
             </widget>
            </item>
            <item>
+            <widget class="QCheckBox" name="chkAllowShear">
+             <property name="toolTip">
+              <string>Allow dragging near an edge to shear, in addition to the explicit Shear handles. Off by default so an imprecise touch near an edge doesn't accidentally shear instead of scale.</string>
+             </property>
+             <property name="text">
+              <string>Allow Shear by Dragging</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QLabel" name="tooBigLabelWidget">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">

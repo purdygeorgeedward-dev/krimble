@@ -313,6 +313,7 @@ KisToolTransformConfigWidget::KisToolTransformConfigWidget(TransformTransactionP
     connect(chkShowControlPoints, SIGNAL(toggled(bool)), this, SLOT(slotMeshShowHandlesChanged()));
     connect(chkSymmetricalHandles, SIGNAL(toggled(bool)), this, SLOT(slotMeshSymmetricalHandlesChanged()));
     connect(chkScaleHandles, SIGNAL(toggled(bool)), this, SLOT(slotMeshScaleHandlesChanged()));
+    connect(chkAllowShear, SIGNAL(toggled(bool)), this, SLOT(slotAllowShearChanged()));
     connect(intNumColumns, SIGNAL(valueChanged(int)), this, SLOT(slotMeshSizeChanged()));
     connect(intNumRows, SIGNAL(valueChanged(int)), this, SLOT(slotMeshSizeChanged()));
     connect(intNumColumns, SIGNAL(editingFinished()), this, SLOT(notifyEditingFinished()));
@@ -563,6 +564,7 @@ void KisToolTransformConfigWidget::updateConfig(const ToolTransformArgs &config)
         scaleYBox->setValue(config.scaleY() * 100.);
         shearXBox->setValue(config.shearX() * 100.);
         shearYBox->setValue(config.shearY() * 100.);
+        chkAllowShear->setChecked(config.allowShear());
 
         const QPointF anchorPoint = config.originalCenter() + config.rotationCenterOffset();
         const KisTransformUtils::MatricesPack m(config);
@@ -1352,6 +1354,15 @@ void KisToolTransformConfigWidget::slotMeshScaleHandlesChanged()
     if (m_uiSlotsBlocked) return;
     ToolTransformArgs *config = m_transaction->currentConfig();
     config->setMeshScaleHandles(this->chkScaleHandles->isChecked());
+    notifyConfigChanged();
+    notifyEditingFinished();
+}
+
+void KisToolTransformConfigWidget::slotAllowShearChanged()
+{
+    if (m_uiSlotsBlocked) return;
+    ToolTransformArgs *config = m_transaction->currentConfig();
+    config->setAllowShear(this->chkAllowShear->isChecked());
     notifyConfigChanged();
     notifyEditingFinished();
 }

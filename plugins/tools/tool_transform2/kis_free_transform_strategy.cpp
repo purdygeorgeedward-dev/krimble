@@ -243,12 +243,11 @@ void KisFreeTransformStrategy::setTransformFunction(const QPointF &mousePos, boo
     m_d->function = handleChooser.function();
 
     // Krimble: default transform interaction is scale (via the handles above)
-    // and move; the ambient shear-by-proximity fallback below is disabled so
-    // an imprecise touch near an edge doesn't accidentally trigger shear
-    // instead of scale. Re-enable if shear needs to be reachable without a
-    // dedicated handle/modifier.
-    /*
-    if (m_d->function == ROTATE || m_d->function == MOVE) {
+    // and move. The ambient shear-by-proximity fallback below only fires if
+    // the user has explicitly enabled "Allow Shear by Dragging" in the tool
+    // options -- otherwise an imprecise touch near an edge would accidentally
+    // shear instead of scale.
+    if (m_d->currentArgs.allowShear() && (m_d->function == ROTATE || m_d->function == MOVE)) {
         QRectF bounds = m_d->bounds;
         QPointF t = boundsFullTransform.inverted().map(mousePos);
 
@@ -265,7 +264,6 @@ void KisFreeTransformStrategy::setTransformFunction(const QPointF &mousePos, boo
                 m_d->function = RIGHTSHEAR;
         }
     }
-    */
 }
 
 bool KisFreeTransformStrategy::shiftModifierIsUsed() const

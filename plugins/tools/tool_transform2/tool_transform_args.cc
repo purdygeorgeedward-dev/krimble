@@ -29,6 +29,7 @@ ToolTransformArgs::ToolTransformArgs()
     m_meshShowHandles = configGroup.readEntry("meshShowHandles", true);
     m_meshSymmetricalHandles = configGroup.readEntry("meshSymmetricalHandles", true);
     m_meshScaleHandles = configGroup.readEntry("meshScaleHandles", false);
+    m_allowShear = configGroup.readEntry("allowShear", false);
 }
 
 void ToolTransformArgs::setFilterId(const QString &id) {
@@ -85,6 +86,7 @@ void ToolTransformArgs::init(const ToolTransformArgs& args)
     m_meshShowHandles = args.m_meshShowHandles;
     m_meshSymmetricalHandles = args.m_meshSymmetricalHandles;
     m_meshScaleHandles = args.m_meshScaleHandles;
+    m_allowShear = args.m_allowShear;
 
     m_continuedTransformation.reset(args.m_continuedTransformation ? new ToolTransformArgs(*args.m_continuedTransformation) : 0);
 }
@@ -100,6 +102,19 @@ void ToolTransformArgs::setMeshScaleHandles(bool meshScaleHandles)
 
     KConfigGroup configGroup =  KSharedConfig::openConfig()->group("KisToolTransform");
     configGroup.writeEntry("meshScaleHandles", meshScaleHandles);
+}
+
+bool ToolTransformArgs::allowShear() const
+{
+    return m_allowShear;
+}
+
+void ToolTransformArgs::setAllowShear(bool allowShear)
+{
+    m_allowShear = allowShear;
+
+    KConfigGroup configGroup =  KSharedConfig::openConfig()->group("KisToolTransform");
+    configGroup.writeEntry("allowShear", allowShear);
 }
 
 void ToolTransformArgs::clear()
