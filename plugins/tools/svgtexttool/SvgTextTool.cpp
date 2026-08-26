@@ -866,6 +866,26 @@ void SvgTextTool::mousePressEvent(KoPointerEvent *event)
             canvas()->shapeManager()->selection()->select(hoveredShape);
             m_hoveredShapeHighlightRect = QPainterPath();
         }
+
+        // Krimble: triple-tap-to-select-paragraph -- a third tap landing
+        // within the double-click time window and close to the same spot
+        // as the preceding double-click (which already selected a word)
+        // extends the selection to the whole paragraph instead of starting
+        // a fresh single-tap cursor placement.
+        const bool withinDoubleClickWindow = m_lastDoubleClickElapsed.isValid()
+            && m_lastDoubleClickElapsed.elapsed() < QApplication::doubleClickInterval();
+        const bool nearLastDoubleClick = kisDistance(event->point, m_lastDoubleClickPos) < grabSensitivityInPt();
+
+        if (withinDoubleClickWindow && nearLastDoubleClick && hoveredShape == selectedShape) {
+            m_textCursor.setPosToPoint(event->point, true);
+            m_textCursor.moveCursor(SvgTextCursor::ParagraphStart, true);
+            m_textCursor.moveCursor(SvgTextCursor::ParagraphEnd, false);
+            m_lastDoubleClickElapsed.invalidate(); // don't chain into a fourth tap
+            event->accept();
+            repaintDecorations();
+            return;
+        }
+
         m_interactionStrategy.reset(new SvgSelectTextStrategy(this, &m_textCursor, event->point, event->modifiers()));
         m_dragging = DragMode::Select;
         event->accept();
@@ -1116,6 +1136,8 @@ void SvgTextTool::mouseDoubleClickEvent(KoPointerEvent *event)
         m_textCursor.setPosToPoint(event->point, true);
         m_textCursor.moveCursor(SvgTextCursor::MoveWordLeft, true);
         m_textCursor.moveCursor(SvgTextCursor::MoveWordRight, false);
+        m_lastDoubleClickPos = event->point;
+        m_lastDoubleClickElapsed.restart();
     }
     const QRectF updateRect = std::exchange(m_hoveredShapeHighlightRect, QPainterPath()).boundingRect();
     canvas()->updateCanvas(kisGrowRect(updateRect, 100));

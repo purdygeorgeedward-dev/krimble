@@ -12,6 +12,7 @@
 #include <KConfigGroup>
 #include <KoToolBase.h>
 #include <QPointer>
+#include <QElapsedTimer>
 
 #include <KoSvgTextShapeOutlineHelper.h>
 
@@ -230,6 +231,13 @@ private:
 
     QScopedPointer<KisSignalMapper> m_textTypeSignalsMapper;
     QScopedPointer<KisSignalMapper> m_typeSettingMovementMapper;
+
+    // Krimble: triple-tap-to-select-paragraph. Qt synthesizes a double-tap
+    // into a normal mouseDoubleClickEvent (handled already, selects a word),
+    // but has no built-in triple-click concept, so a third tap in quick
+    // succession at roughly the same spot is detected manually here.
+    QPointF m_lastDoubleClickPos;
+    QElapsedTimer m_lastDoubleClickElapsed;
 
 
     SvgTextCursor m_textCursor;
