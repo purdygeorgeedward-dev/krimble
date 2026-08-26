@@ -265,6 +265,9 @@ public:
      */
     void removeSelection();
 
+    /// Krimble: select the entire text content of the current shape.
+    void selectAll();
+
     /**
      * @brief copy
      * copies plain text into the clipboard between anchor and pos.

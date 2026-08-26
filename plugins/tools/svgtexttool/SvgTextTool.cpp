@@ -14,6 +14,7 @@
 #include "SvgInlineSizeChangeStrategy.h"
 #include "SvgSelectTextStrategy.h"
 #include "SvgAdjustSelectionHandleStrategy.h"
+#include <QClipboard>
 #include "SvgInlineSizeHelper.h"
 #include "SvgMoveTextCommand.h"
 #include "SvgMoveTextStrategy.h"
@@ -155,6 +156,7 @@ SvgTextTool::SvgTextTool(KoCanvasBase *canvas)
     m_textOutlineHelper->setDrawTextWrappingArea(true);
 
     connect(&m_textCursor, SIGNAL(selectionChanged()), this, SLOT(updateTextPathHelper()));
+    connect(&m_textCursor, SIGNAL(selectionChanged()), this, SLOT(updateQuickActionBar()));
 
     m_base_cursor = QCursor(QIcon(":/tool_text_basic.svg").pixmap(32), 7, 7);
     m_text_inline_horizontal = QCursor(QIcon(":/tool_text_inline_horizontal.svg").pixmap(32), 7, 7);
@@ -194,6 +196,14 @@ void SvgTextTool::activate(const QSet<KoShape *> &shapes)
     connect(m_textTypeSignalsMapper.data(), SIGNAL(mapped(int)), this, SLOT(slotConvertType(int)));
     connect(m_typeSettingMovementMapper.data(), SIGNAL(mapped(int)), this, SLOT(slotMoveTextSelection(int)));
 
+    if (!m_quickActionBar && canvas()->canvasWidget()) {
+        m_quickActionBar = new SvgTextQuickActionBar(canvas()->canvasWidget());
+        connect(m_quickActionBar.data(), &SvgTextQuickActionBar::sigCut, this, &SvgTextTool::slotQuickActionCut);
+        connect(m_quickActionBar.data(), &SvgTextQuickActionBar::sigCopy, this, &SvgTextTool::slotQuickActionCopy);
+        connect(m_quickActionBar.data(), &SvgTextQuickActionBar::sigPaste, this, &SvgTextTool::slotQuickActionPaste);
+        connect(m_quickActionBar.data(), &SvgTextQuickActionBar::sigSelectAll, this, &SvgTextTool::slotQuickActionSelectAll);
+    }
+
     useCursor(m_base_cursor);
     slotShapeSelectionChanged();
 
@@ -205,6 +215,9 @@ void SvgTextTool::deactivate()
     KoToolBase::deactivate();
     m_canvasConnections.clear();
     m_textCursor.setShape(nullptr);
+    if (m_quickActionBar) {
+        m_quickActionBar->hide();
+    }
     const KisCanvas2 *canvas2 = qobject_cast<const KisCanvas2 *>(this->canvas());
     if (canvas2) {
         canvas2->viewManager()->textPropertyManager()->setTextPropertiesInterface(nullptr);
@@ -373,6 +386,67 @@ void SvgTextTool::updateGlyphPalette()
 void SvgTextTool::updateTextPathHelper()
 {
     m_textOnPathHelper.setPos(m_textCursor.getPos());
+}
+
+void SvgTextTool::updateQuickActionBar()
+{
+    if (!m_quickActionBar || !canvas() || !canvas()->canvasWidget()) return;
+
+    if (!m_textCursor.hasSelection()) {
+        m_quickActionBar->hide();
+        return;
+    }
+
+    const QPointF startDoc = m_textCursor.selectionHandlePos(true);
+    const QPointF endDoc = m_textCursor.selectionHandlePos(false);
+    const QPointF startView = canvas()->viewConverter()->documentToView(startDoc);
+    const QPointF endView = canvas()->viewConverter()->documentToView(endDoc);
+
+    const qreal topY = qMin(startView.y(), endView.y());
+    const qreal centerX = (startView.x() + endView.x()) / 2.0;
+
+    m_quickActionBar->setPasteEnabled(!QApplication::clipboard()->text().isEmpty());
+    m_quickActionBar->adjustSize();
+
+    const int spacing = 12;
+    QWidget *canvasWidget = canvas()->canvasWidget();
+    int x = qRound(centerX - m_quickActionBar->width() / 2.0);
+    int y = qRound(topY - m_quickActionBar->height() - spacing);
+
+    // Krimble: keep the bar on-screen -- clamp horizontally, and if there's
+    // no room above the selection (it starts near the top of the canvas),
+    // show it below instead.
+    x = qBound(0, x, qMax(0, canvasWidget->width() - m_quickActionBar->width()));
+    if (y < 0) {
+        const qreal bottomY = qMax(startView.y(), endView.y());
+        y = qRound(bottomY + spacing);
+    }
+    y = qBound(0, y, qMax(0, canvasWidget->height() - m_quickActionBar->height()));
+
+    m_quickActionBar->move(x, y);
+    m_quickActionBar->show();
+    m_quickActionBar->raise();
+}
+
+void SvgTextTool::slotQuickActionCut()
+{
+    m_textCursor.copy();
+    m_textCursor.removeSelection();
+}
+
+void SvgTextTool::slotQuickActionCopy()
+{
+    m_textCursor.copy();
+}
+
+void SvgTextTool::slotQuickActionPaste()
+{
+    m_textCursor.paste();
+}
+
+void SvgTextTool::slotQuickActionSelectAll()
+{
+    m_textCursor.selectAll();
 }
 
 void SvgTextTool::insertRichText(KoSvgTextShape *richText, bool replaceLastGlyph)

@@ -10,6 +10,7 @@ set (SvgTextTool_SRCS
     SvgInlineSizeChangeStrategy.cpp
     SvgSelectTextStrategy.cpp
     SvgAdjustSelectionHandleStrategy.cpp
+    SvgTextQuickActionBar.cpp
     SvgMoveTextCommand.cpp
     SvgMoveTextStrategy.cpp
     SvgTextChangeCommand.cpp

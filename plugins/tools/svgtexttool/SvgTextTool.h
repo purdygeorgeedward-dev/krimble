@@ -23,6 +23,7 @@
 #include "SvgTextToolOptionsManager.h"
 #include "SvgTextOnPathDecorationHelper.h"
 #include "glyphpalette/GlyphPaletteDialog.h"
+#include "SvgTextQuickActionBar.h"
 
 #include <memory>
 
@@ -130,6 +131,18 @@ private Q_SLOTS:
     void updateGlyphPalette();
 
     void updateTextPathHelper();
+
+    /**
+     * @brief updateQuickActionBar
+     * Krimble: shows/hides/repositions the floating Cut/Copy/Paste/Select
+     * All bar based on whether there's currently a text selection.
+     */
+    void updateQuickActionBar();
+    void slotQuickActionCut();
+    void slotQuickActionCopy();
+    void slotQuickActionPaste();
+    void slotQuickActionSelectAll();
+
     /**
      * @brief insertRichText
      * Insert a rich text shape, used by the glyph palette..
@@ -224,6 +237,7 @@ private:
     QScopedPointer<SvgTextToolOptionsManager>m_optionManager;
     QPointer<SvgTextEditor> m_editor;
     QPointer<GlyphPaletteDialog> m_glyphPalette;
+    QPointer<SvgTextQuickActionBar> m_quickActionBar;
     QPointF m_lastMousePos;
     DragMode m_dragging {DragMode::None};
     std::unique_ptr<KoInteractionStrategy> m_interactionStrategy;

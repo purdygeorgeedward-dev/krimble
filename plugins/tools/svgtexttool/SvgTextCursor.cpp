@@ -768,6 +768,17 @@ void SvgTextCursor::removeSelection()
     addCommandToUndoAdapter(removeCmd);
 }
 
+void SvgTextCursor::selectAll()
+{
+    if (!d->shape) return;
+    Private::InputQueryUpdateBlocker inputQueryUpdateBlocker(d);
+    const int finalPos = d->shape->posForIndex(d->shape->plainText().size());
+    d->anchor = 0;
+    d->pos = finalPos;
+    updateCursor();
+    updateSelection();
+}
+
 SvgTextRemoveCommand *SvgTextCursor::removeSelectionImpl(bool allowCleanUp, KUndo2Command *parent)
 {
     SvgTextRemoveCommand *removeCmd = nullptr;
