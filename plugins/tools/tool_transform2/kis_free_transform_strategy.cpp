@@ -211,7 +211,7 @@ void KisFreeTransformStrategy::setTransformFunction(const QPointF &mousePos, boo
     qreal rotationHandleRadius = KisTransformUtils::effectiveHandleGrabRadius(m_d->converter);
 
 
-       StrokeFunction defaultFunction;
+       StrokeFunction defaultFunction = MOVE;
        if (transformedPolygon.containsPoint(mousePos, Qt::OddEvenFill))
           defaultFunction = MOVE;
        else if (m_d->transaction.boundsRotationAllowed() && altModifierActive)
@@ -242,6 +242,12 @@ void KisFreeTransformStrategy::setTransformFunction(const QPointF &mousePos, boo
 
     m_d->function = handleChooser.function();
 
+    // Krimble: default transform interaction is scale (via the handles above)
+    // and move; the ambient shear-by-proximity fallback below is disabled so
+    // an imprecise touch near an edge doesn't accidentally trigger shear
+    // instead of scale. Re-enable if shear needs to be reachable without a
+    // dedicated handle/modifier.
+    /*
     if (m_d->function == ROTATE || m_d->function == MOVE) {
         QRectF bounds = m_d->bounds;
         QPointF t = boundsFullTransform.inverted().map(mousePos);
@@ -259,6 +265,7 @@ void KisFreeTransformStrategy::setTransformFunction(const QPointF &mousePos, boo
                 m_d->function = RIGHTSHEAR;
         }
     }
+    */
 }
 
 bool KisFreeTransformStrategy::shiftModifierIsUsed() const
