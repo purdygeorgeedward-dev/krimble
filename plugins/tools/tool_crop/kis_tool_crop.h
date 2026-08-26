@@ -166,7 +166,7 @@ private:
 private:
     QPoint m_dragStart;
 
-    qint32 m_handleSize {13};
+    qint32 m_handleSize {44}; // Krimble: was 13 (mouse-cursor scale) -- too small to reliably hit with a finger, causing the crop tool to restart the whole selection instead of grabbing a handle. 44 matches standard mobile touch-target guidance (Android Material Design / iOS HIG minimum ~44-48).
     bool m_haveCropSelection {false};
     qint32 m_mouseOnHandleType {0};
 

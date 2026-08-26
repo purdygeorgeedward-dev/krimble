@@ -98,7 +98,7 @@ KisToolCrop::KisToolCrop(KoCanvasBase * canvas)
         : KisTool(canvas, KisCursor::loadWithSize("tool_crop_cursor.svg", 32, 32, 6, 6))
 {
     setObjectName("tool_crop");
-    m_handleSize = 13;
+    m_handleSize = 44;
     m_haveCropSelection = false;
     m_cropTypeSelectable = false;
     m_cropType = ImageCropType;
