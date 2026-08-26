@@ -35,7 +35,7 @@ Wishlist:
 
 4. Remove Tools menu to make the Settings menu easier to reach. (DONE.)
 
-5. Change Toolbox default sort order. (DONE. Pan tool given lowest `priority`/`toolBoxPriority` in `kis_tool_pan.cpp`. Also found and fixed a separate bug forcing the Brush tool active every time a pixel layer was selected, in `KisNodeManager::slotUiActivatedNode` — that logic is now disabled with a comment rather than forcing any tool.)
+5. Change Toolbox default sort order. (DONE. Pan tool given lowest `priority`/`toolBoxPriority` in `kis_tool_pan.cpp`. Also found and fixed a separate bug forcing the Brush tool active every time a pixel layer was selected, in `KisNodeManager::slotUiActivatedNode` — that logic is now disabled with a comment rather than forcing any tool. Full toolbox visual order now matches Photoshop's actual tool sequence — see item 37.)
 
 6. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit. (DONE — already commented out in `KisApplication.cpp`: the `checkAutosaveFiles()` call that pops the recovery dialog on launch is inert. No other call site triggers it. Confirmed, no code change needed.)
 
@@ -98,6 +98,8 @@ Wishlist:
 35. All real krita.org/docs.krita.org/krita-artists.org links replaced: donation links now point to buymeacoffee.com/GeorgeEdwardPurdy, the Source Code link on the welcome page now points to the real Krimble GitHub repo instead of Krita's, and everything else (manual, community, scripting school, bug-report guide, RSS news feeds) points to krimble.org as a placeholder pending those actually being built. (DONE.)
 
 36. About dialog claimed "The Krimble Foundation and its projects on krita.org are committed to preserving Krimble as free software" — a leftover from an earlier partial edit that invented a nonexistent legal entity. Replaced with "The Krimble Project is committed to preserving Krimble as free software." (DONE.)
+
+37. Full toolbox visual reordering to match Photoshop's actual tool sequence. Krita's toolbox is grouped into sections (Shape/Transform/Fill/View/Select/Main/Navigation) that render in alphabetical order of their internal string keys (`QMap` in `KoToolBox.cpp`), with per-section priority controlling order only within a section — so there was previously no way to get one continuous PS-like list across the whole toolbox. Added a new unified `ToolBoxSection::PSOrder` and moved every tool with a real PS equivalent into it (Move, Marquee, Lasso, Wand, Crop, Eyedropper, Healing Brush, Brush, Gradient, Paint Bucket, Pen, Path Selection, Type, Shape tools, Hand, Zoom), sequentially prioritized to match PS exactly. Tools with no PS equivalent keep their existing sections and now sort after this block. Also fixed four stale factory-level shortcuts found along the way (a separate mechanism from the `.action` XML system fixed earlier) that still held pre-alignment keys: Move (was T, now V), Eyedropper (was P, now I), Rectangular Marquee (was Ctrl+R, now M), Elliptical Marquee (was J, now Shift+M). (DONE.)
 
 
 ### Krita Project Website
