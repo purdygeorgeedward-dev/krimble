@@ -141,7 +141,7 @@ KisAboutApplication::KisAboutApplication(QWidget *parent)
                            "<li>You can study how Krimble works and change it</li>"
                            "<li>You can distribute changed versions of Krimble</li>"
                            "</ul>"
-                           "<p>The Krimble Foundation and its projects on krita.org are <b>committed</b> to preserving Krimble as free software.</p>"
+                           "<p>The Krimble Project is <b>committed</b> to preserving Krimble as free software.</p>"
                            "<h1 align=\"center\">Your artwork</h1>"
                            "<p>What you create with Krimble is your sole property. All your artwork is free for you to use as you like.</p>"
                            "<p>That means that Krimble can be used commercially, for any purpose. There are no restrictions whatsoever.</p>"
