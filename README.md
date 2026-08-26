@@ -31,7 +31,7 @@ Wishlist:
 
 2. Smaller splash image on load so it fits mobile screens. (DONE.)
 
-3. Two finger move of any open window.
+3. Two finger move of any open window. (DONE — see item 32.)
 
 4. Remove Tools menu to make the Settings menu easier to reach. (DONE.)
 
@@ -89,7 +89,7 @@ Wishlist:
 
 31. Replaced "docker" with "panel" everywhere it appeared as user-facing text — menu labels, tooltips, dialog strings, translatable UI strings (18 files). Left internal class/widget/object names and the `plugins/dockers/` directory structure untouched since renaming those has no user-visible benefit and risks breaking signal/slot wiring. (DONE.)
 
-32. Two-finger move of any open window/panel (see item 3) was scoped but intentionally not implemented — real conflict risk with canvas pan/zoom's own two-finger gesture handling, and the tool-cycling gap from item 30 both need a design decision before building. Deferred.
+32. Two-finger move of any open window/panel (see item 3). (DONE. `KisDockerHud` now handles `QEvent::TouchBegin`/`TouchUpdate`/`TouchEnd`/`TouchCancel` via an `event()` override, claiming the gesture only when exactly two touch points are active — a single-finger tap on its combo box or menu button passes through normally. Delta is computed in screen coordinates, not widget-local, since local coordinates shift under the fingers as the widget itself moves mid-drag. The drag moves `window()`, not the `KisDockerHud` instance itself — it's normally embedded in a parent layout (`KisPopupButtonFrame`, when hosted via `KisPopupButton::setPopupWidget()`) rather than being independently top-level, so moving the instance directly would've been silently overridden by that layout; confirmed `KisPopupButtonFrame` sets `Qt::Dialog`/`Qt::Popup` window flags, both genuine top-level types, so `window()` resolves correctly. No conflict with canvas pan/zoom's own two-finger handling since Qt routes touch events by which widget the gesture started on.)
 
 33. Version renumbered from Krita's inherited `5.4.0-prealpha` to Krimble's own `1.0.0-alpha1` in `CMakeLists.txt` (both the Qt5 and Qt6 branches, major/minor versions reset to 1/0). `KRITA_ALPHA` re-enabled since the build is now honestly alpha — this restores the "DEV BUILD" watermark on the welcome screen (see item 27's note). (DONE.)
 
