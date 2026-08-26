@@ -22,14 +22,25 @@ QVariant TasksetModel::data(const QModelIndex& index, int role) const
 {
     if (index.isValid()) {
 
+        const TasksetStep &step = m_steps.at(index.row());
+
         switch (role) {
             case Qt::DisplayRole:
             {
-                return m_actions.at(index.row())->iconText();
+                if (step.type == TasksetStep::FilterApplication) {
+                    return step.filterDisplayName;
+                }
+                return step.action ? step.action->iconText() : QVariant();
             }
             case Qt::DecorationRole:
             {
-                const QIcon icon = m_actions.at(index.row())->icon();
+                if (step.type == TasksetStep::FilterApplication) {
+                    // Krimble: a generic icon for recorded filter/adjustment
+                    // steps -- individual filters don't reliably have their
+                    // own distinct icon the way toolbox tools do.
+                    return KisIconUtils::loadIcon("view-filter");
+                }
+                const QIcon icon = step.action ? step.action->icon() : QIcon();
                 if (icon.isNull()) {
                     return KisIconUtils::loadIcon("tools-wizard");
                 }
@@ -48,7 +59,7 @@ QVariant TasksetModel::headerData(int /*section*/, Qt::Orientation /*orientation
 
 int TasksetModel::rowCount(const QModelIndex& /*parent*/) const
 {
-    return m_actions.count();
+    return m_steps.count();
 }
 
 int TasksetModel::columnCount(const QModelIndex& /*parent*/) const
@@ -64,28 +75,42 @@ Qt::ItemFlags TasksetModel::flags(const QModelIndex& /*index*/) const
 
 void TasksetModel::addAction(QAction* action)
 {
-    m_actions.append(action);
+    TasksetStep step;
+    step.type = TasksetStep::ActionTrigger;
+    step.action = action;
+    m_steps.append(step);
     beginResetModel();
     endResetModel();
 }
 
-QVector< QAction* > TasksetModel::actions()
+void TasksetModel::addFilterApplication(const QString &filterId, const QString &filterConfigXml, const QString &filterDisplayName)
 {
-    return m_actions;
+    TasksetStep step;
+    step.type = TasksetStep::FilterApplication;
+    step.filterId = filterId;
+    step.filterConfigXml = filterConfigXml;
+    step.filterDisplayName = filterDisplayName;
+    m_steps.append(step);
+    beginResetModel();
+    endResetModel();
 }
 
-QAction* TasksetModel::actionFromIndex(const QModelIndex& index)
+QVector<TasksetStep> TasksetModel::steps()
 {
-    if(index.isValid()) {
-        return m_actions.at(index.row());
+    return m_steps;
+}
+
+TasksetStep TasksetModel::stepFromIndex(const QModelIndex& index)
+{
+    if (index.isValid()) {
+        return m_steps.at(index.row());
     }
-    return 0;
+    return TasksetStep();
 }
 
 void TasksetModel::clear()
 {
-    m_actions.clear();
+    m_steps.clear();
     beginResetModel();
     endResetModel();
 }
-

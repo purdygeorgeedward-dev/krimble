@@ -28,6 +28,11 @@
 #include <kis_canvas2.h>
 #include <KisMainWindow.h>
 #include <KisResourceUserOperations.h>
+#include <kis_filter_manager.h>
+#include <filter/kis_filter_registry.h>
+#include <filter/kis_filter.h>
+#include <filter/kis_filter_configuration.h>
+#include <KisGlobalResourcesInterface.h>
 
 #include "tasksetmodel.h"
 
@@ -128,6 +133,7 @@ void TasksetDockerDock::setCanvas(KoCanvasBase * canvas)
          Q_FOREACH (KisKXMLGUIClient* client, m_canvas->viewManager()->mainWindow()->childClients()) {
             client->actionCollection()->disconnect(this);
         }
+         m_canvas->viewManager()->filterManager()->disconnect(this);
     }
     m_canvas = dynamic_cast<KisCanvas2*>(canvas);
     setEnabled(canvas != 0);
@@ -144,18 +150,48 @@ void TasksetDockerDock::actionTriggered(QAction* action)
 {
     if(action && !action->objectName().isEmpty() &&
        !m_blocked && recordButton->isChecked()) {
+        // Krimble: filter-menu actions (krita_filter_<id>) only *open* a
+        // filter's dialog -- the real, parameterized application happens
+        // moments later via KisFilterManager::sigFilterApplied, captured
+        // by filterApplied() below with the user's actual chosen settings.
+        // Recording this trigger too would add a redundant, non-replayable
+        // "open this dialog" step alongside the real one.
+        if (action->objectName().startsWith(QLatin1String("krita_filter_"))) {
+            return;
+        }
         m_model->addAction(action);
         saveButton->setEnabled(true);
     }
 }
 
+void TasksetDockerDock::filterApplied(KisFilterConfigurationSP filterConfig)
+{
+    if (!filterConfig || m_blocked || !recordButton->isChecked()) {
+        return;
+    }
+
+    KisFilterSP filter = KisFilterRegistry::instance()->value(filterConfig->name());
+    const QString displayName = filter ? filter->name() : filterConfig->name();
+
+    m_model->addFilterApplication(filterConfig->name(), filterConfig->toXML(), displayName);
+    saveButton->setEnabled(true);
+}
+
 void TasksetDockerDock::activated(const QModelIndex& index)
 {
-    QAction* action = m_model->actionFromIndex(index);
+    TasksetStep step = m_model->stepFromIndex(index);
     m_blocked = true;
-    if (action && action->isEnabled()) {
-        action->trigger();
+
+    if (step.type == TasksetStep::FilterApplication) {
+        if (m_canvas && m_canvas->viewManager()) {
+            KisFilterConfigurationSP config = new KisFilterConfiguration(step.filterId, 1, KisGlobalResourcesInterface::instance());
+            config->fromXML(step.filterConfigXml);
+            m_canvas->viewManager()->filterManager()->apply(config);
+        }
+    } else if (step.action && step.action->isEnabled()) {
+        step.action->trigger();
     }
+
     m_blocked = false;
 }
 
@@ -169,6 +205,8 @@ void TasksetDockerDock::recordClicked()
             connect(client->actionCollection(), SIGNAL(actionTriggered(QAction*)),
                     this, SLOT(actionTriggered(QAction*)), Qt::UniqueConnection);
         }
+        connect(view->filterManager(), &KisFilterManager::sigFilterApplied,
+                this, &TasksetDockerDock::filterApplied, Qt::UniqueConnection);
     }
 }
 
@@ -179,10 +217,28 @@ void TasksetDockerDock::saveClicked()
     TasksetResourceSP taskset(new TasksetResource(QString()));
 
     QStringList actionNames;
-    Q_FOREACH (QAction* action, m_model->actions()) {
-        actionNames.append(action->objectName());
+    QStringList filterIds;
+    QStringList filterConfigs;
+    QStringList filterNames;
+    // Krimble: a parallel-list encoding matching TasksetResource's existing
+    // simple format -- "actionNames" keeps a placeholder empty string for
+    // filter-application steps (and vice versa) so the three/four lists
+    // stay index-aligned and step order survives a round trip.
+    Q_FOREACH (const TasksetStep &step, m_model->steps()) {
+        if (step.type == TasksetStep::FilterApplication) {
+            actionNames.append(QString());
+            filterIds.append(step.filterId);
+            filterConfigs.append(step.filterConfigXml);
+            filterNames.append(step.filterDisplayName);
+        } else {
+            actionNames.append(step.action ? step.action->objectName() : QString());
+            filterIds.append(QString());
+            filterConfigs.append(QString());
+            filterNames.append(QString());
+        }
     }
     taskset->setActionList(actionNames);
+    taskset->setFilterList(filterIds, filterConfigs, filterNames);
     taskset->setValid(true);
     QString saveLocation = m_rserver->saveLocation();
 
@@ -231,10 +287,22 @@ void TasksetDockerDock::resourceSelected(KoResourceSP resource)
     }
     m_model->clear();
     saveButton->setEnabled(true);
-    Q_FOREACH (const QString& actionName, resource.staticCast<TasksetResource>()->actionList()) {
-        QAction* action = m_canvas->viewManager()->actionCollection()->action(actionName);
-        if(action) {
-            m_model->addAction(action);
+
+    TasksetResourceSP taskset = resource.staticCast<TasksetResource>();
+    const QStringList actionNames = taskset->actionList();
+    const QStringList filterIds = taskset->filterIdList();
+    const QStringList filterConfigs = taskset->filterConfigList();
+    const QStringList filterNames = taskset->filterNameList();
+
+    for (int i = 0; i < actionNames.size(); ++i) {
+        const bool isFilterStep = i < filterIds.size() && !filterIds.at(i).isEmpty();
+        if (isFilterStep) {
+            m_model->addFilterApplication(filterIds.at(i), filterConfigs.value(i), filterNames.value(i));
+        } else if (!actionNames.at(i).isEmpty()) {
+            QAction* action = m_canvas->viewManager()->actionCollection()->action(actionNames.at(i));
+            if(action) {
+                m_model->addAction(action);
+            }
         }
     }
 }

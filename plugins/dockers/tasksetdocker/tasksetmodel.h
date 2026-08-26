@@ -8,10 +8,33 @@
 #define TASKSETMODEL_H
 
 #include <QModelIndex>
+#include <QVector>
+#include <QString>
 
 #include <kis_types.h>
 
 class QAction;
+
+/**
+ * Krimble: a step is either a plain action trigger (the original,
+ * Krita-native behaviour -- fine for parameterless commands like Flatten
+ * Image or a tool switch), or a real filter application captured with its
+ * exact parameters via KisFilterManager::sigFilterApplied -- the
+ * Photoshop-Actions-equivalent case, correctly replayable without
+ * reopening an empty dialog the way a plain trigger of a filter's menu
+ * action would.
+ */
+struct TasksetStep
+{
+    enum Type { ActionTrigger, FilterApplication };
+
+    Type type = ActionTrigger;
+    QAction *action = nullptr;        // valid when type == ActionTrigger
+    QString filterId;                 // valid when type == FilterApplication
+    QString filterConfigXml;          // valid when type == FilterApplication, full KisFilterConfiguration::toXML()
+    QString filterDisplayName;        // valid when type == FilterApplication, for display without needing the registry
+};
+
 class TasksetModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -26,13 +49,14 @@ public:
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
     void addAction(QAction* action);
-    QAction* actionFromIndex(const QModelIndex& index);
-    QVector<QAction*> actions();
+    void addFilterApplication(const QString &filterId, const QString &filterConfigXml, const QString &filterDisplayName);
+    TasksetStep stepFromIndex(const QModelIndex& index);
+    QVector<TasksetStep> steps();
 
 public Q_SLOTS:
     void clear();
 private:
-    QVector<QAction*> m_actions;
+    QVector<TasksetStep> m_steps;
 };
 
 #endif // TASKSETMODEL_H

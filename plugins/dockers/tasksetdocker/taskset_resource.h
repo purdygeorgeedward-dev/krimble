@@ -36,9 +36,22 @@ public:
     void setActionList(const QStringList actions);
     QStringList actionList();
 
+    /**
+     * Krimble: parallel, index-aligned lists for filter-application steps
+     * (see TasksetStep in tasksetmodel.h) -- a plain action-trigger step
+     * has an empty string at the same index in all three of these lists.
+     */
+    void setFilterList(const QStringList &filterIds, const QStringList &filterConfigs, const QStringList &filterNames);
+    QStringList filterIdList();
+    QStringList filterConfigList();
+    QStringList filterNameList();
+
 private:
 
     QStringList m_actions;
+    QStringList m_filterIds;
+    QStringList m_filterConfigs;
+    QStringList m_filterNames;
 };
 
 typedef QSharedPointer<TasksetResource> TasksetResourceSP;

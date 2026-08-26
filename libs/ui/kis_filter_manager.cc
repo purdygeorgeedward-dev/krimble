@@ -270,6 +270,8 @@ void KisFilterManager::apply(KisFilterConfigurationSP _filterConfig)
 {
     KisFilterConfigurationSP filterConfig = _filterConfig->cloneWithResourcesSnapshot();
 
+    Q_EMIT sigFilterApplied(filterConfig);
+
     KisFilterSP filter = KisFilterRegistry::instance()->value(filterConfig->name());
     KisImageWSP image = d->view->image();
 
