@@ -45,7 +45,7 @@ Wishlist:
 
 9. Remove rotation from pinch zoom defaults. (DONE.)
 
-10. Limit transform default to scaling. (DONE. In `kis_free_transform_strategy.cpp`, an unmodified drag near an edge — not on an explicit scale handle — fell through to shear based on proximity alone, easy to trigger by accident with imprecise touch input. That fallback is commented out, not deleted, so it can come back behind an explicit handle/modifier if needed. Also fixed a real uninitialized-variable bug found along the way: `defaultFunction` was left unset when the cursor was outside the shape and Alt wasn't held.)
+10. Limit transform default to scaling. (DONE. In `kis_free_transform_strategy.cpp`, an unmodified drag near an edge — not on an explicit scale handle — used to fall through to shear based on proximity alone, easy to trigger by accident with imprecise touch input. Rather than removing shear-by-drag outright, it's now gated behind a new "Allow Shear by Dragging" checkbox in the Free Transform tool options, off by default — same persisted-toggle pattern as the existing mesh-transform `chkScaleHandles` checkbox. Also fixed a real uninitialized-variable bug found along the way: `defaultFunction` was left unset when the cursor was outside the shape and Alt wasn't held.)
 
 11. Limit move default to selected layer or floating selection until deliberately changed by user.
 
