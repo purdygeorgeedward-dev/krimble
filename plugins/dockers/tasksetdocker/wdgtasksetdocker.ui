@@ -50,7 +50,7 @@
    <item row="1" column="3">
     <widget class="QToolButton" name="saveButton">
      <property name="toolTip">
-      <string>Save the taskset</string>
+      <string>Save the action set</string>
      </property>
      <property name="text">
       <string/>
@@ -63,7 +63,7 @@
    <item row="1" column="4">
     <widget class="QToolButton" name="clearButton">
      <property name="toolTip">
-      <string>Delete the taskset</string>
+      <string>Delete the action set</string>
      </property>
      <property name="text">
       <string/>

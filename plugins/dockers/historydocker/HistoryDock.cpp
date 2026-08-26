@@ -19,7 +19,7 @@ HistoryDock::HistoryDock()
     , m_undoView(new KisUndoView(this))
 {
     setWidget(m_undoView);
-    setWindowTitle(i18n("Undo History"));
+    setWindowTitle(i18n("History"));
 }
 
 void HistoryDock::setCanvas(KoCanvasBase *canvas)

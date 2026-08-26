@@ -42,7 +42,7 @@ QVariant TasksetModel::data(const QModelIndex& index, int role) const
 
 QVariant TasksetModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const
 {
-    return i18n("Task");
+    return i18n("Action");
 }
 
 

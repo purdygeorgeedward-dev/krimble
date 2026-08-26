@@ -10,7 +10,7 @@
 #include "overviewdocker_page.h"
 
 OverviewDockerDock::OverviewDockerDock()
-    : QDockWidget(i18n("Overview"))
+    : QDockWidget(i18n("Navigator"))
 {
     m_page = new OverviewDockerPage(this);
 

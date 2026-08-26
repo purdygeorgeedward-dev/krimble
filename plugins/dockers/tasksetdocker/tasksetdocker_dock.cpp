@@ -74,7 +74,7 @@ void KisTasksetResourceDelegate::paint(QPainter * painter, const QStyleOptionVie
 }
 
 TasksetDockerDock::TasksetDockerDock( )
-    : QDockWidget(i18n("Task Sets"))
+    : QDockWidget(i18n("Actions"))
     , m_canvas(0)
     , m_blocked(false)
 {
@@ -187,7 +187,7 @@ void TasksetDockerDock::saveClicked()
     QString saveLocation = m_rserver->saveLocation();
 
     if (name.isEmpty()) {
-        name = i18n("Taskset");
+        name = i18n("Action Set");
     }
     QFileInfo fileInfo(saveLocation + name + taskset->defaultFileExtension());
 
@@ -195,7 +195,7 @@ void TasksetDockerDock::saveClicked()
     bool ok = false;
 
     while(!fileOverwriteAccepted) {
-        name = QInputDialog::getText(this, i18n("Taskset Name"),
+        name = QInputDialog::getText(this, i18n("Action Set Name"),
                                      i18n("Name:"), QLineEdit::Normal,
                                      QString(), &ok);
         if (name.isNull() || name.isEmpty()) {
