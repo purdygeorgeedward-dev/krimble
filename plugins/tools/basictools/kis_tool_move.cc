@@ -510,9 +510,17 @@ void KisToolMove::beginAlternateAction(KoPointerEvent *event, AlternateAction ac
         }
 
         startAction(event, mode);
-    } else {
-        startAction(event, MoveGroup);
     }
+    // Krimble: any other alternate action (Secondary/Third/Fourth/Fifth/ChangeSize/
+    // ChangeSizeSnap/SampleBgNode/SampleFgImage) used to fall through here and
+    // unconditionally move the WHOLE IMAGE via MoveGroup mode -- including
+    // AlternateFourth, which a plain one-finger long-press could trigger on touch,
+    // with no relation to actually wanting to move the whole image. Ignored now
+    // rather than defaulting to the most disruptive possible behavior; re-add a
+    // specific, deliberate binding below if whole-image move needs to be reachable.
+    // else {
+    //     startAction(event, MoveGroup);
+    // }
 }
 
 void KisToolMove::continueAlternateAction(KoPointerEvent *event, AlternateAction action)
