@@ -489,13 +489,37 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 
 <Menu name="type">
     <text>&amp;Type</text>
-    <Action name="SvgTextTool">
-        <text>Type Tool</text>
-    </Action>
+    <Menu name="TypePanels">
+        <text>Panels</text>
+        <Action name="svg_insert_special_character">
+            <text>Glyphs</text>
+        </Action>
+    </Menu>
+    <Menu name="TypeOrientation">
+        <text>Orientation</text>
+        <Action name="svg_orientation_horizontal">
+            <text>Horizontal</text>
+        </Action>
+        <Action name="svg_orientation_vertical">
+            <text>Vertical</text>
+        </Action>
+    </Menu>
+    <Menu name="TypeAntiAlias">
+        <text>Anti-Alias</text>
+        <Action name="svg_antialias_auto">
+            <text>None</text>
+        </Action>
+        <Action name="svg_antialias_speed">
+            <text>Sharp</text>
+        </Action>
+        <Action name="svg_antialias_legibility">
+            <text>Crisp</text>
+        </Action>
+        <Action name="svg_antialias_precision">
+            <text>Smooth</text>
+        </Action>
+    </Menu>
     <Separator/>
-    <Action name="svg_insert_special_character">
-        <text>Glyph Palette...</text>
-    </Action>
     <Action name="svg_paste_rich_text">
         <text>Paste Rich Text</text>
     </Action>
@@ -507,7 +531,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     </Action>
     <Separator/>
     <Menu name="TextType">
-        <text>Type Setting</text>
+        <text>Type Setting (Krimble)</text>
         <Action name="text_type_preformatted">
             <text>Preformatted</text>
         </Action>
@@ -518,22 +542,23 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
             <text>Pre-positioned</text>
         </Action>
     </Menu>
-    <Separator/>
-    <Action name="svg_type_setting_move_selection_start_left_1_px">
-        <text>Move Text Selection Left 1 Pixel</text>
-    </Action>
-    <Action name="svg_type_setting_move_selection_start_right_1_px">
-        <text>Move Text Selection Right 1 Pixel</text>
-    </Action>
-    <Action name="svg_type_setting_move_selection_start_up_1_px">
-        <text>Move Text Selection Up 1 Pixel</text>
-    </Action>
-    <Action name="svg_type_setting_move_selection_start_down_1_px">
-        <text>Move Text Selection Down 1 Pixel</text>
-    </Action>
-    <Separator/>
+    <Menu name="TypeSelectionNudge">
+        <text>Nudge Text Selection (Krimble)</text>
+        <Action name="svg_type_setting_move_selection_start_left_1_px">
+            <text>Left 1 Pixel</text>
+        </Action>
+        <Action name="svg_type_setting_move_selection_start_right_1_px">
+            <text>Right 1 Pixel</text>
+        </Action>
+        <Action name="svg_type_setting_move_selection_start_up_1_px">
+            <text>Up 1 Pixel</text>
+        </Action>
+        <Action name="svg_type_setting_move_selection_start_down_1_px">
+            <text>Down 1 Pixel</text>
+        </Action>
+    </Menu>
     <Action name="svg_remove_transforms_from_range">
-        <text>Remove Character Transforms</text>
+        <text>Remove Character Transforms (Krimble)</text>
     </Action>
 </Menu>
 

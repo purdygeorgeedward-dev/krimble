@@ -410,7 +410,7 @@ void KisViewManager::initializeResourceManager(KoCanvasResourceProvider *resourc
 
     KSharedConfigPtr config =  KSharedConfig::openConfig();
     KConfigGroup miscGroup = config->group("Misc");
-    const uint handleRadius = miscGroup.readEntry("HandleRadius", 5);
+    const uint handleRadius = miscGroup.readEntry("HandleRadius", 18);
     resourceManager->setHandleRadius(handleRadius);
 }
 

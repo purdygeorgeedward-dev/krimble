@@ -168,6 +168,36 @@ const QMap<QString, SvgTextShortcutInfo> textShortCuts = {
         "svg_format_superscript",
         SvgTextShortcutInfo::propertySet(KoSvgTextProperties::BaselineShiftModeId,
         QVariant(KoSvgText::ShiftSuper))
+    },
+    {
+        "svg_orientation_horizontal",
+        SvgTextShortcutInfo::propertySet(KoSvgTextProperties::WritingModeId,
+        QVariant(KoSvgText::HorizontalTB))
+    },
+    {
+        "svg_orientation_vertical",
+        SvgTextShortcutInfo::propertySet(KoSvgTextProperties::WritingModeId,
+        QVariant(KoSvgText::VerticalRL))
+    },
+    {
+        "svg_antialias_auto",
+        SvgTextShortcutInfo::propertySet(KoSvgTextProperties::TextRenderingId,
+        QVariant(KoSvgText::RenderingAuto))
+    },
+    {
+        "svg_antialias_speed",
+        SvgTextShortcutInfo::propertySet(KoSvgTextProperties::TextRenderingId,
+        QVariant(KoSvgText::RenderingOptimizeSpeed))
+    },
+    {
+        "svg_antialias_legibility",
+        SvgTextShortcutInfo::propertySet(KoSvgTextProperties::TextRenderingId,
+        QVariant(KoSvgText::RenderingOptimizeLegibility))
+    },
+    {
+        "svg_antialias_precision",
+        SvgTextShortcutInfo::propertySet(KoSvgTextProperties::TextRenderingId,
+        QVariant(KoSvgText::RenderingGeometricPrecision))
     }
 };
 

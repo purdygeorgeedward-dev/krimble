@@ -102,6 +102,66 @@
       <isCheckable>true</isCheckable>
       <text>Superscript</text>
     </Action>
+    <Action name="svg_orientation_horizontal">
+      <iconText>Horizontal</iconText>
+      <shortcut/>
+      <toolTip>Horizontal text orientation</toolTip>
+      <icon/>
+      <whatsThis/>
+      <statusTip/>
+      <isCheckable>true</isCheckable>
+      <text>Horizontal</text>
+    </Action>
+    <Action name="svg_orientation_vertical">
+      <iconText>Vertical</iconText>
+      <shortcut/>
+      <toolTip>Vertical text orientation</toolTip>
+      <icon/>
+      <whatsThis/>
+      <statusTip/>
+      <isCheckable>true</isCheckable>
+      <text>Vertical</text>
+    </Action>
+    <Action name="svg_antialias_auto">
+      <iconText>None</iconText>
+      <shortcut/>
+      <toolTip>No forced anti-aliasing hint (renderer default)</toolTip>
+      <icon/>
+      <whatsThis/>
+      <statusTip/>
+      <isCheckable>true</isCheckable>
+      <text>None</text>
+    </Action>
+    <Action name="svg_antialias_speed">
+      <iconText>Sharp</iconText>
+      <shortcut/>
+      <toolTip>Prioritize rendering speed over text smoothness</toolTip>
+      <icon/>
+      <whatsThis/>
+      <statusTip/>
+      <isCheckable>true</isCheckable>
+      <text>Sharp</text>
+    </Action>
+    <Action name="svg_antialias_legibility">
+      <iconText>Crisp</iconText>
+      <shortcut/>
+      <toolTip>Prioritize text legibility</toolTip>
+      <icon/>
+      <whatsThis/>
+      <statusTip/>
+      <isCheckable>true</isCheckable>
+      <text>Crisp</text>
+    </Action>
+    <Action name="svg_antialias_precision">
+      <iconText>Smooth</iconText>
+      <shortcut/>
+      <toolTip>Prioritize geometric precision and smoothness</toolTip>
+      <icon/>
+      <whatsThis/>
+      <statusTip/>
+      <isCheckable>true</isCheckable>
+      <text>Smooth</text>
+    </Action>
     <Action name="svg_format_underline">
       <iconText>Underline</iconText>
       <shortcut>Ctrl+U</shortcut>
