@@ -37,7 +37,7 @@ Wishlist:
 
 5. Change Toolbox default sort order. (DONE. Pan tool given lowest `priority`/`toolBoxPriority` in `kis_tool_pan.cpp`. Also found and fixed a separate bug forcing the Brush tool active every time a pixel layer was selected, in `KisNodeManager::slotUiActivatedNode` — that logic is now disabled with a comment rather than forcing any tool.)
 
-6. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit.
+6. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit. (DONE — already commented out in `KisApplication.cpp`: the `checkAutosaveFiles()` call that pops the recovery dialog on launch is inert. No other call site triggers it. Confirmed, no code change needed.)
 
 7. Move Configure Krita menu and rename Preferences. (DONE. Preferences now lives under the Edit menu in `krita5.xmlgui`, matching Photoshop's placement.)
 
