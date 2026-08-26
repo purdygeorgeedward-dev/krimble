@@ -65,7 +65,7 @@ Wishlist:
 
 19. Create Krimble logo splash in case Krita org opposes use of "Krita" for new mobile version or use of AI in dev. (DONE.)
 
-20. Rewrite larger dialogs windows to fit small screens.
+20. Rewrite larger dialogs windows to fit small screens. (DONE. Surveyed every dialog's actual top-level `QDialog` geometry and found 8 genuinely oversized for a phone screen: `recorder_profile_settings`, `bbdkss` (script starter), `KisDonationManagementDialog`, `kis_dlg_brush_hud_config`, `excepthook`, `KisSupporterBundlesDialog`, `wdgcustombrush`, `wdgclipboardbrush`. Most had no hard size constraint at all — just a large Qt Designer initial-geometry hint, freely resizable in practice — trimmed to ~380px width. One real blocker: `bbdkss.ui`'s top-level dialog was locked `Fixed`/`Fixed` at 607×430, unable to resize at all regardless of screen size; relaxed to `Preferred`/`Preferred`. Checked each dialog's child widgets for minimum-width constraints that would force overflow before changing anything — none found beyond a couple of small 110×110 Fixed preview thumbnails and unconstrained Fixed `QLineEdit`s, both harmless.)
 
 21. Create new icon for mobile version. (DONE.)
 
