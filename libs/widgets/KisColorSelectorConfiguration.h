@@ -25,7 +25,7 @@ public:
     Parameters mainTypeParameter;
     Parameters subTypeParameter;
 
-    KisColorSelectorConfiguration(Type mainT = Triangle, Type subT = Ring, Parameters mainTP = SL, Parameters subTP = H)
+    KisColorSelectorConfiguration(Type mainT = Square, Type subT = Slider, Parameters mainTP = SV, Parameters subTP = H)
         : mainType(mainT)
         , subType(subT)
         , mainTypeParameter(mainTP)

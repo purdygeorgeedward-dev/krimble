@@ -721,8 +721,8 @@ KisColorSelectorConfiguration KisVisualColorSelector::validatedConfiguration(con
     if (ok) {
         return validated;
     }
-    return KisColorSelectorConfiguration(KisColorSelectorConfiguration::Triangle,
-                                         KisColorSelectorConfiguration::Ring,
+    return KisColorSelectorConfiguration(KisColorSelectorConfiguration::Square,
+                                         KisColorSelectorConfiguration::Slider,
                                          KisColorSelectorConfiguration::SV,
                                          KisColorSelectorConfiguration::H);
 }
