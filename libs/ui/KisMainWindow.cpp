@@ -2470,6 +2470,11 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
 
         dockWidget->setObjectName(factory->id());
         dockWidget->setParent(this);
+        // Krimble: no snap-back-into-a-dock-zone once a panel is dragged --
+        // this only restricts future user drags, not the initial docked
+        // position set via addDockWidget() below, so first-launch layout
+        // is unchanged.
+        dockWidget->setAllowedAreas(Qt::NoDockWidgetArea);
         if (!showTitlebars) {
             if (dockWidget->titleBarWidget() && !dockWidget->titleBarWidget()->inherits("KisUtilityTitleBar")) {
                 dockWidget->titleBarWidget()->setVisible(false);

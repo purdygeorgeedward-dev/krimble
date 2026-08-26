@@ -155,7 +155,7 @@ void KisToolCrop::activate(const QSet<KoShape*> &shapes)
 
     // load settings from configuration
     setGrowCenter(configGroup.readEntry("growCenter", false));
-    setAllowGrow(configGroup.readEntry("allowGrow", true));
+    setAllowGrow(configGroup.readEntry("allowGrow", false));
 
     // Default: thirds decoration
     setDecoration(configGroup.readEntry("decoration", 1));
