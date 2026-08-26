@@ -115,9 +115,10 @@ public:
             : KisToolPaintFactoryBase("KritaShape/KisToolLine") {
         setToolTip(i18n("Line Tool"));
         // Temporarily
-        setSection(ToolBoxSection::Shape);
+        setSection(ToolBoxSection::PSOrder);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setPriority(1);
+        setToolBoxPriority(200);
         setIconName(koIconNameCStr("krita_tool_line"));
     }
 

@@ -146,11 +146,11 @@ public:
         setToolTip(i18n("Brush Tool"));
 
         // Temporarily
-        setSection(ToolBoxSection::Shape);
+        setSection(ToolBoxSection::PSOrder);
         setIconName(koIconNameCStr("krita_tool_freehand"));
         setShortcut(QKeySequence(Qt::Key_B));
         setPriority(20);
-        setToolBoxPriority(0);
+        setToolBoxPriority(120);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     }
 

@@ -240,9 +240,9 @@ public:
     KisToolFillFactory()
             : KisToolPaintFactoryBase("KritaFill/KisToolFill") {
         setToolTip(i18n("Paint Bucket Tool"));
-        setSection(ToolBoxSection::Fill);
+        setSection(ToolBoxSection::PSOrder);
         setPriority(0);
-        setToolBoxPriority(2);
+        setToolBoxPriority(140);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("krita_tool_color_fill"));
         setShortcut( QKeySequence( Qt::Key_F ) );

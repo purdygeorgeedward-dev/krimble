@@ -50,10 +50,10 @@ public:
         : KisSelectionToolFactoryBase("KisToolSelectOutline")
     {
         setToolTip(i18n("Lasso Tool"));
-        setSection(ToolBoxSection::Select);
+        setSection(ToolBoxSection::PSOrder);
         setIconName(koIconNameCStr("tool_outline_selection"));
         setPriority(3);
-        setToolBoxPriority(3);
+        setToolBoxPriority(40);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     }
 

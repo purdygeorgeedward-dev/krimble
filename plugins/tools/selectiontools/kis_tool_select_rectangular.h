@@ -48,12 +48,12 @@ public:
         : KisSelectionToolFactoryBase("KisToolSelectRectangular")
     {
         setToolTip(i18n("Rectangular Selection Tool"));
-        setSection(ToolBoxSection::Select);
+        setSection(ToolBoxSection::PSOrder);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("tool_rect_selection"));
-        setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
+        setShortcut(QKeySequence(Qt::Key_M));
         setPriority(0);
-        setToolBoxPriority(1);
+        setToolBoxPriority(20);
     }
 
     ~KisToolSelectRectangularFactory() override {}

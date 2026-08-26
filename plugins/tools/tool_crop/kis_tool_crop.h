@@ -219,10 +219,10 @@ public:
     KisToolCropFactory()
             : KoToolFactoryBase("KisToolCrop") {
         setToolTip(i18n("Crop Tool"));
-        setSection(ToolBoxSection::Transform);
+        setSection(ToolBoxSection::PSOrder);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setPriority(11);
-        setToolBoxPriority(1);
+        setToolBoxPriority(90);
         setIconName(koIconNameCStr("tool_crop"));
         setShortcut(QKeySequence("C"));
     }

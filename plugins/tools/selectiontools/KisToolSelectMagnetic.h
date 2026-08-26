@@ -100,9 +100,10 @@ public:
         : KisSelectionToolFactoryBase("KisToolSelectMagnetic")
     {
         setToolTip(i18n("Magnetic Lasso Tool"));
-        setSection(ToolBoxSection::Select);
+        setSection(ToolBoxSection::PSOrder);
         setIconName(koIconNameCStr("tool_magnetic_selection"));
         setPriority(8);
+        setToolBoxPriority(60);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     }
 

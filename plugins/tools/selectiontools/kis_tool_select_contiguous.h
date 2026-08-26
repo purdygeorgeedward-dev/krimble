@@ -95,10 +95,10 @@ public:
         : KisSelectionToolFactoryBase("KisToolSelectContiguous")
     {
         setToolTip(i18n("Magic Wand Tool"));
-        setSection(ToolBoxSection::Select);
+        setSection(ToolBoxSection::PSOrder);
         setIconName(koIconNameCStr("tool_contiguous_selection"));
         setPriority(4);
-        setToolBoxPriority(4);
+        setToolBoxPriority(70);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     }
 

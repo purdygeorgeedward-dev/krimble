@@ -78,10 +78,10 @@ public:
 
         setToolTip(i18n("Healing Brush"));
 
-        setSection(ToolBoxSection::Fill);
+        setSection(ToolBoxSection::PSOrder);
         setIconName(koIconNameCStr("krita_tool_smart_patch"));
         setPriority(4);
-        setToolBoxPriority(1);
+        setToolBoxPriority(110);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     }
 

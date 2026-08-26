@@ -57,10 +57,11 @@ public:
         : KisSelectionToolFactoryBase("KisToolSelectSimilar")
     {
         setToolTip(i18n("Select Similar Tool"));
-        setSection(ToolBoxSection::Select);
+        setSection(ToolBoxSection::PSOrder);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("tool_similar_selection"));
         setPriority(5);
+        setToolBoxPriority(80);
     }
     ~KisToolSelectSimilarFactory() override {}
     KoToolBase * createTool(KoCanvasBase *canvas) override {

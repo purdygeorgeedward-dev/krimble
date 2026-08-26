@@ -82,11 +82,11 @@ public:
     KisToolPathFactory()
             : KisToolPaintFactoryBase("KisToolPath") {
         setToolTip(i18n("Pen Tool: Shift-mouseclick ends the curve."));
-        setSection(ToolBoxSection::Shape);
+        setSection(ToolBoxSection::PSOrder);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("krita_draw_path"));
         setPriority(7);
-        setToolBoxPriority(1);
+        setToolBoxPriority(150);
     }
 
     ~KisToolPathFactory() override {}

@@ -79,10 +79,10 @@ KisToolPanFactory::KisToolPanFactory()
     : KoToolFactoryBase("PanTool")
 {
     setToolTip(i18n("Hand Tool"));
-    setSection(ToolBoxSection::Navigation);
+    setSection(ToolBoxSection::PSOrder);
     setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     setPriority(0);
-    setToolBoxPriority(0);
+    setToolBoxPriority(220);
     setIconName(koIconNameCStr("tool_pan"));
 }
 

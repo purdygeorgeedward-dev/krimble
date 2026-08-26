@@ -181,12 +181,12 @@ public:
     KisToolMoveFactory()
             : KisToolPaintFactoryBase("KritaTransform/KisToolMove") {
         setToolTip(i18n("Move Tool"));
-        setSection(ToolBoxSection::Transform);
+        setSection(ToolBoxSection::PSOrder);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setPriority(3);
-        setToolBoxPriority(0);
+        setToolBoxPriority(10);
         setIconName(koIconNameCStr("krita_tool_move"));
-        setShortcut(QKeySequence(Qt::Key_T));
+        setShortcut(QKeySequence(Qt::Key_V));
     }
 
     ~KisToolMoveFactory() override {}

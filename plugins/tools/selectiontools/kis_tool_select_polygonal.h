@@ -46,9 +46,10 @@ public:
         : KisSelectionToolFactoryBase("KisToolSelectPolygonal")
     {
         setToolTip(i18n("Polygonal Lasso Tool"));
-        setSection(ToolBoxSection::Select);
+        setSection(ToolBoxSection::PSOrder);
         setIconName(koIconNameCStr("tool_polygonal_selection"));
         setPriority(2);
+        setToolBoxPriority(50);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     }
 

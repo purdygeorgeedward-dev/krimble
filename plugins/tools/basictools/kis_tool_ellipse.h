@@ -45,10 +45,11 @@ public:
     KisToolEllipseFactory()
             : KisToolPaintFactoryBase("KritaShape/KisToolEllipse") {
         setToolTip(i18n("Ellipse Tool"));
-        setSection(ToolBoxSection::Shape);
+        setSection(ToolBoxSection::PSOrder);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("krita_tool_ellipse"));
         setPriority(3);
+        setToolBoxPriority(190);
     }
 
     ~KisToolEllipseFactory() override {}

@@ -122,11 +122,11 @@ public:
     KisToolColorSamplerFactory()
             : KoToolFactoryBase("KritaSelected/KisToolColorSampler") {
         setToolTip(i18n("Eyedropper Tool"));
-        setSection(ToolBoxSection::Fill);
+        setSection(ToolBoxSection::PSOrder);
         setPriority(2);
-        setToolBoxPriority(0);
+        setToolBoxPriority(100);
         setIconName(koIconNameCStr("krita_tool_color_sampler"));
-        setShortcut(QKeySequence(Qt::Key_P));
+        setShortcut(QKeySequence(Qt::Key_I));
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
     }
 

@@ -47,12 +47,12 @@ public:
         : KisSelectionToolFactoryBase("KisToolSelectElliptical")
     {
         setToolTip(i18n("Elliptical Selection Tool"));
-        setSection(ToolBoxSection::Select);
+        setSection(ToolBoxSection::PSOrder);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("tool_elliptical_selection"));
-        setShortcut(QKeySequence(Qt::Key_J));
+        setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_M));
         setPriority(1);
-        setToolBoxPriority(2);
+        setToolBoxPriority(30);
     }
 
     ~KisToolSelectEllipticalFactory() override {}

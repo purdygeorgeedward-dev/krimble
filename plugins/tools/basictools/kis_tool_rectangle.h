@@ -49,11 +49,12 @@ public:
             : KisToolPaintFactoryBase("KritaShape/KisToolRectangle") {
         setToolTip(i18n("Rectangle Tool"));
 
-        setSection(ToolBoxSection::Shape);
+        setSection(ToolBoxSection::PSOrder);
         setActivationShapeId(KRITA_TOOL_ACTIVATION_ID);
         setIconName(koIconNameCStr("krita_tool_rectangle"));
         //setShortcut( Qt::Key_F6 );
         setPriority(2);
+        setToolBoxPriority(180);
     }
 
     ~KisToolRectangleFactory() override {}
