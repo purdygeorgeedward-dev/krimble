@@ -14,6 +14,8 @@
 
 #include "kis_paint_device.h"
 #include "kis_tool_smart_patch.h"
+#include "kis_filter_content_aware_fill.h"
+#include <filter/kis_filter_registry.h>
 
 
 K_PLUGIN_FACTORY_WITH_JSON(DefaultToolsFactory, "kritatoolsmartpatch.json", registerPlugin<ToolSmartPatch>();)
@@ -23,6 +25,7 @@ ToolSmartPatch::ToolSmartPatch(QObject *parent, const QVariantList &)
     : QObject(parent)
 {
     KoToolRegistry::instance()->add(new KisToolSmartPatchFactory());
+    KisFilterRegistry::instance()->add(new KisFilterContentAwareFill());
 }
 
 ToolSmartPatch::~ToolSmartPatch()
