@@ -29,7 +29,6 @@ private:
 
 private Q_SLOTS:
 
-    void slotRotateImage();
     void slotRotateImage90();
     void slotRotateImage180();
     void slotRotateImage270();

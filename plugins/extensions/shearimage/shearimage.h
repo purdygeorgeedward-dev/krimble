@@ -28,7 +28,6 @@ private:
 
 private Q_SLOTS:
 
-    void slotShearImage();
     void slotShearLayer();
     void slotShearAllLayers();
 };

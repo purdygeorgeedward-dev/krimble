@@ -24,6 +24,54 @@
 #include <kis_selection.h>
 
 #include "dlg_rotateimage.h"
+#include <operations/kis_operation.h>
+#include <operations/kis_operation_ui_factory.h>
+
+namespace {
+
+/**
+ * Krimble: DlgRotateImage is already a full KoDialog (its own preview/lock
+ * logic), same situation as DlgCanvasSize -- a small custom factory
+ * wrapping it as-is, exactly as slotRotateImage() always did, rather than
+ * refactoring its internals to fit the widget-template shape.
+ */
+class RotateImageUIFactory : public KisOperationUIFactory
+{
+public:
+    RotateImageUIFactory() : KisOperationUIFactory("rotateimage") {}
+
+    bool fetchConfiguration(KisViewManager *view, KisOperationConfigurationSP configuration) override
+    {
+        KisImageWSP image = view->image();
+        if (!image) return false;
+
+        DlgRotateImage *dlgRotateImage = new DlgRotateImage(view->mainWindowAsQWidget(), "RotateImage");
+        Q_CHECK_PTR(dlgRotateImage);
+        dlgRotateImage->setCaption(i18n("Rotate Image"));
+
+        bool success = false;
+        if (dlgRotateImage->exec() == QDialog::Accepted) {
+            configuration->setProperty("angle", dlgRotateImage->angle());
+            success = true;
+        }
+        delete dlgRotateImage;
+        return success;
+    }
+};
+
+class RotateImageOperation : public KisOperation
+{
+public:
+    RotateImageOperation() : KisOperation("rotateimage") {}
+
+    void runFromXML(KisViewManager *view, const KisOperationConfiguration &config) override
+    {
+        const double angleDegrees = config.getDouble("angle", 0.0);
+        view->imageManager()->rotateCurrentImage(angleDegrees * M_PI / 180);
+    }
+};
+
+}
 
 K_PLUGIN_FACTORY_WITH_JSON(RotateImageFactory, "kritarotateimage.json", registerPlugin<RotateImage>();)
 
@@ -32,7 +80,9 @@ RotateImage::RotateImage(QObject *parent, const QVariantList &)
 {
 
     KisAction *action  = createAction("rotateimage");
-    connect(action, SIGNAL(triggered()), this, SLOT(slotRotateImage()));
+    action->setOperationID("rotateimage");
+    addUIFactory(new RotateImageUIFactory);
+    addOperation(new RotateImageOperation);
 
     action  = createAction("rotateImageCW90");
     connect(action, SIGNAL(triggered()), this, SLOT(slotRotateImage90()));
@@ -76,25 +126,6 @@ RotateImage::RotateImage(QObject *parent, const QVariantList &)
 
 RotateImage::~RotateImage()
 {
-}
-
-void RotateImage::slotRotateImage()
-{
-    KisImageWSP image = viewManager()->image();
-    if (!image) return;
-
-    if (!viewManager()->blockUntilOperationsFinished(image)) return;
-
-    DlgRotateImage * dlgRotateImage = new DlgRotateImage(viewManager()->mainWindowAsQWidget(), "RotateImage");
-    Q_CHECK_PTR(dlgRotateImage);
-
-    dlgRotateImage->setCaption(i18n("Rotate Image"));
-
-    if (dlgRotateImage->exec() == QDialog::Accepted) {
-        double angle = dlgRotateImage->angle() * M_PI / 180;
-        viewManager()->imageManager()->rotateCurrentImage(angle);
-    }
-    delete dlgRotateImage;
 }
 
 void RotateImage::slotRotateImage90()

@@ -62,6 +62,61 @@ public:
     }
 };
 
+/**
+ * Krimble: unlike WdgImageSize, DlgCanvasSize is already a full KoDialog
+ * itself (anchor-icon grid, offset sync, aspect lock all live inside it),
+ * not a plain content widget meant to be embedded in someone else's
+ * dialog shell -- so rather than refactor that substantial existing logic
+ * to fit KisOperationUIWidgetFactory<T>'s template shape, this small
+ * custom factory just constructs/execs it exactly as
+ * ImageSize::slotCanvasSize() always did, then reads its existing
+ * accessors into the operation config. None of DlgCanvasSize's own code
+ * is touched.
+ */
+class CanvasSizeUIFactory : public KisOperationUIFactory
+{
+public:
+    CanvasSizeUIFactory() : KisOperationUIFactory("canvassize") {}
+
+    bool fetchConfiguration(KisViewManager *view, KisOperationConfigurationSP configuration) override
+    {
+        KisImageWSP image = view->image();
+        if (!image) return false;
+
+        DlgCanvasSize *dlgCanvasSize = new DlgCanvasSize(view->mainWindowAsQWidget(), image->width(), image->height(), image->yRes());
+        Q_CHECK_PTR(dlgCanvasSize);
+
+        bool success = false;
+        if (dlgCanvasSize->exec() == QDialog::Accepted) {
+            configuration->setProperty("width", dlgCanvasSize->width());
+            configuration->setProperty("height", dlgCanvasSize->height());
+            configuration->setProperty("xOffset", dlgCanvasSize->xOffset());
+            configuration->setProperty("yOffset", dlgCanvasSize->yOffset());
+            success = true;
+        }
+        delete dlgCanvasSize;
+        return success;
+    }
+};
+
+class CanvasSizeOperation : public KisOperation
+{
+public:
+    CanvasSizeOperation() : KisOperation("canvassize") {}
+
+    void runFromXML(KisViewManager *view, const KisOperationConfiguration &config) override
+    {
+        const qint32 width = config.getInt("width", 0);
+        const qint32 height = config.getInt("height", 0);
+        if (width <= 0 || height <= 0) return;
+
+        const qint32 xOffset = config.getInt("xOffset", 0);
+        const qint32 yOffset = config.getInt("yOffset", 0);
+
+        view->imageManager()->resizeCurrentImage(width, height, xOffset, yOffset);
+    }
+};
+
 }
 
 ImageSize::ImageSize(QObject *parent)
@@ -74,7 +129,9 @@ ImageSize::ImageSize(QObject *parent)
     addOperation(new ImageSizeOperation);
 
     action = createAction("canvassize");
-    connect(action, SIGNAL(triggered()), this, SLOT(slotCanvasSize()));
+    action->setOperationID("canvassize");
+    addUIFactory(new CanvasSizeUIFactory);
+    addOperation(new CanvasSizeOperation);
 
     action = createAction("layersize");
     connect(action, SIGNAL(triggered()), this, SLOT(slotLayerSize()));
@@ -88,27 +145,6 @@ ImageSize::ImageSize(QObject *parent)
 
 ImageSize::~ImageSize()
 {
-}
-
-void ImageSize::slotCanvasSize()
-{
-    KisImageWSP image = viewManager()->image();
-    if (!image) return;
-
-    if(!viewManager()->blockUntilOperationsFinished(image)) return;
-
-    DlgCanvasSize * dlgCanvasSize = new DlgCanvasSize(viewManager()->mainWindowAsQWidget(), image->width(), image->height(), image->yRes());
-    Q_CHECK_PTR(dlgCanvasSize);
-
-    if (dlgCanvasSize->exec() == QDialog::Accepted) {
-        qint32 width = dlgCanvasSize->width();
-        qint32 height = dlgCanvasSize->height();
-        qint32 xOffset = dlgCanvasSize->xOffset();
-        qint32 yOffset = dlgCanvasSize->yOffset();
-
-        viewManager()->imageManager()->resizeCurrentImage(width, height, xOffset, yOffset);
-    }
-    delete dlgCanvasSize;
 }
 
 void ImageSize::scaleLayerImpl(KisNodeSP rootNode)

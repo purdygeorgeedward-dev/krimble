@@ -19,6 +19,50 @@
 #include "kis_selection.h"
 
 #include "dlg_shearimage.h"
+#include <operations/kis_operation.h>
+#include <operations/kis_operation_ui_factory.h>
+
+namespace {
+
+class ShearImageUIFactory : public KisOperationUIFactory
+{
+public:
+    ShearImageUIFactory() : KisOperationUIFactory("shearimage") {}
+
+    bool fetchConfiguration(KisViewManager *view, KisOperationConfigurationSP configuration) override
+    {
+        KisImageWSP image = view->image();
+        if (!image) return false;
+
+        DlgShearImage *dlgShearImage = new DlgShearImage(view->mainWindowAsQWidget(), "ShearImage");
+        Q_CHECK_PTR(dlgShearImage);
+        dlgShearImage->setCaption(i18n("Shear Image"));
+
+        bool success = false;
+        if (dlgShearImage->exec() == QDialog::Accepted) {
+            configuration->setProperty("angleX", dlgShearImage->angleX());
+            configuration->setProperty("angleY", dlgShearImage->angleY());
+            success = true;
+        }
+        delete dlgShearImage;
+        return success;
+    }
+};
+
+class ShearImageOperation : public KisOperation
+{
+public:
+    ShearImageOperation() : KisOperation("shearimage") {}
+
+    void runFromXML(KisViewManager *view, const KisOperationConfiguration &config) override
+    {
+        const qint32 angleX = config.getInt("angleX", 0);
+        const qint32 angleY = config.getInt("angleY", 0);
+        view->imageManager()->shearCurrentImage(angleX, angleY);
+    }
+};
+
+}
 
 K_PLUGIN_FACTORY_WITH_JSON(ShearImageFactory, "kritashearimage.json", registerPlugin<ShearImage>();)
 
@@ -26,7 +70,9 @@ ShearImage::ShearImage(QObject *parent, const QVariantList &)
     : KisActionPlugin(parent)
 {
     KisAction *action = createAction("shearimage");
-    connect(action,  SIGNAL(triggered()), this, SLOT(slotShearImage()));
+    action->setOperationID("shearimage");
+    addUIFactory(new ShearImageUIFactory);
+    addOperation(new ShearImageOperation);
 
     action = createAction("shearlayer");
     connect(action,  SIGNAL(triggered()), this, SLOT(slotShearLayer()));
@@ -37,26 +83,6 @@ ShearImage::ShearImage(QObject *parent, const QVariantList &)
 
 ShearImage::~ShearImage()
 {
-}
-
-void ShearImage::slotShearImage()
-{
-    KisImageWSP image = viewManager()->image();
-    if (!image) return;
-
-    if (!viewManager()->blockUntilOperationsFinished(image)) return;
-
-    DlgShearImage * dlgShearImage = new DlgShearImage(viewManager()->mainWindowAsQWidget(), "ShearImage");
-    Q_CHECK_PTR(dlgShearImage);
-
-    dlgShearImage->setCaption(i18n("Shear Image"));
-
-    if (dlgShearImage->exec() == QDialog::Accepted) {
-        qint32 angleX = dlgShearImage->angleX();
-        qint32 angleY = dlgShearImage->angleY();
-        viewManager()->imageManager()->shearCurrentImage(angleX, angleY);
-    }
-    delete dlgShearImage;
 }
 
 void ShearImage::shearLayerImpl(KisNodeSP rootNode)
