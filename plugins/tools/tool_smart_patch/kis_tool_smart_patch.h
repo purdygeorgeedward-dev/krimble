@@ -76,7 +76,7 @@ public:
         : KisToolPaintFactoryBase("KritaShape/KisToolSmartPatch")
     {
 
-        setToolTip(i18n("Patch Tool"));
+        setToolTip(i18n("Healing Brush"));
 
         setSection(ToolBoxSection::Fill);
         setIconName(koIconNameCStr("krita_tool_smart_patch"));
