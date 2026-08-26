@@ -30,13 +30,48 @@
 #include "kis_filter_strategy.h"
 #include "kis_action.h"
 #include "kis_action_manager.h"
+#include <operations/kis_operation.h>
+#include <operations/kis_operation_ui_widget_factory.h>
+#include "wdg_imagesize.h"
+
+namespace {
+
+/**
+ * Krimble: makes "Image Size" a genuinely replayable Actions-panel step.
+ * WdgImageSize::getConfiguration() already captures everything needed;
+ * this just reads it back and calls the same KisImageManager method the
+ * menu action always called directly.
+ */
+class ImageSizeOperation : public KisOperation
+{
+public:
+    ImageSizeOperation() : KisOperation("imagesize") {}
+
+    void runFromXML(KisViewManager *view, const KisOperationConfiguration &config) override
+    {
+        const qint32 width = config.getInt("width", 0);
+        const qint32 height = config.getInt("height", 0);
+        if (width <= 0 || height <= 0 || !view->image()) return;
+
+        const double resolution = config.getDouble("resolution", view->image()->yRes());
+        const QString filterId = config.getString("filterStrategyId");
+        KisFilterStrategy *filter = KisFilterStrategyRegistry::instance()->value(filterId);
+        if (!filter) return;
+
+        view->imageManager()->scaleCurrentImage(QSize(width, height), resolution, resolution, filter);
+    }
+};
+
+}
 
 ImageSize::ImageSize(QObject *parent)
     : KisActionPlugin(parent)
 {
 
     KisAction *action  = createAction("imagesize");
-    connect(action, SIGNAL(triggered()), this, SLOT(slotImageSize()));
+    action->setOperationID("imagesize");
+    addUIFactory(new KisOperationUIWidgetFactory<WdgImageSize>("imagesize"));
+    addOperation(new ImageSizeOperation);
 
     action = createAction("canvassize");
     connect(action, SIGNAL(triggered()), this, SLOT(slotCanvasSize()));
@@ -53,26 +88,6 @@ ImageSize::ImageSize(QObject *parent)
 
 ImageSize::~ImageSize()
 {
-}
-
-void ImageSize::slotImageSize()
-{
-    KisImageSP image = viewManager()->image().toStrongRef();
-    if (!image) return;
-
-    if (!viewManager()->blockUntilOperationsFinished(image)) return;
-
-    DlgImageSize * dlgImageSize = new DlgImageSize(viewManager()->mainWindowAsQWidget(), image->width(), image->height(), image->yRes());
-    Q_CHECK_PTR(dlgImageSize);
-    dlgImageSize->setObjectName("ImageSize");
-
-    if (dlgImageSize->exec() == QDialog::Accepted) {
-        const QSize desiredSize(dlgImageSize->desiredWidth(), dlgImageSize->desiredHeight());
-        double res = dlgImageSize->desiredResolution();
-        viewManager()->imageManager()->scaleCurrentImage(desiredSize, res, res, dlgImageSize->filterType());
-    }
-
-    delete dlgImageSize;
 }
 
 void ImageSize::slotCanvasSize()

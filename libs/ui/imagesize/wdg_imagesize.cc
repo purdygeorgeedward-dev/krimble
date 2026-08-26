@@ -18,6 +18,8 @@
 #include <klocalizedstring.h>
 
 #include <kis_filter_strategy.h>
+#include <KisViewManager.h>
+#include <kis_image.h>
 
 #include "kis_aspect_ratio_locker.h"
 #include "kis_acyclic_signal_connector.h"
@@ -62,7 +64,7 @@ static const QString pixelsCentimeterStr()
 }
 
 WdgImageSize::WdgImageSize(QWidget *parent, int width, int height, double resolution)
-    : QWidget(parent)
+    : KisOperationUIWidget(i18n("Image Size"), parent)
 {
     // Store original size.
     m_originalSize.setWidth(width);
@@ -293,6 +295,12 @@ WdgImageSize::WdgImageSize(QWidget *parent, int width, int height, double resolu
     m_page->pixelWidthDouble->setFocus();
 }
 
+WdgImageSize::WdgImageSize(QWidget *parent, KisViewManager *view, KisOperationConfigurationSP config)
+    : WdgImageSize(parent, view->image()->width(), view->image()->height(), view->image()->yRes())
+{
+    Q_UNUSED(config);
+}
+
 WdgImageSize::~WdgImageSize()
 {
     KisConfig cfg(false);
@@ -334,6 +342,19 @@ KisFilterStrategy *WdgImageSize::filterType()
     }
 
     return filter;
+}
+
+void WdgImageSize::getConfiguration(KisOperationConfigurationSP config)
+{
+    // Krimble: everything ImageSizeOperation needs to genuinely replay this
+    // step later, not just re-trigger the menu item. filterType() always
+    // resolves "Auto" to a concrete strategy already, so the saved id is
+    // never ambiguous on replay.
+    config->setProperty("width", desiredWidth());
+    config->setProperty("height", desiredHeight());
+    config->setProperty("resolution", desiredResolution());
+    KisFilterStrategy *filter = filterType();
+    config->setProperty("filterStrategyId", filter ? filter->id() : QString());
 }
 
 void WdgImageSize::slotSyncPrintToPixelSize()

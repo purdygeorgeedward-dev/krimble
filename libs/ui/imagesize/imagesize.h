@@ -26,7 +26,6 @@ private:
 
 private Q_SLOTS:
 
-    void slotImageSize();
     void slotCanvasSize();
     void slotLayerSize();
     void slotSelectionScale();

@@ -10,14 +10,16 @@
 #define WDG_IMAGESIZE
 
 #include <QWidget>
+#include <operations/kis_operation_ui_widget.h>
 
 class KisFilterStrategy;
 class PageImageSize;
 class KisDocumentAwareSpinBoxUnitManager;
 class KisSpinBoxUnitManager;
 class KisAspectRatioLocker;
+class KisViewManager;
 
-class WdgImageSize : public QWidget
+class WdgImageSize : public KisOperationUIWidget
 {
     Q_OBJECT
 
@@ -31,6 +33,18 @@ public:
     static const QString PARAM_PRINT_SIZE_SEPARATE;
 
     WdgImageSize(QWidget * parent, int width, int height, double resolution);
+
+    /**
+     * Krimble: constructor matching KisOperationUIWidgetFactory<T>'s
+     * expected (parent, view, config) signature, so this same widget --
+     * unchanged validation/unit/aspect-ratio logic -- can be registered as
+     * a real KisOperation UI, making "Image Size" a genuinely replayable
+     * Actions-panel step instead of a bare menu-item trigger. Delegates to
+     * the constructor above, reading the current image's own dimensions
+     * exactly as ImageSize::slotImageSize() used to do by hand.
+     */
+    WdgImageSize(QWidget *parent, KisViewManager *view, KisOperationConfigurationSP config);
+
     ~WdgImageSize() override;
 
     qint32 desiredWidth();
@@ -38,6 +52,8 @@ public:
     double desiredResolution();
 
     KisFilterStrategy *filterType();
+
+    void getConfiguration(KisOperationConfigurationSP config) override;
 
 Q_SIGNALS:
     void sigDesiredSizeChanged(qint32 width, qint32 height, double resolution);
