@@ -20,6 +20,7 @@ public:
 protected:
     void showEvent(QShowEvent *event) override;
     void hideEvent(QHideEvent *event) override;
+    bool event(QEvent *event) override;
 
 public Q_SLOTS:
     void slotUpdateIcons();
