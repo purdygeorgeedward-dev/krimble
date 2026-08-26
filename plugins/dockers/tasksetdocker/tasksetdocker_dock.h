@@ -16,6 +16,7 @@
 
 #include <kis_canvas2.h>
 #include <kis_types.h>
+#include <operations/kis_operation_configuration.h>
 
 #include "taskset_resource.h"
 #include "ui_wdgtasksetdocker.h"
@@ -34,6 +35,7 @@ public:
 private Q_SLOTS:
     void actionTriggered(QAction* action);
     void filterApplied(KisFilterConfigurationSP filterConfig);
+    void operationRun(KisOperationConfigurationSP operationConfig);
     void activated (const QModelIndex& index);
     void recordClicked();
     void saveClicked();

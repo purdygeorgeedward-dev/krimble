@@ -14,7 +14,7 @@
 #include <kis_debug.h>
 #include <KisPortingUtils.h>
 
-#define TASKSET_VERSION 2
+#define TASKSET_VERSION 3
 
 TasksetResource::TasksetResource(const QString& f)
     : KoResource(f)
@@ -28,15 +28,33 @@ TasksetResource::~TasksetResource()
 TasksetResource::TasksetResource(const TasksetResource &rhs)
     : KoResource(rhs),
       m_actions(rhs.m_actions),
-      m_filterIds(rhs.m_filterIds),
-      m_filterConfigs(rhs.m_filterConfigs),
-      m_filterNames(rhs.m_filterNames)
+      m_steps(rhs.m_steps)
 {
 }
 
 KoResourceSP TasksetResource::clone() const
 {
     return KoResourceSP(new TasksetResource(*this));
+}
+
+namespace {
+
+QString readConfigBlob(const QDomElement &parent)
+{
+    // Krimble: the parameter blob is itself a small XML document (a
+    // KisFilterConfiguration's or KisOperationConfiguration's own toXML()
+    // output), stored as a single CDATA child so it round-trips without
+    // needing to merge two separate DOMs.
+    QDomElement configElement = parent.firstChildElement("config");
+    if (configElement.isNull()) return QString();
+
+    QDomNode configChild = configElement.firstChild();
+    if (configChild.isCDATASection()) {
+        return configChild.toCDATASection().data();
+    }
+    return configElement.text();
+}
+
 }
 
 bool TasksetResource::loadFromDevice(QIODevice *dev, KisResourcesInterfaceSP resourcesInterface)
@@ -53,45 +71,31 @@ bool TasksetResource::loadFromDevice(QIODevice *dev, KisResourcesInterfaceSP res
     const int version = element.attribute("version", "1").toInt();
 
     m_actions.clear();
-    m_filterIds.clear();
-    m_filterConfigs.clear();
-    m_filterNames.clear();
+    m_steps.clear();
 
     QDomNode node = element.firstChild();
     while (!node.isNull()) {
         QDomElement child = node.toElement();
         if (!child.isNull()) {
             if (version >= 2 && child.tagName() == "step") {
-                // Krimble: unified per-step element, one of "action" or
-                // "filterId"/"filterName" set (with the config XML blob as
-                // a child element), the other left blank -- avoids relying
-                // on separate parallel tag lists staying in sync by order.
-                m_actions.append(child.attribute("action"));
-                m_filterIds.append(child.attribute("filterId"));
-                m_filterNames.append(child.attribute("filterName"));
-
-                QString configXml;
-                QDomElement configElement = child.firstChildElement("config");
-                if (!configElement.isNull()) {
-                    QDomNode configChild = configElement.firstChild();
-                    // The config blob is itself a small XML document (a
-                    // KisFilterConfiguration's own toXML() output) stored
-                    // as a single CDATA/text child so it round-trips
-                    // without needing to merge two different DOMs.
-                    if (configChild.isCDATASection()) {
-                        configXml = configChild.toCDATASection().data();
-                    } else {
-                        configXml = configElement.text();
-                    }
-                }
-                m_filterConfigs.append(configXml);
+                StepRecord record;
+                record.action = child.attribute("action");
+                record.filterId = child.attribute("filterId");
+                record.filterName = child.attribute("filterName");
+                // operationId only exists in version 3+; absent attributes
+                // read back as an empty string, so version-2 files load
+                // correctly through this same path.
+                record.operationId = child.attribute("operationId");
+                record.configXml = readConfigBlob(child);
+                m_steps.append(record);
+                m_actions.append(record.action);
             } else if (child.tagName() == "action") {
-                // Krimble: backward compatibility with version-1 files,
-                // which only ever stored plain action-trigger steps.
-                m_actions.append(child.text());
-                m_filterIds.append(QString());
-                m_filterConfigs.append(QString());
-                m_filterNames.append(QString());
+                // Krimble: version-1 files only ever stored plain
+                // action-trigger steps.
+                StepRecord record;
+                record.action = child.text();
+                m_steps.append(record);
+                m_actions.append(record.action);
             }
         }
         node = node.nextSibling();
@@ -115,26 +119,19 @@ QStringList TasksetResource::actionList()
     return m_actions;
 }
 
-void TasksetResource::setFilterList(const QStringList &filterIds, const QStringList &filterConfigs, const QStringList &filterNames)
+void TasksetResource::setStepList(const QVector<StepRecord> &steps)
 {
-    m_filterIds = filterIds;
-    m_filterConfigs = filterConfigs;
-    m_filterNames = filterNames;
+    m_steps = steps;
+
+    m_actions.clear();
+    Q_FOREACH (const StepRecord &record, m_steps) {
+        m_actions.append(record.action);
+    }
 }
 
-QStringList TasksetResource::filterIdList()
+QVector<TasksetResource::StepRecord> TasksetResource::stepList() const
 {
-    return m_filterIds;
-}
-
-QStringList TasksetResource::filterConfigList()
-{
-    return m_filterConfigs;
-}
-
-QStringList TasksetResource::filterNameList()
-{
-    return m_filterNames;
+    return m_steps;
 }
 
 bool TasksetResource::saveToDevice(QIODevice *io) const
@@ -145,16 +142,16 @@ bool TasksetResource::saveToDevice(QIODevice *io) const
     root.setAttribute("name", name() );
     root.setAttribute("version", TASKSET_VERSION);
 
-    for (int i = 0; i < m_actions.size(); ++i) {
+    Q_FOREACH (const StepRecord &record, m_steps) {
         QDomElement element = doc.createElement("step");
-        element.setAttribute("action", m_actions.at(i));
-        element.setAttribute("filterId", i < m_filterIds.size() ? m_filterIds.at(i) : QString());
-        element.setAttribute("filterName", i < m_filterNames.size() ? m_filterNames.at(i) : QString());
+        element.setAttribute("action", record.action);
+        element.setAttribute("filterId", record.filterId);
+        element.setAttribute("filterName", record.filterName);
+        element.setAttribute("operationId", record.operationId);
 
-        const QString configXml = i < m_filterConfigs.size() ? m_filterConfigs.at(i) : QString();
-        if (!configXml.isEmpty()) {
+        if (!record.configXml.isEmpty()) {
             QDomElement configElement = doc.createElement("config");
-            configElement.appendChild(doc.createCDATASection(configXml));
+            configElement.appendChild(doc.createCDATASection(record.configXml));
             element.appendChild(configElement);
         }
 

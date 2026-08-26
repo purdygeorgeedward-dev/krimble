@@ -96,6 +96,16 @@ public:
     */
     void setOperationID(const QString& id);
 
+    /**
+     * Krimble: the operation id set by setOperationID(), or an empty
+     * string for a plain action. Lets the Actions docker tell whether an
+     * action merely dispatches a KisOperation -- in which case the real,
+     * parameterized step arrives separately via
+     * KisActionManager::sigOperationRun and this trigger should not also
+     * be recorded as a duplicate, non-replayable step.
+     */
+    QString operationID() const;
+
 Q_SIGNALS:
     void sigEnableSlaves(bool value);
 

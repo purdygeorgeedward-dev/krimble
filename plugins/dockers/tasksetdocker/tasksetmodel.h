@@ -26,13 +26,15 @@ class QAction;
  */
 struct TasksetStep
 {
-    enum Type { ActionTrigger, FilterApplication };
+    enum Type { ActionTrigger, FilterApplication, OperationRun };
 
     Type type = ActionTrigger;
     QAction *action = nullptr;        // valid when type == ActionTrigger
     QString filterId;                 // valid when type == FilterApplication
     QString filterConfigXml;          // valid when type == FilterApplication, full KisFilterConfiguration::toXML()
     QString filterDisplayName;        // valid when type == FilterApplication, for display without needing the registry
+    QString operationId;              // valid when type == OperationRun
+    QString operationConfigXml;       // valid when type == OperationRun, full KisOperationConfiguration::toXML()
 };
 
 class TasksetModel : public QAbstractTableModel
@@ -50,6 +52,7 @@ public:
 
     void addAction(QAction* action);
     void addFilterApplication(const QString &filterId, const QString &filterConfigXml, const QString &filterDisplayName);
+    void addOperationRun(const QString &operationId, const QString &operationConfigXml);
     TasksetStep stepFromIndex(const QModelIndex& index);
     QVector<TasksetStep> steps();
 

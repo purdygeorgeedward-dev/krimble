@@ -134,6 +134,7 @@ void TasksetDockerDock::setCanvas(KoCanvasBase * canvas)
             client->actionCollection()->disconnect(this);
         }
          m_canvas->viewManager()->filterManager()->disconnect(this);
+         m_canvas->viewManager()->actionManager()->disconnect(this);
     }
     m_canvas = dynamic_cast<KisCanvas2*>(canvas);
     setEnabled(canvas != 0);
@@ -159,6 +160,19 @@ void TasksetDockerDock::actionTriggered(QAction* action)
         if (action->objectName().startsWith(QLatin1String("krita_filter_"))) {
             return;
         }
+
+        // Krimble: same reasoning for operation-backed actions (Invert
+        // Selection, Grow/Shrink/Border/Feather/Smooth Selection) -- the
+        // trigger only dispatches the operation, and any parameter dialog
+        // it prompts with hasn't been filled in yet at this point. The
+        // real, parameterized step arrives via sigOperationRun and is
+        // recorded by operationRun() below.
+        if (KisAction *kisAction = qobject_cast<KisAction*>(action)) {
+            if (!kisAction->operationID().isEmpty()) {
+                return;
+            }
+        }
+
         m_model->addAction(action);
         saveButton->setEnabled(true);
     }
@@ -177,6 +191,16 @@ void TasksetDockerDock::filterApplied(KisFilterConfigurationSP filterConfig)
     saveButton->setEnabled(true);
 }
 
+void TasksetDockerDock::operationRun(KisOperationConfigurationSP operationConfig)
+{
+    if (!operationConfig || m_blocked || !recordButton->isChecked()) {
+        return;
+    }
+
+    m_model->addOperationRun(operationConfig->id(), operationConfig->toXML());
+    saveButton->setEnabled(true);
+}
+
 void TasksetDockerDock::activated(const QModelIndex& index)
 {
     TasksetStep step = m_model->stepFromIndex(index);
@@ -187,6 +211,12 @@ void TasksetDockerDock::activated(const QModelIndex& index)
             KisFilterConfigurationSP config = new KisFilterConfiguration(step.filterId, 1, KisGlobalResourcesInterface::instance());
             config->fromXML(step.filterConfigXml);
             m_canvas->viewManager()->filterManager()->apply(config);
+        }
+    } else if (step.type == TasksetStep::OperationRun) {
+        if (m_canvas && m_canvas->viewManager()) {
+            KisOperationConfigurationSP config = new KisOperationConfiguration(step.operationId);
+            config->fromXML(step.operationConfigXml);
+            m_canvas->viewManager()->actionManager()->runOperationFromConfiguration(config);
         }
     } else if (step.action && step.action->isEnabled()) {
         step.action->trigger();
@@ -207,6 +237,8 @@ void TasksetDockerDock::recordClicked()
         }
         connect(view->filterManager(), &KisFilterManager::sigFilterApplied,
                 this, &TasksetDockerDock::filterApplied, Qt::UniqueConnection);
+        connect(view->actionManager(), &KisActionManager::sigOperationRun,
+                this, &TasksetDockerDock::operationRun, Qt::UniqueConnection);
     }
 }
 
@@ -216,29 +248,22 @@ void TasksetDockerDock::saveClicked()
 
     TasksetResourceSP taskset(new TasksetResource(QString()));
 
-    QStringList actionNames;
-    QStringList filterIds;
-    QStringList filterConfigs;
-    QStringList filterNames;
-    // Krimble: a parallel-list encoding matching TasksetResource's existing
-    // simple format -- "actionNames" keeps a placeholder empty string for
-    // filter-application steps (and vice versa) so the three/four lists
-    // stay index-aligned and step order survives a round trip.
+    QVector<TasksetResource::StepRecord> stepRecords;
     Q_FOREACH (const TasksetStep &step, m_model->steps()) {
+        TasksetResource::StepRecord record;
         if (step.type == TasksetStep::FilterApplication) {
-            actionNames.append(QString());
-            filterIds.append(step.filterId);
-            filterConfigs.append(step.filterConfigXml);
-            filterNames.append(step.filterDisplayName);
+            record.filterId = step.filterId;
+            record.configXml = step.filterConfigXml;
+            record.filterName = step.filterDisplayName;
+        } else if (step.type == TasksetStep::OperationRun) {
+            record.operationId = step.operationId;
+            record.configXml = step.operationConfigXml;
         } else {
-            actionNames.append(step.action ? step.action->objectName() : QString());
-            filterIds.append(QString());
-            filterConfigs.append(QString());
-            filterNames.append(QString());
+            record.action = step.action ? step.action->objectName() : QString();
         }
+        stepRecords.append(record);
     }
-    taskset->setActionList(actionNames);
-    taskset->setFilterList(filterIds, filterConfigs, filterNames);
+    taskset->setStepList(stepRecords);
     taskset->setValid(true);
     QString saveLocation = m_rserver->saveLocation();
 
@@ -289,17 +314,15 @@ void TasksetDockerDock::resourceSelected(KoResourceSP resource)
     saveButton->setEnabled(true);
 
     TasksetResourceSP taskset = resource.staticCast<TasksetResource>();
-    const QStringList actionNames = taskset->actionList();
-    const QStringList filterIds = taskset->filterIdList();
-    const QStringList filterConfigs = taskset->filterConfigList();
-    const QStringList filterNames = taskset->filterNameList();
+    const QVector<TasksetResource::StepRecord> steps = taskset->stepList();
 
-    for (int i = 0; i < actionNames.size(); ++i) {
-        const bool isFilterStep = i < filterIds.size() && !filterIds.at(i).isEmpty();
-        if (isFilterStep) {
-            m_model->addFilterApplication(filterIds.at(i), filterConfigs.value(i), filterNames.value(i));
-        } else if (!actionNames.at(i).isEmpty()) {
-            QAction* action = m_canvas->viewManager()->actionCollection()->action(actionNames.at(i));
+    Q_FOREACH (const TasksetResource::StepRecord &record, steps) {
+        if (!record.filterId.isEmpty()) {
+            m_model->addFilterApplication(record.filterId, record.configXml, record.filterName);
+        } else if (!record.operationId.isEmpty()) {
+            m_model->addOperationRun(record.operationId, record.configXml);
+        } else if (!record.action.isEmpty()) {
+            QAction* action = m_canvas->viewManager()->actionCollection()->action(record.action);
             if(action) {
                 m_model->addAction(action);
             }

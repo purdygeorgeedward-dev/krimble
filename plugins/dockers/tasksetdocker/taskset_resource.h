@@ -10,6 +10,7 @@
 
 #include <KoResource.h>
 #include <QStringList>
+#include <QVector>
 
 
 class TasksetResource : public KoResource
@@ -37,21 +38,25 @@ public:
     QStringList actionList();
 
     /**
-     * Krimble: parallel, index-aligned lists for filter-application steps
-     * (see TasksetStep in tasksetmodel.h) -- a plain action-trigger step
-     * has an empty string at the same index in all three of these lists.
+     * Krimble: one record per recorded step. Exactly one of `action`,
+     * `filterId`, or `operationId` is set; `configXml` carries the
+     * serialized parameters for the filter/operation cases.
      */
-    void setFilterList(const QStringList &filterIds, const QStringList &filterConfigs, const QStringList &filterNames);
-    QStringList filterIdList();
-    QStringList filterConfigList();
-    QStringList filterNameList();
+    struct StepRecord {
+        QString action;
+        QString filterId;
+        QString filterName;
+        QString operationId;
+        QString configXml;
+    };
+
+    void setStepList(const QVector<StepRecord> &steps);
+    QVector<StepRecord> stepList() const;
 
 private:
 
     QStringList m_actions;
-    QStringList m_filterIds;
-    QStringList m_filterConfigs;
-    QStringList m_filterNames;
+    QVector<StepRecord> m_steps;
 };
 
 typedef QSharedPointer<TasksetResource> TasksetResourceSP;

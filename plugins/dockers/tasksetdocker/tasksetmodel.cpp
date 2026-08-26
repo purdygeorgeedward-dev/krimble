@@ -30,6 +30,9 @@ QVariant TasksetModel::data(const QModelIndex& index, int role) const
                 if (step.type == TasksetStep::FilterApplication) {
                     return step.filterDisplayName;
                 }
+                if (step.type == TasksetStep::OperationRun) {
+                    return step.operationId;
+                }
                 return step.action ? step.action->iconText() : QVariant();
             }
             case Qt::DecorationRole:
@@ -39,6 +42,9 @@ QVariant TasksetModel::data(const QModelIndex& index, int role) const
                     // steps -- individual filters don't reliably have their
                     // own distinct icon the way toolbox tools do.
                     return KisIconUtils::loadIcon("view-filter");
+                }
+                if (step.type == TasksetStep::OperationRun) {
+                    return KisIconUtils::loadIcon("tools-wizard");
                 }
                 const QIcon icon = step.action ? step.action->icon() : QIcon();
                 if (icon.isNull()) {
@@ -90,6 +96,17 @@ void TasksetModel::addFilterApplication(const QString &filterId, const QString &
     step.filterId = filterId;
     step.filterConfigXml = filterConfigXml;
     step.filterDisplayName = filterDisplayName;
+    m_steps.append(step);
+    beginResetModel();
+    endResetModel();
+}
+
+void TasksetModel::addOperationRun(const QString &operationId, const QString &operationConfigXml)
+{
+    TasksetStep step;
+    step.type = TasksetStep::OperationRun;
+    step.operationId = operationId;
+    step.operationConfigXml = operationConfigXml;
     m_steps.append(step);
     beginResetModel();
     endResetModel();

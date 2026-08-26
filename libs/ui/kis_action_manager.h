@@ -85,6 +85,19 @@ public:
 
     static void safePopulateMenu(QMenu *menu, const QString &actionId, KisActionManager *actionManager);
 
+Q_SIGNALS:
+    /**
+     * Krimble: fired whenever a KisOperation is actually run, with its
+     * full KisOperationConfiguration -- the operation equivalent of
+     * KisFilterManager::sigFilterApplied. Operations that take parameters
+     * (Grow/Shrink/Border/Feather/Smooth Selection) prompt for them via a
+     * KisOperationUIFactory *before* reaching here, so by this point the
+     * config carries the user's real chosen values, making the step
+     * genuinely replayable rather than just "this menu item was clicked".
+     * Used by the Actions docker to record parameterized operation steps.
+     */
+    void sigOperationRun(KisOperationConfigurationSP config);
+
 private Q_SLOTS:
     void slotActionAddedToCollection(QAction *action);
 

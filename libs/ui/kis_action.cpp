@@ -122,6 +122,11 @@ void KisAction::setOperationID(const QString& id)
     connect(this, SIGNAL(triggered()), this, SLOT(slotTriggered()));
 }
 
+QString KisAction::operationID() const
+{
+    return d->operationID;
+}
+
 void KisAction::slotTriggered()
 {
     if (d->actionManager && !d->operationID.isEmpty()) {
