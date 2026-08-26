@@ -373,7 +373,7 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     d->viewManager = new KisViewManager(this, actionCollection());
     KConfigGroup group( KSharedConfig::openConfig(), "theme");
 #ifndef Q_OS_HAIKU
-    d->themeManager = new Digikam::ThemeManager(group.readEntry("Theme", "Krita dark"), this);
+    d->themeManager = new Digikam::ThemeManager(group.readEntry("Theme", "Krimble dark"), this);
 #endif
     d->windowStateConfig = KSharedConfig::openConfig()->group("MainWindow");
 
@@ -397,10 +397,10 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     connect(KisConfigNotifier::instance(), SIGNAL(configChanged()), this, SLOT(configChanged()));
 
     actionCollection()->addAssociatedWidget(this);
-    KoPluginLoader::instance()->load("Krita/ViewPlugin", KoPluginLoader::PluginsConfig(), d->viewManager, false);
+    KoPluginLoader::instance()->load("Krimble/ViewPlugin", KoPluginLoader::PluginsConfig(), d->viewManager, false);
 
     // Load the per-application plugins (Right now, only Python) We do this only once, when the first mainwindow is being created.
-    KoPluginLoader::instance()->load("Krita/ApplicationPlugin", KoPluginLoader::PluginsConfig(), qApp, true);
+    KoPluginLoader::instance()->load("Krimble/ApplicationPlugin", KoPluginLoader::PluginsConfig(), qApp, true);
 
     KoToolBoxFactory toolBoxFactory;
     QDockWidget *toolbox = createDockWidget(&toolBoxFactory);
@@ -655,7 +655,7 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     }
 #endif
 
-    // When Krita starts, Java side sends an event to set applicationState() to active. But, before
+    // When Krimble starts, Java side sends an event to set applicationState() to active. But, before
     // the event could reach KisApplication's platform integration, it is cleared by KisOpenGLModeProber::probeFormat.
     // So, we send it manually when MainWindow shows up.
     QAndroidJniObject::callStaticMethod<void>("org/qtproject/qt5/android/QtNative", "setApplicationState", "(I)V", Qt::ApplicationActive);
@@ -1021,7 +1021,7 @@ void KisMainWindow::setCanvasDetached(bool detach)
 {
 #ifdef Q_OS_ANDROID
     if (detach) {
-        QMessageBox::warning(this, i18nc("@title:window", "Krita"),
+        QMessageBox::warning(this, i18nc("@title:window", "Krimble"),
                              "Detach Canvas is unsupported on Android");
     }
 #else
@@ -1091,7 +1091,7 @@ bool KisMainWindow::openDocument(const QString &path, OpenFlags flags)
 
     if (!QFile(path).exists()) {
         if (!(flags & BatchMode)) {
-            QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krita"), i18n("The file %1 does not exist.", path));
+            QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krimble"), i18n("The file %1 does not exist.", path));
         }
         KisRecentFilesManager::instance()->remove(QUrl::fromLocalFile(path)); //remove the file from the recent-opened-file-list
         return false;
@@ -1235,7 +1235,7 @@ void KisMainWindow::slotSaveCanceled(const QString &errMsg)
 {
     if (!errMsg.isEmpty()) {   // empty when cancelled by user
         KisUsageLogger::log(QString("Saving cancelled. Error:").arg(errMsg));
-        QMessageBox::critical(this, i18nc("@title:window", "Krita"), errMsg);
+        QMessageBox::critical(this, i18nc("@title:window", "Krimble"), errMsg);
     }
     else {
         KisUsageLogger::log(QString("Saving cancelled by the user."));
@@ -1332,7 +1332,7 @@ bool KisMainWindow::saveDocument(KisDocument *document, bool saveas, bool isExpo
     }
     else if (dlg.result() == KisDelayedSaveDialog::Ignored) {
         QMessageBox::critical(qApp->activeWindow(),
-                              i18nc("@title:window", "Krita"),
+                              i18nc("@title:window", "Krimble"),
                               i18n("You are saving a file while the image is "
                                    "still rendering. The saved file may be "
                                    "incomplete or corrupted.\n\n"
@@ -1352,7 +1352,7 @@ bool KisMainWindow::saveDocument(KisDocument *document, bool saveas, bool isExpo
     }
 
     QFile target(document->path());
-    if (!target.exists()) { // Possible when file is moved/unmounted during Krita session.
+    if (!target.exists()) { // Possible when file is moved/unmounted during Krimble session.
         saveas = true;
     }
 
@@ -1659,7 +1659,7 @@ void KisMainWindow::showEvent(QShowEvent *event)
     }
 #ifdef Q_OS_ANDROID
     // The user can conceivably purchase a product from the splash screen while
-    // Krita is still loading. In that case, the "pending" flag will be set. The
+    // Krimble is still loading. In that case, the "pending" flag will be set. The
     // dialog in question will clear the flag.
     KisAndroidDonations *androidDonations = KisAndroidDonations::instance();
     if (androidDonations && androidDonations->isShowDonationManagementDialogPending()) {
@@ -2079,7 +2079,7 @@ void KisMainWindow::slotStoragesWarning(const QString &/*location*/)
 
     if (!checkPaintOpAvailable()) {
         warning += i18n("\nThere are no brush presets available. Please enable a bundle that has presets before continuing.\n");
-        QMessageBox::critical(this, i18nc("@title:window", "Krita"), warning);
+        QMessageBox::critical(this, i18nc("@title:window", "Krimble"), warning);
 
         QAction *action = actionCollection()->action("manage_bundles");
         if (action) {
@@ -2088,7 +2088,7 @@ void KisMainWindow::slotStoragesWarning(const QString &/*location*/)
     }
 
     if (!checkActiveBundlesAvailable()) {
-        QMessageBox::warning(this, i18nc("@title:window", "Krita"), warning + i18n("\nOnly your local resources are available."));
+        QMessageBox::warning(this, i18nc("@title:window", "Krimble"), warning + i18n("\nOnly your local resources are available."));
     }
 
 }
@@ -2227,7 +2227,7 @@ void KisMainWindow::importAnimation()
         if (!status.isOk() && !status.isInternalError()) {
             QString msg = status.errorMessage();
             if (!msg.isEmpty())
-                QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krita"), i18n("Could not finish import animation:\n%1", msg));
+                QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krimble"), i18n("Could not finish import animation:\n%1", msg));
         }
         activeView()->canvasBase()->refetchDataFromImage();
     }
@@ -2288,7 +2288,7 @@ void KisMainWindow::importVideoAnimation()
             KoColor bgColor(qc, cs);
 
             if (!document->newImage(name, width, height, cs, bgColor, KisConfig::RASTER_LAYER, 1, "", double(resolution / 72) )) {
-                QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krita"), i18n("Failed to create new document. Animation import aborted."));
+                QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krimble"), i18n("Failed to create new document. Animation import aborted."));
                 return;
             }
 
@@ -2307,7 +2307,7 @@ void KisMainWindow::importVideoAnimation()
         if (!status.isOk() && !status.isInternalError()) {
             QString msg = status.errorMessage();
             if (!msg.isEmpty())
-                QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krita"), i18n("Could not finish import animation:\n%1", msg));
+                QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krimble"), i18n("Could not finish import animation:\n%1", msg));
         }
 
         activeView()->canvasBase()->refetchDataFromImage();
@@ -2911,7 +2911,7 @@ void KisMainWindow::configChanged()
 
     KConfigGroup group( KSharedConfig::openConfig(), "theme");
 #ifndef Q_OS_HAIKU
-    d->themeManager->setCurrentTheme(group.readEntry("Theme", "Krita dark"));
+    d->themeManager->setCurrentTheme(group.readEntry("Theme", "Krimble dark"));
 #endif
     d->actionManager()->updateGUI();
 
@@ -2953,7 +2953,7 @@ void KisMainWindow::newWindow()
 #ifdef Q_OS_ANDROID
     // Check if current mainwindow exists, just to be sure.
     if (KisPart::instance()->currentMainwindow()) {
-        QMessageBox::warning(this, i18nc("@title:window", "Krita"),
+        QMessageBox::warning(this, i18nc("@title:window", "Krimble"),
                              "Creating a New Main Window is unsupported on Android");
         return;
     }
@@ -2976,7 +2976,7 @@ void KisMainWindow::checkSanity()
     // print error if the lcms engine is not available
     if (!KoColorSpaceEngineRegistry::instance()->contains("icc")) {
         // need to wait 1 event since exiting here would not work.
-        m_errorMessage = i18n("The Krita LittleCMS color management plugin is not installed. Krita will quit now.");
+        m_errorMessage = i18n("The Krimble LittleCMS color management plugin is not installed. Krimble will quit now.");
         m_dieOnError = true;
         QTimer::singleShot(0, this, SLOT(showErrorAndDie()));
         return;
@@ -3266,7 +3266,7 @@ void KisMainWindow::initializeGeometry()
 
 void KisMainWindow::showManual()
 {
-    QDesktopServices::openUrl(QUrl("https://docs.krita.org"));
+    QDesktopServices::openUrl(QUrl("https://krimble.org"));
 }
 
 void KisMainWindow::showDockerTitleBars(bool show)

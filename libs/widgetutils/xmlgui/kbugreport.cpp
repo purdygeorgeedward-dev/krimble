@@ -155,7 +155,7 @@ KisKBugReport::KisKBugReport(const KAboutData &aboutData, QWidget *_parent)
 
     lay->addSpacing(10);
     QString text = i18n("<qt>"
-                        "<p>Please read <b><a href=\"https://docs.krita.org/en/untranslatable_pages/reporting_bugs.html\">this guide</a></b> for reporting bugs first!</p>"
+                        "<p>Please read <b><a href=\"https://krimble.org\">this guide</a></b> for reporting bugs first!</p>"
                         "<p>To submit a bug report, click on the button below. This will open a web browser "
                         "window on <a href=\"https://bugs.kde.org\">https://bugs.kde.org</a> where you will find "
                         "a form to fill in. </p>"

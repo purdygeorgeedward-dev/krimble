@@ -232,7 +232,7 @@ void KisKHelpMenu::aboutKDE()
 void KisKHelpMenu::reportBug()
 {
 #ifdef KRITA_STABLE
-    QDesktopServices::openUrl(QUrl("https://docs.krita.org/en/untranslatable_pages/reporting_bugs.html"));
+    QDesktopServices::openUrl(QUrl("https://krimble.org"));
 #else
     if (!d->mBugReport) {
         d->mBugReport = new KisKBugReport(d->mAboutData, d->mParent);

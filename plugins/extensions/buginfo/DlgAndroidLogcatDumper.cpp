@@ -94,8 +94,8 @@ QString DlgAndroidLogcatDumper::originalFileName()
 
 QString DlgAndroidLogcatDumper::captionText()
 {
-    return i18nc("Caption of the dialog with Krita's Android system log for bug reports",
-                 "Krita Logcat Dump: please paste this information to the bug report");
+    return i18nc("Caption of the dialog with Krimble's Android system log for bug reports",
+                 "Krimble Logcat Dump: please paste this information to the bug report");
 }
 
 QString DlgAndroidLogcatDumper::replacementWarningText() { return QString(); }

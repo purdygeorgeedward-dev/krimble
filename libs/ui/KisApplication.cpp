@@ -275,7 +275,7 @@ KisApplication::KisApplication(const QString &key, int &argc, char **argv)
 #if KRITA_USE_SURFACE_COLOR_MANAGEMENT_API
 
     /**
-     * Automatically assign sRGB color space to all Krita windows,
+     * Automatically assign sRGB color space to all Krimble windows,
      * which are not marked with a special tag.
      */
     struct PlatformWindowCreationFilter : QObject
@@ -350,7 +350,7 @@ void KisApplication::initializeGlobals(const KisApplicationArguments &args)
 
 void KisApplication::addResourceTypes()
 {
-    // All Krita's resource types
+    // All Krimble's resource types
     KoResourcePaths::addAssetType("markers", "data", "/styles/");
     KoResourcePaths::addAssetType("kis_pics", "data", "/pics/");
     KoResourcePaths::addAssetType("kis_images", "data", "/images/");
@@ -450,13 +450,13 @@ bool KisApplication::registerResources()
 #endif
 
     if (!KisResourceCacheDb::initialize(databaseLocation)) {
-        QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krita: Fatal error"), i18n("%1\n\nKrita will quit now.", KisResourceCacheDb::lastError()));
+        QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krimble: Fatal error"), i18n("%1\n\nKrita will quit now.", KisResourceCacheDb::lastError()));
     }
 
     KisResourceLocator::LocatorError r = KisResourceLocator::instance()->initialize(KoResourcePaths::getApplicationRoot() + "/share/krita");
     connect(KisResourceLocator::instance(), SIGNAL(progressMessage(const QString&)), this, SLOT(setSplashScreenLoadingText(const QString&)));
     if (r != KisResourceLocator::LocatorError::Ok && qApp->inherits("KisApplication")) {
-        QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krita: Fatal error"), KisResourceLocator::instance()->errorMessages().join('\n') + i18n("\n\nKrita will quit now."));
+        QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krimble: Fatal error"), KisResourceLocator::instance()->errorMessages().join('\n') + i18n("\n\nKrita will quit now."));
         return false;
     }
     return true;
@@ -498,7 +498,7 @@ bool KisApplication::start(const KisApplicationArguments &args)
 
     if (isWow64() && !cfg.readEntry("WarnedAbout32Bits", false)) {
         QMessageBox::information(qApp->activeWindow(),
-                                 i18nc("@title:window", "Krita: Warning"),
+                                 i18nc("@title:window", "Krimble: Warning"),
                                  i18n("You are running a 32 bits build on a 64 bits Windows.\n"
                                       "This is not recommended.\n"
                                       "Please download and install the x64 build instead."));
@@ -547,7 +547,7 @@ bool KisApplication::start(const KisApplicationArguments &args)
     KConfigGroup group(KSharedConfig::openConfig(), "theme");
 #ifndef Q_OS_HAIKU
     Digikam::ThemeManager themeManager;
-    themeManager.setCurrentTheme(group.readEntry("Theme", "Krita dark"));
+    themeManager.setCurrentTheme(group.readEntry("Theme", "Krimble dark"));
 #endif
 
     ResetStarting resetStarting(d->splashScreen, args.filenames().count()); // remove the splash when done
@@ -671,7 +671,7 @@ if (!d->batchRun) {
     // pressing the stylus button. This flag causes the Android platform
     // integration to turn it into middle clicks instead. Currently
     // unconditional because a setting requires translation-relevant text
-    // changes, but later versions of Krita let you toggle it like the Xiaomi
+    // changes, but later versions of Krimble let you toggle it like the Xiaomi
     // workarounds above.
 #if KRITA_QT_HAS_ANDROID_EMULATE_MOUSE_BUTTONS_FOR_HIGH_FUNCTION_KEYS
     QCoreApplication::setKritaAttribute(KRITA_QATTRIBUTE_ANDROID_EMULATE_MOUSE_BUTTONS_FOR_HIGH_FUNCTION_KEYS, true);
@@ -822,25 +822,25 @@ if (!d->batchRun) {
                                     d->mainWindow->viewManager()->activeNode());
             }
             else{
-                QMessageBox::warning(qApp->activeWindow(), i18nc("@title:window", "Krita:Warning"),
+                QMessageBox::warning(qApp->activeWindow(), i18nc("@title:window", "Krimble:Warning"),
                                             i18n("Cannot add %1 as a file layer: the file does not exist.", fileLayer->path()));
             }
         }
         else if (this->isRunning()){
-            QMessageBox::warning(qApp->activeWindow(), i18nc("@title:window", "Krita:Warning"),
+            QMessageBox::warning(qApp->activeWindow(), i18nc("@title:window", "Krimble:Warning"),
                                 i18n("Cannot add the file layer: no document is open.\n\n"
 "You can create a new document using the --new-image option, or you can open an existing file.\n\n"
-"If you instead want to add the file layer to a document in an already running instance of Krita, check the \"Allow only one instance of Krita\" checkbox in the settings (Settings -> General -> Window)."));
+"If you instead want to add the file layer to a document in an already running instance of Krimble, check the \"Allow only one instance of Krimble\" checkbox in the settings (Settings -> General -> Window)."));
         }
         else {
-            QMessageBox::warning(qApp->activeWindow(), i18nc("@title:window", "Krita: Warning"),
+            QMessageBox::warning(qApp->activeWindow(), i18nc("@title:window", "Krimble: Warning"),
                                 i18n("Cannot add the file layer: no document is open.\n"
                                      "You can either create a new file using the --new-image option, or you can open an existing file."));
         }
     }
 
-    // fixes BUG:369308  - Krita crashing on splash screen when loading.
-    // trying to open a file before Krita has loaded can cause it to hang and crash
+    // fixes BUG:369308  - Krimble crashing on splash screen when loading.
+    // trying to open a file before Krimble has loaded can cause it to hang and crash
     if (d->splashScreen) {
         d->splashScreen->displayLinks(true);
         d->splashScreen->displayRecentFiles(true);
@@ -1087,7 +1087,7 @@ void KisApplication::executeRemoteArguments(QByteArray message, KisMainWindow *m
     if (!args.fileLayer().isEmpty()){
         if (argsCount > 0  && !documentCreated){
             //arg was passed but document was not created so don't add the file layer.
-            QMessageBox::warning(mainWindow, i18nc("@title:window", "Krita:Warning"),
+            QMessageBox::warning(mainWindow, i18nc("@title:window", "Krimble:Warning"),
                                             i18n("Couldn't open file %1",args.filenames().at(argsCount - 1)));
         }
         else if (mainWindow->viewManager()->image()){
@@ -1101,12 +1101,12 @@ void KisApplication::executeRemoteArguments(QByteArray message, KisMainWindow *m
                                     d->mainWindow->viewManager()->activeNode());
             }
             else{
-                QMessageBox::warning(mainWindow, i18nc("@title:window", "Krita:Warning"),
+                QMessageBox::warning(mainWindow, i18nc("@title:window", "Krimble:Warning"),
                                             i18n("Cannot add %1 as a file layer: the file does not exist.", fileLayer->path()));
             }
         }
         else {
-            QMessageBox::warning(mainWindow, i18nc("@title:window", "Krita:Warning"),
+            QMessageBox::warning(mainWindow, i18nc("@title:window", "Krimble:Warning"),
                                             i18n("Cannot add the file layer: no document is open."));
         }
     }
@@ -1234,10 +1234,10 @@ bool KisApplication::createNewDocFromTemplate(const QString &fileName, KisMainWi
         }
 
         if (paths.isEmpty()) {
-            QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krita"),
+            QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krimble"),
                                   i18n("No template found for: %1", desktopName));
         } else if (paths.count() > 1) {
-            QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krita"),
+            QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krimble"),
                                   i18n("Too many templates found for: %1", desktopName));
         } else {
             templatePath = paths.at(0);
@@ -1253,7 +1253,7 @@ bool KisApplication::createNewDocFromTemplate(const QString &fileName, KisMainWi
             return true;
         }
         else {
-            QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krita"),
+            QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krimble"),
                                   i18n("Template %1 failed to load.", fileName));
         }
     }
@@ -1285,10 +1285,10 @@ void KisApplication::resetConfig()
             }
 
             QMessageBox::information(qApp->activeWindow(),
-                                 i18nc("@title:window", "Krita"),
-                                 i18n("Krita configurations reset!\n\n"
+                                 i18nc("@title:window", "Krimble"),
+                                 i18n("Krimble configurations reset!\n\n"
                                       "Backup file was created at: %1\n\n"
-                                      "Restart Krita for changes to take effect.",
+                                      "Restart Krimble for changes to take effect.",
                                       backupKritarcPath),
                                  QMessageBox::Ok, QMessageBox::Ok);
 
@@ -1299,7 +1299,7 @@ void KisApplication::resetConfig()
         }
         else {
             QMessageBox::warning(qApp->activeWindow(),
-                                 i18nc("@title:window", "Krita"),
+                                 i18nc("@title:window", "Krimble"),
                                  i18n("Failed to clear %1\n\n"
                                       "Please make sure no other program is using the file and try again.",
                                       kritarcPath),
@@ -1327,7 +1327,7 @@ void KisApplication::resetConfig()
 void KisApplication::askResetConfig()
 {
     bool ok = QMessageBox::question(qApp->activeWindow(),
-                                    i18nc("@title:window", "Krita"),
+                                    i18nc("@title:window", "Krimble"),
                                     i18n("Do you want to clear the settings file?"),
                                     QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes;
     if (ok) {

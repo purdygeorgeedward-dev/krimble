@@ -350,7 +350,7 @@ QSqlError createDatabase(const QString &location)
                 }
 
                 if (schemaIsOutDated) {
-                    QMessageBox::critical(0, i18nc("@title:window", "Krita"), i18n("The resource database scheme has changed. Krita will backup your database and create a new database."));
+                    QMessageBox::critical(0, i18nc("@title:window", "Krimble"), i18n("The resource database scheme has changed. Krimble will backup your database and create a new database."));
                     if (QVersionNumber::compare(oldSchemaVersionNumber, QVersionNumber::fromString("0.0.14")) > 0) {
                         KisResourceLocator::instance()->saveTags();
                     }
@@ -363,7 +363,7 @@ QSqlError createDatabase(const QString &location)
         }
 
         if (allTablesPresent && !schemaIsOutDated) {
-            KisUsageLogger::log(QString("Database is up to date. Version: %1, created by Krita %2, at %3")
+            KisUsageLogger::log(QString("Database is up to date. Version: %1, created by Krimble %2, at %3")
                                 .arg(schemaVersion)
                                 .arg(kritaVersion)
                                 .arg(QDateTime::fromSecsSinceEpoch(creationDate).toString()));
@@ -1948,7 +1948,7 @@ bool KisResourceCacheDb::synchronizeStorage(KisResourceStorageSP storage)
     }
 
     if (!q.first()) {
-        // This is a new storage, the user must have dropped it in the path before restarting Krita, so add it.
+        // This is a new storage, the user must have dropped it in the path before restarting Krimble, so add it.
         debugResource << "Adding storage to the database:" << storage;
         if (!addStorage(storage, false)) {
             qWarning() << "Could not add new storage" << storage->name() << "to the database";
@@ -2343,10 +2343,10 @@ void KisResourceCacheDb::synchronizeForeignKeysState()
 {
 #ifdef KRITA_STABLE
     bool useForeignKeys = false;
-    KisUsageLogger::log("INFO: detected stable build of Krita, foreign_keys constraint will be disabled");
+    KisUsageLogger::log("INFO: detected stable build of Krimble, foreign_keys constraint will be disabled");
 #else
     bool useForeignKeys = true;
-    KisUsageLogger::log("INFO: detected unstable build of Krita, foreign_keys constraint will be enabled");
+    KisUsageLogger::log("INFO: detected unstable build of Krimble, foreign_keys constraint will be enabled");
 #endif
 
     if (qEnvironmentVariableIsSet("KRITA_OVERRIDE_USE_FOREIGN_KEYS")) {

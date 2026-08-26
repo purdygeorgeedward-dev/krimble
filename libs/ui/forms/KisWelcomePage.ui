@@ -1484,7 +1484,7 @@ recently opened documents</string>
                </sizepolicy>
               </property>
               <property name="text">
-               <string>You can &lt;a href=&quot;ignored&quot; style=&quot;color: COLOR_PLACEHOLDER; text-decoration: underline;&quot;&gt;enable news&lt;/a&gt; from krita.org in various languages with the menu above</string>
+               <string>You can &lt;a href=&quot;ignored&quot; style=&quot;color: COLOR_PLACEHOLDER; text-decoration: underline;&quot;&gt;enable news&lt;/a&gt; from krimble.org in various languages with the menu above</string>
               </property>
               <property name="textFormat">
                <enum>Qt::RichText</enum>
@@ -1656,7 +1656,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QLabel" name="lblAndroidSupporter">
          <property name="text">
-          <string>Krita is made possible thanks to ongoing support from people like you!</string>
+          <string>Krimble is made possible thanks to ongoing support from people like you!</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -1714,7 +1714,7 @@ p, li { white-space: pre-wrap; }
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Support Krita!</string>
+         <string>Support Krimble!</string>
         </property>
         <property name="flat">
          <bool>false</bool>

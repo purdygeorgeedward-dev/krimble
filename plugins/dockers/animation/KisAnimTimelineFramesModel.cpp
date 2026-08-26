@@ -350,7 +350,7 @@ void KisAnimTimelineFramesModel::slotCurrentNodeChanged(KisNodeSP node)
     KisNodeDummy *dummy = m_d->dummiesFacade->dummyForNode(node);
     if (!dummy) {
         // It's perfectly normal that dummyForNode returns 0; that happens
-        // when views get activated while Krita is closing down.
+        // when views get activated while Krimble is closing down.
         return;
     }
     
@@ -696,7 +696,7 @@ bool KisAnimTimelineFramesModel::dropMimeDataExtended(const QMimeData *data, Qt:
     if (!srcImage) {
         KisPart *kisPartInstance = KisPart::instance();
         kisPartInstance->currentMainwindow()->viewManager()->showFloatingMessage(
-                    i18n("Dropped frames are not available in this Krita instance")
+                    i18n("Dropped frames are not available in this Krimble instance")
                     , QIcon());
         return false;
     }

@@ -193,7 +193,7 @@ QStringList KisImportExportManager::supportedMimeTypes(Direction direction)
 
     if (direction == KisImportExportManager::Import) {
         if (m_importMimeTypes.isEmpty()) {
-            QList<KoJsonTrader::Plugin> list = KoJsonTrader::instance()->query("Krita/FileFilter", "");
+            QList<KoJsonTrader::Plugin> list = KoJsonTrader::instance()->query("Krimble/FileFilter", "");
             Q_FOREACH(const KoJsonTrader::Plugin &loader, list) {
                 QJsonObject json = loader.metaData().value("MetaData").toObject();
                 Q_FOREACH(const QString &mimetype, json.value("X-KDE-Import").toString().split(",", Qt::SkipEmptyParts)) {
@@ -208,7 +208,7 @@ QStringList KisImportExportManager::supportedMimeTypes(Direction direction)
     }
     else if (direction == KisImportExportManager::Export) {
         if (m_exportMimeTypes.isEmpty()) {
-            QList<KoJsonTrader::Plugin> list = KoJsonTrader::instance()->query("Krita/FileFilter", "");
+            QList<KoJsonTrader::Plugin> list = KoJsonTrader::instance()->query("Krimble/FileFilter", "");
             Q_FOREACH(const KoJsonTrader::Plugin &loader, list) {
                 QJsonObject json = loader.metaData().value("MetaData").toObject();
                 Q_FOREACH(const QString &mimetype, json.value("X-KDE-Export").toString().split(",", Qt::SkipEmptyParts)) {
@@ -228,7 +228,7 @@ KisImportExportFilter *KisImportExportManager::filterForMimeType(const QString &
 {
     int weight = -1;
     KisImportExportFilter *filter = 0;
-    QList<KoJsonTrader::Plugin>list = KoJsonTrader::instance()->query("Krita/FileFilter", "");
+    QList<KoJsonTrader::Plugin>list = KoJsonTrader::instance()->query("Krimble/FileFilter", "");
 
     Q_FOREACH(const KoJsonTrader::Plugin &loader, list) {
         QJsonObject json = loader.metaData().value("MetaData").toObject();
@@ -619,7 +619,7 @@ bool KisImportExportManager::askUserAboutExportConfiguration(
 
         error += "</ul>";
 
-        QMessageBox::critical(KisPart::instance()->currentMainwindow(), i18nc("@title:window", "Krita: Export Error"), error);
+        QMessageBox::critical(KisPart::instance()->currentMainwindow(), i18nc("@title:window", "Krimble: Export Error"), error);
         return false;
     }
 
@@ -683,7 +683,7 @@ bool KisImportExportManager::askUserAboutExportConfiguration(
 
         QCheckBox *chkAlsoAsKra = 0;
         if (showWarnings && !warnings.isEmpty()) {
-            chkAlsoAsKra = new QCheckBox(i18n("Also save your image as a Krita file."));
+            chkAlsoAsKra = new QCheckBox(i18n("Also save your image as a Krimble file."));
             chkAlsoAsKra->setChecked(KisConfig(true).readEntry<bool>("AlsoSaveAsKra", false));
             layout->addWidget(chkAlsoAsKra);
         }

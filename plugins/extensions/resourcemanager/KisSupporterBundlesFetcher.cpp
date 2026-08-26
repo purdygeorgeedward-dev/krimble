@@ -70,7 +70,7 @@ void KisSupporterBundlesFetcher::handleCheckTxtFetched(QNetworkReply *reply)
     QString content = QString::fromUtf8(reply->readAll());
 
     // "Predefined failures" are for forward-compatibility for stuff like the
-    // format changing and old versions of Krita becoming unsupported or the
+    // format changing and old versions of Krimble becoming unsupported or the
     // service getting discontinued altogether.
     if (handleCheckTxtPredefinedFailure(content)) {
         return;
@@ -114,7 +114,7 @@ bool KisSupporterBundlesFetcher::handleCheckTxtPredefinedFailure(const QString &
     QString failureType = match.captured(1);
     QString errorMessage;
     if (failureType.compare(QStringLiteral("outdated"), Qt::CaseInsensitive) == 0) {
-        errorMessage = i18n("You have to update Krita to use this service.");
+        errorMessage = i18n("You have to update Krimble to use this service.");
     } else if (failureType.compare(QStringLiteral("region"), Qt::CaseInsensitive) == 0) {
         errorMessage = i18n("This service is not available in your region.");
     } else if (failureType.compare(QStringLiteral("unavailable"), Qt::CaseInsensitive) == 0) {

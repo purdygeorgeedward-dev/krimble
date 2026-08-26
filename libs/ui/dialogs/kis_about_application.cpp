@@ -32,7 +32,7 @@ public:
 KisAboutApplication::KisAboutApplication(QWidget *parent)
     : KoDialog(parent)
 {
-    setWindowTitle(i18n("About Krita"));
+    setWindowTitle(i18n("About Krimble"));
     setButtons(KoDialog::Close);
 
     WdgAboutApplication *wdgTab = new WdgAboutApplication(this);
@@ -97,7 +97,7 @@ KisAboutApplication::KisAboutApplication(QWidget *parent)
         "<p align=\"center\"> <a href=\"https://www.unrealengine.com/en-US/megagrants\"><img src=\":/epic.png\"></a> "
         "<p align=\"center\"> <a href=\"http://brokenrul.es/\"><img src=\":/broken_rules.png\"></a> "
         "<p align=\"center\"> <a href=\"https://game-chuck.com/\"><img src=\":/gamechuck.png\"></a> "
-        "<p align=\"center\"> <a href=\"https://www.fosshub.com/Krita.html\"><img src=\":/fosshub.png\"></a> "
+        "<p align=\"center\"> <a href=\"https://www.fosshub.com/Krimble.html\"><img src=\":/fosshub.png\"></a> "
         "<p align=\"center\"> <a href=\"http://www.asifa-hollywood.org/\"><img src=\":/asifa.png\"></a> "
         "</body></html>");
     wdgTab->lblKickstarter->setText(sponsors);
@@ -125,7 +125,7 @@ KisAboutApplication::KisAboutApplication(QWidget *parent)
         }
         credits.chop(2);
     }
-    credits.append(i18n(".</p><p><i>For supporting Krita development with advice, icons, brush sets and more.</i></p></body></html>"));
+    credits.append(i18n(".</p><p><i>For supporting Krimble development with advice, icons, brush sets and more.</i></p></body></html>"));
 
     wdgTab->lblCredits->setText(credits);
 
@@ -133,19 +133,19 @@ KisAboutApplication::KisAboutApplication(QWidget *parent)
                            "<head/>"
                            "<body>"
                            "<h1 align=\"center\"><b>Your Rights</b></h1>"
-                           "<p>Krita is released under the GNU General Public License (version 3 or any later version).</p>"
+                           "<p>Krimble is released under the GNU General Public License (version 3 or any later version).</p>"
                            "<p>This license grants people a number of freedoms:</p>"
                            "<ul>"
-                           "<li>You are free to use Krita, for any purpose</li>"
-                           "<li>You are free to distribute Krita</li>"
-                           "<li>You can study how Krita works and change it</li>"
-                           "<li>You can distribute changed versions of Krita</li>"
+                           "<li>You are free to use Krimble, for any purpose</li>"
+                           "<li>You are free to distribute Krimble</li>"
+                           "<li>You can study how Krimble works and change it</li>"
+                           "<li>You can distribute changed versions of Krimble</li>"
                            "</ul>"
-                           "<p>The Krita Foundation and its projects on krita.org are <b>committed</b> to preserving Krita as free software.</p>"
+                           "<p>The Krimble Foundation and its projects on krita.org are <b>committed</b> to preserving Krimble as free software.</p>"
                            "<h1 align=\"center\">Your artwork</h1>"
-                           "<p>What you create with Krita is your sole property. All your artwork is free for you to use as you like.</p>"
-                           "<p>That means that Krita can be used commercially, for any purpose. There are no restrictions whatsoever.</p>"
-                           "<p>Krita’s GNU GPL license guarantees you this freedom. Nobody is ever permitted to take it away, in contrast "
+                           "<p>What you create with Krimble is your sole property. All your artwork is free for you to use as you like.</p>"
+                           "<p>That means that Krimble can be used commercially, for any purpose. There are no restrictions whatsoever.</p>"
+                           "<p>Krimble’s GNU GPL license guarantees you this freedom. Nobody is ever permitted to take it away, in contrast "
                            "to trial or educational versions of commercial software that will forbid your work in commercial situations.</p>"
                            "<br/><hr/><pre>");
 
@@ -167,8 +167,8 @@ KisAboutApplication::KisAboutApplication(QWidget *parent)
         QString thirdPartyHtml = i18n("<html>"
                                       "<head/>"
                                       "<body>"
-                                      "<h1 align=\"center\"><b>Third-party Libraries used by Krita</b></h1>"
-                                      "<p>Krita is built on the following free software libraries:</p><p><ul>");
+                                      "<h1 align=\"center\"><b>Third-party Libraries used by Krimble</b></h1>"
+                                      "<p>Krimble is built on the following free software libraries:</p><p><ul>");
 
         Q_FOREACH (const QString &lib, thirdPartyText.readAll().split('\n', Qt::SkipEmptyParts)) {
 
