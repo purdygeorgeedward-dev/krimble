@@ -62,6 +62,7 @@
 #include "kis_splash_screen.h"
 #include "kis_config.h"
 #include "kis_config_notifier.h"
+#include "KisWideDockSeparatorStyle.h"
 #include "flake/kis_shape_selection.h"
 #include <filter/kis_filter.h>
 #include <filter/kis_filter_registry.h>
@@ -259,6 +260,10 @@ KisApplication::KisApplication(const QString &key, int &argc, char **argv)
         qApp->setStyle("fusion");
     }
 #endif
+
+    // Krimble: double the dock widget (panel) separator width so it's a
+    // reliable touch target for resizing docked panels, not just a mouse one.
+    qApp->setStyle(new KisWideDockSeparatorStyle(qApp->style()));
 
     /**
      * Load platform plugin for modifiers fetching
