@@ -33,7 +33,7 @@ public:
         // read persistent application wide resources
         KSharedConfigPtr config =  KSharedConfig::openConfig();
         KConfigGroup miscGroup = config->group("Misc");
-        const uint grabSensitivity = miscGroup.readEntry("GrabSensitivity", 10);
+        const uint grabSensitivity = miscGroup.readEntry("GrabSensitivity", 24);
         resourceManager->setGrabSensitivity(grabSensitivity);
     }
 

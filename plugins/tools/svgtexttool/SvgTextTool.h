@@ -211,6 +211,7 @@ private:
         TextPathHandle,
         InShapeOffset,
         TypeSetting,
+        SelectionHandle,
     };
     enum class HighlightItem {
         None = 0,

@@ -13,6 +13,7 @@
 #include "SvgInlineSizeChangeCommand.h"
 #include "SvgInlineSizeChangeStrategy.h"
 #include "SvgSelectTextStrategy.h"
+#include "SvgAdjustSelectionHandleStrategy.h"
 #include "SvgInlineSizeHelper.h"
 #include "SvgMoveTextCommand.h"
 #include "SvgMoveTextStrategy.h"
@@ -805,6 +806,17 @@ void SvgTextTool::mousePressEvent(KoPointerEvent *event)
             m_textOutlineHelper->toggleTextContourMode(selectedShape);
             event->accept();
             KoToolManager::instance()->switchToolRequested("InteractionTool");
+            return;
+        }
+
+        // Krimble: mobile-style draggable selection handles -- grabbing one
+        // of the two handles at the current selection's ends takes priority
+        // over starting a fresh selection with this same tap.
+        bool isStartHandle = false;
+        if (m_textCursor.hitTestSelectionHandle(event->point, grabSensitivityInPt(), isStartHandle)) {
+            m_interactionStrategy.reset(new SvgAdjustSelectionHandleStrategy(this, &m_textCursor, isStartHandle));
+            m_dragging = DragMode::SelectionHandle;
+            event->accept();
             return;
         }
 

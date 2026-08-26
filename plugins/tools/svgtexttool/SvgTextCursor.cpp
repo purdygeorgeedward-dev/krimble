@@ -390,6 +390,52 @@ void SvgTextCursor::setPosToPoint(QPointF point, bool moveAnchor)
     }
 }
 
+int SvgTextCursor::indexForPoint(QPointF point) const
+{
+    if (!d->shape) return -1;
+    return d->shape->posForPointLineSensitive(d->shape->documentToShape(point));
+}
+
+QPointF SvgTextCursor::selectionHandlePos(bool startHandle) const
+{
+    if (!d->shape) return QPointF();
+    const int index = startHandle ? d->anchor : d->pos;
+    QLineF caret;
+    QColor unusedColor;
+    const QPainterPath path = d->shape->cursorForPos(index, caret, unusedColor);
+    Q_UNUSED(path);
+    return d->shape->shapeToDocument(caret.p2());
+}
+
+bool SvgTextCursor::hitTestSelectionHandle(QPointF point, qreal sensitivity, bool &isStartHandle) const
+{
+    if (!hasSelection()) return false;
+
+    const QPointF startPos = selectionHandlePos(true);
+    const QPointF endPos = selectionHandlePos(false);
+
+    if (kisDistance(point, startPos) < sensitivity) {
+        isStartHandle = true;
+        return true;
+    }
+    if (kisDistance(point, endPos) < sensitivity) {
+        isStartHandle = false;
+        return true;
+    }
+    return false;
+}
+
+void SvgTextCursor::setAnchorToPoint(QPointF point)
+{
+    if (!d->shape) return;
+    Private::InputQueryUpdateBlocker inputQueryUpdateBlocker(d);
+    const int index = indexForPoint(point);
+    const int finalPos = d->shape->posForIndex(d->shape->plainText().size());
+    d->anchor = qBound(0, index, finalPos);
+    updateCursor();
+    updateSelection();
+}
+
 SvgTextCursor::TypeSettingModeHandle SvgTextCursor::typeSettingHandleAtPos(const QRectF regionOfInterest)
 {
     SvgTextCursor::TypeSettingModeHandle handle = SvgTextCursor::NoHandle;
@@ -853,6 +899,21 @@ void SvgTextCursor::paintDecorations(QPainter &gc, QColor selectionColor, int de
             QBrush brush(selectionColor);
             gc.fillPath(d->selection, brush);
             gc.restore();
+
+            // Krimble: mobile-style draggable selection handles, one at
+            // each end. Painted in shape-local coordinates since gc is
+            // already transformed to shape space above -- unlike
+            // selectionHandlePos()/hitTestSelectionHandle(), which work in
+            // document space for hit-testing against touch points.
+            KisHandlePainterHelper selectionHandleHelper(&gc, handleRadius, decorationThickness);
+            selectionHandleHelper.setHandleStyle(KisHandleStyle::secondarySelection(handlePalette));
+            QLineF anchorCaret;
+            QLineF posCaret;
+            QColor unusedColor;
+            d->shape->cursorForPos(d->anchor, anchorCaret, unusedColor);
+            d->shape->cursorForPos(d->pos, posCaret, unusedColor);
+            selectionHandleHelper.drawHandleCircle(anchorCaret.p2());
+            selectionHandleHelper.drawHandleCircle(posCaret.p2());
         }
 
         if ( (d->drawCursorInAdditionToSelection || d->pos == d->anchor)
@@ -1752,7 +1813,11 @@ void SvgTextCursor::updateSelection()
         d->oldSelectionRect = d->shape->shapeToDocument(d->selection.boundingRect());
         d->shape->cursorForPos(d->anchor, d->anchorCaret, d->cursorColor);
         d->selection = d->shape->selectionBoxes(d->pos, d->anchor);
-        Q_EMIT updateCursorDecoration(d->shape->shapeToDocument(d->selection.boundingRect()) | d->oldSelectionRect);
+        // Krimble: grow the invalidation rect so the new draggable selection
+        // handles (drawn at the selection's edges, extending handleRadius
+        // beyond it) get fully redrawn/cleared during a drag.
+        const QRectF selectionRectInDoc = kisGrowRect(d->shape->shapeToDocument(d->selection.boundingRect()), d->handleRadius);
+        Q_EMIT updateCursorDecoration(selectionRectInDoc | d->oldSelectionRect);
 
         if (!d->blockQueryUpdates) {
             QGuiApplication::inputMethod()->update(Qt::ImQueryInput);

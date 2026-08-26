@@ -146,6 +146,21 @@ public:
     /// Set the pos from a point. This currently does a search inside the text shape.
     void setPosToPoint(QPointF point, bool moveAnchor = true);
 
+    /**
+     * Krimble: mobile-style draggable selection handles, one at each end of
+     * the current selection, independently adjustable after the fact (like
+     * the "teardrop" handles every phone keyboard shows), separate from the
+     * type-setting handles above.
+     */
+    /// Convert a document-space point to a text position index, the same way setPosToPoint does internally.
+    int indexForPoint(QPointF point) const;
+    /// Document-space point for the selection-start or selection-end handle. Valid only when hasSelection() is true.
+    QPointF selectionHandlePos(bool startHandle) const;
+    /// Returns true and sets isStartHandle if point is within sensitivity of a selection handle.
+    bool hitTestSelectionHandle(QPointF point, qreal sensitivity, bool &isStartHandle) const;
+    /// Move only the selection anchor (the fixed/start end) to a new point, keeping pos fixed.
+    void setAnchorToPoint(QPointF point);
+
     /// Get typeSettingMode handle for text;
     TypeSettingModeHandle typeSettingHandleAtPos(const QRectF regionOfInterest);
 
