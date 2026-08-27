@@ -23,7 +23,7 @@ APIdox:
 
 https://api.kde.org/legacy/krita/html/index.html
 
-### Krimble Bugs and Wishes
+### Krimble 🐞Bugs and 🍰Wishes
 
 Wishlist:
 
