@@ -101,9 +101,7 @@ Also fixed four stale factory-level shortcuts found along the way (a separate me
 
 36. Removed references to competing industry standard app from readme which were inserted by A.I. tool.
 
-37. Separate the Bugs/Changes List from the Wishlist.
-
-38. Add a Buy Me a Coffee link to the build so users who download the APK are asked to contribute.
+37. Separate the Bugs/Changes List from the Wishlist because they are mooshed together.
 
 ### Krita Project Website
 
