@@ -193,34 +193,16 @@ message(STATUS "Krita version: ${KRITA_VERSION_STRING}")
 # different major releases did overlap; 2) the soversions of different bugfix
 # releases were the same, even tough they were not binary compatible.
 #
-# In Krita 6 we just stop updating SOVERSION on minor releases and declare that
-# we have no binary compatibility between releases.
 #
-# Krita 5.0: SOVERSION -> 17
-# Krita 5.1: SOVERSION -> 18
-# Krita 5.2: SOVERSION -> 19
-# Krita 5.3: SOVERSION -> 20
+# Krimble library ABI versioning.
 #
-# Krita 6.x: SOVERSION -> 21
-# Krita 7.x: SOVERSION -> 22
+# Krimble has its own versioning scheme independent of Krita.
+# Krimble 1.x uses shared-library ABI/SOVERSION 1.
 #
-if(KRITA_STABLE_VERSION_MAJOR EQUAL 5) 
-    # In Krita 5 days we increased the SOVERSION with every minor release
-    if(KRITA_STABLE_VERSION_MINOR LESS_EQUAL 3)
-        math(EXPR GENERIC_KRITA_LIB_VERSION_MAJOR "${KRITA_STABLE_VERSION_MINOR} + 17")
-    else()
-        set(GENERIC_KRITA_LIB_VERSION_MAJOR 20)
-    endif()
-elseif(KRITA_STABLE_VERSION_MAJOR GREATER_EQUAL 6)
-    # In Krita 6 days we increased the SOVERSION only with every **major** release.
-    # We don't guarantee any ABI compatibility between the releases, so there is no
-    # use increasing SOVERSION too often
-    math(EXPR GENERIC_KRITA_LIB_VERSION_MAJOR "${KRITA_STABLE_VERSION_MAJOR} - 6 + 21")
-endif()
 
+set(GENERIC_KRITA_LIB_VERSION_MAJOR 1)
 set(GENERIC_KRITA_LIB_VERSION "${GENERIC_KRITA_LIB_VERSION_MAJOR}.0.0")
 set(GENERIC_KRITA_LIB_SOVERSION "${GENERIC_KRITA_LIB_VERSION_MAJOR}")
-
 LIST (APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 LIST (APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/kde_macro")
 
