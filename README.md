@@ -27,101 +27,97 @@ https://api.kde.org/legacy/krita/html/index.html
 
 Wishlist:
 
-1. Change default tool on open from paint tool to pan/hand tool. (DONE.🙂)
+1. Change default tool on open from paint tool to pan/hand tool. (DONE.🙂 Pan tool given lowest `priority`/`toolBoxPriority` in `kis_tool_pan.cpp`. Also found and fixed a separate bug forcing the Brush tool active every time a pixel layer was selected, in `KisNodeManager::slotUiActivatedNode` — that logic is now disabled with a comment rather than forcing any tool.)
 
-Pan tool given lowest `priority`/`toolBoxPriority` in `kis_tool_pan.cpp`. Also found and fixed a separate bug forcing the Brush tool active every time a pixel layer was selected, in `KisNodeManager::slotUiActivatedNode` — that logic is now disabled with a comment rather than forcing any tool.
+2. Smaller splash image on load so it fits mobile screens. (DONE.🙂)
 
-3. Smaller splash image on load so it fits mobile screens. (DONE.🙂)
+3. Add two-finger movement selectively to floating windows and panels that are difficult to reposition. KisDockerHud support is complete; additional windows will be handled individually as needed.
 
-4. Add two-finger movement selectively to floating windows and panels that are difficult to reposition. KisDockerHud support is complete; additional windows will be handled individually as needed.
+4. Remove Tools menu to make the Settings menu easier to reach. (DONE.🙂)
 
-5. Remove Tools menu to make the Settings menu easier to reach. (DONE.🙂)
+5. Change Toolbox default sort order. (DONE.🙂)
 
-6. Change Toolbox default sort order. (DONE.🙂)
+6. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit. (DONE.🙂 Commented out in `KisApplication.cpp`: the `checkAutosaveFiles()` call that pops the recovery dialog on launch is inert. No other call site triggers it. Confirmed, no code change needed.)
 
-7. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit. (DONE.🙂)
-   
- Commented out in `KisApplication.cpp`: the `checkAutosaveFiles()` call that pops the recovery dialog on launch is inert. No other call site triggers it. Confirmed, no code change needed.)
+7. Move Configure Krita menu and rename Preferences. (DONE.🙂 Preferences now lives under the Edit menu in `krita5.xmlgui`.)
 
-9. Move Configure Krita menu and rename Preferences. (DONE.🙂)
-    
-    (Preferences now lives under the Edit menu in `krita5.xmlgui')
+8. Reconfigure menus. (DONE.🙂 Select > Shrink renamed to Contract..., Layer > Merge Layer renamed to Merge Down, Filter menu categories remapped from Krita's own taxonomy (Artistic/Colors/Edge Detection/Emboss/Enhance/Map) to (Blur/Distort/Noise/Pixelate/Render/Sharpen/Stylize/Other), two dead menu categories with zero registered filters removed (Decor, Non-Photorealistic), and five color-adjustment filters — Index Colors, Posterize, Gradient Map, Palettize, Normalize — moved out of the Filter menu into Image > Adjustments.)
 
-11. Reconfigure menus. (DONE.🙂)
-    
-    Select > Shrink renamed to Contract..., Layer > Merge Layer renamed to Merge Down, Filter menu categories remapped from Krita's own taxonomy (Artistic/Colors/Edge Detection/Emboss/Enhance/Map) to (Blur/Distort/Noise/Pixelate/Render/Sharpen/Stylize/Other), two dead menu categories with zero registered filters removed (Decor, Non-Photorealistic), and five color-adjustment filters — Index Colors, Posterize, Gradient Map, Palettize, Normalize — moved out of the Filter menu into Image > Adjustments.)
+9. Remove rotation from pinch zoom defaults because it's annoying. (DONE.🙂)
 
-13. Remove rotation from pinch zoom defaults because it's annoying. (DONE.🙂)
+10. Limit transform default to scaling. (DONE.🙂 In `kis_free_transform_strategy.cpp`, an unmodified drag near an edge — not on an explicit scale handle — used to fall through to shear based on proximity alone, easy to trigger by accident with imprecise touch input. Rather than removing shear-by-drag outright, it's now gated behind a new "Allow Shear by Dragging" checkbox in the Free Transform tool options, off by default — same persisted-toggle pattern as the existing mesh-transform `chkScaleHandles` checkbox. Also fixed a real uninitialized-variable bug found along the way: `defaultFunction` was left unset when the cursor was outside the shape and Alt wasn't held.)
 
-14. Limit transform default to scaling. (DONE.🙂)
-    
-    In `kis_free_transform_strategy.cpp`, an unmodified drag near an edge — not on an explicit scale handle — used to fall through to shear based on proximity alone, easy to trigger by accident with imprecise touch input. Rather than removing shear-by-drag outright, it's now gated behind a new "Allow Shear by Dragging" checkbox in the Free Transform tool options, off by default — same persisted-toggle pattern as the existing mesh-transform `chkScaleHandles` checkbox. Also fixed a real uninitialized-variable bug found along the way: `defaultFunction` was left unset when the cursor was outside the shape and Alt wasn't held.)
+11. Implement industry standard terms for tools or menu items as needed. (DONE.🙂 Also includes: renamed four panels to match their real equivalent concept instead of Krita's own internal naming — Undo History → History, Overview → Navigator, Palette → Swatches (Palette) (kept both, since the panel concept and the underlying saved-color-set file format Krimble calls a Palette are genuinely different things, not one name being more correct), Task Sets → Actions (Taskset → Action Set, Task → Action); and renamed the Smart Patch tool to Healing Brush (same PatchMatch inpainting algorithm underneath — a naming-only fix).)
 
-16. Limit move default to selected layer or floating selection until deliberately changed by user. (DONE.🙂)
-    
-    Observed actual reproduction (select Move tool, drag a selection, drag again and the whole image moves) and it traced to a real bug: `kritadefault.profile` mapped a one-finger long-press to `TertiaryAlternateModeShortcut` → `KisTool::AlternateFourth`, and `KisToolMove::beginAlternateAction()` sent every unhandled alternate action — not just that one — into an unconditional whole-image `MoveGroup` stroke. A second tap lingering even slightly on a touchscreen could register as a hold and silently trigger it. Fixed both the touch binding (removed) and the code (catch-all now a no-op, commented out per standing preference rather than deleted). Krita has no distinct "floating selection" object — paste creates a layer directly, and Move already respects whatever selection mask is active on the target layer, so that half of the original requirement needed no separate handling.)
+12. Default to Snapping OFF. (DONE.🙂)
 
-18. Implement industry standard terms for tools or menu items as needed. (DONE.🙂)
+13. Add zoom to 200% in menu. (DONE.🙂 TESTED. WORKS.)
 
-19. Default to Snapping OFF. (DONE.🙂)
+14. Create custom default toolbar in imitation of classic toolbar. (DONE.🙂)
 
-20. Add zoom to 200% in menu. (DONE.🙂 TESTED. WORKS.)
-    
-21. Create custom default toolbar in imitation of classic toolbar. (DONE.🙂)
-    
-22. Add the Adjust-Brightness/Contrast dialog (DONE.🙂 TESTED. WORKS.)
+15. Add the Adjust-Brightness/Contrast dialog. (DONE.🙂 TESTED. WORKS.)
 
-23. Widen sizing gadgets on windows and sections to make touchscreen resizing easier. (DONE.🙂)
-    
-    (Two separate fixes: Crop tool's resize handles (`m_handleSize` in `kis_tool_crop.h`/`.cc`) went from 13px, sized for a mouse cursor, to 44px, matching standard mobile touch-target guidance — a near-miss previously made the tool discard the crop rect and start drawing a new one from scratch instead of grabbing the handle. Separately, dock panel resize borders were doubled app-wide via a new `KisWideDockSeparatorStyle` proxy style overriding `PM_DockWidgetSeparatorExtent`, applied in `KisApplication.cpp` — Qt ties a dock separator's visible width and its resize hit-test zone to the same single pixel metric, so there's no way to widen only the grab zone without also widening what's drawn on screen, unlike the crop tool where those were decoupled.)
+16. Widen sizing gadgets on windows and sections to make touchscreen resizing easier. (DONE.🙂 Two separate fixes: Crop tool's resize handles (`m_handleSize` in `kis_tool_crop.h`/`.cc`) went from 13px, sized for a mouse cursor, to 44px, matching standard mobile touch-target guidance — a near-miss previously made the tool discard the crop rect and start drawing a new one from scratch instead of grabbing the handle. Separately, dock panel resize borders were doubled app-wide via a new `KisWideDockSeparatorStyle` proxy style overriding `PM_DockWidgetSeparatorExtent`, applied in `KisApplication.cpp` — Qt ties a dock separator's visible width and its resize hit-test zone to the same single pixel metric, so there's no way to widen only the grab zone without also widening what's drawn on screen, unlike the crop tool where those were decoupled.)
 
-26. Rework the text/type tool, which is very hard to use currently. (DONE.🙂)
-    
-   (Substantially reworked. Type menu reconstructed (Orientation, Anti-Alias, Panels > Glyphs), fake/nonexistent items dropped rather than faked. Shared handle-radius/grab-sensitivity touch-target defaults bumped app-wide. Triple-tap-to-select-paragraph added (double-tap-to-select-word already worked via Qt's own touch-to-mouse synthesis). Draggable mobile-style selection-endpoint handles added, matching the two "teardrop" handles every phone keyboard shows. Floating Cut/Copy/Paste/Select All quick-action bar added on selection. Remaining, not yet built: a magnifier/loupe while dragging a cursor or selection handle, so a fingertip doesn't block the view of exactly where the cursor will land -- the one idea from the original five that wasn't attempted.)
+17. Rework the text/type tool, which is very hard to use currently. (DONE.🙂 Substantially reworked. Type menu reconstructed (Orientation, Anti-Alias, Panels > Glyphs), fake/nonexistent items dropped rather than faked. Shared handle-radius/grab-sensitivity touch-target defaults bumped app-wide. Triple-tap-to-select-paragraph added (double-tap-to-select-word already worked via Qt's own touch-to-mouse synthesis). Draggable mobile-style selection-endpoint handles added, matching the two "teardrop" handles every phone keyboard shows. Floating Cut/Copy/Paste/Select All quick-action bar added on selection. Remaining, not yet built: a magnifier/loupe while dragging a cursor or selection handle, so a fingertip doesn't block the view of exactly where the cursor will land — the one idea from the original five that wasn't attempted.)
 
-28. Create Krimble logo splash. (DONE.🙂)
+18. Create Krimble logo splash. (DONE.🙂)
 
-29. Rewrite larger dialogs windows to fit small screens. (DONE.🙂)
-     (Surveyed every dialog's actual top-level `QDialog` geometry and found 8 genuinely oversized for a phone screen: `recorder_profile_settings`, `bbdkss` (script starter), `KisDonationManagementDialog`, `kis_dlg_brush_hud_config`, `excepthook`, `KisSupporterBundlesDialog`, `wdgcustombrush`, `wdgclipboardbrush`. Most had no hard size constraint at all — just a large Qt Designer initial-geometry hint, freely resizable in practice — trimmed to ~380px width. One real blocker: `bbdkss.ui`'s top-level dialog was locked `Fixed`/`Fixed` at 607×430, unable to resize at all regardless of screen size; relaxed to `Preferred`/`Preferred`. Checked each dialog's child widgets for minimum-width constraints that would force overflow before changing anything — none found beyond a couple of small 110×110 Fixed preview thumbnails and unconstrained Fixed `QLineEdit`s, both harmless.)
+19. Rewrite larger dialogs windows to fit small screens. (DONE.🙂 Surveyed every dialog's actual top-level `QDialog` geometry and found 8 genuinely oversized for a phone screen: `recorder_profile_settings`, `bbdkss` (script starter), `KisDonationManagementDialog`, `kis_dlg_brush_hud_config`, `excepthook`, `KisSupporterBundlesDialog`, `wdgcustombrush`, `wdgclipboardbrush`. Most had no hard size constraint at all — just a large Qt Designer initial-geometry hint, freely resizable in practice — trimmed to ~380px width. One real blocker: `bbdkss.ui`'s top-level dialog was locked `Fixed`/`Fixed` at 607×430, unable to resize at all regardless of screen size; relaxed to `Preferred`/`Preferred`. Checked each dialog's child widgets for minimum-width constraints that would force overflow before changing anything — none found beyond a couple of small 110×110 Fixed preview thumbnails and unconstrained Fixed `QLineEdit`s, both harmless.)
 
-31. Create new icon for Krimble and implement in different sizes. (DONE.🙂)
+20. Create new icon for Krimble and implement in different sizes. (DONE.🙂)
 
-32. Trim list of available save formats. (DONE.🙂)
+21. Trim list of available save formats. (DONE.🙂)
 
-33. Item 1 (default tool) had never actually been applied to code — the hardcoded call in `libs/ui/KisView.cpp` still forced `KritaShape/KisToolBrush` on every new view. Fixed to `PanTool` (hand tool) to match item 1. (DONE.🙂)
+22. Aligned every hardcoded keyboard shortcut default to industry standard where a non-colliding key exists. Corrected ~200 shortcuts baked into `.action` XML files (which override the `photoshop_compatible.shortcuts` scheme when that scheme doesn't explicitly list them), synced the scheme file itself, and set the default scheme in `kis_action_registry.cpp` instead of Krita's own `Default`. (DONE.🙂)
 
-34. Item 21/24 (new icon) only replaced `ic_launcher`/`ic_launcher_round` at every density. The app was still falling back to the separate `ic_launcher_next`/`ic_launcher_next_round` mipmaps AND the adaptive-icon foreground/background vector drawables (`ic_launcher_next_foreground.xml`, `ic_launcher_next_background.xml`), which still had the old placeholder Krita mark baked in as vector paths. All four Next-variant assets (mipmap webp x5 densities, plus the two adaptive vector drawables) now mirror the already-fixed regular assets. (DONE.🙂)
+23. Reassigned tool-selection shortcuts where possible: Move (V), Marquee (M/Shift+M), Lasso (L/Shift+L), Magic Wand/Similar (W/Shift+W), Crop (C), Eyedropper (I), Brush (B), Gradient (G), Pen (P), Type (T), Zoom (Z), Hand/Pan (H). Where a Krita-only global shortcut already held the letter needed (brush opacity, brush color lighter, mirror canvas, MyPaint shade selector, instant preview mode, wrap-around mode, common colors), relocated those seven Krita-only actions to modifier-heavy combos instead of settling for an approximate tool key, so the letter is free. Note: the other tool cycles multiple tools under one key via repeated presses (e.g. Shift+M twice); Krimble's toolbox binds one key per tool with no cycling, so this is an exact-key match, not full cycling behavior. (DONE.🙂)
 
-35. `KRITA_ALPHA` flag was left set in `CMakeLists.txt`, which drove the "DEV BUILD" welcome-screen label. Commented out — this was the actual cause, confirmed on the build server (Qt5, `BUILD_WITH_QT6` was never enabled, defaults OFF). Originally suspected a Qt6-specific carve-out in `KritaVersionWrapper::isDevelopersBuild()` was involved; it wasn't, since the build has been Qt5 all along, but the carve-out was removed anyway so the check no longer depends on Qt major version. Decision: stick with Qt5 (Qt6 isn't production-ready upstream either). (DONE.🙂)
+24. Replaced KDE's "docker" with "panel" everywhere it appeared as user-facing text — menu labels, tooltips, dialog strings, translatable UI strings (18 files). Left internal class/widget/object names and the `plugins/dockers/` directory structure untouched since renaming those has no user-visible benefit and risks breaking signal/slot wiring. (DONE.🙂)
 
-    (Superseded in part by item 33 — `KRITA_ALPHA` was deliberately re-enabled once the build was actually versioned as an alpha, so the DEV BUILD label is back by design, not a regression.)
+25. Two-finger move of any open window/panel (see item 3). (DONE.🙂 `KisDockerHud` now handles `QEvent::TouchBegin`/`TouchUpdate`/`TouchEnd`/`TouchCancel` via an `event()` override, claiming the gesture only when exactly two touch points are active — a single-finger tap on its combo box or menu button passes through normally. Delta is computed in screen coordinates, not widget-local, since local coordinates shift under the fingers as the widget itself moves mid-drag. The drag moves `window()`, not the `KisDockerHud` instance itself — it's normally embedded in a parent layout (`KisPopupButtonFrame`, when hosted via `KisPopupButton::setPopupWidget()`) rather than being independently top-level, so moving the instance directly would've been silently overridden by that layout; confirmed `KisPopupButtonFrame` sets `Qt::Dialog`/`Qt::Popup` window flags, both genuine top-level types, so `window()` resolves correctly. No conflict with canvas pan/zoom's own two-finger handling since Qt routes touch events by which widget the gesture started on.)
 
-37. Splash screen still showed "Artwork by: Tyson Tan" — hardcoded in `libs/ui/kis_splash_screen.cpp` regardless of which splash image resource was actually loaded, so replacing the splash graphic alone never removed it. Cleared the credit string since Krimble's splash is an original asset. (DONE.🙂)
+26. Version renumbered from Krita's inherited `5.4.0-prealpha` to Krimble's own `1.0.0-alpha1` in `CMakeLists.txt` (both the Qt5 and Qt6 branches, major/minor versions reset to 1/0). `KRITA_ALPHA` re-enabled since the build is now honestly alpha — this restores the "DEV BUILD" watermark on the welcome screen (see Bug Fixes item 4). (DONE.🙂)
 
-38. Aligned every hardcoded keyboard shortcut default to industry standard where a non-colliding key exists. Corrected ~200 shortcuts baked into `.action` XML files (which override the `photoshop_compatible.shortcuts` scheme when that scheme doesn't explicitly list them), synced the scheme file itself, and set the default scheme in `kis_action_registry.cpp` instead of Krita's own `Default`. (DONE.🙂)
+27. Full pass replacing user-facing "Krita" references with "Krimble" — menus, dialogs, tooltips, About dialog, Android donation/IAP strings, ~35 files. Found and fixed the biggest miss: the actual Android app label in `AndroidManifest.xml` (home screen icon, app drawer, app switcher) was still "Krita" despite everything else being rebranded; also fixed the "Krita Next" build-flavor label to "Krimble Next". Deliberately preserved: historical `.kra` file-format version-compatibility notes (e.g. "Creamy (Krita 4.2+)") since those name real upstream milestones, not branding; the SVG/KRA XML namespace URI (`http://krita.org/namespaces/svg/krita`) and Qt's `organizationDomain("krita.org")` since those are internal identifiers, not user-facing text, and changing them risks breaking file-format compatibility; code comments citing real upstream KDE commit URLs for bug-fix attribution; and the welcome page's paragraph crediting real Krita's actual contributors/sponsors/development fund (skipped on request — text there still says "Krita"). (DONE.🙂)
 
-39. Reassigned tool-selection shortcuts  where possible: Move (V), Marquee (M/Shift+M), Lasso (L/Shift+L), Magic Wand/Similar (W/Shift+W), Crop (C), Eyedropper (I), Brush (B), Gradient (G), Pen (P), Type (T), Zoom (Z), Hand/Pan (H). Where a Krita-only global shortcut already held the letter needed (brush opacity, brush color lighter, mirror canvas, MyPaint shade selector, instant preview mode, wrap-around mode, common colors), relocated those seven Krita-only actions to modifier-heavy combos instead of settling for an approximate tool key, so the letter is free. Note: the other tool cycles multiple tools under one key via repeated presses (e.g. Shift+M twice); Krimble's toolbox binds one key per tool with no cycling, so this is an exact-key match, not full cycling behavior. (DONE.🙂)
+28. All real krita.org/docs.krita.org/krita-artists.org links replaced: donation links now point to buymeacoffee.com/GeorgeEdwardPurdy, the Source Code link on the welcome page now points to the real Krimble GitHub repo instead of Krita's, and everything else (manual, community, scripting school, bug-report guide, RSS news feeds) points to krimble.org as a placeholder pending those actually being built. (DONE.🙂)
 
-40. Replaced KDE's "docker" with "panel" everywhere it appeared as user-facing text — menu labels, tooltips, dialog strings, translatable UI strings (18 files). Left internal class/widget/object names and the `plugins/dockers/` directory structure untouched since renaming those has no user-visible benefit and risks breaking signal/slot wiring. (DONE.🙂)
+29. Full toolbox visual reordering. Krita's toolbox is grouped into sections (Shape/Transform/Fill/View/Select/Main/Navigation) that render in alphabetical order of their internal string keys (`QMap` in `KoToolBox.cpp`), with per-section priority controlling order only within a section — so there was previously no way to get one continuous list across the whole toolbox. Added a new unified `ToolBoxSection::PSOrder` and moved every tool with a real equivalent into it (Move, Marquee, Lasso, Wand, Crop, Eyedropper, Healing Brush, Brush, Gradient, Paint Bucket, Pen, Path Selection, Type, Shape tools, Hand, Zoom), sequentially prioritized. Tools with no equivalent keep their existing sections and now sort after this block. Also fixed four stale factory-level shortcuts found along the way (a separate mechanism from the `.action` XML system fixed earlier) that still held pre-alignment keys: Move (was T, now V), Eyedropper (was P, now I), Rectangular Marquee (was Ctrl+R, now M), Elliptical Marquee (was J, now Shift+M). (DONE.🙂)
 
-41. Two-finger move of any open window/panel (see item 3).
-   (`KisDockerHud` now handles `QEvent::TouchBegin`/`TouchUpdate`/`TouchEnd`/`TouchCancel` via an `event()` override, claiming the gesture only when exactly two touch points are active — a single-finger tap on its combo box or menu button passes through normally. Delta is computed in screen coordinates, not widget-local, since local coordinates shift under the fingers as the widget itself moves mid-drag. The drag moves `window()`, not the `KisDockerHud` instance itself — it's normally embedded in a parent layout (`KisPopupButtonFrame`, when hosted via `KisPopupButton::setPopupWidget()`) rather than being independently top-level, so moving the instance directly would've been silently overridden by that layout; confirmed `KisPopupButtonFrame` sets `Qt::Dialog`/`Qt::Popup` window flags, both genuine top-level types, so `window()` resolves correctly. No conflict with canvas pan/zoom's own two-finger handling since Qt routes touch events by which widget the gesture started on.)
+30. Panels no longer snap back into a dock zone once dragged — `setAllowedAreas(Qt::NoDockWidgetArea)` added to every panel's registration. Only affects future user drags; the initial docked layout on first launch is unchanged. (DONE.🙂)
 
-43. Version renumbered from Krita's inherited `5.4.0-prealpha` to Krimble's own `1.0.0-alpha1` in `CMakeLists.txt` (both the Qt5 and Qt6 branches, major/minor versions reset to 1/0). `KRITA_ALPHA` re-enabled since the build is now honestly alpha — this restores the "DEV BUILD" watermark on the welcome screen (see item 27's note). (DONE.🙂)
+31. Crop tool defaults to subtractive-only (`allowGrow` off by default). Cropping should only ever cut area away, never reveal new canvas area beyond the original image bounds — the toggle already existed with a working checkbox, it just shipped with the opposite default. (DONE.🙂)
 
-44. Full pass replacing user-facing "Krita" references with "Krimble" — menus, dialogs, tooltips, About dialog, Android donation/IAP strings, ~35 files. Found and fixed the biggest miss: the actual Android app label in `AndroidManifest.xml` (home screen icon, app drawer, app switcher) was still "Krita" despite everything else being rebranded; also fixed the "Krita Next" build-flavor label to "Krimble Next". Deliberately preserved: historical `.kra` file-format version-compatibility notes (e.g. "Creamy (Krita 4.2+)") since those name real upstream milestones, not branding; the SVG/KRA XML namespace URI (`http://krita.org/namespaces/svg/krita`) and Qt's `organizationDomain("krita.org")` since those are internal identifiers, not user-facing text, and changing them risks breaking file-format compatibility; code comments citing real upstream KDE commit URLs for bug-fix attribution; and the welcome page's paragraph crediting real Krita's actual contributors/sponsors/development fund (skipped on request — text there still says "Krita"). (DONE.🙂)
+32. Default color selector shape changed from a wheel-and-triangle layout to a square saturation/value area with a separate hue strip. Better suited to touch (bigger, simpler hit targets) than the old shape; this was already a supported, selectable preset, just not the shipped default. (DONE.🙂)
 
-45. All real krita.org/docs.krita.org/krita-artists.org links replaced: donation links now point to buymeacoffee.com/GeorgeEdwardPurdy, the Source Code link on the welcome page now points to the real Krimble GitHub repo instead of Krita's, and everything else (manual, community, scripting school, bug-report guide, RSS news feeds) points to krimble.org as a placeholder pending those actually being built. (DONE.🙂)
+33. Added Content-Aware Fill as a new feature. Reuses the same PatchMatch inpainting algorithm already powering the Healing Brush tool, wired to a real selection instead of requiring a brush-painted mask first — select an area, run the filter, done. Registered under Edit > Fill. (DONE.🙂)
 
-46. Removed a leftover from an earlier partial edit that invented a nonexistent legal entity. Replaced with "The Krimble Project is committed to preserving Krimble as free software." (DONE.🙂)
+34. Rebuilt the Match Color feature. Previously required loading a reference image from a file on disk via a file-picker, with no adjustable strength and only a fixed 1:1 statistical match. Now picks a source from any currently open document (with a layer sub-picker, including a Merged option), and has working Luminance, Color Intensity, Fade, and Neutralize controls that actually affect the result. Moved from the Filter menu to Image > Adjustments. (DONE.🙂)
 
-47. Full toolbox visual reordering. Krita's toolbox is grouped into sections (Shape/Transform/Fill/View/Select/Main/Navigation) that render in alphabetical order of their internal string keys (`QMap` in `KoToolBox.cpp`), with per-section priority controlling order only within a section — so there was previously no way to get one continuous list across the whole toolbox. Added a new unified `ToolBoxSection::PSOrder` and moved every tool with a real equivalent into it (Move, Marquee, Lasso, Wand, Crop, Eyedropper, Healing Brush, Brush, Gradient, Paint Bucket, Pen, Path Selection, Type, Shape tools, Hand, Zoom), sequentially prioritized. Tools with no equivalent keep their existing sections and now sort after this block.
+35. Transform tool now always starts in Free Transform mode, regardless of how it's invoked, and mode can only be changed afterward by a deliberate click in the tool's own visible options-panel controls. Closed a real, if previously unused, code path (`KisToolTransformFactory::activateSubtool`) that could have silently started the tool in a different mode or switched an already-active tool's mode via an external action/shortcut rather than the options panel. (DONE.🙂)
 
-Also fixed four stale factory-level shortcuts found along the way (a separate mechanism from the `.action` XML system fixed earlier) that still held pre-alignment keys: Move (was T, now V), Eyedropper (was P, now I), Rectangular Marquee (was Ctrl+R, now M), Elliptical Marquee (was J, now Shift+M). (DONE.🙂)
+36. Actions panel now captures genuinely replayable parameters instead of just re-triggering a bare menu item. Filters/adjustments, selection-modify operations (Grow/Shrink/Border/Feather/Smooth, Invert Selection), and image operations (Image Size, Canvas Size, Rotate, Shear) all record their actual settings on the way in and reapply those exact settings on replay — previously, replaying a step that opened a dialog just reopened it empty, since nothing about what was typed into it was ever captured. Layer operations and Transform steps are still open — both need a design decision first for how to reference "which layer" a step should target when replayed against a different document, since a raw layer pointer won't survive that.
 
-36. Removed references to competing industry standard app from readme which were inserted by A.I. tool. (DONE.🙂)
 
-37. Separate the Bugs/Changes List from the Wishlist because they are mooshed together.
+### Krimble Bug Fixes
+
+Bug Fixes:
+
+1. Limit move default to selected layer or floating selection until deliberately changed by user. (DONE.🙂 Observed actual reproduction (select Move tool, drag a selection, drag again and the whole image moves) and it traced to a real bug: `kritadefault.profile` mapped a one-finger long-press to `TertiaryAlternateModeShortcut` → `KisTool::AlternateFourth`, and `KisToolMove::beginAlternateAction()` sent every unhandled alternate action — not just that one — into an unconditional whole-image `MoveGroup` stroke. A second tap lingering even slightly on a touchscreen could register as a hold and silently trigger it. Fixed both the touch binding (removed) and the code (catch-all now a no-op, commented out per standing preference rather than deleted). Krita has no distinct "floating selection" object — paste creates a layer directly, and Move already respects whatever selection mask is active on the target layer, so that half of the original requirement needed no separate handling.)
+
+2. Item 1 (default tool) had never actually been applied to code — the hardcoded call in `libs/ui/KisView.cpp` still forced `KritaShape/KisToolBrush` on every new view. Fixed to `PanTool` (hand tool) to match item 1. (DONE.🙂)
+
+3. Item 20 (new icon) only replaced `ic_launcher`/`ic_launcher_round` at every density. The app was still falling back to the separate `ic_launcher_next`/`ic_launcher_next_round` mipmaps AND the adaptive-icon foreground/background vector drawables (`ic_launcher_next_foreground.xml`, `ic_launcher_next_background.xml`), which still had the old placeholder Krita mark baked in as vector paths. All four Next-variant assets (mipmap webp x5 densities, plus the two adaptive vector drawables) now mirror the already-fixed regular assets. (DONE.🙂)
+
+4. `KRITA_ALPHA` flag was left set in `CMakeLists.txt`, which drove the "DEV BUILD" welcome-screen label. Commented out — this was the actual cause, confirmed on the build server (Qt5, `BUILD_WITH_QT6` was never enabled, defaults OFF). Originally suspected a Qt6-specific carve-out in `KritaVersionWrapper::isDevelopersBuild()` was involved; it wasn't, since the build has been Qt5 all along, but the carve-out was removed anyway so the check no longer depends on Qt major version. Decision: stick with Qt5 (Qt6 isn't production-ready upstream either). (DONE.🙂 Superseded in part by item 26 — `KRITA_ALPHA` was deliberately re-enabled once the build was actually versioned as an alpha, so the DEV BUILD label is back by design, not a regression.)
+
+5. Splash screen still showed "Artwork by: Tyson Tan" — hardcoded in `libs/ui/kis_splash_screen.cpp` regardless of which splash image resource was actually loaded, so replacing the splash graphic alone never removed it. Cleared the credit string since Krimble's splash is an original asset. (DONE.🙂)
+
+6. Removed a leftover from an earlier partial edit that invented a nonexistent legal entity. Replaced with "The Krimble Project is committed to preserving Krimble as free software." (DONE.🙂)
+
+7. Removed references to competing industry standard app from readme which were inserted by A.I. tool. (DONE.🙂)
+
 
 ### Krita Project Website
 
@@ -140,10 +136,3 @@ I don't. Is it likely to cause problems? Yes.
 Move fast and break things.
 
 I'll clean up the mess as I go.
-
-
-
-
-
-
-
