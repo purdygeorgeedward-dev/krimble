@@ -25,6 +25,8 @@
 #include <QPushButton>
 #include <QScreen>
 #include <QTimer>
+#include <QMainWindow>
+#include <QToolBar>
 
 #include <kconfig.h>
 #include <klocalizedstring.h>
@@ -435,11 +437,50 @@ void KoDialog::keyPressEvent(QKeyEvent *event)
     QDialog::keyPressEvent(event);
 }
 
+namespace {
+
+// Krimble: find the bottommost edge (in global screen coordinates) of any
+// visible QToolBar belonging to the nearest QMainWindow ancestor of
+// `widget`. A newly shown dialog whose own top edge -- its only grabbable
+// area -- ends up hidden above the toolbar has no way to be dragged back
+// into view on a touch-only device once stuck there.
+int toolbarBottomGlobalY(QWidget *widget)
+{
+    QWidget *w = widget;
+    QMainWindow *mainWindow = nullptr;
+    while (w) {
+        mainWindow = qobject_cast<QMainWindow*>(w);
+        if (mainWindow) break;
+        w = w->parentWidget();
+    }
+    if (!mainWindow) return -1;
+
+    int bottomY = -1;
+    const QList<QToolBar*> toolbars = mainWindow->findChildren<QToolBar*>();
+    for (QToolBar *toolbar : toolbars) {
+        if (!toolbar->isVisible()) continue;
+        const QPoint globalBottomLeft = toolbar->mapToGlobal(QPoint(0, toolbar->height()));
+        bottomY = qMax(bottomY, globalBottomLeft.y());
+    }
+    return bottomY;
+}
+
+}
+
 void KoDialog::showEvent(QShowEvent *e)
 {
     QDialog::showEvent(e);
     QTimer::singleShot(5, Qt::CoarseTimer, [&]() {
         adjustPosition(parentWidget());
+
+        // Krimble: clamp downward only, after the default positioning --
+        // never moves a dialog that's already safely below the toolbar,
+        // only rescues one whose top edge would otherwise end up hidden
+        // above it.
+        const int minY = toolbarBottomGlobalY(parentWidget());
+        if (minY >= 0 && y() < minY) {
+            move(x(), minY);
+        }
     });
 }
 
