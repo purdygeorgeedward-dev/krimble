@@ -31,7 +31,7 @@ Wishlist:
 
 2. Smaller splash image on load so it fits mobile screens. (DONE.)
 
-3. Two finger move of any open window. (DONE — see item 32.)
+3. Add two-finger movement selectively to floating windows and panels that are difficult to reposition. KisDockerHud support is complete; additional windows will be handled individually as needed.
 
 4. Remove Tools menu to make the Settings menu easier to reach. (DONE.)
 
