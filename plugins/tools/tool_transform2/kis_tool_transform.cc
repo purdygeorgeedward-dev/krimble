@@ -1521,6 +1521,17 @@ QList<QAction *> KisToolTransformFactory::createActionsImpl()
 
 void KisToolTransformFactory::activateSubtool(KisToolTransform::TransformToolMode mode)
 {
+    // Krimble: deliberately not switching mode here anymore, in either
+    // branch below. This function used to let a raw action/shortcut
+    // (KisToolTransformFree/Warp/Cage/Liquify/Mesh/Perspective, see the
+    // makeSubtoolAction calls above) silently pick which mode the
+    // Transform tool starts in or jumps to -- a fresh activation should
+    // always land in Free Transform (matching item 10's scale-by-default
+    // work), and mode should only ever change via a deliberate click in
+    // the tool options panel's own mode selector, never via an action
+    // bypassing it. `mode` is intentionally unused now.
+    Q_UNUSED(mode);
+
     KoToolManager *toolManager = KoToolManager::instance();
 
     KoCanvasController *canvasController = toolManager->activeCanvasController();
@@ -1534,11 +1545,11 @@ void KisToolTransformFactory::activateSubtool(KisToolTransform::TransformToolMod
     KIS_SAFE_ASSERT_RECOVER_RETURN(transformTool);
 
     if (toolManager->activeToolId() == id()) {
-        // Transform tool is already active, switch the current mode
-        transformTool->setTransformMode(mode);
+        // Tool is already active -- previously: transformTool->setTransformMode(mode);
+        // Left as a no-op; the tool options panel's own mode buttons are
+        // the only sanctioned way to change mode once active.
     } else {
-        // Works like KoToolFactoryBase::activateTool, but tells the tool beforehand which initial transform mode to use
-        transformTool->setNextActivationTransformMode(mode);
+        // previously: transformTool->setNextActivationTransformMode(mode);
         toolManager->switchToolRequested(id());
     }
 }
