@@ -650,12 +650,17 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>Show Global Selection Mask</text>
     </Action>
                      <Separator/>
+    <!-- Krimble: SAP (Single Application Process) makes opening another
+         document try to reuse this app's already-running instance instead
+         of starting a new one, a desktop multi-window convenience with
+         little practical value on a mobile, single-instance build.
     <Action name="enable_sap">
         <text>Enable SAP</text>
     </Action>
     <Action name="configure_sap">
         <text>Configure SAP...</text>
     </Action>
+    -->
 </Menu>
 
 

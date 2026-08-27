@@ -54,7 +54,7 @@
 #include "ui_wdgpalettedock.h"
 
 PaletteDockerDock::PaletteDockerDock( )
-    : QDockWidget(i18n("Swatches"))
+    : QDockWidget(i18n("Swatches (Palette)"))
     , m_ui(new Ui_WdgPaletteDock())
     , m_model(new KisPaletteModel(this))
     , m_paletteChooser(new KisPaletteChooser(this))
@@ -66,8 +66,8 @@ PaletteDockerDock::PaletteDockerDock( )
     , m_actAdd(new QAction(KisIconUtils::loadIcon("list-add"), i18n("Add a new color swatch")))
     , m_actRemove(new QAction(KisIconUtils::loadIcon("edit-delete"), i18n("Remove swatch or group")))
     , m_actModify(new QAction(KisIconUtils::loadIcon("document-edit"), i18n("Edit swatch or group")))
-    , m_actEditPalette(new QAction(KisIconUtils::loadIcon("palette-edit"), i18n("Edit current swatches")))
-    , m_actSavePalette(new QAction(KisIconUtils::loadIcon("document-save-16"), i18n("Save current swatches")))
+    , m_actEditPalette(new QAction(KisIconUtils::loadIcon("palette-edit"), i18n("Edit current palette")))
+    , m_actSavePalette(new QAction(KisIconUtils::loadIcon("document-save-16"), i18n("Save current palette")))
     , m_colorSelfUpdate(false)
 {
     QWidget *mainWidget = new QWidget(this);
@@ -120,7 +120,7 @@ PaletteDockerDock::PaletteDockerDock( )
     connect(m_paletteChooser, SIGNAL(sigExportPalette(KoColorSetSP)), SLOT(slotExportPalette(KoColorSetSP)));
 
     m_ui->bnColorSets->setIcon(KisIconUtils::loadIcon("palette-library"));
-    m_ui->bnColorSets->setToolTip(i18n("Load Swatches"));
+    m_ui->bnColorSets->setToolTip(i18n("Load a Palette"));
     m_ui->bnColorSets->setPopupWidget(m_paletteChooser);
 
     KisConfig cfg(true);
@@ -221,7 +221,7 @@ void PaletteDockerDock::slotImportPalette()
 void PaletteDockerDock::slotExportPalette(KoColorSetSP palette)
 {
     KoFileDialog dialog(this, KoFileDialog::SaveFile, "Save Palette");
-    dialog.setCaption(i18n("Export Swatches"));
+    dialog.setCaption(i18n("Export Palette"));
     dialog.setDefaultDir(palette->filename());
     dialog.setMimeTypeFilters(QStringList() << "application/x-krita-palette");
     QString newPath;
@@ -234,7 +234,7 @@ void PaletteDockerDock::slotExportPalette(KoColorSetSP palette)
     }
     if (palette->saveToDevice(&file)) {
         m_view->showFloatingMessage(
-            i18nc("Floating message about exporting successful", "Swatches exported successfully"), QIcon(),
+            i18nc("Floating message about exporting successful", "Palette exported successfully"), QIcon(),
             500, KisFloatingMessage::Low);
     } else {
         warnKrita << "Could export to the file:" << newPath;
@@ -394,10 +394,10 @@ void PaletteDockerDock::slotUpdateLblPaletteName()
         }
         m_actSavePalette.data()->setEnabled(isGlobal);
         if (isGlobal) {
-            m_actSavePalette.data()->setToolTip(i18nc("@tooltip", "Save swatches explicitly, will also happen automatically on exiting Krimble."));
+            m_actSavePalette.data()->setToolTip(i18nc("@tooltip", "Save palette explicitly, will also happen automatically on exiting Krimble."));
         }
         else {
-            m_actSavePalette.data()->setToolTip(i18nc("@tooltip", "Saving for document swatches is done by saving the document."));
+            m_actSavePalette.data()->setToolTip(i18nc("@tooltip", "Saving for document palettes is done by saving the document."));
         }
         // if the palette is not global, then let's not indicate that the changes has been made
         // (it's easier than tracking whether the document has been saved or maybe exported etc.)
