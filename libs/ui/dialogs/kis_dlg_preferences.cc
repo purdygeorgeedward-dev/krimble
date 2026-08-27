@@ -2693,7 +2693,7 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
     : KPageDialog(parent)
 {
     Q_UNUSED(name);
-    setWindowTitle(i18n("Configure Krita"));
+    setWindowTitle(i18n("Preferences"));
     setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::RestoreDefaults);
 
     setFaceType(KPageDialog::List);
