@@ -1,0 +1,9 @@
+{
+    "Id": "Content-Aware Fill",
+    "Type": "Service",
+    "X-KDE-Library": "kritacontentawarefill",
+    "X-KDE-ServiceTypes": [
+        "Krita/ViewPlugin"
+    ],
+    "X-Krita-Version": "28"
+}

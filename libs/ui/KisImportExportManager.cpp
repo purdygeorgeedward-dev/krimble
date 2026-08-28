@@ -193,7 +193,14 @@ QStringList KisImportExportManager::supportedMimeTypes(Direction direction)
 
     if (direction == KisImportExportManager::Import) {
         if (m_importMimeTypes.isEmpty()) {
-            QList<KoJsonTrader::Plugin> list = KoJsonTrader::instance()->query("Krimble/FileFilter", "");
+            // Krimble build fix: plugin .json files still register under
+            // "Krita/FileFilter" (an internal KPluginFactory service-type
+            // identifier, never user-facing -- same category as the XML
+            // namespace and organizationDomain deliberately left alone
+            // during the Krita->Krimble rebrand). This query string got
+            // renamed along with everything else and no longer matched any
+            // plugin, silently breaking every import/export format at once.
+            QList<KoJsonTrader::Plugin> list = KoJsonTrader::instance()->query("Krita/FileFilter", "");
             Q_FOREACH(const KoJsonTrader::Plugin &loader, list) {
                 QJsonObject json = loader.metaData().value("MetaData").toObject();
                 Q_FOREACH(const QString &mimetype, json.value("X-KDE-Import").toString().split(",", Qt::SkipEmptyParts)) {
@@ -208,7 +215,7 @@ QStringList KisImportExportManager::supportedMimeTypes(Direction direction)
     }
     else if (direction == KisImportExportManager::Export) {
         if (m_exportMimeTypes.isEmpty()) {
-            QList<KoJsonTrader::Plugin> list = KoJsonTrader::instance()->query("Krimble/FileFilter", "");
+            QList<KoJsonTrader::Plugin> list = KoJsonTrader::instance()->query("Krita/FileFilter", "");
             Q_FOREACH(const KoJsonTrader::Plugin &loader, list) {
                 QJsonObject json = loader.metaData().value("MetaData").toObject();
                 Q_FOREACH(const QString &mimetype, json.value("X-KDE-Export").toString().split(",", Qt::SkipEmptyParts)) {
@@ -228,7 +235,7 @@ KisImportExportFilter *KisImportExportManager::filterForMimeType(const QString &
 {
     int weight = -1;
     KisImportExportFilter *filter = 0;
-    QList<KoJsonTrader::Plugin>list = KoJsonTrader::instance()->query("Krimble/FileFilter", "");
+    QList<KoJsonTrader::Plugin>list = KoJsonTrader::instance()->query("Krita/FileFilter", "");
 
     Q_FOREACH(const KoJsonTrader::Plugin &loader, list) {
         QJsonObject json = loader.metaData().value("MetaData").toObject();
