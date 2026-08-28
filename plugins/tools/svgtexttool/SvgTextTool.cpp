@@ -326,7 +326,7 @@ void SvgTextTool::showEditor()
 
     if (!m_editor) {
         m_editor = new SvgTextEditor(QApplication::activeWindow());
-        m_editor->setWindowTitle(i18nc("@title:window", "Krita - Edit Text"));
+        m_editor->setWindowTitle(i18nc("@title:window", "Krimble - Edit Text"));
         m_editor->setWindowModality(Qt::ApplicationModal);
         m_editor->setAttribute( Qt::WA_QuitOnClose, false );
 
