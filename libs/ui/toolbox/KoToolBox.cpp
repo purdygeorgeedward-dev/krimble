@@ -42,6 +42,18 @@ static int buttonSize(int screen)
 {
     KIS_SAFE_ASSERT_RECOVER_RETURN_VALUE(screen < QGuiApplication::screens().size() && screen >= 0, 16);
 
+#ifdef Q_OS_ANDROID
+    // Krimble: the width-bucketed heuristic below is calibrated for desktop
+    // monitor widths at desktop DPI -- a phone's raw pixel width lands it in
+    // one of those buckets with no regard for its much higher DPI, so the
+    // "size" it computes doesn't correspond to a similar physical/visual
+    // size on a phone the way it does on a desktop monitor. Fixed,
+    // deliberately generous default instead, consistent with the touch
+    // targets widened elsewhere this session (crop handles, dock
+    // separators, text-selection handles).
+    Q_UNUSED(screen);
+    return 32;
+#else
     QRect rc = QGuiApplication::screens().at(screen)->availableGeometry();
     if (rc.width() <= 1024) {
         return 12;
@@ -55,7 +67,7 @@ static int buttonSize(int screen)
     else {
         return 22;
     }
-
+#endif
 }
 
 class KoToolBox::Private
