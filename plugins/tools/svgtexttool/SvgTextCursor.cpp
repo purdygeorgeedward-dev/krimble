@@ -409,7 +409,14 @@ QPointF SvgTextCursor::selectionHandlePos(bool startHandle) const
 
 bool SvgTextCursor::hitTestSelectionHandle(QPointF point, qreal sensitivity, bool &isStartHandle) const
 {
-    if (!hasSelection()) return false;
+    // Krimble build fix: can't call hasSelection() here since this method is
+    // const and hasSelection() is a non-const override of
+    // KoToolSelection::hasSelection() (also non-const in the base, so it
+    // can't be changed without breaking the override relationship). Checks
+    // the same underlying state directly instead -- hasSelection()'s own
+    // implementation is exactly this comparison, verified against the
+    // current source before making this change.
+    if (d->pos == d->anchor) return false;
 
     const QPointF startPos = selectionHandlePos(true);
     const QPointF endPos = selectionHandlePos(false);
