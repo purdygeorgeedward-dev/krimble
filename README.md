@@ -97,7 +97,7 @@ Wishlist:
 
 35. Prevent new dialogs from positioning above the toolbar. Hooked `KoDialog::showEvent()`, a single existing choke point shared by all 47 classes in this codebase that derive from `KoDialog`, so this covers the common case without patching each dialog individually — after the existing default positioning runs, if a dialog's top edge (its only grabbable/draggable area) would end up above the toolbar, it's nudged down once at spawn time. Only ever moves a dialog downward, and only at the moment it's shown; doesn't constrain it afterward. Preventive counterpart to item 3 above — most real instances of a dialog getting stuck are a spawn-position problem, not something that happens through ordinary dragging. (DONE.🙂)
 
-36. Build targets: a. arm64-v8a Play Store, b. arm64-v8a F-Droid c.arm64-v7a Play Store, d. x64-v7a F-Droid, e. Linux x86-64 f. Windows g. iOS h. MacOS
+36. Build targets: a. arm64-v8a Play Store, b. arm64-v8a F-Droid, c. armeabi-v7a Play Store, d. armeabi-v7a F-Droid, e. Linux x86-64, f. Windows, g. iOS, h. MacOS
 
 ### Krimble Bug Fixes
 
