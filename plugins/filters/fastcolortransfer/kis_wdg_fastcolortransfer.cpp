@@ -18,6 +18,7 @@
 #include <kis_paint_device.h>
 #include <kis_selection.h>
 #include <kis_node.h>
+#include <kis_group_layer.h>
 #include <kundo2command.h>
 #include <KoColorSpaceRegistry.h>
 #include <kis_slider_spin_box.h>
