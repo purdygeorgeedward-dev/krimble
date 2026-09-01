@@ -16,6 +16,7 @@
 
 #include <kis_canvas2.h>
 #include <kis_types.h>
+#include <filter/kis_filter_configuration.h>
 #include <operations/kis_operation_configuration.h>
 
 #include "taskset_resource.h"
