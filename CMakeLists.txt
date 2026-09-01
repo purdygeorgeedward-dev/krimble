@@ -1710,6 +1710,16 @@ if (ANDROID)
 
     set (CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_CXX_STANDARD_LIBRARIES} \"${KRITA_ANDROID_STL_PATH}\"" CACHE STRING "" FORCE)
   endif()
+
+  # Explicitly link libc, since some shared-library targets in this build
+  # were failing with undefined bionic symbols (__assert2, __strlen_chk,
+  # __system_property_get) despite the compiler normally linking it
+  # implicitly. Not verified as the true root cause -- only confirmed to
+  # resolve these specific undefined-symbol errors.
+  set (KRITA_ANDROID_LIBC_PATH "${ANDROID_TOOLCHAIN_ROOT}/sysroot/usr/lib/${ECM_ANDROID_STL_ARCH}/24/libc.so")
+  if (EXISTS ${KRITA_ANDROID_LIBC_PATH})
+    set (CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_CXX_STANDARD_LIBRARIES} \"${KRITA_ANDROID_LIBC_PATH}\"" CACHE STRING "" FORCE)
+  endif()
 endif()
 
 if(DEFINED QTANDROID_EXPORTED_TARGET AND NOT TARGET "create-apk")
