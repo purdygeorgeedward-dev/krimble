@@ -23,6 +23,7 @@
 #include <KisResourceItemChooser.h>
 #include <KisResourceLoader.h>
 #include <KisResourceItemListView.h>
+#include <kis_action.h>
 #include <KisResourceLoaderRegistry.h>
 #include <KisViewManager.h>
 #include <kis_action_manager.h>
