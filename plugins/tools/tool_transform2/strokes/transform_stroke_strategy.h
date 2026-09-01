@@ -18,6 +18,7 @@
 #include <boost/optional.hpp>
 #include "commands_new/KisUpdateCommandEx.h"
 
+#include <kis_paint_device.h>
 class KisPostExecutionUndoAdapter;
 class TransformTransactionProperties;
 class KisUpdatesFacade;

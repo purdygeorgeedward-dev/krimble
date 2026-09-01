@@ -43,6 +43,7 @@
 
 #include "strokes/inplace_transform_stroke_strategy.h"
 
+#include <kis_paint_device.h>
 class QTouchEvent;
 class KisTransformStrategyBase;
 class KisWarpTransformStrategy;

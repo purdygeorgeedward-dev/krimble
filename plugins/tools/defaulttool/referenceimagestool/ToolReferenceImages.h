@@ -20,6 +20,7 @@
 #include <defaulttool/DefaultTool.h>
 #include <defaulttool/DefaultToolFactory.h>
 
+#include <kis_node.h>
 class ToolReferenceImagesWidget;
 class KisReferenceImagesLayer;
 

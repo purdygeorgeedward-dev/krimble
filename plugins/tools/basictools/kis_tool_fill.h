@@ -233,6 +233,7 @@ private Q_SLOTS:
 
 #include "KisToolPaintFactoryBase.h"
 
+#include <kis_node.h>
 class KisToolFillFactory : public KisToolPaintFactoryBase
 {
 

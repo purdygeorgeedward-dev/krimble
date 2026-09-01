@@ -15,6 +15,8 @@
 #include "kis_image.h"
 #include <kritaui_export.h>
 
+#include <kis_node.h>
+#include <kis_selection.h>
 class KisKActionCollection;
 
 class KoCompositeOp;

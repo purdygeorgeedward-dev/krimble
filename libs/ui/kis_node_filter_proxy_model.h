@@ -12,6 +12,7 @@
 #include "kis_types.h"
 #include "kritaui_export.h"
 
+#include <kis_node.h>
 class KisNodeModel;
 class KisNodeDummy;
 class KisNodeManager;

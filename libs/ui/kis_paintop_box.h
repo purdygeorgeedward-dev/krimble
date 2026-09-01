@@ -27,6 +27,8 @@
 #include "kis_signal_auto_connection.h"
 #include "kis_signal_compressor.h"
 
+#include <kis_node.h>
+#include <kis_properties_configuration.h>
 class QMenu;
 class QToolButton;
 class QString;

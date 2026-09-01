@@ -13,6 +13,7 @@
 #include "kritaui_export.h"
 #include <KisNodeAdditionFlags.h>
 
+#include <kis_node.h>
 class KisNodeDummy;
 
 /**

@@ -15,6 +15,8 @@
 #include "KisView.h"
 #include <filter/kis_filter_configuration.h>
 
+#include <kis_layer.h>
+#include <kis_node.h>
 class KisViewManager;
 class KisNodeCommandsAdapter;
 class KisAction;

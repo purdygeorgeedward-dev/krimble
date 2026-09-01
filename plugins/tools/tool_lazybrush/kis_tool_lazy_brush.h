@@ -20,6 +20,7 @@
 #include <kconfiggroup.h>
 #include <KoIcon.h>
 
+#include <kis_node.h>
 class KisKActionCollection;
 class KoCanvasBase;
 

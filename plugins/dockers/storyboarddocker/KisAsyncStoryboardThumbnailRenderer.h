@@ -9,6 +9,7 @@
 
 #include <KisAsyncAnimationRendererBase.h>
 
+#include <kis_paint_device.h>
 class KisPaintDevice;
 
 /**

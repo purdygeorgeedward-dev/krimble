@@ -25,6 +25,7 @@
 
 #include <kritaimage_export.h>
 
+#include <kis_node.h>
 class KoColorSpace;
 class KoColor;
 

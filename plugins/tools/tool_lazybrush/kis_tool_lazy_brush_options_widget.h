@@ -14,6 +14,7 @@
 #include "kis_types.h"
 #include "KisSwatchGroup.h"
 
+#include <kis_node.h>
 class KisCanvasResourceProvider;
 class KoColor;
 

@@ -35,6 +35,8 @@ class KisUniqueColorSet;
 
 #include <kis_abstract_perspective_grid.h>
 
+#include <brushengine/kis_paintop_preset.h>
+#include <kis_node.h>
 /**
  * KisCanvasResourceProvider contains the per-window current settings that
  * influence painting, like paintop, color, gradients and so on.

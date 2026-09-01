@@ -14,6 +14,7 @@
 #include <KisKineticScroller.h>
 #include <kis_utility_title_bar.h>
 
+#include <kis_node.h>
 class QToolButton;
 class KisCanvas2;
 class KisAction;

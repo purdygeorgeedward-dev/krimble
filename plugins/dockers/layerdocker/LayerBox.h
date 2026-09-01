@@ -36,6 +36,7 @@
 
 #include "kritalayerdocker_export.h"
 
+#include <kis_node.h>
 class QModelIndex;
 
 typedef QList<QModelIndex> QModelIndexList;

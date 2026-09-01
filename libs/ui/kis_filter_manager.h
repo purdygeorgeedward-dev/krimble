@@ -12,6 +12,7 @@
 #include <kritaui_export.h>
 #include <kis_types.h>
 
+#include <filter/kis_filter_configuration.h>
 class KisViewManager;
 class KisKActionCollection;
 class KisActionManager;

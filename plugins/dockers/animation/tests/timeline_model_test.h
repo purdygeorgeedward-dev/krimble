@@ -10,6 +10,7 @@
 #include <simpletest.h>
 #include "empty_nodes_test.h"
 
+#include <kis_node.h>
 class KisDocument;
 class KisNameServer;
 class KisShapeController;

@@ -24,6 +24,8 @@
 
 #include "subtools/KisDynamicDelegatedTool.h"
 
+#include <kis_node.h>
+#include <kis_pixel_selection.h>
 class KisOptionCollectionWidget;
 class KisColorButton;
 class KoGroupButton;

@@ -21,6 +21,7 @@ typedef KisSharedPtr<KisReferenceImagesDecoration> KisReferenceImagesDecorationS
 #include <kis_canvas2.h>
 #include <kis_types.h>
 
+#include <kis_node.h>
 /**
  * @brief The KisReferenceImagesDecoration class draws the reference images on the canvas.
  * The document stores the list of reference images.

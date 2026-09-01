@@ -16,6 +16,7 @@
 
 #include <kritaui_export.h>
 
+#include <kis_node.h>
 class KisActionManager;
 class KisAction;
 class QAction;

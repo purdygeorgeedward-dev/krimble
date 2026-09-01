@@ -12,6 +12,7 @@
 
 #include "kis_types.h"
 
+#include <kis_node.h>
 class KisIdleTasksManager;
 
 

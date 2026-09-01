@@ -15,6 +15,7 @@
 
 #include <KisSelectionTags.h>
 
+#include <kis_node.h>
 class KisDummiesFacadeBase;
 class KisNodeDummy;
 class KisShapeController;

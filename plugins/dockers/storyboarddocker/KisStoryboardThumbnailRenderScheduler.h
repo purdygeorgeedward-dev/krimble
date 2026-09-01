@@ -12,6 +12,7 @@
 
 #include <kis_image.h>
 
+#include <kis_paint_device.h>
 class KisPaintDevice;
 class KisAsyncStoryboardThumbnailRenderer;
 

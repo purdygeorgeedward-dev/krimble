@@ -19,6 +19,7 @@
 
 #include "widgets/kis_floating_message.h"
 
+#include <kis_node.h>
 class KisDocument;
 class KisMainWindow;
 class KisCanvasController;

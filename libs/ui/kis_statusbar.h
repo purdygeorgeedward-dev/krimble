@@ -29,6 +29,7 @@ class KisAngleSelector;
 
 #include "kritaui_export.h"
 
+#include <kis_image.h>
 class KRITAUI_EXPORT KisStatusBar : public QObject
 {
     class StatusBarItem : public boost::equality_comparable<StatusBarItem>

@@ -12,6 +12,7 @@
 #include "kis_safe_document_loader.h"
 #include "kis_signal_auto_connection.h"
 
+#include <kis_paint_device.h>
 /**
  * @brief The KisFileLayer class loads a particular file as a layer into the layer stack.
  */

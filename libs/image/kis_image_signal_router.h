@@ -11,6 +11,7 @@
 #include "KisImageSignals.h"
 #include "KisNodeAdditionFlags.h"
 
+#include <kis_node.h>
 class KoColorSpace;
 class KoColorProfile;
 
