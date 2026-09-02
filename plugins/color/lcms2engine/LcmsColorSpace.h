@@ -313,6 +313,11 @@ public:
         // own signature (same approach as createPerChannelAdjustment below)
         // avoids any unintended color conversion, so the curve's own clamping
         // to 0.0/1.0 is what actually reaches the display.
+        //
+        // See KRIMBLE_CHANGES.md ("Brightness/Contrast not reaching full
+        // black/white") for the full writeup, and
+        // plugins/filters/colorsfilters/kis_brightness_contrast_filter.cpp
+        // for the curve-building side of this fix.
         const uint numChannels = this->colorChannelCount();
         cmsToneCurve **transferFunctions = new cmsToneCurve*[numChannels];
         for (uint ch = 0; ch < numChannels; ch++) {

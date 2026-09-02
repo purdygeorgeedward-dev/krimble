@@ -31,6 +31,20 @@ KoColorTransformation * KisBrightnessContrastFilter::createTransformation(const 
     // native color space (matching Photoshop's own Brightness/Contrast
     // dialog, which is believed to operate in RGB as well - unverified).
     //
+    // This is now also confirmed at the LittleCMS level: previously,
+    // LcmsColorSpace's createBrightnessContrastAdjustment() built its device
+    // link tagged as cmsSigLabData and chained it between two copies of the
+    // working profile, which made LittleCMS silently do a real RGB -> Lab ->
+    // RGB colorimetric round-trip (subject to rendering intent/gamut
+    // mapping) instead of applying the curve directly to this color space's
+    // own channels. That round-trip was why full black/white couldn't be
+    // reached even at extreme slider values - see KRIMBLE_CHANGES.md
+    // ("Brightness/Contrast not reaching full black/white") and
+    // plugins/color/lcms2engine/LcmsColorSpace.h. Fixed by building the
+    // device link with this color space's own signature instead, so no
+    // color conversion happens and this filter's own 0.0-1.0 clamp (below)
+    // is what actually reaches the output.
+    //
     // Krita's Levels filter (KisLevelsFilter) declares
     // setColorSpaceIndependence(TO_LAB16), which looks like it signals an
     // intent to run lightness adjustments through Lab space instead -
