@@ -304,21 +304,34 @@ public:
             return 0;
         }
 
-        cmsToneCurve *transferFunctions[3];
-        transferFunctions[0] = cmsBuildTabulatedToneCurve16(0, 256, transferValues);
-        transferFunctions[1] = cmsBuildGamma(0, 1.0);
-        transferFunctions[2] = cmsBuildGamma(0, 1.0);
+        // NOTE: this must NOT route through cmsSigLabData / a multiprofile
+        // RGB->Lab->RGB chain. Tagging the device link as Lab forces LittleCMS
+        // to perform a real colorimetric conversion in and out of Lab, which
+        // is subject to the profile's rendering intent and gamut mapping -
+        // that round-trip can keep true black/white from mapping back to
+        // exactly 0/0xFFFF. Applying the curve directly in this color space's
+        // own signature (same approach as createPerChannelAdjustment below)
+        // avoids any unintended color conversion, so the curve's own clamping
+        // to 0.0/1.0 is what actually reaches the display.
+        const uint numChannels = this->colorChannelCount();
+        cmsToneCurve **transferFunctions = new cmsToneCurve*[numChannels];
+        for (uint ch = 0; ch < numChannels; ch++) {
+            transferFunctions[ch] = cmsBuildTabulatedToneCurve16(0, 256, transferValues);
+        }
 
         KoLcmsColorTransformation *adj = new KoLcmsColorTransformation(this);
-        adj->profiles[1] = cmsCreateLinearizationDeviceLink(cmsSigLabData, transferFunctions);
-        cmsSetDeviceClass(adj->profiles[1], cmsSigAbstractClass);
-
-        adj->profiles[0] = d->profile->lcmsProfile();
-        adj->profiles[2] = d->profile->lcmsProfile();
-        adj->cmstransform  = cmsCreateMultiprofileTransform(adj->profiles, 3, this->colorSpaceType(), this->colorSpaceType(),
+        adj->profiles[0] = cmsCreateLinearizationDeviceLink(this->colorSpaceSignature(), transferFunctions);
+        adj->profiles[1] = 0;
+        adj->profiles[2] = 0;
+        adj->csProfile = d->profile->lcmsProfile();
+        adj->cmstransform  = cmsCreateTransform(adj->profiles[0], this->colorSpaceType(), 0, this->colorSpaceType(),
                              KoColorConversionTransformation::adjustmentRenderingIntent(),
                              KoColorConversionTransformation::adjustmentConversionFlags());
-        adj->csProfile = d->profile->lcmsProfile();
+
+        for (uint ch = 0; ch < numChannels; ch++) {
+            cmsFreeToneCurve(transferFunctions[ch]);
+        }
+        delete [] transferFunctions;
         return adj;
     }
 
