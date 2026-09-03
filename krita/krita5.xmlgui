@@ -130,12 +130,12 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
              onto Krita's existing, distinct, already-functional commands.
              Text matches Photoshop's exact wording (no ellipsis) even though
              Scale/Rotate/Skew open a numeric dialog in Krita rather than
-             Photoshop's live on-canvas drag -- same command, different
+             Photoshop's live on-canvas drag, same command, different
              interaction model, not worth a misleading label difference.
              Verified none of these 8 underlying actions (layersize,
              rotatelayer, shearlayer, rotateLayer180/CW90/CCW90, mirrorNodeX/Y)
              call setExcludedNodeTypes() or are otherwise restricted to one
-             layer type -- their activationFlags cover layers, shape layers,
+             layer type, their activationFlags cover layers, shape layers,
              transparency masks, and both selection types, so they behave
              the same regardless of what kind of layer is active, matching
              Photoshop's broad applicability.
