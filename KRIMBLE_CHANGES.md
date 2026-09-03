@@ -110,3 +110,35 @@ to a grayscale/steel tone, with an orange circular "N" badge overlaid in
 the bottom-right corner. Applied across all mipmap densities
 (`mdpi` through `xxxhdpi`), both square and round variants, and the
 debug flavor's Play Store PNG.
+
+## 2026-09-03 — Added real "Merge Visible" action (Photoshop parity, Ctrl+Shift+E)
+
+**Commit:** `e1a7e5a`
+**Files:** `libs/ui/kis_layer_manager.h`, `libs/ui/kis_layer_manager.cc`,
+`krita/krita.action`, `krita/krita5.xmlgui`
+
+Photoshop's Layer menu has a dedicated "Merge Visible" command
+(Ctrl+Shift+E) between Merge Down and Flatten Image. Krita has always
+had the equivalent capability, but only as a two-step manual sequence
+(per the Krita manual): Layer ▸ Select ▸ Visible Layers, then Layer ▸
+Merge with Layer Below. No single menu item triggered both steps.
+
+Added a new `merge_visible_layers` action to `KisLayerManager` that
+does exactly that sequence and nothing else — it calls
+`KisNodeManager::selectVisibleNodes()` then the existing
+`mergeLayer()` slot, which already handles merging a multi-node
+selection via `KisImage::mergeMultipleLayers()`. No new merge logic
+was written.
+
+**Bonus fix:** while placing the new action, found that the Layer
+menu's existing `flatten_layer` entry was mislabeled "Merge Visible"
+in `krita5.xmlgui`, even though `flatten_layer` only flattens the
+single active layer — it has nothing to do with visible-layer merging.
+Relabeled that entry to its correct text, "Flatten Layer", and inserted
+the new `merge_visible_layers` action in the correct Photoshop-parity
+position (between Merge Down and Flatten Image).
+
+**Shortcut:** Photoshop uses Ctrl+Shift+E for Merge Visible and has no
+default shortcut for Flatten Image. Krita had Ctrl+Shift+E assigned to
+`flatten_image`. Moved the shortcut from `flatten_image` to the new
+`merge_visible_layers` action to match Photoshop's defaults.
