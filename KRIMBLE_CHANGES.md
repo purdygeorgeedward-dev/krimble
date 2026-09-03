@@ -183,3 +183,118 @@ Flip/Rotate 180°, but those are modifier-key interactions within
 Krita's Free Transform mode rather than separate tool activations, so
 they don't get their own menu entries — Free Transform already covers
 that functionality once opened.
+
+## 2026-09-03 — Filled out Edit > Transform to Photoshop's full list, matched exact wording
+
+**Commits:** `4a49e0d`, `55de2a2` (`a7d3e31` fixed an XML comment syntax
+mistake introduced by `55de2a2`)
+**File:** `krita/krita5.xmlgui`
+
+Added the remaining Photoshop Edit ▸ Transform items — Scale, Rotate,
+Skew, Rotate 180°, Rotate 90° Clockwise, Rotate 90° Counter Clockwise,
+Flip Horizontal, Flip Vertical — joining Perspective and Warp already
+there. All ten map to existing, distinct, already-functional Krita
+actions (`layersize`, `rotatelayer`, `shearlayer`, `rotateLayer180`,
+`rotateLayerCW90`, `rotateLayerCCW90`, `mirrorNodeX`, `mirrorNodeY`,
+plus the two `KisToolTransform` submode actions from the previous
+entry) — no new code, just menu placement.
+
+Verified none of the 8 underlying one-shot actions are restricted to a
+specific layer type: no `setExcludedNodeTypes()` calls, and their
+`activationFlags` cover layers, shape layers, transparency masks, and
+both selection types. Also traced each one's actual C++ implementation
+and confirmed they behave like Photoshop's Edit ▸ Transform: if a pixel
+selection is active, the operation is constrained to
+`selection->selectedExactRect()`; otherwise it falls back to the whole
+active layer's bounds (`KisImage::rotateImpl`, `KisNodeManager::
+mirrorNodes`, `ImageSize::slotLayerSize`, `ShearImage::slotShearLayer`
+all confirmed).
+
+"Distort" is deliberately left out: Krita has no separate constrained
+distort-only mode, only unconstrained corner-drag inside Free
+Transform, so a menu item here would just be a duplicate label for the
+same interaction as Free Transform, not real distinct functionality.
+
+Text matches Photoshop's exact wording (no ellipsis on Scale/Rotate/
+Skew) even though those three open a numeric dialog in Krita rather
+than Photoshop's live on-canvas drag — same command, different
+interaction model, not worth a misleading label difference.
+
+## 2026-09-03 — Reordered Layer menu so Merge Down/Merge Visible/Flatten Image are adjacent
+
+**Commit:** `c41569f`
+**File:** `krita/krita5.xmlgui`
+
+Confirmed against real Photoshop Layer menu screenshots: Merge Down,
+Merge Visible, and Flatten Image sit as an uninterrupted triplet with
+nothing between them, and Photoshop has no "Flatten Layer" or "Merge
+Shape Layers" concept at all.
+
+Krimble had three Krita-specific extras (`merge_selected_layers`,
+`flatten_layer`, `merge_all_shape_layers`) interspersed inside that
+triplet, breaking the exact adjacency. Moved all three to their own
+group directly after the Photoshop-parity triplet instead, so the
+triplet itself matches Photoshop exactly and the Krita-only extras are
+clearly set apart as bonus functionality.
+
+## 2026-09-03 — Contrast slider couldn't reach pure black/white at maximum
+
+**Commit:** `19062f3`
+**File:** `plugins/filters/colorsfilters/kis_brightness_contrast_filter.cpp`
+
+Bug report: pushing Contrast to maximum on a grayscale image should
+produce a pure black-and-white result, and didn't.
+
+This file is Krimble/"Krita Mobile"-authored, not inherited from
+upstream Krita. Its contrast curve used `contrastFactor = 1.0 +
+contrast`, a plain linear scale that caps out at a slope of 2.0 even
+at contrast=+100. That only clips pixels already below 25% gray or
+above 75% gray to full black/white — the middle 50% of the tonal range
+could never reach pure black/white no matter how far the slider was
+pushed. Verified numerically: at max contrast, a pixel at 45% gray
+only reached 40% output, not 0%.
+
+Replaced the positive-contrast side with Photoshop's legacy contrast
+formula (`factor = 1 / (1 - contrast)`), whose slope diverges toward
+infinity as contrast approaches its maximum — that divergence is what
+actually produces the posterize-to-black/white look. Handled the true
+maximum (contrast = +100) as an explicit hard threshold at the 50%
+midpoint rather than relying on floating-point infinity, guaranteeing
+exact 0.0/1.0 output. Negative contrast (flattening toward gray) is
+unchanged. Confirmed the fix numerically against the old formula
+before committing.
+
+## 2026-09-03 — UI-scale-on-startup dialog silently missing (bug items 3/6)
+
+**Commit:** `913eb00`
+**Files:** `krita/main.cc`, `libs/ui/dialogs/kis_dlg_preferences.cc`
+
+Bug report: a dialog with a percentage slider for setting the
+interface (UI) scale used to appear on first launch in a previous
+Krimble build, then disappeared entirely in a later build with no
+error or explanation. Both that startup dialog and the Settings >
+Interface Scale menu item were confirmed missing.
+
+Traced the full chain: `KisApplication::start()` calls
+`KisAndroidDonations::showDonationDialog(true)`, through JNI to
+`MainActivity.showDonationDialogInternal()`; on dismiss that fires
+`JNIWrappers.onSplashDialogDismissed()`, which comes back into C++ as
+`KisAndroidScaling::slotSplashDialogDismissed()`, calling
+`maybeShowDialog(true)`. That entire path was intact and unconditional
+— not the actual problem.
+
+Root cause was one level deeper: `KisAndroidScaling::isSupported()`
+(which gates the Settings menu item's creation in `KisMainWindow.cpp`)
+and `maybeShowDialog()`'s early-return both depend on
+`isHighDpiScalingEnabled()`, which only ends up true if the
+"EnableHiDPI" `kritadisplayrc` key is true. That key defaulted to
+`false` in `main.cc`, so on any install without a pre-existing config,
+the entire interface-scaling subsystem (menu item + startup dialog)
+never got a valid primary screen to work with and silently never
+appeared — no crash, no log, just absent.
+
+Changed the default to `true` in both `main.cc` (actual startup
+behavior) and `kis_dlg_preferences.cc` (so the Preferences checkbox
+reflects the same default, rather than showing unchecked while the
+feature is actually on). `androidScalingAskOnStartup` already defaulted
+to true and wasn't part of the problem.
