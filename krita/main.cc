@@ -386,7 +386,18 @@ extern "C" MAIN_EXPORT int MAIN_FN(int argc, char **argv)
     bool openGLDebugSynchronous = false;
     bool logUsage = true;
     {
-        bool enableHighDpiScaling = kritarc.value("EnableHiDPI", false).toBool() || !qgetenv("KRITA_HIDPI").isEmpty();
+        // Krimble: default this to true (was false, matching upstream Krita
+        // desktop where HiDPI is normally handled by the OS/monitor). On
+        // Android, this flag is also what gates the entire interface-scaling
+        // feature -- both the Settings > Interface Scale menu item and the
+        // "set your UI scale" dialog shown on first launch are only created
+        // at all when this ends up true (see KisAndroidScaling::isSupported()
+        // / isHighDpiScalingEnabled(), which only get a valid primary screen
+        // to work with if high-DPI scaling was enabled here). This feature
+        // was present in an earlier Krimble build and was explicitly wanted
+        // kept, so it should not depend on the user manually discovering and
+        // setting "EnableHiDPI=true" in kritarc -- default it on instead.
+        bool enableHighDpiScaling = kritarc.value("EnableHiDPI", true).toBool() || !qgetenv("KRITA_HIDPI").isEmpty();
         // The AA_(Enable|Disable)HighDpiScaling attributes no longer have an
         // effect on Qt6, high-DPI scaling is always enabled. To "disable" it,
         // we need to use an environment variable instead, but we'll only do

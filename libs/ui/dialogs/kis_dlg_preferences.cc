@@ -380,7 +380,11 @@ GeneralTab::GeneralTab(QWidget *_parent, const char *_name)
 
     const QString configPath = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
     QSettings kritarc(configPath + QStringLiteral("/kritadisplayrc"), QSettings::IniFormat);
-    m_chkHiDPI->setChecked(kritarc.value("EnableHiDPI", false).toBool());
+    // Krimble: default matches krita/main.cc's default for this same
+    // "EnableHiDPI" key (kritadisplayrc) -- both were changed from false to
+    // true so the checkbox here reflects the feature actually being on by
+    // default, rather than showing unchecked while the feature is enabled.
+    m_chkHiDPI->setChecked(kritarc.value("EnableHiDPI", true).toBool());
 #if defined(Q_OS_WIN) && defined(HAVE_HIGH_DPI_SCALE_FACTOR_ROUNDING_POLICY)
     m_chkHiDPIFractionalScaling->setChecked(kritarc.value("EnableHiDPIFractionalScaling", false).toBool());
 #else
