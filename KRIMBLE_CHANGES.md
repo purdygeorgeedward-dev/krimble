@@ -15,6 +15,77 @@ to rediscover it from scratch.
   below); a comment is visible in the file itself and easy to restore.
 - **Photoshop feature parity — same features, same menu locations — is
   the primary UI goal** for this fork.
+- **Verify actual behavior before cataloging a Photoshop feature as
+  missing or existing.** Some features exist via a different mechanism
+  or multi-step sequence in Krita (e.g. Merge Visible = Select Visible
+  Layers + Merge with Layer Below) rather than a single equivalently-
+  named action.
+- **Ask before making codebase changes.** Investigating is fine
+  unprompted, and so is writing/updating documentation. Only actual
+  code/config edits, commits, and pushes need explicit go-ahead first.
+- **Document every change twice**: inline code comments explaining the
+  change, AND an entry in this file. Every time, not just sometimes.
+
+## Open bug list
+
+Reported as a numbered list; numbers are kept stable across sessions so
+they can be referenced directly. Descriptions below are the *corrected*
+versions after clarification — several were initially misread, and the
+wrong initial readings are noted so they aren't repeated.
+
+1. *(not yet discussed in detail)*
+2. **Brush presets open on load** — the brush preset picker/panel
+   auto-opens on startup instead of staying closed until invoked. Not
+   yet investigated.
+3. **UI-scale-on-startup dialog missing.** A dialog with a percentage
+   slider for setting the *interface* (UI) scale — not canvas zoom —
+   used to appear on first launch in a previous Krimble build, then
+   disappeared with no error or explanation. **Fixed** — see the
+   2026-09-03 "UI-scale-on-startup dialog silently missing" entry
+   below. (Initially misread as being about a canvas zoom-fit prompt;
+   it is not.)
+4. **Brightness/Contrast doesn't reach full black/white.** Specifically:
+   pushing *Contrast* to maximum on a grayscale image should threshold
+   it to pure black-and-white, and didn't. **Fixed** — see the
+   2026-09-03 "Contrast slider couldn't reach pure black/white at
+   maximum" entry below. Note this is a *different* bug from the
+   earlier LcmsColorSpace.h Lab-round-trip fix (`b1eb52e`) — that one
+   fixed a color-space clipping issue; this one fixed the contrast
+   curve's math not being steep enough at max value. Both were real,
+   separate bugs in the same feature.
+5. **Resize handles hard to grab, including on the Transform tool.**
+   A previous attempt was made to enlarge the hit-target size of
+   resize handles (windows and Transform tool) and had no effect.
+   Not yet investigated — the prior attempt itself needs to be found
+   (git history search for handle/resize/grab-related commits turned
+   up nothing in the visible history) and understood before trying
+   again.
+6. **No way to set UI zoom scale.** Same root cause as #3 above — this
+   is not about canvas zoom. **Fixed** together with #3.
+7. **Window snap is broken.** Not about persistence across sessions —
+   snapping itself does not work. Not yet investigated. (Initially
+   misread as a "docked layout doesn't persist across sessions" issue;
+   it is not — it's about the snapping behavior itself failing.)
+8. **Transform tool does nothing.** Not yet investigated. This is a
+   significant open risk given the amount of menu work done exposing
+   Transform submodes (Free Transform, Perspective, Warp, Puppet Warp,
+   the full Edit > Transform submenu) — all of that assumed the
+   underlying tool works and only needed better menu exposure. If the
+   tool itself is non-functional, that menu work is exposing something
+   broken rather than fixing access to something that works. Needs the
+   specific failure mode (no response to input, freezes, doesn't
+   commit, etc.) before it can be diagnosed.
+9. **Massive rendering delay during brush painting** — described as
+   "seemingly a minute" of lag between stroke input and rendering.
+   Not yet investigated.
+10. **Type tool does nothing.** Not yet investigated. Ties to the
+    in-progress "Type tool rework part 1" commit (`9a7c7f112`) noted
+    in the Photoshop-parity catalog.
+11. **Cartoon mascot in support screen.** User is addressing this one
+    themselves — not part of Claude's task list.
+12. **Tool docker panels render as unmanageable narrow column shapes**
+    (described as "vertical stripes" initially, corrected to
+    "unmanageable column shapes/proportions"). Not yet investigated.
 
 ## 2026-09-02 — File/Edit/View toolbar items silently deleted, restored
 
