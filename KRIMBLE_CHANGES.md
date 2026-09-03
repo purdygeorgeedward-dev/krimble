@@ -142,3 +142,44 @@ position (between Merge Down and Flatten Image).
 default shortcut for Flatten Image. Krita had Ctrl+Shift+E assigned to
 `flatten_image`. Moved the shortcut from `flatten_image` to the new
 `merge_visible_layers` action to match Photoshop's defaults.
+
+## 2026-09-03 — Exposed transform submodes as separate Photoshop-parity menu items
+
+**Commit:** `c7630d4`
+**File:** `krita/krita5.xmlgui`
+
+Photoshop splits transformation into distinct menu commands: Edit ▸
+Free Transform, Edit ▸ Transform ▸ Perspective/Warp/etc., Edit ▸ Puppet
+Warp, and Filter ▸ Liquify. Krita has a single unified Transform tool
+that switches between these modes on the fly from its own tool options
+— functionally equivalent, but it meant none of these had a dedicated,
+discoverable menu entry, and switching modes inside one tool felt
+inconsistent with how the rest of the app is organized.
+
+Investigated the transform tool's implementation
+(`plugins/tools/tool_transform2/`) and found Krita already ships
+separate, fully-functional actions for each submode —
+`KisToolTransformFree`, `KisToolTransformPerspective`,
+`KisToolTransformWarp`, `KisToolTransformCage`,
+`KisToolTransformLiquify`, `KisToolTransformMesh` — each wired to its
+own `activateSubtoolXxx()` slot in `kis_tool_transform.cc`. They were
+just never placed anywhere except the toolbox flyout and the
+transform tool's own right-click context menu, so nobody could find
+them from the menu bar.
+
+Added menu entries for these existing actions, no new tool code:
+
+- **Edit ▸ Puppet Warp** → `KisToolTransformCage` (Krita's cage
+  transform is the closest existing equivalent to Photoshop's
+  mesh-pin-based Puppet Warp)
+- **Edit ▸ Free Transform** → `KisToolTransformFree`
+- **Edit ▸ Transform ▸ Perspective** → `KisToolTransformPerspective`
+- **Edit ▸ Transform ▸ Warp** → `KisToolTransformWarp`
+- **Filter ▸ Liquify...** → `KisToolTransformLiquify`
+
+All five inserted at their corresponding Photoshop menu positions.
+Photoshop's Transform submenu also has Scale/Rotate/Skew/Distort/
+Flip/Rotate 180°, but those are modifier-key interactions within
+Krita's Free Transform mode rather than separate tool activations, so
+they don't get their own menu entries — Free Transform already covers
+that functionality once opened.
