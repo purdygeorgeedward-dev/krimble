@@ -110,6 +110,30 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         </Action>
     </Menu>
                      <Separator/>
+    <!-- Krimble addition: Photoshop parity. These use Krita's existing,
+         fully-functional transform-tool submode actions (KisToolTransformFree/
+         Perspective/Warp/Cage), previously only reachable via the toolbox
+         flyout or the transform tool's right-click context menu, never from
+         a menu bar. No new tool logic, these already activate the
+         Transform tool in the given mode via activateSubtoolXxx() in
+         kis_tool_transform.cc. Cage is the closest existing equivalent to
+         Photoshop's mesh-pin-based Puppet Warp. -->
+    <Action name="KisToolTransformCage">
+        <text>Puppet Warp</text>
+    </Action>
+    <Action name="KisToolTransformFree">
+        <text>Free Transform</text>
+    </Action>
+    <Menu name="EditTransform">
+        <text>Transform</text>
+        <Action name="KisToolTransformPerspective">
+            <text>Perspective</text>
+        </Action>
+        <Action name="KisToolTransformWarp">
+            <text>Warp</text>
+        </Action>
+    </Menu>
+                     <Separator/>
     <Action name="copy_layer_style">
         <text>Copy Layer Style</text>
     </Action>
@@ -686,6 +710,15 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
                      <Separator/>
     <Action name="filter_gallery">
         <text>Filter Gallery...</text>
+    </Action>
+                     <Separator/>
+    <!-- Krimble addition: Photoshop parity. Uses the existing, fully-functional
+         KisToolTransformLiquify action (activateSubtoolLiquify() in
+         kis_tool_transform.cc), same tool already reachable from the
+         toolbox flyout, now also placed at Photoshop's Filter > Liquify
+         menu location. No new tool logic. -->
+    <Action name="KisToolTransformLiquify">
+        <text>Liquify...</text>
     </Action>
                      <Separator/>
     <Action name="blur_filters">
