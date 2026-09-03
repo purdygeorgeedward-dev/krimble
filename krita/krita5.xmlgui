@@ -126,11 +126,44 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     </Action>
     <Menu name="EditTransform">
         <text>Transform</text>
+        <!-- Krimble: these 10 are Photoshop's exact Edit > Transform list mapped
+             onto Krita's existing, distinct, already-functional commands.
+             "Distort" is deliberately omitted: Krita has no separate
+             constrained distort-only mode, only unconstrained corner drag
+             inside Free Transform, so a menu item here would just be a
+             duplicate label pointing at the same thing as Free Transform,
+             not real distinct functionality. -->
+        <Action name="layersize">
+            <text>Scale...</text>
+        </Action>
+        <Action name="rotatelayer">
+            <text>Rotate...</text>
+        </Action>
+        <Action name="shearlayer">
+            <text>Skew...</text>
+        </Action>
         <Action name="KisToolTransformPerspective">
             <text>Perspective</text>
         </Action>
         <Action name="KisToolTransformWarp">
             <text>Warp</text>
+        </Action>
+                     <Separator/>
+        <Action name="rotateLayer180">
+            <text>Rotate 180°</text>
+        </Action>
+        <Action name="rotateLayerCW90">
+            <text>Rotate 90° Clockwise</text>
+        </Action>
+        <Action name="rotateLayerCCW90">
+            <text>Rotate 90° Counter Clockwise</text>
+        </Action>
+                     <Separator/>
+        <Action name="mirrorNodeX">
+            <text>Flip Horizontal</text>
+        </Action>
+        <Action name="mirrorNodeY">
+            <text>Flip Vertical</text>
         </Action>
     </Menu>
                      <Separator/>
