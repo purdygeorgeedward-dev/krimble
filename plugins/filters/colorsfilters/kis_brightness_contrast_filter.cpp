@@ -74,10 +74,37 @@ KoColorTransformation * KisBrightnessContrastFilter::createTransformation(const 
 
     const double contrastFactor = 1.0 + contrast;
 
+    // Photoshop's real contrast curve diverges toward infinite slope as
+    // contrast approaches its maximum, which is what lets it posterize a
+    // full-range grayscale image to pure black/white at max contrast. The
+    // plain linear "1.0 + contrast" factor above caps out at a slope of
+    // only 2.0 even at contrast=+100 -- only pixels already below 25%
+    // gray or above 75% gray ever reach full black/white; everything in
+    // the middle 50% of the tonal range stays a non-binary midtone no
+    // matter how far the slider is pushed. Replaced with Photoshop's
+    // legacy formula (factor = 1 / (1 - contrast) for positive contrast),
+    // with an explicit hard threshold at the true maximum to guarantee
+    // exact pure black/white rather than relying on floating-point
+    // infinity.
+    bool hardThreshold = false;
+    double positiveContrastFactor = contrastFactor;
+    if (contrast >= 1.0) {
+        hardThreshold = true;
+    } else if (contrast >= 0.0) {
+        positiveContrastFactor = 1.0 / (1.0 - contrast);
+    }
+
     quint16 transfer[256];
     for (int i = 0; i < 256; i++) {
         double value = i / 255.0;
-        value = (value - 0.5) * contrastFactor + 0.5 + brightness;
+        if (hardThreshold) {
+            value = (value > 0.5) ? 1.0 : (value < 0.5) ? 0.0 : 0.5;
+            value += brightness;
+        } else if (contrast >= 0.0) {
+            value = (value - 0.5) * positiveContrastFactor + 0.5 + brightness;
+        } else {
+            value = (value - 0.5) * contrastFactor + 0.5 + brightness;
+        }
         value = qBound(0.0, value, 1.0);
         transfer[i] = quint16(value * 0xFFFF + 0.5);
     }
