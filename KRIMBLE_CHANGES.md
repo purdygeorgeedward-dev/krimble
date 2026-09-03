@@ -7,7 +7,57 @@ work (by anyone, including an AI assistant with no memory of past
 sessions) can see what's already been addressed and why, without having
 to rediscover it from scratch.
 
-## 2026-09-02 — Brightness/Contrast not reaching full black/white
+## Standing rules for this fork
+
+- **Never delete menu/action XML entries.** Comment them out (`<!-- -->`)
+  instead. A deletion buried in an unrelated commit is silent and
+  unrecoverable without git archaeology (see the Close All incident
+  below); a comment is visible in the file itself and easy to restore.
+- **Photoshop feature parity — same features, same menu locations — is
+  the primary UI goal** for this fork.
+
+## 2026-09-02 — File/Edit/View toolbar items silently deleted, restored
+
+**File:** `krita/krita5.xmlgui`
+
+`file_close`, `file_close_all`, `file_quit` (File toolbar/menu) and
+`toggle-selection-overlay-mode`, `show-global-selection-mask`,
+`view_show_canvas_only`, `fullscreen` (View toolbar) were all deleted in
+commit `718e83878` ("Update krita5.xmlgui", 2026-08-24, George Edward
+Purdy). That commit bundled these deletions together with unrelated
+cleanup across three different toolbar blocks in one generic-message
+commit, with no indication any of it was intentional — it has the
+signature of accidental collateral damage from a broader toolbar-trim
+pass, not a deliberate decision to drop Close All specifically.
+
+All of the above still had valid, registered actions (nothing else
+referenced them, but they weren't gone from the codebase) and have been
+restored, with comments explaining why, per the no-delete rule above.
+
+## Missing Photoshop-parity features (not just menu entries — the underlying feature doesn't exist)
+
+Found while restoring the toolbar deletions above: two groups of actions
+were referenced in the pre-`718e83878` menu but no longer exist
+*anywhere* in the codebase — not in any `.action` file, not registered
+via `createAction()` in any `.cpp`. These aren't menu-restoration jobs;
+the feature itself needs to be built:
+
+- **File > Print / Print One Copy** (`file_print`, `file_print_preview`)
+  — Photoshop has both under File. No print implementation currently
+  exists in this codebase at all.
+- **Edit > Find and Replace** (`edit_find`, `edit_find_next`,
+  `edit_find_prev`, `edit_replace`) — Photoshop has Find and Replace Text
+  under Edit. No find/replace implementation currently exists in this
+  codebase at all (this would apply to text layers/the text tool,
+  Krita's closest equivalent to Photoshop's text-focused find/replace).
+
+Left commented out in `krita5.xmlgui` at their original menu locations so
+the intended placement isn't lost, pending a full menu-by-menu Photoshop
+parity audit (comparing every menu against
+`PHOTOSHOP_27_MENUS.TXT`/`Adobephotoshopshortcutkeyspdf.pdf` in the
+project files) to catalog anything else in the same situation.
+
+
 
 **Commit:** `b1eb52e`
 **File:** `plugins/color/lcms2engine/LcmsColorSpace.h`

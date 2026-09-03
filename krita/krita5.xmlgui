@@ -978,6 +978,26 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="file_save"/>
     <Action name="file_save_as"/>
     <Action name="file_save_all"/>
+    <Separator/>
+    <!-- file_print / file_print_preview were removed from the codebase
+         entirely (not just this menu) in an untracked earlier change - no
+         action with these names exists anywhere anymore. Photoshop has
+         File > Print and File > Print One Copy, so these need to be
+         reimplemented as real features, not just restored here. See
+         KRIMBLE_CHANGES.md ("Missing Photoshop-parity features") -->
+    <!-- <Action name="file_print"/> -->
+    <!-- <Action name="file_print_preview"/> -->
+    <!-- <Separator/> -->
+    <!-- Restored 2026-09-02: file_close/file_close_all/file_quit were
+         accidentally deleted in commit 718e83878 ("Update krita5.xmlgui")
+         along with unrelated toolbar cleanup in the same commit. Photoshop
+         has Close, Close All, and Exit in File, so these belong here per
+         the Photoshop-parity rule. Per policy, future removals should be
+         commented out, not deleted, so this doesn't happen silently again. -->
+    <Action name="file_close"/>
+    <Action name="file_close_all"/>
+    <Separator/>
+    <Action name="file_quit"/>
 </ToolBar>
 
 
@@ -993,6 +1013,18 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Separator/>
     <Action name="edit_select_all"/>
     <Action name="edit_deselect"/>
+    <!-- edit_find / edit_find_next / edit_find_prev / edit_replace were
+         removed from the codebase entirely (not just this menu) in an
+         untracked earlier change - no action with these names exists
+         anywhere anymore. Photoshop has Edit > Find and Replace..., so
+         this needs to be reimplemented as a real feature, not just
+         restored here. See KRIMBLE_CHANGES.md
+         ("Missing Photoshop-parity features") -->
+    <!-- <Separator/> -->
+    <!-- <Action name="edit_find"/> -->
+    <!-- <Action name="edit_find_next"/> -->
+    <!-- <Action name="edit_find_prev"/> -->
+    <!-- <Action name="edit_replace"/> -->
 </ToolBar>
 
 
@@ -1019,7 +1051,15 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="KisToolTransformFree"/>
     <Separator/>
     <Action name="dual"/>
-    
+    <!-- Restored 2026-09-02: these four were accidentally deleted in
+         commit 718e83878 ("Update krita5.xmlgui") along with unrelated
+         cleanup in the same commit. Per policy, future removals should be
+         commented out, not deleted. -->
+    <Separator/>
+    <Action name="toggle-selection-overlay-mode"/>
+    <Action name="show-global-selection-mask"/>
+    <Action name="view_show_canvas_only"/>
+    <Action name="fullscreen"/>
 </ToolBar>
 
 
