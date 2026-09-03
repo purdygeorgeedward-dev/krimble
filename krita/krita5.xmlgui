@@ -514,27 +514,34 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="merge_layer">
         <text>Merge Down</text>
     </Action>
+    <!-- Krimble addition: real Photoshop-parity "Merge Visible" (Ctrl+Shift+E).
+         Selects all visible layers then merges them down, per the Krita manual's
+         documented equivalent (Select Visible Layers + Merge with Layer Below).
+         Kept immediately adjacent to Merge Down and Flatten Image, matching
+         Photoshop's exact Layer menu order (confirmed against real Photoshop
+         screenshots): Merge Down, Merge Visible, Flatten Image, with nothing
+         else between them. -->
+    <Action name="merge_visible_layers">
+        <text>Merge Visible</text>
+    </Action>
+    <Action name="flatten_image">
+        <text>Flatten Image</text>
+    </Action>
+                     <Separator/>
+    <!-- Krimble: these three are Krita-specific commands with no Photoshop
+         equivalent. Grouped here, after the Photoshop-parity triplet above,
+         so they don't break that triplet's exact adjacency. -->
     <Action name="merge_selected_layers">
         <text>Merge Selected Layers</text>
     </Action>
     <!-- Krimble fix: this entry was mislabeled "Merge Visible" (flatten_layer only
          flattens the single active layer, it doesn't merge visible layers).
-         Corrected to its real behavior, and the real Merge Visible added below
-         at the Photoshop-parity position, in between Merge Down and Flatten Image. -->
+         Corrected to its real behavior. -->
     <Action name="flatten_layer">
         <text>Flatten Layer</text>
     </Action>
-    <!-- Krimble addition: real Photoshop-parity "Merge Visible" (Ctrl+Shift+E).
-         Selects all visible layers then merges them down, per the Krita manual's
-         documented equivalent (Select Visible Layers + Merge with Layer Below). -->
-    <Action name="merge_visible_layers">
-        <text>Merge Visible</text>
-    </Action>
     <Action name="merge_all_shape_layers">
         <text>Merge Shape Layers</text>
-    </Action>
-    <Action name="flatten_image">
-        <text>Flatten Image</text>
     </Action>
                      <Separator/>
     <Action name="EditLayerMetaData">
