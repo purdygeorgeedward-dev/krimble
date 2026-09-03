@@ -62,6 +62,15 @@ private Q_SLOTS:
 
     void mergeLayer();
 
+    /**
+     * Krimble addition: Photoshop-parity "Merge Visible" (Ctrl+Shift+E).
+     * Not a separate merge implementation -- just triggers the same two
+     * steps described in the Krita manual: select all visible layers,
+     * then merge with layer below (mergeLayer() already handles merging
+     * a multi-selection via KisImage::mergeMultipleLayers()).
+     */
+    void mergeVisibleLayers();
+
     void imageResizeToActiveLayer();
     void trimToImage();
     void purgeUnusedImageData();
@@ -117,6 +126,7 @@ private:
 
     KisAction *m_imageFlatten {0};
     KisAction *m_imageMergeLayer {0};
+    KisAction *m_imageMergeVisibleLayers {0};
     KisAction *m_groupLayersSave {0};
     KisAction *m_convertGroupAnimated {0};
     KisAction *m_imageResizeToLayer {0};

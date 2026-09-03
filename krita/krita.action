@@ -3531,6 +3531,22 @@
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
+    <!-- Krimble: Photoshop-parity "Merge Visible" (Layer > Select Visible + Merge Down,
+         per the Krita manual). Ctrl+Shift+E moved here from flatten_image to match
+         Photoshop's default shortcut assignment (Photoshop has no default shortcut
+         for Flatten Image). -->
+    <Action name="merge_visible_layers">
+      <icon/>
+      <text>Merge &amp;Visible</text>
+      <whatsThis/>
+      <toolTip>Merge Visible Layers</toolTip>
+      <iconText>Merge Visible</iconText>
+      <activationFlags>100000</activationFlags>
+      <activationConditions>0</activationConditions>
+      <shortcut>Ctrl+Shift+E</shortcut>
+      <isCheckable>false</isCheckable>
+      <statusTip/>
+    </Action>
     <Action name="flatten_image">
       <icon/>
       <text>Flatten Ima&amp;ge</text>
@@ -3539,7 +3555,7 @@
       <iconText>Flatten image</iconText>
       <activationFlags>100000</activationFlags>
       <activationConditions>0</activationConditions>
-      <shortcut>Ctrl+Shift+E</shortcut>
+      <shortcut/>
       <isCheckable>false</isCheckable>
       <statusTip/>
     </Action>
