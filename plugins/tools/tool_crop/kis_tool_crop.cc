@@ -24,6 +24,9 @@
 #include <ksharedconfig.h>
 
 #include <KoCanvasBase.h>
+#include <KoCanvasController.h>
+#include <KoToolManager.h>
+#include <kis_action_registry.h>
 #include <kis_global.h>
 #include <kis_painter.h>
 #include <kis_cursor.h>
@@ -993,4 +996,43 @@ void KisToolCrop::drawDecorationLine(QPainter *p, DecorationLine *decorLine, con
     }
 
     p->drawLine(start, end);
+}
+
+// Krimble addition: exposes "Crop" as a real, always-available menu item
+// (Image > Crop) that completes whatever crop rectangle is currently
+// pending on the active Crop tool instance. Previously the only ways to
+// finish a crop were pressing Enter, a button inside the tool options
+// docker, or a canvas right-click context menu -- none reliable on a
+// touch-only device with no keyboard or mouse. crop() itself is already
+// safe to call with nothing pending (it self-guards on an empty rect), so
+// this is a thin wrapper, not new crop logic.
+QList<QAction *> KisToolCropFactory::createActionsImpl()
+{
+    QList<QAction *> actions = KoToolFactoryBase::createActionsImpl();
+
+    KisActionRegistry *actionRegistry = KisActionRegistry::instance();
+    QAction *action = actionRegistry->makeQAction("apply_crop", this);
+    action->setProperty("always_enabled", true); // so it works even if the Crop tool isn't the active tool
+    connect(action, SIGNAL(triggered()), this, SLOT(applyCrop()));
+    actions << action;
+
+    return actions;
+}
+
+void KisToolCropFactory::applyCrop()
+{
+    KoToolManager *toolManager = KoToolManager::instance();
+
+    KoCanvasController *canvasController = toolManager->activeCanvasController();
+    if (!canvasController) return;
+    KoCanvasBase *canvas = canvasController->canvas();
+    if (!canvas) return;
+
+    KoToolBase *tool = toolManager->toolById(canvas, id());
+    if (!tool) return;
+
+    KisToolCrop *cropTool = dynamic_cast<KisToolCrop*>(tool);
+    if (!cropTool) return; // Crop tool isn't active; nothing to apply
+
+    cropTool->crop();
 }

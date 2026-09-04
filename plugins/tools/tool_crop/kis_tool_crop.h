@@ -214,6 +214,7 @@ private:
 
 class KisToolCropFactory : public KoToolFactoryBase
 {
+    Q_OBJECT
 
 public:
     KisToolCropFactory()
@@ -232,6 +233,15 @@ public:
     KoToolBase * createTool(KoCanvasBase *canvas) override {
         return new KisToolCrop(canvas);
     }
+
+    // Krimble addition: exposes "Crop" as a real menu item (Image > Crop)
+    // that completes whatever crop rectangle is currently pending, without
+    // requiring Enter, a mouse right-click, or the tool-options button --
+    // none of which are reliable on a touch-only device.
+    QList<QAction *> createActionsImpl() override;
+
+private Q_SLOTS:
+    void applyCrop();
 
 };
 

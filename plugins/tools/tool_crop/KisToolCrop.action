@@ -12,5 +12,18 @@
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>
+    <!-- Krimble addition: completes a pending crop drawn with the Crop
+         tool. The industry standard has this as a plain "Crop" menu item
+         in the Image menu with no dedicated shortcut; matching that here. -->
+    <Action name="apply_crop">
+      <icon>tool_crop</icon>
+      <text>Crop</text>
+      <whatsThis></whatsThis>
+      <toolTip>Apply the pending crop</toolTip>
+      <iconText>Crop</iconText>
+      <shortcut></shortcut>
+      <isCheckable>false</isCheckable>
+      <statusTip></statusTip>
+    </Action>
   </Actions>
 </ActionCollection>
