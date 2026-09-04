@@ -111,17 +111,17 @@ wrong initial readings are noted so they aren't repeated.
     separate item since the root cause could differ — one is about
     the default when no saved state exists, the other is about saved
     state not being written or read back at all.
-15. **Convert to Profile is not available from the Edit menu**, only
-    Image and Layer (via `imagecolorspaceconversion` /
-    `layercolorspaceconversion`). Likely just needs the existing action
-    placed in Edit too — not yet confirmed whether the industry
-    standard's Edit placement is meant to be a document-wide operation
-    distinct from the per-image/per-layer ones already present.
-16. **Keyboard shortcut customization is not available from the Edit
-    menu.** Likely exists elsewhere in the app already (Settings) and
-    just needs locating/confirming, not building from scratch.
-17. **Toolbar customization is not available from the Edit menu.**
-    Same as above — likely exists elsewhere already.
+15. ~~Convert to Profile is not available from the Edit menu~~ —
+    **Fixed**, commit `623f3c5`. Placed the existing
+    `imagecolorspaceconversion` action in Edit as well.
+16. ~~Keyboard shortcut customization is not available from the Edit
+    menu~~ — **Fixed**, commit `623f3c5`. Placed the existing
+    `options_configure_keybinding` action, which had no menu placement
+    anywhere before this.
+17. ~~Toolbar customization is not available from the Edit menu~~ —
+    **Fixed**, commit `623f3c5`. Placed the existing
+    `options_configure_toolbars` action in Edit as well (it was
+    already in Settings).
 18. **Assign Profile (reinterpret pixels under a different color
     profile without converting them) does not exist anywhere in the
     app.** Not yet investigated whether Krita's color-management code
@@ -438,3 +438,16 @@ Transform tool in whatever mode it last used) to
 to `KisToolTransformLiquify`. Left Perspective, Warp, Cage, and Mesh
 with no shortcut, matching the reference. Checked for conflicts with
 existing shortcuts before assigning; none found.
+
+## 2026-09-03 — Added Convert to Profile, Configure Shortcuts, Customize Toolbar to Edit menu
+
+**Commit:** `623f3c5`
+**File:** `krita/krita5.xmlgui`
+
+Bug items 15–17. All three reuse existing, already-registered,
+already-functional actions — no new code. `imagecolorspaceconversion`
+already worked in the Image and Layer menus; `options_configure_toolbars`
+already worked in Settings. `options_configure_keybinding` had no menu
+placement anywhere before this. Placed together directly before
+Preferences, matching the industry standard's grouping of these
+app-config items at the end of the Edit menu.
