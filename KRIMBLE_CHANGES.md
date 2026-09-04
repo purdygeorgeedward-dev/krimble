@@ -9,17 +9,31 @@ to rediscover it from scratch.
 
 ## Standing rules for this fork
 
+- **Design priority is mobile-first, then industry-standard parity
+  second.** Mobile UI/UX constraints and conventions take precedence
+  over matching desktop industry-standard tools exactly, where the two
+  conflict (see e.g. the transform-mode-as-separate-tool decision,
+  which departs from the industry-standard single-tool-with-modifier-
+  keys model because modifier-key combinations don't translate to
+  touch input).
+- **Never write the name of the proprietary industry-standard tool
+  this fork targets parity with, anywhere public-facing** — code
+  comments, this file, commit messages, or any other note. Use the
+  phrase "industry standard" instead. This has been stated more than
+  once because it did not reliably get preserved as a written rule
+  before; writing it here is the fix for that.
 - **Never delete menu/action XML entries.** Comment them out (`<!-- -->`)
   instead. A deletion buried in an unrelated commit is silent and
   unrecoverable without git archaeology (see the Close All incident
   below); a comment is visible in the file itself and easy to restore.
-- **Photoshop feature parity — same features, same menu locations — is
-  the primary UI goal** for this fork.
-- **Verify actual behavior before cataloging a Photoshop feature as
-  missing or existing.** Some features exist via a different mechanism
-  or multi-step sequence in Krita (e.g. Merge Visible = Select Visible
-  Layers + Merge with Layer Below) rather than a single equivalently-
-  named action.
+- **Industry-standard feature parity — same features, same menu
+  locations — is the primary UI goal** for this fork, subordinate to
+  mobile-first design per above.
+- **Verify actual behavior before cataloging an industry-standard
+  feature as missing or existing.** Some features exist via a different
+  mechanism or multi-step sequence in Krita (e.g. Merge Visible =
+  Select Visible Layers + Merge with Layer Below) rather than a single
+  equivalently-named action.
 - **Ask before making codebase changes.** Investigating is fine
   unprompted, and so is writing/updating documentation. Only actual
   code/config edits, commits, and pushes need explicit go-ahead first.
@@ -80,7 +94,7 @@ wrong initial readings are noted so they aren't repeated.
    Not yet investigated.
 10. **Type tool does nothing.** Not yet investigated. Ties to the
     in-progress "Type tool rework part 1" commit (`9a7c7f112`) noted
-    in the Photoshop-parity catalog.
+    in the industry-standard-parity catalog.
 11. **Cartoon mascot in support screen.** User is addressing this one
     themselves — not part of Claude's task list.
 12. **Tool docker panels render as unmanageable narrow column shapes**
@@ -105,7 +119,7 @@ All of the above still had valid, registered actions (nothing else
 referenced them, but they weren't gone from the codebase) and have been
 restored, with comments explaining why, per the no-delete rule above.
 
-## Missing Photoshop-parity features (not just menu entries — the underlying feature doesn't exist)
+## Missing industry-standard-parity features (not just menu entries — the underlying feature doesn't exist)
 
 Found while restoring the toolbar deletions above: two groups of actions
 were referenced in the pre-`718e83878` menu but no longer exist
@@ -114,16 +128,16 @@ via `createAction()` in any `.cpp`. These aren't menu-restoration jobs;
 the feature itself needs to be built:
 
 - **File > Print / Print One Copy** (`file_print`, `file_print_preview`)
-  — Photoshop has both under File. No print implementation currently
+  — the industry standard has both under File. No print implementation currently
   exists in this codebase at all.
 - **Edit > Find and Replace** (`edit_find`, `edit_find_next`,
-  `edit_find_prev`, `edit_replace`) — Photoshop has Find and Replace Text
+  `edit_find_prev`, `edit_replace`) — the industry standard has Find and Replace Text
   under Edit. No find/replace implementation currently exists in this
   codebase at all (this would apply to text layers/the text tool,
-  Krita's closest equivalent to Photoshop's text-focused find/replace).
+  Krita's closest equivalent to the industry standard's text-focused find/replace).
 
 Left commented out in `krita5.xmlgui` at their original menu locations so
-the intended placement isn't lost, pending a full menu-by-menu Photoshop
+the intended placement isn't lost, pending a full menu-by-menu industry-standard
 parity audit (comparing every menu against
 `PHOTOSHOP_27_MENUS.TXT`/`Adobephotoshopshortcutkeyspdf.pdf` in the
 project files) to catalog anything else in the same situation.
@@ -182,13 +196,13 @@ the bottom-right corner. Applied across all mipmap densities
 (`mdpi` through `xxxhdpi`), both square and round variants, and the
 debug flavor's Play Store PNG.
 
-## 2026-09-03 — Added real "Merge Visible" action (Photoshop parity, Ctrl+Shift+E)
+## 2026-09-03 — Added real "Merge Visible" action (industry-standard parity, Ctrl+Shift+E)
 
 **Commit:** `e1a7e5a`
 **Files:** `libs/ui/kis_layer_manager.h`, `libs/ui/kis_layer_manager.cc`,
 `krita/krita.action`, `krita/krita5.xmlgui`
 
-Photoshop's Layer menu has a dedicated "Merge Visible" command
+The industry standard's Layer menu has a dedicated "Merge Visible" command
 (Ctrl+Shift+E) between Merge Down and Flatten Image. Krita has always
 had the equivalent capability, but only as a two-step manual sequence
 (per the Krita manual): Layer ▸ Select ▸ Visible Layers, then Layer ▸
@@ -206,20 +220,20 @@ menu's existing `flatten_layer` entry was mislabeled "Merge Visible"
 in `krita5.xmlgui`, even though `flatten_layer` only flattens the
 single active layer — it has nothing to do with visible-layer merging.
 Relabeled that entry to its correct text, "Flatten Layer", and inserted
-the new `merge_visible_layers` action in the correct Photoshop-parity
+the new `merge_visible_layers` action in the correct industry-standard-parity
 position (between Merge Down and Flatten Image).
 
-**Shortcut:** Photoshop uses Ctrl+Shift+E for Merge Visible and has no
+**Shortcut:** the industry standard uses Ctrl+Shift+E for Merge Visible and has no
 default shortcut for Flatten Image. Krita had Ctrl+Shift+E assigned to
 `flatten_image`. Moved the shortcut from `flatten_image` to the new
-`merge_visible_layers` action to match Photoshop's defaults.
+`merge_visible_layers` action to match the industry standard's defaults.
 
-## 2026-09-03 — Exposed transform submodes as separate Photoshop-parity menu items
+## 2026-09-03 — Exposed transform submodes as separate industry-standard-parity menu items
 
 **Commit:** `c7630d4`
 **File:** `krita/krita5.xmlgui`
 
-Photoshop splits transformation into distinct menu commands: Edit ▸
+The industry standard splits transformation into distinct menu commands: Edit ▸
 Free Transform, Edit ▸ Transform ▸ Perspective/Warp/etc., Edit ▸ Puppet
 Warp, and Filter ▸ Liquify. Krita has a single unified Transform tool
 that switches between these modes on the fly from its own tool options
@@ -241,27 +255,27 @@ them from the menu bar.
 Added menu entries for these existing actions, no new tool code:
 
 - **Edit ▸ Puppet Warp** → `KisToolTransformCage` (Krita's cage
-  transform is the closest existing equivalent to Photoshop's
+  transform is the closest existing equivalent to the industry standard's
   mesh-pin-based Puppet Warp)
 - **Edit ▸ Free Transform** → `KisToolTransformFree`
 - **Edit ▸ Transform ▸ Perspective** → `KisToolTransformPerspective`
 - **Edit ▸ Transform ▸ Warp** → `KisToolTransformWarp`
 - **Filter ▸ Liquify...** → `KisToolTransformLiquify`
 
-All five inserted at their corresponding Photoshop menu positions.
-Photoshop's Transform submenu also has Scale/Rotate/Skew/Distort/
+All five inserted at their corresponding industry-standard menu positions.
+The industry standard's Transform submenu also has Scale/Rotate/Skew/Distort/
 Flip/Rotate 180°, but those are modifier-key interactions within
 Krita's Free Transform mode rather than separate tool activations, so
 they don't get their own menu entries — Free Transform already covers
 that functionality once opened.
 
-## 2026-09-03 — Filled out Edit > Transform to Photoshop's full list, matched exact wording
+## 2026-09-03 — Filled out Edit > Transform to the industry standard's full list, matched exact wording
 
 **Commits:** `4a49e0d`, `55de2a2` (`a7d3e31` fixed an XML comment syntax
 mistake introduced by `55de2a2`)
 **File:** `krita/krita5.xmlgui`
 
-Added the remaining Photoshop Edit ▸ Transform items — Scale, Rotate,
+Added the remaining industry-standard Edit ▸ Transform items — Scale, Rotate,
 Skew, Rotate 180°, Rotate 90° Clockwise, Rotate 90° Counter Clockwise,
 Flip Horizontal, Flip Vertical — joining Perspective and Warp already
 there. All ten map to existing, distinct, already-functional Krita
@@ -274,7 +288,7 @@ Verified none of the 8 underlying one-shot actions are restricted to a
 specific layer type: no `setExcludedNodeTypes()` calls, and their
 `activationFlags` cover layers, shape layers, transparency masks, and
 both selection types. Also traced each one's actual C++ implementation
-and confirmed they behave like Photoshop's Edit ▸ Transform: if a pixel
+and confirmed they behave like the industry standard's Edit ▸ Transform: if a pixel
 selection is active, the operation is constrained to
 `selection->selectedExactRect()`; otherwise it falls back to the whole
 active layer's bounds (`KisImage::rotateImpl`, `KisNodeManager::
@@ -286,9 +300,9 @@ distort-only mode, only unconstrained corner-drag inside Free
 Transform, so a menu item here would just be a duplicate label for the
 same interaction as Free Transform, not real distinct functionality.
 
-Text matches Photoshop's exact wording (no ellipsis on Scale/Rotate/
+Text matches the industry standard's exact wording (no ellipsis on Scale/Rotate/
 Skew) even though those three open a numeric dialog in Krita rather
-than Photoshop's live on-canvas drag — same command, different
+than the industry standard's live on-canvas drag — same command, different
 interaction model, not worth a misleading label difference.
 
 ## 2026-09-03 — Reordered Layer menu so Merge Down/Merge Visible/Flatten Image are adjacent
@@ -296,16 +310,16 @@ interaction model, not worth a misleading label difference.
 **Commit:** `c41569f`
 **File:** `krita/krita5.xmlgui`
 
-Confirmed against real Photoshop Layer menu screenshots: Merge Down,
+Confirmed against real industry-standard Layer menu screenshots: Merge Down,
 Merge Visible, and Flatten Image sit as an uninterrupted triplet with
-nothing between them, and Photoshop has no "Flatten Layer" or "Merge
+nothing between them, and the industry standard has no "Flatten Layer" or "Merge
 Shape Layers" concept at all.
 
 Krimble had three Krita-specific extras (`merge_selected_layers`,
 `flatten_layer`, `merge_all_shape_layers`) interspersed inside that
 triplet, breaking the exact adjacency. Moved all three to their own
-group directly after the Photoshop-parity triplet instead, so the
-triplet itself matches Photoshop exactly and the Krita-only extras are
+group directly after the industry-standard-parity triplet instead, so the
+triplet itself matches the industry standard exactly and the Krita-only extras are
 clearly set apart as bonus functionality.
 
 ## 2026-09-03 — Contrast slider couldn't reach pure black/white at maximum
@@ -325,7 +339,7 @@ could never reach pure black/white no matter how far the slider was
 pushed. Verified numerically: at max contrast, a pixel at 45% gray
 only reached 40% output, not 0%.
 
-Replaced the positive-contrast side with Photoshop's legacy contrast
+Replaced the positive-contrast side with the industry standard's legacy contrast
 formula (`factor = 1 / (1 - contrast)`), whose slope diverges toward
 infinity as contrast approaches its maximum — that divergence is what
 actually produces the posterize-to-black/white look. Handled the true
@@ -369,3 +383,23 @@ behavior) and `kis_dlg_preferences.cc` (so the Preferences checkbox
 reflects the same default, rather than showing unchecked while the
 feature is actually on). `androidScalingAskOnStartup` already defaulted
 to true and wasn't part of the problem.
+
+## 2026-09-03 — Assigned industry-standard-parity shortcuts to Transform submodes
+
+**Commit:** `27404fb`
+**File:** `plugins/tools/tool_transform2/KisToolTransform.action`
+
+Cross-referenced the industry-standard shortcuts reference: Ctrl+T is
+always Free Transform there, and Liquify has its own dedicated
+shortcut (Ctrl+Shift+X), but Perspective, Warp, and Puppet Warp have
+no dedicated shortcut at all — reached only via menu (or a
+modifier-drag inside Free Transform, which this fork deliberately
+doesn't replicate). Mesh has no equivalent in the reference at all.
+
+Moved Ctrl+T from the generic `KisToolTransform` action (activates the
+Transform tool in whatever mode it last used) to
+`KisToolTransformFree` specifically, so it matches the reference's
+"Ctrl+T always means Free Transform" behavior. Assigned Ctrl+Shift+X
+to `KisToolTransformLiquify`. Left Perspective, Warp, Cage, and Mesh
+with no shortcut, matching the reference. Checked for conflicts with
+existing shortcuts before assigning; none found.
