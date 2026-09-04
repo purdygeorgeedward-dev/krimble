@@ -8,7 +8,7 @@
       <whatsThis></whatsThis>
       <toolTip>Transform a layer or a selection</toolTip>
       <iconText>Transform a layer or a selection</iconText>
-      <shortcut>Ctrl+T</shortcut>
+      <shortcut></shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>
@@ -18,7 +18,7 @@
       <whatsThis></whatsThis>
       <toolTip></toolTip>
       <iconText></iconText>
-      <shortcut></shortcut>
+      <shortcut>Ctrl+T</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>
@@ -58,7 +58,7 @@
       <whatsThis></whatsThis>
       <toolTip></toolTip>
       <iconText></iconText>
-      <shortcut></shortcut>
+      <shortcut>Ctrl+Shift+X</shortcut>
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>
