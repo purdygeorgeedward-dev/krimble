@@ -110,14 +110,14 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         </Action>
     </Menu>
                      <Separator/>
-    <!-- Krimble addition: Photoshop parity. These use Krita's existing,
+    <!-- Krimble addition: industry-standard parity. These use Krita's existing,
          fully-functional transform-tool submode actions (KisToolTransformFree/
          Perspective/Warp/Cage), previously only reachable via the toolbox
          flyout or the transform tool's right-click context menu, never from
          a menu bar. No new tool logic, these already activate the
          Transform tool in the given mode via activateSubtoolXxx() in
          kis_tool_transform.cc. Cage is the closest existing equivalent to
-         Photoshop's mesh-pin-based Puppet Warp. -->
+         the industry standard's mesh-pin-based Puppet Warp. -->
     <Action name="KisToolTransformCage">
         <text>Puppet Warp</text>
     </Action>
@@ -126,11 +126,11 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     </Action>
     <Menu name="EditTransform">
         <text>Transform</text>
-        <!-- Krimble: these 10 are Photoshop's exact Edit > Transform list mapped
+        <!-- Krimble: these 10 are the industry standard's exact Edit > Transform list mapped
              onto Krita's existing, distinct, already-functional commands.
-             Text matches Photoshop's exact wording (no ellipsis) even though
+             Text matches the industry standard's exact wording (no ellipsis) even though
              Scale/Rotate/Skew open a numeric dialog in Krita rather than
-             Photoshop's live on-canvas drag, same command, different
+             the industry standard's live on-canvas drag, same command, different
              interaction model, not worth a misleading label difference.
              Verified none of these 8 underlying actions (layersize,
              rotatelayer, shearlayer, rotateLayer180/CW90/CCW90, mirrorNodeX/Y)
@@ -138,7 +138,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
              layer type, their activationFlags cover layers, shape layers,
              transparency masks, and both selection types, so they behave
              the same regardless of what kind of layer is active, matching
-             Photoshop's broad applicability.
+             the industry standard's broad applicability.
              "Distort" is deliberately omitted: Krita has no separate
              constrained distort-only mode, only unconstrained corner drag
              inside Free Transform, so a menu item here would just be a
@@ -247,6 +247,14 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         </Action>
     </Menu>
                      <Separator/>
+    <!-- Krimble addition: completes a pending crop drawn with the Crop
+         tool (see plugins/tools/tool_crop/kis_tool_crop.cc). Placed
+         directly above Crop to Image Size / Crop to Current Layer /
+         Crop to Selection, matching the industry standard's Crop-then-
+         Trim adjacency in the Image menu. -->
+    <Action name="apply_crop">
+        <text>Crop</text>
+    </Action>
     <Action name="trim_to_image">
         <text>Crop to Image Size</text>
     </Action>
@@ -514,13 +522,13 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="merge_layer">
         <text>Merge Down</text>
     </Action>
-    <!-- Krimble addition: real Photoshop-parity "Merge Visible" (Ctrl+Shift+E).
+    <!-- Krimble addition: real industry-standard-parity "Merge Visible" (Ctrl+Shift+E).
          Selects all visible layers then merges them down, per the Krita manual's
          documented equivalent (Select Visible Layers + Merge with Layer Below).
          Kept immediately adjacent to Merge Down and Flatten Image, matching
-         Photoshop's exact Layer menu order (confirmed against real Photoshop
-         screenshots): Merge Down, Merge Visible, Flatten Image, with nothing
-         else between them. -->
+         the industry standard's exact Layer menu order (confirmed against
+         real industry-standard screenshots): Merge Down, Merge Visible,
+         Flatten Image, with nothing else between them. -->
     <Action name="merge_visible_layers">
         <text>Merge Visible</text>
     </Action>
@@ -528,8 +536,8 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>Flatten Image</text>
     </Action>
                      <Separator/>
-    <!-- Krimble: these three are Krita-specific commands with no Photoshop
-         equivalent. Grouped here, after the Photoshop-parity triplet above,
+    <!-- Krimble: these three are Krita-specific commands with no industry-standard
+         equivalent. Grouped here, after the industry-standard-parity triplet above,
          so they don't break that triplet's exact adjacency. -->
     <Action name="merge_selected_layers">
         <text>Merge Selected Layers</text>
@@ -763,10 +771,10 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>Filter Gallery...</text>
     </Action>
                      <Separator/>
-    <!-- Krimble addition: Photoshop parity. Uses the existing, fully-functional
+    <!-- Krimble addition: industry-standard parity. Uses the existing, fully-functional
          KisToolTransformLiquify action (activateSubtoolLiquify() in
          kis_tool_transform.cc), same tool already reachable from the
-         toolbox flyout, now also placed at Photoshop's Filter > Liquify
+         toolbox flyout, now also placed at the industry standard's Filter > Liquify
          menu location. No new tool logic. -->
     <Action name="KisToolTransformLiquify">
         <text>Liquify...</text>
@@ -1075,19 +1083,20 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Separator/>
     <!-- file_print / file_print_preview were removed from the codebase
          entirely (not just this menu) in an untracked earlier change - no
-         action with these names exists anywhere anymore. Photoshop has
+         action with these names exists anywhere anymore. The industry standard has
          File > Print and File > Print One Copy, so these need to be
          reimplemented as real features, not just restored here. See
-         KRIMBLE_CHANGES.md ("Missing Photoshop-parity features") -->
+         KRIMBLE_CHANGES.md ("Missing industry-standard-parity features") -->
     <!-- <Action name="file_print"/> -->
     <!-- <Action name="file_print_preview"/> -->
     <!-- <Separator/> -->
     <!-- Restored 2026-09-02: file_close/file_close_all/file_quit were
          accidentally deleted in commit 718e83878 ("Update krita5.xmlgui")
-         along with unrelated toolbar cleanup in the same commit. Photoshop
-         has Close, Close All, and Exit in File, so these belong here per
-         the Photoshop-parity rule. Per policy, future removals should be
-         commented out, not deleted, so this doesn't happen silently again. -->
+         along with unrelated toolbar cleanup in the same commit. The
+         industry standard has Close, Close All, and Exit in File, so
+         these belong here per the industry-standard-parity rule. Per
+         policy, future removals should be commented out, not deleted,
+         so this doesn't happen silently again. -->
     <Action name="file_close"/>
     <Action name="file_close_all"/>
     <Separator/>
@@ -1110,10 +1119,10 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <!-- edit_find / edit_find_next / edit_find_prev / edit_replace were
          removed from the codebase entirely (not just this menu) in an
          untracked earlier change - no action with these names exists
-         anywhere anymore. Photoshop has Edit > Find and Replace..., so
+         anywhere anymore. The industry standard has Edit > Find and Replace..., so
          this needs to be reimplemented as a real feature, not just
          restored here. See KRIMBLE_CHANGES.md
-         ("Missing Photoshop-parity features") -->
+         ("Missing industry-standard-parity features") -->
     <!-- <Separator/> -->
     <!-- <Action name="edit_find"/> -->
     <!-- <Action name="edit_find_next"/> -->
