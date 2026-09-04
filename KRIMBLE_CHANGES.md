@@ -100,6 +100,41 @@ wrong initial readings are noted so they aren't repeated.
 12. **Tool docker panels render as unmanageable narrow column shapes**
     (described as "vertical stripes" initially, corrected to
     "unmanageable column shapes/proportions"). Not yet investigated.
+13. **File dialogs (Save As... and other file operations) open at
+    roughly half the size they should be by default.** Not yet
+    investigated.
+14. **Dialog windows don't remember their size/position after being
+    manually resized.** Confirmed with Save As... — resize the dialog,
+    close it, reopen it, and it's back to the original size/position
+    instead of the one you last set. Not yet investigated. Possibly
+    related to #13 (same dialog-geometry subsystem), but kept as a
+    separate item since the root cause could differ — one is about
+    the default when no saved state exists, the other is about saved
+    state not being written or read back at all.
+15. **Convert to Profile is not available from the Edit menu**, only
+    Image and Layer (via `imagecolorspaceconversion` /
+    `layercolorspaceconversion`). Likely just needs the existing action
+    placed in Edit too — not yet confirmed whether the industry
+    standard's Edit placement is meant to be a document-wide operation
+    distinct from the per-image/per-layer ones already present.
+16. **Keyboard shortcut customization is not available from the Edit
+    menu.** Likely exists elsewhere in the app already (Settings) and
+    just needs locating/confirming, not building from scratch.
+17. **Toolbar customization is not available from the Edit menu.**
+    Same as above — likely exists elsewhere already.
+18. **Assign Profile (reinterpret pixels under a different color
+    profile without converting them) does not exist anywhere in the
+    app.** Not yet investigated whether Krita's color-management code
+    has an underlying "assign without convert" operation to wrap.
+19. **Purge (manually free cached memory — undo history, clipboard,
+    histogram cache) does not exist as a menu command.** Krita likely
+    already has internal cache-clearing calls used for memory
+    management; not yet investigated whether one can be exposed
+    directly.
+20. **Step Forward / Step Backward (step through the History panel one
+    state at a time, distinct from Undo/Redo) do not exist.** Not yet
+    investigated whether the History docker's underlying stack
+    supports this kind of arbitrary-index stepping.
 
 ## 2026-09-02 — File/Edit/View toolbar items silently deleted, restored
 
