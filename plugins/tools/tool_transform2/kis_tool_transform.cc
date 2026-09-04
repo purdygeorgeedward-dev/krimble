@@ -1521,17 +1521,17 @@ QList<QAction *> KisToolTransformFactory::createActionsImpl()
 
 void KisToolTransformFactory::activateSubtool(KisToolTransform::TransformToolMode mode)
 {
-    // Krimble: deliberately not switching mode here anymore, in either
-    // branch below. This function used to let a raw action/shortcut
-    // (KisToolTransformFree/Warp/Cage/Liquify/Mesh/Perspective, see the
-    // makeSubtoolAction calls above) silently pick which mode the
-    // Transform tool starts in or jumps to -- a fresh activation should
-    // always land in Free Transform (matching item 10's scale-by-default
-    // work), and mode should only ever change via a deliberate click in
-    // the tool options panel's own mode selector, never via an action
-    // bypassing it. `mode` is intentionally unused now.
-    Q_UNUSED(mode);
-
+    // Krimble (reverted 2026-09-03, see KRIMBLE_CHANGES.md): an earlier
+    // change here made `mode` a no-op, on the reasoning that mode should
+    // only change via the tool options panel's own button row, never via
+    // an action/menu item bypassing it. That was explicitly reversed by
+    // project direction: each transform mode (Free Transform, Perspective,
+    // Warp, Cage, Liquify, Mesh) is meant to be a separate tool, selected
+    // by explicit menu choice -- this was the original design intent, not
+    // a new requirement. Restoring the original mode-switching behavior so
+    // the menu items in Edit > Transform / Filter > Liquify actually
+    // select the mode they're labeled with, whether or not the Transform
+    // tool is already active.
     KoToolManager *toolManager = KoToolManager::instance();
 
     KoCanvasController *canvasController = toolManager->activeCanvasController();
@@ -1545,11 +1545,12 @@ void KisToolTransformFactory::activateSubtool(KisToolTransform::TransformToolMod
     KIS_SAFE_ASSERT_RECOVER_RETURN(transformTool);
 
     if (toolManager->activeToolId() == id()) {
-        // Tool is already active -- previously: transformTool->setTransformMode(mode);
-        // Left as a no-op; the tool options panel's own mode buttons are
-        // the only sanctioned way to change mode once active.
+        // Tool is already active: switch its mode immediately in place.
+        transformTool->setTransformMode(mode);
     } else {
-        // previously: transformTool->setNextActivationTransformMode(mode);
+        // Tool isn't active yet: queue the mode so it's the one the tool
+        // lands in as soon as it activates, then switch to it.
+        transformTool->setNextActivationTransformMode(mode);
         toolManager->switchToolRequested(id());
     }
 }

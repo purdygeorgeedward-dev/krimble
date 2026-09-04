@@ -200,10 +200,23 @@ void KisFreeTransformStrategy::setTransformFunction(const QPointF &mousePos, boo
 {
     Q_UNUSED(shiftModifierActive);
 
-    if (perspectiveModifierActive && !m_d->transaction.shouldAvoidPerspectiveTransform()) {
-        m_d->function = PERSPECTIVE;
-        return;
-    }
+    // Krimble (2026-09-03): Free Transform used to be able to blend into
+    // Perspective behavior via a held modifier (perspectiveModifierActive,
+    // routed through a repurposed alternate-action flag originally meant
+    // for Ctrl+click color sampling in paint tools -- not a purpose-built
+    // gesture). Commented out by design: each transform mode is meant to
+    // be a separate tool, selected explicitly (Edit > Transform >
+    // Perspective, or the tool options panel), never entered implicitly
+    // from inside Free Transform via a held key. `perspectiveModifierActive`
+    // is intentionally unused now; kept as a parameter since the base
+    // class interface (KisSimplifiedActionPolicyStrategy::setTransformFunction)
+    // is shared with the other transform strategies. See KRIMBLE_CHANGES.md
+    // for the full rationale.
+    // if (perspectiveModifierActive && !m_d->transaction.shouldAvoidPerspectiveTransform()) {
+    //     m_d->function = PERSPECTIVE;
+    //     return;
+    // }
+    Q_UNUSED(perspectiveModifierActive);
 
     QTransform boundsFullTransform = m_d->boundsTransform * m_d->transform;
     QPolygonF transformedPolygon = boundsFullTransform.map(QPolygonF(m_d->bounds));
@@ -242,28 +255,36 @@ void KisFreeTransformStrategy::setTransformFunction(const QPointF &mousePos, boo
 
     m_d->function = handleChooser.function();
 
-    // Krimble: default transform interaction is scale (via the handles above)
-    // and move. The ambient shear-by-proximity fallback below only fires if
-    // the user has explicitly enabled "Allow Shear by Dragging" in the tool
-    // options -- otherwise an imprecise touch near an edge would accidentally
-    // shear instead of scale.
-    if (m_d->currentArgs.allowShear() && (m_d->function == ROTATE || m_d->function == MOVE)) {
-        QRectF bounds = m_d->bounds;
-        QPointF t = boundsFullTransform.inverted().map(mousePos);
-
-        if (t.x() >= bounds.left() && t.x() <= bounds.right()) {
-            if (fabs(t.y() - bounds.top()) <= handleRadius)
-                m_d->function = TOPSHEAR;
-            if (fabs(t.y() - bounds.bottom()) <= handleRadius)
-                m_d->function = BOTTOMSHEAR;
-        }
-        if (t.y() >= bounds.top() && t.y() <= bounds.bottom()) {
-            if (fabs(t.x() - bounds.left()) <= handleRadius)
-                m_d->function = LEFTSHEAR;
-            if (fabs(t.x() - bounds.right()) <= handleRadius)
-                m_d->function = RIGHTSHEAR;
-        }
-    }
+    // Krimble (2026-09-03): the shear-by-proximity blending below was
+    // commented out by design -- each transform mode is meant to be a
+    // separate tool, so Free Transform should never blend into Skew via a
+    // checkbox toggle ("Allow Shear by Dragging" in the tool options), the
+    // same way it can no longer blend into Perspective via a held modifier
+    // (see setTransformFunction() above). Skew is reachable exclusively
+    // through its own menu item (Edit > Transform > Skew, which calls the
+    // separate `shearlayer` action) now. `allowShear()`/`setAllowShear()`
+    // and the "Allow Shear by Dragging" checkbox are left in place in
+    // ToolTransformArgs and the config widget UI rather than deleted, but
+    // this is the code that would have acted on them, so the setting no
+    // longer has any effect. See KRIMBLE_CHANGES.md for the full
+    // rationale.
+    // if (m_d->currentArgs.allowShear() && (m_d->function == ROTATE || m_d->function == MOVE)) {
+    //     QRectF bounds = m_d->bounds;
+    //     QPointF t = boundsFullTransform.inverted().map(mousePos);
+    //
+    //     if (t.x() >= bounds.left() && t.x() <= bounds.right()) {
+    //         if (fabs(t.y() - bounds.top()) <= handleRadius)
+    //             m_d->function = TOPSHEAR;
+    //         if (fabs(t.y() - bounds.bottom()) <= handleRadius)
+    //             m_d->function = BOTTOMSHEAR;
+    //     }
+    //     if (t.y() >= bounds.top() && t.y() <= bounds.bottom()) {
+    //         if (fabs(t.x() - bounds.left()) <= handleRadius)
+    //             m_d->function = LEFTSHEAR;
+    //         if (fabs(t.x() - bounds.right()) <= handleRadius)
+    //             m_d->function = RIGHTSHEAR;
+    //     }
+    // }
 }
 
 bool KisFreeTransformStrategy::shiftModifierIsUsed() const
@@ -580,6 +601,13 @@ void KisFreeTransformStrategy::continuePrimaryAction(const QPointF &mousePos,
     break;
     case PERSPECTIVE:
     {
+        // Krimble (2026-09-03): unreachable now that Free Transform no
+        // longer sets m_d->function = PERSPECTIVE anywhere (see the
+        // commented-out block in setTransformFunction() above) --
+        // Perspective is a separate tool mode now, not a behavior Free
+        // Transform can blend into. Left in place rather than deleted,
+        // matching this fork's no-silent-deletion convention; see
+        // KRIMBLE_CHANGES.md for the full rationale.
         if (!hasOriginalModifiersSet) {
             m_d->function = CAMERAHEIGHT;
             m_d->clickArgs = m_d->currentArgs;
@@ -607,6 +635,9 @@ void KisFreeTransformStrategy::continuePrimaryAction(const QPointF &mousePos,
     }
     break;
     case CAMERAHEIGHT: {
+        // Krimble (2026-09-03): unreachable along with case PERSPECTIVE
+        // above, for the same reason -- this is only ever entered from
+        // inside that case.
         if (hasOriginalModifiersSet) {
             m_d->function = PERSPECTIVE;
             m_d->clickPos = mousePos;
@@ -829,6 +860,11 @@ void KisFreeTransformStrategy::continuePrimaryAction(const QPointF &mousePos,
         break;
     case TOPSHEAR:
     case BOTTOMSHEAR: {
+        // Krimble (2026-09-03): unreachable now that the shear-by-proximity
+        // blending in setTransformFunction() above is commented out --
+        // Skew is a separate menu-triggered action now, not a Free
+        // Transform behavior. Left in place rather than deleted; see
+        // KRIMBLE_CHANGES.md for the full rationale.
         KisTransformUtils::MatricesPack m(m_d->clickArgs);
 
         QPointF oldStaticPoint = m.finalTransform().map(m_d->clickArgs.originalCenter() + m_d->clickArgs.rotationCenterOffset());
@@ -854,6 +890,8 @@ void KisFreeTransformStrategy::continuePrimaryAction(const QPointF &mousePos,
 
     case LEFTSHEAR:
     case RIGHTSHEAR: {
+        // Krimble (2026-09-03): unreachable along with TOPSHEAR/BOTTOMSHEAR
+        // above, for the same reason.
         KisTransformUtils::MatricesPack m(m_d->clickArgs);
 
         QPointF oldStaticPoint = m.finalTransform().map(m_d->clickArgs.originalCenter() + m_d->clickArgs.rotationCenterOffset());
