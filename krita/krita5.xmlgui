@@ -189,6 +189,16 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>Sample Color</text>
     </Action>
                      <Separator/>
+    <Action name="imagecolorspaceconversion">
+        <text>Convert to Profile...</text>
+    </Action>
+    <Action name="options_configure_keybinding">
+        <text>Configure Shortcuts...</text>
+    </Action>
+    <Action name="options_configure_toolbars">
+        <text>Customize Toolbar...</text>
+    </Action>
+                     <Separator/>
     <Action name="options_configure">
         <text>&amp;Preferences...</text>
         <toolTip>Preferences</toolTip>
