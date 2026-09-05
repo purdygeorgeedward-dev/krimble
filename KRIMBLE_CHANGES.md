@@ -521,3 +521,24 @@ wrong API, broke docking far more broadly than intended. Commented
 out rather than deleted. `QDockWidget` defaults to
 `Qt::AllDockWidgetAreas` when `setAllowedAreas()` is never called,
 restoring normal dock/undock/snap behavior.
+
+## 2026-09-04 — Replaced the actual About KDE dialog artwork
+
+**Commit:** `addd1f4` (uploaded directly, not via this session's usual commit flow)
+**File:** `libs/widgetutils/xmlgui/aboutkde.png` (150 × 250)
+
+Earlier this session, Claude mistakenly identified and replaced
+`krita/pics/Breeze-light/light_kde.svg` /
+`krita/pics/Breeze-dark/dark_kde.svg` — the small icon shown next to
+"About KDE" in the Help menu — believing that was the graphic in
+question. It was not. The actual content shown inside the About KDE
+dialog itself comes from a completely separate file,
+`libs/widgetutils/xmlgui/aboutkde.png`, sitting alongside
+`kaboutkdedialog_p.cpp`/`.h`. That file already contained genuine
+Konqi (KDE's real dragon mascot) artwork before any of this session's
+changes — confirmed directly by viewing it.
+
+User corrected both mistakes directly: reverted `light_kde.svg` /
+`dark_kde.svg` back to the original stock vector icon (undoing
+Claude's incorrect edit), and replaced `aboutkde.png` with new dragon
+artwork. Both changes are the current, correct state.
