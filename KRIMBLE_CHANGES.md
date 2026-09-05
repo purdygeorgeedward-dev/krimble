@@ -50,9 +50,9 @@ wrong initial readings are noted so they aren't repeated.
 1. ~~Krita icon instead of Krimble icon~~ — **Fixed**, commit
    `a4a5b53`. Adaptive-icon foreground was the stock Krita paintbrush;
    replaced with Krimble's own icon.
-2. **Brush presets open on load** — the brush preset picker/panel
-   auto-opens on startup instead of staying closed until invoked. Not
-   yet investigated.
+2. ~~Brush presets open on load~~ — **Likely fixed**, commit `a73387e`,
+   pending your on-device confirmation. See the 2026-09-04 changelog
+   entry above.
 3. **UI-scale-on-startup dialog missing.** A dialog with a percentage
    slider for setting the *interface* (UI) scale — not canvas zoom —
    used to appear on first launch in a previous Krimble build, then
@@ -542,3 +542,34 @@ User corrected both mistakes directly: reverted `light_kde.svg` /
 `dark_kde.svg` back to the original stock vector icon (undoing
 Claude's incorrect edit), and replaced `aboutkde.png` with new dragon
 artwork. Both changes are the current, correct state.
+
+## 2026-09-04 — Simplified Default workspace to ToolBox, Tool Options, Layers only
+
+**Commit:** `a73387e`
+**File:** `krita/data/workspaces/Default.kws`
+
+Bug item 2 (brush presets opening unexpectedly on load). This file's
+docker layout is a binary Qt `QMainWindow::saveState()` blob, not
+human-readable per-docker flags — confirmed by decoding it, finding
+all ~90 known docker object names (`ToolBox`, `sharedtooldocker`/Tool
+Options, `KisLayerBox`/Layers, `PresetDocker`/brush presets, and
+dozens more) embedded as UTF-16BE strings.
+
+Replaced the `<state>` CDATA block only (nothing else in the file
+touched) with a freshly-generated blob built via Qt's own `saveState()`
+API: every known docker object name recreated, only ToolBox (left)
+and Tool Options + Layers (right, stacked vertically) set visible,
+everything else explicitly hidden.
+
+Verified via round-trip test before writing: restored the generated
+blob into a completely separate, freshly-built `QMainWindow` with the
+same dockers and confirmed exactly `{ToolBox, sharedtooldocker,
+KisLayerBox}` come back visible and nothing else — `restoreState()`
+reported success. An earlier attempt at this same generation failed
+silently (`restoreState()` returned false, zero dockers visible) until
+`.show()` was called on the `QMainWindow` before
+`saveState()`/`restoreState()`.
+
+Per project direction: workspaces are meant to be customized by the
+user afterward, so the default should be minimal — not because Krimble
+avoids brush-related features.
