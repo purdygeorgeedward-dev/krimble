@@ -47,7 +47,9 @@ they can be referenced directly. Descriptions below are the *corrected*
 versions after clarification — several were initially misread, and the
 wrong initial readings are noted so they aren't repeated.
 
-1. *(not yet discussed in detail)*
+1. ~~Krita icon instead of Krimble icon~~ — **Fixed**, commit
+   `a4a5b53`. Adaptive-icon foreground was the stock Krita paintbrush;
+   replaced with Krimble's own icon.
 2. **Brush presets open on load** — the brush preset picker/panel
    auto-opens on startup instead of staying closed until invoked. Not
    yet investigated.
@@ -80,15 +82,12 @@ wrong initial readings are noted so they aren't repeated.
    snapping itself does not work. Not yet investigated. (Initially
    misread as a "docked layout doesn't persist across sessions" issue;
    it is not — it's about the snapping behavior itself failing.)
-8. **Transform tool does nothing.** Not yet investigated. This is a
-   significant open risk given the amount of menu work done exposing
-   Transform submodes (Free Transform, Perspective, Warp, Puppet Warp,
-   the full Edit > Transform submenu) — all of that assumed the
-   underlying tool works and only needed better menu exposure. If the
-   tool itself is non-functional, that menu work is exposing something
-   broken rather than fixing access to something that works. Needs the
-   specific failure mode (no response to input, freezes, doesn't
-   commit, etc.) before it can be diagnosed.
+8. ~~Transform tool does nothing~~ — **Fixed**, commit `05d1fc1`.
+   `activateSubtool()` was ignoring the requested mode entirely; each
+   Edit/Filter Transform menu item now correctly activates the mode
+   it's labeled with. Also removed Free Transform's ability to
+   silently blend into Perspective or Skew, per later direction that
+   each mode should be a fully separate tool.
 9. **Massive rendering delay during brush painting** — described as
    "seemingly a minute" of lag between stroke input and rendering.
    Not yet investigated.
@@ -132,12 +131,13 @@ wrong initial readings are noted so they aren't repeated.
     what's visible in the reference Krimble screenshots). No work
     needed; this was a cataloging error, not a real gap.
 20. ~~Step Forward / Step Backward... do not exist~~ — **Not actually
-    missing.** These exist in Photoshop only because Photoshop's plain
-    Undo (Ctrl+Z) is a toggle (press again to redo the same thing back),
-    a legacy quirk Krita doesn't have. Confirmed in KisMainWindow::undo()
-    — it's an unconditional, repeatable stack walk, not a toggle. Krita's
-    existing Undo/Redo already provide exactly this functionality.
-    Building separate actions would just duplicate Undo/Redo.
+    missing.** These exist in the industry standard only because its
+    plain Undo (Ctrl+Z) is a toggle (press again to redo the same
+    thing back), a legacy quirk Krita doesn't have. Confirmed in
+    KisMainWindow::undo() — it's an unconditional, repeatable stack
+    walk, not a toggle. Krita's existing Undo/Redo already provide
+    exactly this functionality. Building separate actions would just
+    duplicate Undo/Redo.
 
 ## 2026-09-02 — File/Edit/View toolbar items silently deleted, restored
 
