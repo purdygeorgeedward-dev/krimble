@@ -10,6 +10,7 @@
 #include <KisPreviewFileDialog.h>
 #include <QApplication>
 #include <QScreen>
+#include <QPointer>
 #include <QImageReader>
 #include <QClipboard>
 #include <QInputDialog>
@@ -257,6 +258,32 @@ void KoFileDialog::createFileDialog()
 
     // QFileDialog::filterSelected is not emitted with the initial value
     onFilterSelected(d->fileDialog->selectedNameFilter());
+
+    // Krimble: bug item 14 -- these dialogs never remembered a size the
+    // user manually resized them to; every reopen went back to the
+    // default. Same KConfigGroup/dialogName pattern already used by
+    // getUsedDir()/saveUsedDir() above for remembering the last-used
+    // directory. Restored here (once, before the dialog is shown);
+    // saved via the finished() signal so it's captured regardless of
+    // which exec() call site (filename() or filenames()) is used, and
+    // regardless of whether the dialog was accepted or cancelled --
+    // a resize the user made should be remembered either way.
+    if (!d->dialogName.isEmpty()) {
+        KConfigGroup group = KSharedConfig::openConfig()->group("File Dialogs");
+        const QByteArray geom = QByteArray::fromBase64(group.readEntry(d->dialogName + "_geometry", QByteArray()));
+        if (!geom.isEmpty()) {
+            d->fileDialog->restoreGeometry(geom);
+        }
+
+        const QString dialogName = d->dialogName;
+        QPointer<QFileDialog> dialogPtr = d->fileDialog;
+        connect(d->fileDialog, &QDialog::finished, this, [dialogName, dialogPtr](int) {
+            if (dialogPtr) {
+                KConfigGroup group = KSharedConfig::openConfig()->group("File Dialogs");
+                group.writeEntry(dialogName + "_geometry", dialogPtr->saveGeometry().toBase64());
+            }
+        });
+    }
 }
 
 QString KoFileDialog::filename()
