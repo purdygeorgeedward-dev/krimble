@@ -114,17 +114,12 @@ wrong initial readings are noted so they aren't repeated.
     confirmation. See the 2026-09-04 changelog entry above. (Described
     as "vertical stripes" initially, corrected to "unmanageable column
     shapes/proportions".)
-13. **File dialogs (Save As... and other file operations) open at
-    roughly half the size they should be by default.** Not yet
-    investigated.
-14. **Dialog windows don't remember their size/position after being
-    manually resized.** Confirmed with Save As... — resize the dialog,
-    close it, reopen it, and it's back to the original size/position
-    instead of the one you last set. Not yet investigated. Possibly
-    related to #13 (same dialog-geometry subsystem), but kept as a
-    separate item since the root cause could differ — one is about
-    the default when no saved state exists, the other is about saved
-    state not being written or read back at all.
+13. ~~File dialogs open at roughly half the size they should be by
+    default~~ — **Fixed**, commit `4016d2b`. See the 2026-09-04
+    changelog entry above.
+14. ~~Dialog windows don't remember their size/position after being
+    manually resized~~ — **Fixed**, commit `c27416b`. See the
+    2026-09-04 changelog entry above.
 15. ~~Convert to Profile is not available from the Edit menu~~ —
     **Fixed**, commit `623f3c5`. Placed the existing
     `imagecolorspaceconversion` action in Edit as well.
@@ -573,3 +568,27 @@ silently (`restoreState()` returned false, zero dockers visible) until
 Per project direction: workspaces are meant to be customized by the
 user afterward, so the default should be minimal — not because Krimble
 avoids brush-related features.
+
+## 2026-09-04 — Fixed file dialog default size and size persistence
+
+**Commits:** `4016d2b` (item 13), `c27416b` (item 14)
+**File:** `libs/widgetutils/KoFileDialog.cpp`
+
+**Item 13:** the `QInputDialog` used on Android to pick a file format
+before the native save picker opens had no explicit size at all, so it
+fell back to Qt's tiny default (built for a one-line text prompt, not
+a scrollable format list on a touchscreen). Sized to 85%/60% of the
+available screen instead of a fixed pixel value, so it's reasonable
+across different device sizes. There was already a comment
+acknowledging the list was hard to scroll on touch, partially
+addressed (`UseListViewForComboBoxItems`), but the overall dialog size
+was never fixed.
+
+**Item 14:** `KoFileDialog` (Save As, Open, Import, Export) never
+remembered a size the user manually resized it to — every reopen reset
+to the default. Reused the exact same `KConfigGroup` ("File Dialogs")
++ `dialogName` pattern already used by `getUsedDir()`/`saveUsedDir()`
+for remembering the last-used directory. Geometry restored once in
+`createFileDialog()` before the dialog is shown; saved via the
+`finished()` signal so it's captured regardless of which `exec()` call
+site is used, and regardless of accept/cancel.
