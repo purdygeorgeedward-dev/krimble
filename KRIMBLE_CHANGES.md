@@ -126,11 +126,11 @@ wrong initial readings are noted so they aren't repeated.
     profile without converting them) does not exist anywhere in the
     app.** Not yet investigated whether Krita's color-management code
     has an underlying "assign without convert" operation to wrap.
-19. **Purge (manually free cached memory — undo history, clipboard,
-    histogram cache) does not exist as a menu command.** Krita likely
-    already has internal cache-clearing calls used for memory
-    management; not yet investigated whether one can be exposed
-    directly.
+19. ~~Purge (manually free cached memory...) does not exist as a menu
+    command~~ — **Not actually missing.** `purge_unused_image_data`
+    already exists and is already placed in the Image menu (matches
+    what's visible in the reference Krimble screenshots). No work
+    needed; this was a cataloging error, not a real gap.
 20. **Step Forward / Step Backward (step through the History panel one
     state at a time, distinct from Undo/Redo) do not exist.** Not yet
     investigated whether the History docker's underlying stack
