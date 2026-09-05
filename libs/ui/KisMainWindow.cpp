@@ -2470,11 +2470,22 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
 
         dockWidget->setObjectName(factory->id());
         dockWidget->setParent(this);
-        // Krimble: no snap-back-into-a-dock-zone once a panel is dragged --
-        // this only restricts future user drags, not the initial docked
-        // position set via addDockWidget() below, so first-launch layout
-        // is unchanged.
-        dockWidget->setAllowedAreas(Qt::NoDockWidgetArea);
+        // Krimble (2026-09-04, reverted): this previously called
+        // dockWidget->setAllowedAreas(Qt::NoDockWidgetArea) to stop a
+        // dragged panel from auto-snapping back into a dock zone. That
+        // broke docking entirely instead -- addDockWidget() below
+        // immediately places the widget into `side`, an area it had
+        // just been told it wasn't allowed in at all, a direct
+        // self-contradiction fed to Qt's dock-layout engine. This is a
+        // strong candidate for both bug #7 (window snap broken --
+        // dragged panels can't be dropped back into ANY area, since
+        // zero areas are allowed) and bug #12 (docker panels rendering
+        // as unmanageable narrow columns -- plausible symptom of Qt's
+        // internal dock-layout width allocation misbehaving for a
+        // widget that declares itself allowed nowhere). Removed;
+        // QDockWidget defaults to Qt::AllDockWidgetAreas when this is
+        // never called, restoring normal dock/undock/snap behavior.
+        // // dockWidget->setAllowedAreas(Qt::NoDockWidgetArea);
         if (!showTitlebars) {
             if (dockWidget->titleBarWidget() && !dockWidget->titleBarWidget()->inherits("KisUtilityTitleBar")) {
                 dockWidget->titleBarWidget()->setVisible(false);
