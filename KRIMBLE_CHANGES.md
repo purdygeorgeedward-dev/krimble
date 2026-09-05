@@ -454,3 +454,30 @@ already worked in Settings. `options_configure_keybinding` had no menu
 placement anywhere before this. Placed together directly before
 Preferences, matching the industry standard's grouping of these
 app-config items at the end of the Edit menu.
+
+## 2026-09-04 — Implemented Vibrance filter (real algorithm, not a wrapper)
+
+**Commit:** `375a647`
+**New files:** `plugins/filters/colorsfilters/kis_vibrance_filter.h/.cpp`, `wdg_vibrance.ui`
+**Modified:** `colorsfilters.cpp`, `CMakeLists.txt` (registration only)
+
+No equivalent existed in Krita. The industry standard's own Vibrance
+formula is proprietary and undocumented (confirmed via research). Uses
+the well-known open-source "vibrance" algorithm by CeeJay.dk instead —
+MIT licensed, distributed via SweetFX/ReShade/GShade for over a decade.
+A different, simpler implementation of the same idea, not a
+byte-for-byte match to any commercial product.
+
+Per pixel: luma via Rec. 709 weights, saturation as
+`max(R,G,B) - min(R,G,B)`, blend each channel toward/away from luma by
+`1 + vibrance*(1-saturation)` — strongest effect on muted pixels,
+fading out as saturation approaches 1. Verified numerically before
+implementation.
+
+Implemented as a plain `KisFilter` with direct pixel iteration
+(`KisSequentialIteratorProgress`) and `KoColorSpace::toRgbA16`/
+`fromRgbA16` — the same conversion functions the existing Match Color
+filter uses for Lab — rather than the heavier templated
+`KoColorTransformation` pattern HSV Adjustment uses. No changes needed
+to `plugins/color/colorspaceextensions/`, `krita5.xmlgui`, or any
+`.action` file — self-registers into the existing Adjustments category.
