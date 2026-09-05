@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include <KisPreviewFileDialog.h>
 #include <QApplication>
+#include <QScreen>
 #include <QImageReader>
 #include <QClipboard>
 #include <QInputDialog>
@@ -273,6 +274,16 @@ QString KoFileDialog::filename()
         mimeSelector.setCancelButtonText(KStandardGuiItem::cancel().text());
         // combobox as they stand, are very hard to scroll on a touch device
         mimeSelector.setOption(QInputDialog::UseListViewForComboBoxItems);
+        // Krimble: this dialog had no explicit size at all, so it fell back
+        // to Qt's tiny default QInputDialog size (built for a one-line text
+        // prompt, not a scrollable format list on a touchscreen) -- bug
+        // item 13, "little Krita windows" for Save As. Sized relative to
+        // the available screen instead of a fixed pixel value, so it's
+        // reasonable across different device sizes.
+        if (QScreen *screen = QApplication::primaryScreen()) {
+            const QRect avail = screen->availableGeometry();
+            mimeSelector.setMinimumSize(avail.width() * 0.85, avail.height() * 0.6);
+        }
 
         if (mimeSelector.exec() == QDialog::Accepted) {
             const QString selectedFilter = mimeSelector.textValue();
