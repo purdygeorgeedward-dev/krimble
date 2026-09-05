@@ -78,27 +78,42 @@ wrong initial readings are noted so they aren't repeated.
    again.
 6. **No way to set UI zoom scale.** Same root cause as #3 above — this
    is not about canvas zoom. **Fixed** together with #3.
-7. **Window snap is broken.** Not about persistence across sessions —
-   snapping itself does not work. Not yet investigated. (Initially
-   misread as a "docked layout doesn't persist across sessions" issue;
-   it is not — it's about the snapping behavior itself failing.)
+7. ~~Window snap is broken~~ — **Likely fixed**, commit `c50f03a`,
+   pending your on-device confirmation. See the 2026-09-04 changelog
+   entry above. (Initially misread as a "docked layout doesn't persist
+   across sessions" issue; it is not — it's about the snapping
+   behavior itself failing.)
 8. ~~Transform tool does nothing~~ — **Fixed**, commit `05d1fc1`.
    `activateSubtool()` was ignoring the requested mode entirely; each
    Edit/Filter Transform menu item now correctly activates the mode
    it's labeled with. Also removed Free Transform's ability to
    silently blend into Perspective or Skew, per later direction that
    each mode should be a fully separate tool.
-9. **Massive rendering delay during brush painting** — described as
-   "seemingly a minute" of lag between stroke input and rendering.
-   Not yet investigated.
-10. **Type tool does nothing.** Not yet investigated. Ties to the
-    in-progress "Type tool rework part 1" commit (`9a7c7f112`) noted
-    in the industry-standard-parity catalog.
+9. **Massive rendering delay during brush painting.** Investigated —
+   ruled out the most likely causes: OpenGL is enabled by default
+   (`useOpenGL()` defaults to "auto", not disabled), and there are
+   zero Krimble-authored changes anywhere in the core paint/brush/image
+   engine (`libs/image`, `libs/brush`, `plugins/paintops`). Unlike other
+   fixes this session, this doesn't appear to be a Krimble-introduced
+   regression sitting in a findable spot — likely needs on-device
+   profiling/reproduction rather than further static code reading.
+10. **Type tool does nothing.** Investigated — no confident root cause
+    found. Checked `nodeEditable()` (generic node-lock check, not
+    text-specific) and `SvgCreateTextStrategy.cpp` (no early-return
+    guards, no Krimble markers). Substantial mobile-specific rework
+    already exists in this tool (draggable selection handles,
+    triple-tap-to-select-paragraph, floating action bar), which makes
+    a simple obvious bug less likely. Needs on-device reproduction to
+    diagnose further — ties to the in-progress "Type tool rework part
+    1" commit mentioned previously, not reachable in this shallow
+    clone's history to verify further.
 11. **Cartoon mascot in support screen.** User is addressing this one
     themselves — not part of Claude's task list.
-12. **Tool docker panels render as unmanageable narrow column shapes**
-    (described as "vertical stripes" initially, corrected to
-    "unmanageable column shapes/proportions"). Not yet investigated.
+12. ~~Tool docker panels render as unmanageable narrow column shapes~~
+    — **Likely fixed**, commit `c50f03a`, pending your on-device
+    confirmation. See the 2026-09-04 changelog entry above. (Described
+    as "vertical stripes" initially, corrected to "unmanageable column
+    shapes/proportions".)
 13. **File dialogs (Save As... and other file operations) open at
     roughly half the size they should be by default.** Not yet
     investigated.
@@ -481,3 +496,28 @@ filter uses for Lab — rather than the heavier templated
 `KoColorTransformation` pattern HSV Adjustment uses. No changes needed
 to `plugins/color/colorspaceextensions/`, `krita5.xmlgui`, or any
 `.action` file — self-registers into the existing Adjustments category.
+
+## 2026-09-04 — Fixed docker snap/rendering (setAllowedAreas self-contradiction)
+
+**Commit:** `c50f03a`
+**File:** `libs/ui/KisMainWindow.cpp`
+
+Bug items 7 and 12. Every dock panel had
+`setAllowedAreas(Qt::NoDockWidgetArea)` called on it, then
+`addDockWidget(side, dockWidget)` immediately placed that same widget
+into `side` — a direct self-contradiction fed to Qt's dock-layout
+engine (the widget was just told it's allowed in zero areas, then
+force-placed into one anyway).
+
+Strong candidate for both: window snap being broken (a dragged panel
+declaring zero allowed areas can't be dropped back into any dock zone),
+and docker panels rendering as unmanageable narrow columns (plausible
+symptom of Qt's internal dock-layout width allocation misbehaving for
+a widget that structurally shouldn't be docked anywhere, yet is).
+
+The original intent (per the replaced comment) was to stop a dragged
+panel from auto-snapping back into a dock zone — reasonable goal,
+wrong API, broke docking far more broadly than intended. Commented
+out rather than deleted. `QDockWidget` defaults to
+`Qt::AllDockWidgetAreas` when `setAllowedAreas()` is never called,
+restoring normal dock/undock/snap behavior.
