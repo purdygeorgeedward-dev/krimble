@@ -131,10 +131,13 @@ wrong initial readings are noted so they aren't repeated.
     already exists and is already placed in the Image menu (matches
     what's visible in the reference Krimble screenshots). No work
     needed; this was a cataloging error, not a real gap.
-20. **Step Forward / Step Backward (step through the History panel one
-    state at a time, distinct from Undo/Redo) do not exist.** Not yet
-    investigated whether the History docker's underlying stack
-    supports this kind of arbitrary-index stepping.
+20. ~~Step Forward / Step Backward... do not exist~~ — **Not actually
+    missing.** These exist in Photoshop only because Photoshop's plain
+    Undo (Ctrl+Z) is a toggle (press again to redo the same thing back),
+    a legacy quirk Krita doesn't have. Confirmed in KisMainWindow::undo()
+    — it's an unconditional, repeatable stack walk, not a toggle. Krita's
+    existing Undo/Redo already provide exactly this functionality.
+    Building separate actions would just duplicate Undo/Redo.
 
 ## 2026-09-02 — File/Edit/View toolbar items silently deleted, restored
 
