@@ -51,6 +51,7 @@
 #include "kis_color_balance_filter.h"
 #include "kis_brightness_contrast_filter.h"
 #include "kis_desaturate_filter.h"
+#include "kis_vibrance_filter.h"
 
 K_PLUGIN_FACTORY_WITH_JSON(ColorsFiltersFactory, "kritacolorsfilter.json", registerPlugin<ColorsFilters>();)
 
@@ -65,6 +66,7 @@ ColorsFilters::ColorsFilters(QObject *parent, const QVariantList &)
     manager->add(new KisHSVAdjustmentFilter());
     manager->add(new KisColorBalanceFilter());
     manager->add(new KisBrightnessContrastFilter());
+    manager->add(new KisVibranceFilter());
 
 }
 
