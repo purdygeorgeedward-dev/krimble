@@ -167,6 +167,7 @@ private:
     QPoint m_dragStart;
 
     qint32 m_handleSize {44}; // Krimble: was 13 (mouse-cursor scale) -- too small to reliably hit with a finger, causing the crop tool to restart the whole selection instead of grabbing a handle. 44 matches standard mobile touch-target guidance (Android Material Design / iOS HIG minimum ~44-48).
+    qint32 m_minimumCropSize {13}; // Krimble: endPrimaryAction() used to reuse m_handleSize (44) as the "was this a real crop drag" threshold. Once m_handleSize grew to 44 for touch-target reasons, any stroke under 44px falsely counted as "no rect drawn", triggering tryContinueLastCropAction() -> undoLastCommand() on ordinary short touches/taps -- silently undoing the user's last operation. This constant restores the original small (mouse-scale) threshold for that specific "is there a rect" check, independent of handle hit-testing size.
     bool m_haveCropSelection {false};
     qint32 m_mouseOnHandleType {0};
 

@@ -364,9 +364,11 @@ void KisToolCrop::endPrimaryAction(KoPointerEvent *event)
     setMode(KisTool::HOVER_MODE);
 
     QRectF viewCropRect = pixelToView(m_finalRect.rect());
+    // Krimble: was m_handleSize (44, touch-target sized) -- see m_minimumCropSize
+    // comment in kis_tool_crop.h for why that caused false undos on short strokes.
     const bool haveValidRect =
-        viewCropRect.width() > m_handleSize &&
-        viewCropRect.height() > m_handleSize;
+        viewCropRect.width() > m_minimumCropSize &&
+        viewCropRect.height() > m_minimumCropSize;
 
 
     if (!m_haveCropSelection && !haveValidRect) {

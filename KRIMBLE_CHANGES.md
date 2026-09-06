@@ -592,3 +592,26 @@ for remembering the last-used directory. Geometry restored once in
 `createFileDialog()` before the dialog is shown; saved via the
 `finished()` signal so it's captured regardless of which `exec()` call
 site is used, and regardless of accept/cancel.
+
+## 2026-09-06 — Fixed crop tool false-undo on short strokes
+
+**Files:** `plugins/tools/tool_crop/kis_tool_crop.h`,
+`plugins/tools/tool_crop/kis_tool_crop.cc`
+
+Any short stroke or incidental tap with the crop tool active could
+silently undo the user's last operation and replace the crop
+selection with an old one. Root cause: `endPrimaryAction()`'s
+`haveValidRect` check ("was a real crop rectangle drawn, or just a
+tap?") reused `m_handleSize` as its threshold. `m_handleSize` was
+previously bumped from 13 to 44 (see item 4 above) to make resize
+handles reliably grabbable on touch -- correct for that purpose, but
+it silently raised the "is there a rect" threshold to 44px too. Any
+stroke shorter than that in either dimension then fell through to
+`tryContinueLastCropAction()`, which -- if the last undo-stack command
+was a previous crop -- calls `undoLastCommand()` to reopen it. On
+touch, that fallback fired on essentially any incidental short touch.
+
+Fix: added a separate `m_minimumCropSize` (13, the original mouse-era
+value) used only for the `haveValidRect` check, decoupled from
+`m_handleSize`'s touch-target sizing. Handles stay easy to grab; short
+strokes no longer trigger an unintended undo.
