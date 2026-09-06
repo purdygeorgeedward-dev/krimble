@@ -19,8 +19,8 @@ IntensityAmount=0
 IntensityEffect=0
 
 [Colors:Button]
-BackgroundAlternate=66,65,64
-BackgroundNormal=54,54,54
+BackgroundAlternate=50,51,75
+BackgroundNormal=38,40,65
 DecorationFocus=83,114,142
 DecorationHover=83,114,142
 ForegroundActive=230,230,230
@@ -33,8 +33,8 @@ ForegroundPositive=151,202,64
 ForegroundVisited=160,160,160
 
 [Colors:Complementary]
-BackgroundAlternate=75,75,75
-BackgroundNormal=71,71,71
+BackgroundAlternate=59,61,86
+BackgroundNormal=55,57,82
 DecorationFocus=83,114,142
 DecorationHover=83,114,142
 ForegroundActive=230,230,230
@@ -61,8 +61,8 @@ ForegroundPositive=151,202,64
 ForegroundVisited=187,194,208
 
 [Colors:Tooltip]
-BackgroundAlternate=44,44,44
-BackgroundNormal=54,54,54
+BackgroundAlternate=28,30,55
+BackgroundNormal=38,40,65
 DecorationFocus=112,154,191
 DecorationHover=83,114,142
 ForegroundActive=230,230,230
@@ -75,8 +75,8 @@ ForegroundPositive=151,202,64
 ForegroundVisited=160,160,160
 
 [Colors:View]
-BackgroundAlternate=50,50,50
-BackgroundNormal=56,56,56
+BackgroundAlternate=34,36,61
+BackgroundNormal=40,42,67
 DecorationFocus=83,114,142
 DecorationHover=83,114,142
 ForegroundActive=230,230,230
@@ -89,8 +89,8 @@ ForegroundPositive=151,202,64
 ForegroundVisited=160,160,160
 
 [Colors:Window]
-BackgroundAlternate=75,75,75
-BackgroundNormal=71,71,71
+BackgroundAlternate=59,61,86
+BackgroundNormal=55,57,82
 DecorationFocus=83,114,142
 DecorationHover=83,114,142
 ForegroundActive=230,230,230
@@ -103,17 +103,17 @@ ForegroundPositive=151,202,64
 ForegroundVisited=160,160,160
 
 [General]
-ColorScheme=Krita dark
-Name=Krita dark
+ColorScheme=Krimble dark
+Name=Krimble dark
 shadeSortColumn=true
 
 [KDE]
 contrast=2
 
 [WM]
-activeBackground=80,80,80
+activeBackground=64,66,91
 activeBlend=255,255,255
 activeForeground=180,180,180
-inactiveBackground=64,63,62
+inactiveBackground=48,49,73
 inactiveBlend=75,71,67
 inactiveForeground=128,127,125

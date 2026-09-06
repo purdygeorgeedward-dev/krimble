@@ -615,3 +615,23 @@ Fix: added a separate `m_minimumCropSize` (13, the original mouse-era
 value) used only for the `haveValidRect` check, decoupled from
 `m_handleSize`'s touch-target sizing. Handles stay easy to grab; short
 strokes no longer trigger an unintended undo.
+
+## 2026-09-06 — Shifted default theme from neutral gray to blue-gray
+
+**File:** `krita/data/themes/KritaDark.colors`
+
+Replaced the neutral gray UI base (`71,71,71` on Window/Complementary,
+and matching values on Button/Tooltip/View/WM) with a blue-gray
+sampled directly from a reference color (#373952 / RGB 55,57,82,
+"Lavender Blue") using a color-picker tool. Every background value in
+the theme was shifted by the same delta (dR -16, dG -14, dB +11) from
+its old neutral-gray value, so the existing lightness relationships
+between sections (Button vs. Window vs. Tooltip, etc.) are preserved
+-- only the hue changes. Selection/accent blue (83,114,142) and all
+foreground/text colors are unchanged.
+
+Also fixed a pre-existing mismatch: `KisApplication.cpp` and
+`KisMainWindow.cpp` default to theme name "Krimble dark", but this
+file's [General] Name/ColorScheme were still "Krita dark", so the
+lookup likely never matched on a fresh install. Renamed both to
+"Krimble dark" to match.
