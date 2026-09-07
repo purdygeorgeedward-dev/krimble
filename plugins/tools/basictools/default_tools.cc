@@ -19,6 +19,8 @@
 #include "kis_tool_brush.h"
 #include "kis_tool_smudge.h"
 #include "kis_tool_soften.h"
+#include "kis_tool_dodge.h"
+#include "kis_tool_burn.h"
 #include "kis_tool_multihand.h"
 #include "kis_tool_freehand.h"
 #include "kis_tool_gradient.h"
@@ -43,6 +45,8 @@ DefaultTools::DefaultTools(QObject *parent, const QVariantList &)
     KoToolRegistry::instance()->add(new KisToolBrushFactory());
     KoToolRegistry::instance()->add(new KisToolSmudgeFactory()); // Krimble: dedicated Smudge tool (colorsmudge paintop)
     KoToolRegistry::instance()->add(new KisToolSoftenFactory()); // Krimble: dedicated Soften tool (filterop + Gaussian Blur)
+    KoToolRegistry::instance()->add(new KisToolDodgeFactory()); // Krimble: dedicated Dodge tool (default brush + CompositeOp=dodge)
+    KoToolRegistry::instance()->add(new KisToolBurnFactory()); // Krimble: dedicated Burn tool (default brush + CompositeOp=burn)
     KoToolRegistry::instance()->add(new KisToolColorSamplerFactory());
     KoToolRegistry::instance()->add(new KisToolLineFactory());
     KoToolRegistry::instance()->add(new KisToolEllipseFactory());

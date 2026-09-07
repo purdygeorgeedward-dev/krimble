@@ -805,3 +805,31 @@ setMouseTracking(true).
 Same decoupled-margin-from-visible-size pattern used for the crop
 tool's handle hit-test padding and m_minimumCropSize earlier this
 session.
+
+## 2026-09-07 — Added dedicated Dodge and Burn tools to the toolbox
+
+**Files:**
+- `krita/pics/tools/SVG/16/{light,dark}_krita_tool_{dodge,burn}.svg` (4 new)
+- `krita/pics/tools/SVG/16/tools-svg-16-icons.qrc`
+- `plugins/tools/basictools/kis_tool_{dodge,burn}.{h,cc}` (4 new)
+- `plugins/tools/basictools/default_tools.cc`
+- `plugins/tools/basictools/CMakeLists.txt`
+
+A third Smudge/Soften-pattern win, found after initially (incorrectly)
+concluding Dodge/Burn had no existing engine to reuse. Correction: Krita's
+core compositing engine already has fully-working "dodge" and "burn"
+composite ops (COMPOSITE_DODGE/COMPOSITE_BURN in KoCompositeOpRegistry.h)
+usable by any brush -- no bundled preset needed, unlike Smudge/Soften.
+
+Different mechanism from Smudge/Soften since there's no preset to look
+up by name: on activate(), both tools clone the standard default brush
+preset ("defaultPreset", plugins/paintops/defaultpresets/paintbrush.kpp)
+via KisPaintOpPreset::clone() and override CompositeOp via
+KisPaintOpSettings::setProperty() before applying. Cloning is required --
+modifying the shared cached preset in place would corrupt the default
+brush everywhere else it's used.
+
+Dodge: icon (hollow circle, PS convention), shortcut O (matches PS's
+actual Dodge shortcut), priority 23. Burn: icon (filled circle), shortcut
+K (arbitrary -- PS groups Burn with Dodge in one flyout key, Krimble
+gives it a separate toolbox slot instead), priority 24.

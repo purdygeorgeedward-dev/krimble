@@ -5,6 +5,8 @@ set(kritadefaulttools_static_SRCS
     kis_tool_brush.cc
     kis_tool_smudge.cc
     kis_tool_soften.cc
+    kis_tool_dodge.cc
+    kis_tool_burn.cc
     kis_tool_line.cc
     kis_tool_line_helper.cpp
     kis_tool_fill.cc
