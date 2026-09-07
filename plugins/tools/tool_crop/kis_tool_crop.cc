@@ -865,21 +865,26 @@ qint32 KisToolCrop::mouseOnHandle(QPointF currentViewPoint)
         return None;
     }
 
-    if (upperLeftHandleRect(borderRect).contains(currentViewPoint)) {
+    // Krimble: pad decoupled from the drawn handle size -- see m_handleHitPadding
+    // comment in kis_tool_crop.h. Without this, a near-miss on a touchscreen falls
+    // through to "start a new crop from scratch here" instead of grabbing the handle.
+    const qreal pad = m_handleHitPadding;
+
+    if (upperLeftHandleRect(borderRect).adjusted(-pad, -pad, pad, pad).contains(currentViewPoint)) {
         handleType = UpperLeft;
-    } else if (lowerLeftHandleRect(borderRect).contains(currentViewPoint)) {
+    } else if (lowerLeftHandleRect(borderRect).adjusted(-pad, -pad, pad, pad).contains(currentViewPoint)) {
         handleType = LowerLeft;
-    } else if (upperRightHandleRect(borderRect).contains(currentViewPoint)) {
+    } else if (upperRightHandleRect(borderRect).adjusted(-pad, -pad, pad, pad).contains(currentViewPoint)) {
         handleType = UpperRight;
-    } else if (lowerRightHandleRect(borderRect).contains(currentViewPoint)) {
+    } else if (lowerRightHandleRect(borderRect).adjusted(-pad, -pad, pad, pad).contains(currentViewPoint)) {
         handleType = LowerRight;
-    } else if (upperHandleRect(borderRect).contains(currentViewPoint)) {
+    } else if (upperHandleRect(borderRect).adjusted(-pad, -pad, pad, pad).contains(currentViewPoint)) {
         handleType = Upper;
-    } else if (lowerHandleRect(borderRect).contains(currentViewPoint)) {
+    } else if (lowerHandleRect(borderRect).adjusted(-pad, -pad, pad, pad).contains(currentViewPoint)) {
         handleType = Lower;
-    } else if (leftHandleRect(borderRect).contains(currentViewPoint)) {
+    } else if (leftHandleRect(borderRect).adjusted(-pad, -pad, pad, pad).contains(currentViewPoint)) {
         handleType = Left;
-    } else if (rightHandleRect(borderRect).contains(currentViewPoint)) {
+    } else if (rightHandleRect(borderRect).adjusted(-pad, -pad, pad, pad).contains(currentViewPoint)) {
         handleType = Right;
     } else if (borderRect.contains(currentViewPoint)) {
         handleType = Inside;

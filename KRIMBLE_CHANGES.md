@@ -635,3 +635,20 @@ Also fixed a pre-existing mismatch: `KisApplication.cpp` and
 file's [General] Name/ColorScheme were still "Krita dark", so the
 lookup likely never matched on a fresh install. Renamed both to
 "Krimble dark" to match.
+
+## 2026-09-06 — Padded crop handle hit-test to reduce near-miss resets
+
+**Files:** `plugins/tools/tool_crop/kis_tool_crop.h`,
+`plugins/tools/tool_crop/kis_tool_crop.cc`
+
+A tap that missed a crop handle's 44px hit box even slightly -- hard
+to avoid on a small touchscreen -- fell through to
+`mouseOnHandleType == None`, which `beginPrimaryAction()` treats as
+"discard the existing crop selection and start a brand new one at
+this point." Any near-miss looked like the tool randomly restarting.
+
+Fix: added `m_handleHitPadding` (16px), applied only inside
+`mouseOnHandle()`'s hit-test via `.adjusted(-pad,-pad,pad,pad)` on
+each handle rect -- giving each handle an effective ~76px grab zone
+while leaving the drawn/visible handle size at 44px, matching the same
+decoupled-threshold pattern as `m_minimumCropSize` above.
