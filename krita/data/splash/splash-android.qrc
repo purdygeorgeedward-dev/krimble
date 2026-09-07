@@ -6,7 +6,7 @@
 <RCC version="1.0">
     <qresource prefix="/splash">
         <file>banner.svg</file>
-        <file alias="hd.jpg">logo_splash.jpg</file>
+        <file alias="hd.png">logo_splash.png</file>
         <file alias="holiday.png">logo_splash_holidays.png</file>
     </qresource>
 </RCC>
