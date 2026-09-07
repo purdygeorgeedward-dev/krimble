@@ -31,7 +31,12 @@ KIS_DECLARE_STATIC_INITIALIZER {
 Plugin::Plugin(QObject *parent, const QVariantList &)
     : QObject(parent)
 {
-    KoToolRegistry::instance()->add(new SvgTextToolFactory());
+    // Krimble: temporarily disabled -- Type tool was randomly self-activating
+    // in the toolbox (bug #9, still under investigation). Commenting out the
+    // registration keeps the plugin building/loading, but the tool can't
+    // appear in the toolbox or be auto-activated by anything since it's never
+    // added to KoToolRegistry. Re-enable by uncommenting once root cause found.
+    // KoToolRegistry::instance()->add(new SvgTextToolFactory());
 }
 
 #include <Plugin.moc>

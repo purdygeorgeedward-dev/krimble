@@ -652,3 +652,20 @@ Fix: added `m_handleHitPadding` (16px), applied only inside
 each handle rect -- giving each handle an effective ~76px grab zone
 while leaving the drawn/visible handle size at 44px, matching the same
 decoupled-threshold pattern as `m_minimumCropSize` above.
+
+## 2026-09-06 — Temporarily disabled Type tool (bug #9, random self-activation)
+
+**File:** `plugins/tools/svgtexttool/Plugin.cpp`
+
+Type tool was randomly self-activating in the toolbox, disrupting
+other work in progress. Root cause not yet confirmed -- ruled out
+KoToolManager::attachCanvas()'s lowest-priority auto-select (that path
+only scans ToolBoxSection::Main, and the Type tool is registered under
+ToolBoxSection::PSOrder alongside Brush, so it isn't a candidate
+there). Some other auto-switch path is the likely culprit.
+
+Commented out the one line in Plugin.cpp that registers
+SvgTextToolFactory with KoToolRegistry. The plugin still builds and
+loads; the tool simply never enters the registry, so it can't appear
+in the toolbox or be activated by anything. Fully reversible --
+uncomment that line once the actual root cause is found and fixed.
