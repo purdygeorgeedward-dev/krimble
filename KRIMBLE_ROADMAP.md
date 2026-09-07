@@ -134,3 +134,22 @@ painted result becomes a real active selection.
 Likely a genuinely medium-sized feature -- more than a UI wrapper, less
 than the AI upscaler. Worth scoping properly (time estimate, step-by-step
 plan) when it's next in line for actual implementation.
+
+## Gradient tool: synchronous UI freeze on large images
+
+Status: **diagnosed, not fixed**. plugins/tools/basictools/kis_tool_gradient.cc
+has its own TODO comment confirming it: "the gradient tool is still not in
+strokes" -- unlike most tools, it never got migrated to Krita's async
+stroke architecture (background thread, progressive updates).
+
+endPrimaryAction() runs the full gradient computation synchronously on the
+UI thread across the paint device's full bounds when the drag is released
+-- not backgrounded, not incremental. On a large image on phone-class
+hardware this is a real blocking pause, which reads as "did this even
+work?" followed by the result suddenly appearing once the computation
+finishes.
+
+Real fix is porting the tool to strokes (matching how modern Krita tools
+run paint operations on a background stroke thread) -- a genuine refactor,
+not a quick patch. Needs proper scoping (time estimate, step-by-step plan)
+before starting, same as the AI upscaler and Quick Mask.
