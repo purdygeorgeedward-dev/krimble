@@ -27,9 +27,9 @@ The project focuses on the realities of touch input and limited screen space: re
 
 Krimble remains built on the extraordinary foundation of [Krita](https://invent.kde.org/graphics/krita), while deliberately taking a different direction for mobile use.
 
-<table>
-<tr>
-<td width="62%" valign="top">
+<div align="center">
+<img src="https://krimble.org/images/github/kimmy-phone.png" alt="Kimmy using Krimble on a phone" width="100%">
+</div>
 
 ### Mobile first means mobile first
 
@@ -43,15 +43,6 @@ That means:
 - simplified tool and panel behavior
 - conventional graphics-editing terminology
 - professional editing workflows that do not assume a mouse or keyboard
-
-</td>
-<td width="38%" align="center" valign="middle">
-
-<img src="https://krimble.org/images/github/kimmy-phone.png" alt="Kimmy using Krimble on a phone" width="320">
-
-</td>
-</tr>
-</table>
 
 ---
 
@@ -90,14 +81,9 @@ Krimble already includes extensive changes to make the application more practica
 
 ## New creative tools
 
-<table>
-<tr>
-<td width="38%" align="center" valign="middle">
-
-<img src="https://krimble.org/images/github/development-holograms.jpg" alt="Kimmy exploring new Krimble tools" width="360">
-
-</td>
-<td width="62%" valign="top">
+<div align="center">
+<img src="https://krimble.org/images/github/development-holograms.jpg" alt="Kimmy exploring new Krimble tools" width="100%">
+</div>
 
 Krimble is expanding beyond interface adaptation into new graphics-editing capabilities.
 
@@ -114,17 +100,13 @@ Recent and active work includes:
 
 Some of these are already implemented; others are still being developed and refined.
 
-</td>
-</tr>
-</table>
-
 ---
 
 ## A gift for you
 
-<table>
-<tr>
-<td width="62%" valign="top">
+<div align="center">
+<img src="https://krimble.org/images/github/gift-for-you.png" alt="Kimmy offering a gift — A gift for you!" width="100%">
+</div>
 
 Krimble is **free and open-source software**.
 
@@ -134,27 +116,13 @@ Krimble is intended to remain something creators can actually possess and work w
 
 **Free software is a gift that can keep growing.**
 
-</td>
-<td width="38%" align="center" valign="middle">
-
-<img src="https://krimble.org/images/github/gift-for-you.png" alt="Kimmy offering a gift — A gift for you!" width="330">
-
-</td>
-</tr>
-</table>
-
 ---
 
 ## We love A.I.
 
-<table>
-<tr>
-<td width="38%" align="center" valign="middle">
-
-<img src="https://krimble.org/images/github/kimmy-robot-ai.jpg" alt="Kimmy and the Krimble robot — We love A.I." width="340">
-
-</td>
-<td width="62%" valign="top">
+<div align="center">
+<img src="https://krimble.org/images/github/kimmy-robot-ai.jpg" alt="Kimmy and the Krimble robot — We love A.I." width="100%">
+</div>
 
 Krimble does **not** have a blanket moratorium on artificial intelligence.
 
@@ -163,10 +131,6 @@ AI is treated as another class of creative technology: useful when it can make a
 The goal is not to turn Krimble into an “AI app.” The goal is to build a strong graphics editor and use new technology where it genuinely helps.
 
 **Move fast. Test things. Fix what breaks. Keep improving.**
-
-</td>
-</tr>
-</table>
 
 ---
 
@@ -259,9 +223,11 @@ Android is the primary focus. Other platforms are intended to share the same Kri
 
 ## Support Krimble
 
-<table>
-<tr>
-<td width="55%" valign="top">
+<div align="center">
+<a href="https://www.buymeacoffee.com/GeorgeEdwardPurdy">
+<img src="https://krimble.org/images/github/support-coffee.jpg" alt="Support Krimble" width="100%">
+</a>
+</div>
 
 Krimble is free and open source, but development still takes time and resources.
 
@@ -270,17 +236,6 @@ If Krimble is useful to you, voluntary support helps fund continued development,
 ### [☕ Support Krimble on Buy Me a Coffee](https://www.buymeacoffee.com/GeorgeEdwardPurdy)
 
 You can also help by testing, reporting issues, improving documentation, contributing code, or simply sharing the project.
-
-</td>
-<td width="45%" align="center" valign="middle">
-
-<a href="https://www.buymeacoffee.com/GeorgeEdwardPurdy">
-<img src="https://krimble.org/images/github/support-coffee.jpg" alt="Support Krimble" width="390">
-</a>
-
-</td>
-</tr>
-</table>
 
 ---
 
