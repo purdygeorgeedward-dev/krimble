@@ -57,5 +57,11 @@ void KisToolDodge::activate(const QSet<KoShape*> &shapes)
     }
 
     dodgePreset->settings()->setProperty("CompositeOp", COMPOSITE_DODGE);
+    // Krimble: base preset defaults to WASH mode (PaintOpAction=2), which
+    // applies opacity once per continuous stroke, not while dragging back
+    // and forth. Real Dodge accumulates continuously as you paint over the
+    // same area within one stroke -- BUILDUP mode (PaintOpAction=1) is
+    // required for that.
+    dodgePreset->settings()->setProperty("PaintOpAction", 1);
     canvas2->viewManager()->canvasResourceProvider()->setPaintOpPreset(dodgePreset);
 }

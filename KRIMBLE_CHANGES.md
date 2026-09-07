@@ -833,3 +833,16 @@ Dodge: icon (hollow circle, PS convention), shortcut O (matches PS's
 actual Dodge shortcut), priority 23. Burn: icon (filled circle), shortcut
 K (arbitrary -- PS groups Burn with Dodge in one flyout key, Krimble
 gives it a separate toolbox slot instead), priority 24.
+
+## 2026-09-07 — Fixed Dodge/Burn to build up continuously while dragging
+
+**Files:** `plugins/tools/basictools/kis_tool_dodge.cc`,
+`plugins/tools/basictools/kis_tool_burn.cc`
+
+The cloned base preset defaults to WASH mode (PaintOpAction=2), which
+applies a stroke's opacity once, flattened at release -- not while
+dragging back and forth over the same spot. Real Dodge/Burn darken or
+lighten continuously the longer you paint over an area within a single
+stroke, which requires BUILDUP mode (PaintOpAction=1).
+
+Both tools now set PaintOpAction=1 alongside their CompositeOp override.

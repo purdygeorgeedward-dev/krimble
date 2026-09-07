@@ -57,5 +57,9 @@ void KisToolBurn::activate(const QSet<KoShape*> &shapes)
     }
 
     burnPreset->settings()->setProperty("CompositeOp", COMPOSITE_BURN);
+    // Krimble: see KisToolDodge.cc for why BUILDUP mode (not the base
+    // preset's default WASH mode) is required for continuous darkening
+    // while dragging.
+    burnPreset->settings()->setProperty("PaintOpAction", 1);
     canvas2->viewManager()->canvasResourceProvider()->setPaintOpPreset(burnPreset);
 }
