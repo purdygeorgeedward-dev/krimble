@@ -153,3 +153,34 @@ Real fix is porting the tool to strokes (matching how modern Krita tools
 run paint operations on a background stroke thread) -- a genuine refactor,
 not a quick patch. Needs proper scoping (time estimate, step-by-step plan)
 before starting, same as the AI upscaler and Quick Mask.
+
+## Channels docker: Ctrl+click-to-load-selection
+
+Status: **scoped, not started**. Corrects an earlier wrong assessment of this
+docker (originally logged as "no thumbnails, no isolation" -- both were
+already fully implemented; see channelmodel.cpp's Qt::DecorationRole handling
+and rowActivated()'s isolate-on-double-click). Only genuinely missing piece,
+confirmed by searching for any Ctrl/modifier handling in the docker (none
+found): Photoshop's Ctrl+click-a-channel-thumbnail -> load that channel's
+data as a selection.
+
+**Why it's real work, not a UI wrapper:** unlike Select Opaque (which loads
+a layer's existing alpha channel -- already implemented, just needs a
+better UI entry point), this needs to extract a *specific color channel's*
+raw values across the image and convert them into a new selection mask.
+No existing utility does this in the codebase.
+
+**Rough implementation shape:**
+1. Add a mouse event filter/override on the channel table view to detect
+   Ctrl+click on a row (distinct from the existing plain-click checkbox
+   toggle and double-click isolate).
+2. Iterate the root layer's projection device (KisRandomConstAccessorSP or
+   similar) and read the specific channel's byte value per pixel via
+   KoChannelInfo::pos()/size() into a new KisPixelSelection.
+3. Apply as the active selection via the same KisSelectionManager path
+   Select Opaque already uses.
+
+Deliberately not attempted blind in this session -- pixel-iteration code
+like this needs to be verified against an actual build, not just read
+through, given how the initial assessment of this same docker turned out
+to be wrong on both counts checked.
