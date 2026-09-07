@@ -1,137 +1,318 @@
-![Krimble](krita/data/splash/logo_splash.png)
+<div align="center">
 
-Krimble (formerly Krita Mobile) is a mobile-first fork of Krita designed to be a graphics workhorse for Android phones instead of a paint/animation app. The objective is to make a mobile version which is aware of the restrictions of limited screen real estate on mobile devices. Stripping away unnecessary UI components and scaling down others, creating new default behaviors that show awareness of mobile users needs, and making the UI more universal and accessible are objectives.
+<img src="https://krimble.org/images/github/hero.jpg" alt="Krimble — Your Creative Companion" width="100%">
 
-I am a lifelong professional artist trained with a wide range of traditional media and digital tools from Deluxe Paint to Photoshop to 3DS Max, Mudbox, ZBrush, et al. and to me trying to "paint" with a phone is about as appealing as writing a novel on a window with a bar of soap. However, I find myself using Krita on my smartphone as a daily driver for graphics tasks, so I am motivated to modify it for my own purposes. Sharing it, of course.
+# Krimble
 
-[![Buy Me a Coffee](https://krimble.org/buy-me-a-coffee.png)](https://www.buymeacoffee.com/GeorgeEdwardPurdy)
+### Your Creative Companion
 
-https://krimble.org
+**A mobile-first graphics editor built from Krita for Android phones.**
 
-### Krita User Manual
-https://docs.krita.org/en/user_manual.html
+[![Website](https://img.shields.io/badge/Website-krimble.org-ff7a00?style=for-the-badge)](https://krimble.org)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-white?style=for-the-badge&logo=gnu&logoColor=black)](LICENSE)
+[![Platform](https://img.shields.io/badge/Android-Mobile_First-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#build-targets)
+[![Status](https://img.shields.io/badge/Status-1.0.0--alpha1-orange?style=for-the-badge)](#development-roadmap)
 
-### Krita Development Notes and Build Instructions
+[Website](https://krimble.org) · [Source](https://github.com/purdygeorgeedward-dev/krimble) · [Roadmap](#development-roadmap) · [Support Krimble](#support-krimble)
 
-Please follow [the online documentation](https://docs.krita.org/en/untranslatable_pages/building_krita.html).
+</div>
 
-Other developer guides, notes and wiki:
+---
 
-https://docs.krita.org/en/untranslatable_pages.html
+## What is Krimble?
 
-APIdox:
+Krimble is a **mobile-first fork of Krita** designed to be a graphics workhorse for Android phones rather than a paint/animation app squeezed onto a small screen.
 
-https://api.kde.org/legacy/krita/html/index.html
+The project focuses on the realities of touch input and limited screen space: removing unnecessary interface clutter, resizing and reorganizing controls, changing defaults that make more sense on a phone, improving touch targets, simplifying workflows, and adding graphics-editing tools that are useful for everyday creative work.
 
-### Krimble 🐞Bugs and 🍰Wishes
+Krimble remains built on the extraordinary foundation of [Krita](https://invent.kde.org/graphics/krita), while deliberately taking a different direction for mobile use.
 
-Wishlist:
+<table>
+<tr>
+<td width="62%" valign="top">
 
-1. Change default tool on open from paint tool to pan/hand tool. (DONE.🙂 Pan tool given lowest `priority`/`toolBoxPriority` in `kis_tool_pan.cpp`. Also found and fixed a separate bug forcing the Brush tool active every time a pixel layer was selected, in `KisNodeManager::slotUiActivatedNode` — that logic is now disabled with a comment rather than forcing any tool.)
+### Mobile first means mobile first
 
-2. Smaller splash image on load so it fits mobile screens. (DONE.🙂)
+Krimble is designed around **phones and touch**, not around reproducing a desktop workstation on a smaller display.
 
-3. Add two-finger movement selectively to floating windows and panels that are difficult to reposition. KisDockerHud support is complete (DONE.🙂): `KisDockerHud` now handles `QEvent::TouchBegin`/`TouchUpdate`/`TouchEnd`/`TouchCancel` via an `event()` override, claiming the gesture only when exactly two touch points are active — a single-finger tap on its combo box or menu button passes through normally. Delta is computed in screen coordinates, not widget-local, since local coordinates shift under the fingers as the widget itself moves mid-drag. The drag moves `window()`, not the `KisDockerHud` instance itself — it's normally embedded in a parent layout (`KisPopupButtonFrame`, when hosted via `KisPopupButton::setPopupWidget()`) rather than being independently top-level, so moving the instance directly would've been silently overridden by that layout; confirmed `KisPopupButtonFrame` sets `Qt::Dialog`/`Qt::Popup` window flags, both genuine top-level types, so `window()` resolves correctly. No conflict with canvas pan/zoom's own two-finger handling since Qt routes touch events by which widget the gesture started on. Additional windows will be handled individually as needed.
+That means:
 
-4. Remove Tools menu to make the Settings menu easier to reach. (DONE.🙂)
+- touch-sized controls and resize handles
+- menus reorganized for limited screen space
+- mobile-friendly defaults
+- simplified tool and panel behavior
+- conventional graphics-editing terminology
+- professional editing workflows that do not assume a mouse or keyboard
 
-5. Change Toolbox default sort order. (DONE.🙂 Krita's toolbox is grouped into sections (Shape/Transform/Fill/View/Select/Main/Navigation) that render in alphabetical order of their internal string keys (`QMap` in `KoToolBox.cpp`), with per-section priority controlling order only within a section — so there was previously no way to get one continuous list across the whole toolbox. Added a new unified `ToolBoxSection::PSOrder` and moved every tool with a real equivalent into it (Move, Marquee, Lasso, Wand, Crop, Eyedropper, Healing Brush, Brush, Gradient, Paint Bucket, Pen, Path Selection, Type, Shape tools, Hand, Zoom), sequentially prioritized. Tools with no equivalent keep their existing sections and now sort after this block. Also fixed four stale factory-level shortcuts found along the way (a separate mechanism from the `.action` XML system fixed earlier) that still held pre-alignment keys: Move (was T, now V), Eyedropper (was P, now I), Rectangular Marquee (was Ctrl+R, now M), Elliptical Marquee (was J, now Shift+M).)
+</td>
+<td width="38%" align="center" valign="middle">
 
-6. Disable autoload of file recovery on startup because mobile users don't tend to close apps with Quit/Exit. (DONE.🙂 Commented out in `KisApplication.cpp`: the `checkAutosaveFiles()` call that pops the recovery dialog on launch is inert. No other call site triggers it. Confirmed, no code change needed.)
+<img src="https://krimble.org/images/github/kimmy-phone.png" alt="Kimmy using Krimble on a phone" width="320">
 
-7. Move Configure Krita menu and rename Preferences. (DONE.🙂 Preferences now lives under the Edit menu in `krita5.xmlgui`.)
+</td>
+</tr>
+</table>
 
-8. Reconfigure menus. (DONE.🙂 Select > Shrink renamed to Contract..., Layer > Merge Layer renamed to Merge Down, Filter menu categories remapped from Krita's own taxonomy (Artistic/Colors/Edge Detection/Emboss/Enhance/Map) to (Blur/Distort/Noise/Pixelate/Render/Sharpen/Stylize/Other), two dead menu categories with zero registered filters removed (Decor, Non-Photorealistic), and five color-adjustment filters — Index Colors, Posterize, Gradient Map, Palettize, Normalize — moved out of the Filter menu into Image > Adjustments.)
+---
 
-9. Remove rotation from pinch zoom defaults because it's annoying. (DONE.🙂)
+## Why Krimble?
 
-10. Limit transform default to scaling. (DONE.🙂 In `kis_free_transform_strategy.cpp`, an unmodified drag near an edge — not on an explicit scale handle — used to fall through to shear based on proximity alone, easy to trigger by accident with imprecise touch input. Rather than removing shear-by-drag outright, it's now gated behind a new "Allow Shear by Dragging" checkbox in the Free Transform tool options, off by default — same persisted-toggle pattern as the existing mesh-transform `chkScaleHandles` checkbox. Also fixed a real uninitialized-variable bug found along the way: `defaultFunction` was left unset when the cursor was outside the shape and Alt wasn't held.)
+I am a lifelong professional artist trained across traditional media and digital tools. On a phone, I do not want to imitate a desktop painting setup. I want a practical graphics editor that works naturally in my hand.
 
-11. Implement industry standard terms for tools or menu items as needed. (DONE.🙂 Also includes: renamed four panels to match their real equivalent concept instead of Krita's own internal naming — Undo History → History, Overview → Navigator, Palette → Swatches (Palette) (kept both, since the panel concept and the underlying saved-color-set file format Krimble calls a Palette are genuinely different things, not one name being more correct), Task Sets → Actions (Taskset → Action Set, Task → Action); and renamed the Smart Patch tool to Healing Brush (same PatchMatch inpainting algorithm underneath — a naming-only fix).)
+I found myself using Krita on my smartphone as a daily driver for graphics tasks, so I began modifying it for that purpose. Krimble is the result.
 
-12. Default to Snapping OFF. (DONE.🙂)
+**Same creativity. More freedom.**
 
-13. Add zoom to 200% in menu. (DONE.🙂 TESTED. WORKS.)
+<div align="center">
+<img src="https://krimble.org/images/github/kimmy-cat-small.png" alt="Kimmy and her cat" width="360">
+</div>
 
-14. Create custom default toolbar in imitation of classic toolbar. (DONE.🙂)
+---
 
-15. Add the Adjust-Brightness/Contrast dialog. (DONE.🙂 TESTED. WORKS.)
+## What Krimble changes
 
-16. Widen sizing gadgets on windows and sections to make touchscreen resizing easier. (DONE.🙂 Two separate fixes: Crop tool's resize handles (`m_handleSize` in `kis_tool_crop.h`/`.cc`) went from 13px, sized for a mouse cursor, to 44px, matching standard mobile touch-target guidance — a near-miss previously made the tool discard the crop rect and start drawing a new one from scratch instead of grabbing the handle. Separately, dock panel resize borders were doubled app-wide via a new `KisWideDockSeparatorStyle` proxy style overriding `PM_DockWidgetSeparatorExtent`, applied in `KisApplication.cpp` — Qt ties a dock separator's visible width and its resize hit-test zone to the same single pixel metric, so there's no way to widen only the grab zone without also widening what's drawn on screen, unlike the crop tool where those were decoupled.)
+Krimble already includes extensive changes to make the application more practical and familiar on mobile:
 
-17. Rework the text/type tool, which is very hard to use currently. (DONE.🙂 Substantially reworked. Type menu reconstructed (Orientation, Anti-Alias, Panels > Glyphs), fake/nonexistent items dropped rather than faked. Shared handle-radius/grab-sensitivity touch-target defaults bumped app-wide. Triple-tap-to-select-paragraph added (double-tap-to-select-word already worked via Qt's own touch-to-mouse synthesis). Draggable mobile-style selection-endpoint handles added, matching the two "teardrop" handles every phone keyboard shows. Floating Cut/Copy/Paste/Select All quick-action bar added on selection. Remaining, not yet built: a magnifier/loupe while dragging a cursor or selection handle, so a fingertip doesn't block the view of exactly where the cursor will land — the one idea from the original five that wasn't attempted.)
+| Area | Krimble direction |
+|---|---|
+| **Navigation** | Pan/Hand as the default tool, touch-first movement, fewer accidental gestures |
+| **Toolbox** | Reordered around familiar graphics-editing conventions |
+| **Menus** | Simplified, renamed, and reorganized for mobile use |
+| **Panels** | User-facing “docker” terminology replaced with **panel**; floating panels no longer snap back into dock zones |
+| **Touch** | Larger crop handles, wider resize targets, mobile text-selection handles |
+| **Transform** | Free Transform as the predictable default; accidental shear reduced |
+| **Color** | Touch-friendly square color selector; improved Match Color workflow |
+| **Editing** | Healing Brush, Content-Aware Fill, improved adjustments and replayable Actions |
+| **Branding** | Full Krimble identity, app labels, splash, icons, links, versioning and support graphics |
+| **Shortcuts** | Large shortcut-alignment pass for familiar tool keys where practical |
 
-18. Create Krimble logo splash. (DONE.🙂)
+---
 
-19. Rewrite larger dialogs windows to fit small screens. (DONE.🙂 Surveyed every dialog's actual top-level `QDialog` geometry and found 8 genuinely oversized for a phone screen: `recorder_profile_settings`, `bbdkss` (script starter), `KisDonationManagementDialog`, `kis_dlg_brush_hud_config`, `excepthook`, `KisSupporterBundlesDialog`, `wdgcustombrush`, `wdgclipboardbrush`. Most had no hard size constraint at all — just a large Qt Designer initial-geometry hint, freely resizable in practice — trimmed to ~380px width. One real blocker: `bbdkss.ui`'s top-level dialog was locked `Fixed`/`Fixed` at 607×430, unable to resize at all regardless of screen size; relaxed to `Preferred`/`Preferred`. Checked each dialog's child widgets for minimum-width constraints that would force overflow before changing anything — none found beyond a couple of small 110×110 Fixed preview thumbnails and unconstrained Fixed `QLineEdit`s, both harmless.)
+## New creative tools
 
-20. Create new icon for Krimble and implement in different sizes. (DONE.🙂)
+<table>
+<tr>
+<td width="38%" align="center" valign="middle">
 
-21. Trim list of available save formats. (DONE.🙂)
+<img src="https://krimble.org/images/github/development-holograms.jpg" alt="Kimmy exploring new Krimble tools" width="360">
 
-22. Aligned every hardcoded keyboard shortcut default to industry standard where a non-colliding key exists. Corrected ~200 shortcuts baked into `.action` XML files (which override the `photoshop_compatible.shortcuts` scheme when that scheme doesn't explicitly list them), synced the scheme file itself, and set the default scheme in `kis_action_registry.cpp` instead of Krita's own `Default`. (DONE.🙂)
+</td>
+<td width="62%" valign="top">
 
-23. Reassigned tool-selection shortcuts where possible: Move (V), Marquee (M/Shift+M), Lasso (L/Shift+L), Magic Wand/Similar (W/Shift+W), Crop (C), Eyedropper (I), Brush (B), Gradient (G), Pen (P), Type (T), Zoom (Z), Hand/Pan (H). Where a Krita-only global shortcut already held the letter needed (brush opacity, brush color lighter, mirror canvas, MyPaint shade selector, instant preview mode, wrap-around mode, common colors), relocated those seven Krita-only actions to modifier-heavy combos instead of settling for an approximate tool key, so the letter is free. Note: the other tool cycles multiple tools under one key via repeated presses (e.g. Shift+M twice); Krimble's toolbox binds one key per tool with no cycling, so this is an exact-key match, not full cycling behavior. (DONE.🙂)
+Krimble is expanding beyond interface adaptation into new graphics-editing capabilities.
 
-24. Replaced KDE's "docker" with "panel" everywhere it appeared as user-facing text — menu labels, tooltips, dialog strings, translatable UI strings (18 files). Left internal class/widget/object names and the `plugins/dockers/` directory structure untouched since renaming those has no user-visible benefit and risks breaking signal/slot wiring. (DONE.🙂)
+Recent and active work includes:
 
-25. Version renumbered from Krita's inherited `5.4.0-prealpha` to Krimble's own `1.0.0-alpha1` in `CMakeLists.txt` (both the Qt5 and Qt6 branches, major/minor versions reset to 1/0). `KRITA_ALPHA` re-enabled since the build is now honestly alpha — this restores the "DEV BUILD" watermark on the welcome screen (see Bug Fixes item 4). (DONE.🙂)
+- **Healing Brush**
+- **Content-Aware Fill**
+- **Vibrance controls**
+- **Upscaling**
+- **advanced Color Matching**
+- improved adjustment workflows
+- replayable Actions with captured parameters
+- additional restoration and editing tools
 
-26. Full pass replacing user-facing "Krita" references with "Krimble" — menus, dialogs, tooltips, About dialog, Android donation/IAP strings, ~35 files. Found and fixed the biggest miss: the actual Android app label in `AndroidManifest.xml` (home screen icon, app drawer, app switcher) was still "Krita" despite everything else being rebranded; also fixed the "Krita Next" build-flavor label to "Krimble Next". Deliberately preserved: historical `.kra` file-format version-compatibility notes (e.g. "Creamy (Krita 4.2+)") since those name real upstream milestones, not branding; the SVG/KRA XML namespace URI (`http://krita.org/namespaces/svg/krita`) and Qt's `organizationDomain("krita.org")` since those are internal identifiers, not user-facing text, and changing them risks breaking file-format compatibility; code comments citing real upstream KDE commit URLs for bug-fix attribution; and the welcome page's paragraph crediting real Krita's actual contributors/sponsors/development fund (skipped on request — text there still says "Krita"). (DONE.🙂)
+Some of these are already implemented; others are still being developed and refined.
 
-27. All real krita.org/docs.krita.org/krita-artists.org links replaced: donation links now point to buymeacoffee.com/GeorgeEdwardPurdy, the Source Code link on the welcome page now points to the real Krimble GitHub repo instead of Krita's, and everything else (manual, community, scripting school, bug-report guide, RSS news feeds) points to krimble.org as a placeholder pending those actually being built. (DONE.🙂)
+</td>
+</tr>
+</table>
 
-28. Panels no longer snap back into a dock zone once dragged — `setAllowedAreas(Qt::NoDockWidgetArea)` added to every panel's registration. Only affects future user drags; the initial docked layout on first launch is unchanged. (DONE.🙂)
+---
 
-29. Crop tool defaults to subtractive-only (`allowGrow` off by default). Cropping should only ever cut area away, never reveal new canvas area beyond the original image bounds — the toggle already existed with a working checkbox, it just shipped with the opposite default. (DONE.🙂)
+## A gift for you
 
-30. Default color selector shape changed from a wheel-and-triangle layout to a square saturation/value area with a separate hue strip. Better suited to touch (bigger, simpler hit targets) than the old shape; this was already a supported, selectable preset, just not the shipped default. (DONE.🙂)
+<table>
+<tr>
+<td width="62%" valign="top">
 
-31. Added Content-Aware Fill as a new feature. Reuses the same PatchMatch inpainting algorithm already powering the Healing Brush tool, wired to a real selection instead of requiring a brush-painted mask first — select an area, run the filter, done. Registered under Edit > Fill. (DONE.🙂)
+Krimble is **free and open-source software**.
 
-32. Rebuilt the Match Color feature. Previously required loading a reference image from a file on disk via a file-picker, with no adjustable strength and only a fixed 1:1 statistical match. Now picks a source from any currently open document (with a layer sub-picker, including a Merged option), and has working Luminance, Color Intensity, Fade, and Neutralize controls that actually affect the result. Moved from the Filter menu to Image > Adjustments. (DONE.🙂)
+That is more than a price. It means the program is shared with its source code under a free-software license so people can study it, modify it, improve it, build it, and share compatible versions.
 
-33. Transform tool now always starts in Free Transform mode, regardless of how it's invoked, and mode can only be changed afterward by a deliberate click in the tool's own visible options-panel controls. Closed a real, if previously unused, code path (`KisToolTransformFactory::activateSubtool`) that could have silently started the tool in a different mode or switched an already-active tool's mode via an external action/shortcut rather than the options panel. (DONE.🙂)
+Krimble is intended to remain something creators can actually possess and work with — not merely temporary access to a service.
 
-34. Actions panel now captures genuinely replayable parameters instead of just re-triggering a bare menu item. Filters/adjustments, selection-modify operations (Grow/Shrink/Border/Feather/Smooth, Invert Selection), and image operations (Image Size, Canvas Size, Rotate, Shear) all record their actual settings on the way in and reapply those exact settings on replay — previously, replaying a step that opened a dialog just reopened it empty, since nothing about what was typed into it was ever captured. Layer operations and Transform steps are still open — both need a design decision first for how to reference "which layer" a step should target when replayed against a different document, since a raw layer pointer won't survive that.
+**Free software is a gift that can keep growing.**
 
-35. Prevent new dialogs from positioning above the toolbar. Hooked `KoDialog::showEvent()`, a single existing choke point shared by all 47 classes in this codebase that derive from `KoDialog`, so this covers the common case without patching each dialog individually — after the existing default positioning runs, if a dialog's top edge (its only grabbable/draggable area) would end up above the toolbar, it's nudged down once at spawn time. Only ever moves a dialog downward, and only at the moment it's shown; doesn't constrain it afterward. Preventive counterpart to item 3 above — most real instances of a dialog getting stuck are a spawn-position problem, not something that happens through ordinary dragging. (DONE.🙂)
+</td>
+<td width="38%" align="center" valign="middle">
 
-36. Build targets: a. arm64-v8a Play Store, b. arm64-v8a F-Droid, c. armeabi-v7a Play Store, d. armeabi-v7a F-Droid, e. Linux x86-64, f. Windows, g. iOS, h. MacOS
+<img src="https://krimble.org/images/github/gift-for-you.png" alt="Kimmy offering a gift — A gift for you!" width="330">
 
-### Krimble Bug Fixes
+</td>
+</tr>
+</table>
 
-Bug Fixes:
+---
 
-1. Limit move default to selected layer or floating selection until deliberately changed by user. (DONE.🙂 Observed actual reproduction (select Move tool, drag a selection, drag again and the whole image moves) and it traced to a real bug: `kritadefault.profile` mapped a one-finger long-press to `TertiaryAlternateModeShortcut` → `KisTool::AlternateFourth`, and `KisToolMove::beginAlternateAction()` sent every unhandled alternate action — not just that one — into an unconditional whole-image `MoveGroup` stroke. A second tap lingering even slightly on a touchscreen could register as a hold and silently trigger it. Fixed both the touch binding (removed) and the code (catch-all now a no-op, commented out per standing preference rather than deleted). Krita has no distinct "floating selection" object — paste creates a layer directly, and Move already respects whatever selection mask is active on the target layer, so that half of the original requirement needed no separate handling.)
+## We love A.I.
 
-2. Item 1 (default tool) had never actually been applied to code — the hardcoded call in `libs/ui/KisView.cpp` still forced `KritaShape/KisToolBrush` on every new view. Fixed to `PanTool` (hand tool) to match item 1. (DONE.🙂)
+<table>
+<tr>
+<td width="38%" align="center" valign="middle">
 
-3. Item 20 (new icon) only replaced `ic_launcher`/`ic_launcher_round` at every density. The app was still falling back to the separate `ic_launcher_next`/`ic_launcher_next_round` mipmaps AND the adaptive-icon foreground/background vector drawables (`ic_launcher_next_foreground.xml`, `ic_launcher_next_background.xml`), which still had the old placeholder Krita mark baked in as vector paths. All four Next-variant assets (mipmap webp x5 densities, plus the two adaptive vector drawables) now mirror the already-fixed regular assets. (DONE.🙂)
+<img src="https://krimble.org/images/github/kimmy-robot-ai.jpg" alt="Kimmy and the Krimble robot — We love A.I." width="340">
 
-4. `KRITA_ALPHA` flag was left set in `CMakeLists.txt`, which drove the "DEV BUILD" welcome-screen label. Commented out — this was the actual cause, confirmed on the build server (Qt5, `BUILD_WITH_QT6` was never enabled, defaults OFF). Originally suspected a Qt6-specific carve-out in `KritaVersionWrapper::isDevelopersBuild()` was involved; it wasn't, since the build has been Qt5 all along, but the carve-out was removed anyway so the check no longer depends on Qt major version. Decision: stick with Qt5 (Qt6 isn't production-ready upstream either). (DONE.🙂 Superseded in part by item 25 — `KRITA_ALPHA` was deliberately re-enabled once the build was actually versioned as an alpha, so the DEV BUILD label is back by design, not a regression.)
+</td>
+<td width="62%" valign="top">
 
-5. Splash screen still showed "Artwork by: Tyson Tan" — hardcoded in `libs/ui/kis_splash_screen.cpp` regardless of which splash image resource was actually loaded, so replacing the splash graphic alone never removed it. Cleared the credit string since Krimble's splash is an original asset. (DONE.🙂)
+Krimble does **not** have a blanket moratorium on artificial intelligence.
 
-6. Removed a leftover from an earlier partial edit that invented a nonexistent legal entity. Replaced with "The Krimble Project is committed to preserving Krimble as free software." (DONE.🙂)
+AI is treated as another class of creative technology: useful when it can make a real workflow better, inappropriate when it cannot, and always subject to experimentation, revision, and improvement.
 
-7. Removed references to competing industry standard app from readme which were inserted by A.I. tool. (DONE.🙂)
+The goal is not to turn Krimble into an “AI app.” The goal is to build a strong graphics editor and use new technology where it genuinely helps.
 
+**Move fast. Test things. Fix what breaks. Keep improving.**
 
-### Krita Project Website
+</td>
+</tr>
+</table>
 
-https://www.krita.org
+---
 
-### License
+## Development roadmap
 
-Krita as a whole is licensed under the GNU Public License, Version 3. Individual files may have a different, but compatible license.
+Krimble has already completed a large mobile-focused restructuring pass. The detailed engineering log is preserved below, but collapsed so the README remains readable.
 
-### AI
+### Current open work
 
-Krita development has a moratorium on use of AI.
+- Finish the text-selection **magnifier/loupe** for precise cursor placement.
+- Extend two-finger movement selectively to additional floating windows where useful.
+- Decide how replayable **Actions** should target layers across different documents.
+- Complete and test planned **Upscaling**, **Vibrance**, and additional restoration/editing tools.
+- Build and validate distribution targets.
 
-I don't. Is it likely to cause problems? Yes.
+<details>
+<summary><strong>Completed and implemented work — 35 major roadmap items</strong></summary>
 
-Move fast and break things.
+1. **Default tool changed to Pan/Hand.** Also fixed a separate path that forced Brush whenever a pixel layer was selected.
+2. **Smaller splash image** for mobile screens.
+3. **Selective two-finger movement** implemented for `KisDockerHud`, with touch-event handling designed not to interfere with ordinary single-finger controls.
+4. **Tools menu removed** to make Settings easier to reach.
+5. **Toolbox default order rebuilt** around a unified familiar graphics-tool sequence; stale factory shortcuts corrected.
+6. **Automatic recovery dialog on startup disabled** for the mobile workflow.
+7. **Preferences moved under Edit** and renamed appropriately.
+8. **Menus reconfigured**, including Select/Layer terminology, Filter categories, and moving color-adjustment tools into Image > Adjustments.
+9. **Rotation removed from pinch-zoom defaults.**
+10. **Transform made safer for touch**, with shear-by-drag gated behind an explicit option; an uninitialized transform variable was also fixed.
+11. **Industry-standard terminology pass**, including History, Navigator, Swatches (Palette), Actions, and Healing Brush.
+12. **Snapping defaults to OFF.**
+13. **200% zoom command added and tested.**
+14. **Custom default toolbar created.**
+15. **Brightness/Contrast dialog added and tested.**
+16. **Touch resizing improved:** crop handles enlarged to mobile-scale targets and dock/panel resize separators widened.
+17. **Text/Type workflow substantially rebuilt:** better menu, larger grab sensitivity, triple-tap paragraph selection, mobile selection handles, and floating Cut/Copy/Paste/Select All controls.
+18. **Krimble splash branding created.**
+19. **Oversized dialogs audited and reduced** for phone screens; one genuinely fixed-size blocker relaxed.
+20. **Krimble app icon created and implemented** across required variants.
+21. **Save-format list trimmed.**
+22. **~200 hardcoded shortcuts aligned** where possible and the preferred shortcut scheme made default.
+23. **Tool-selection keys reassigned** to familiar keys where possible: V, M, L, W, C, I, B, G, P, T, Z, H and related variants.
+24. **User-facing “docker” terminology replaced with “panel.”**
+25. **Version reset to Krimble `1.0.0-alpha1`.**
+26. **Full user-facing Krita → Krimble branding pass**, while deliberately preserving internal compatibility identifiers and historical references where changing them would be harmful.
+27. **Project links redirected** to Krimble resources, source, support, and placeholders for developing documentation/community pages.
+28. **Panels no longer snap back into docking zones** after being dragged.
+29. **Crop defaults to subtractive-only**, preventing accidental canvas growth.
+30. **Default color selector changed** to square saturation/value plus hue strip for touch.
+31. **Content-Aware Fill added**, using the existing PatchMatch inpainting engine with a selection-driven workflow.
+32. **Match Color rebuilt** to use open documents/layers and provide Luminance, Color Intensity, Fade, and Neutralize controls.
+33. **Transform always starts in Free Transform mode** unless deliberately changed in visible tool options.
+34. **Actions now capture real parameters** for filters, selection modifications, and image operations rather than merely reopening empty dialogs.
+35. **Dialogs are prevented from spawning above the toolbar** through a shared `KoDialog::showEvent()` correction.
 
-I'll clean up the mess as I go.
+</details>
+
+<details>
+<summary><strong>Bug fixes and corrections</strong></summary>
+
+1. Fixed Move-tool behavior that could accidentally trigger whole-image movement from a touch long-press path.
+2. Fixed the remaining hardcoded Brush activation in `KisView.cpp` so the Pan/Hand default is actually honored.
+3. Replaced remaining “Next” launcher/adaptive icon assets that still contained the old Krita mark.
+4. Corrected developer-build/version-flag handling; the current alpha status is deliberate under Krimble versioning.
+5. Removed the hardcoded “Artwork by: Tyson Tan” splash credit from the Krimble-specific splash.
+6. Removed a leftover invented legal-entity reference and replaced it with: **“The Krimble Project is committed to preserving Krimble as free software.”**
+7. Removed references to a competing graphics application that had been inserted into the README by an AI tool.
+
+</details>
+
+---
+
+## Build targets
+
+Planned targets:
+
+| Platform | Target |
+|---|---|
+| Android | arm64-v8a — Play Store |
+| Android | arm64-v8a — F-Droid |
+| Android | armeabi-v7a — Play Store |
+| Android | armeabi-v7a — F-Droid |
+| Linux | x86-64 |
+| Windows | Desktop |
+| iOS | Planned |
+| macOS | Planned |
+
+Android is the primary focus. Other platforms are intended to share the same Krimble workflow where practical.
+
+---
+
+## Support Krimble
+
+<table>
+<tr>
+<td width="55%" valign="top">
+
+Krimble is free and open source, but development still takes time and resources.
+
+If Krimble is useful to you, voluntary support helps fund continued development, testing, infrastructure, artwork, and future distribution.
+
+### [☕ Support Krimble on Buy Me a Coffee](https://www.buymeacoffee.com/GeorgeEdwardPurdy)
+
+You can also help by testing, reporting issues, improving documentation, contributing code, or simply sharing the project.
+
+</td>
+<td width="45%" align="center" valign="middle">
+
+<a href="https://www.buymeacoffee.com/GeorgeEdwardPurdy">
+<img src="https://krimble.org/images/github/support-coffee.jpg" alt="Support Krimble" width="390">
+</a>
+
+</td>
+</tr>
+</table>
+
+---
+
+## Upstream Krita resources
+
+Krimble is forked from Krita and continues to benefit from upstream Krita development.
+
+- [Krita User Manual](https://docs.krita.org/en/user_manual.html)
+- [Krita build instructions](https://docs.krita.org/en/untranslatable_pages/building_krita.html)
+- [Krita developer guides and notes](https://docs.krita.org/en/untranslatable_pages.html)
+- [Krita APIdox](https://api.kde.org/legacy/krita/html/index.html)
+- [Krita Project Website](https://www.krita.org)
+- [Upstream source](https://invent.kde.org/graphics/krita)
+
+---
+
+## License
+
+Krimble, like Krita, is free software. The project as a whole is licensed under the **GNU General Public License, Version 3**. Individual files may use different compatible licenses.
+
+See the repository's [LICENSES](LICENSES) directory for details.
+
+---
+
+<div align="center">
+
+<img src="https://krimble.org/images/github/thank-you.jpg" alt="Thank you from Krimble" width="430">
+
+### Create. Edit. Enhance. Everywhere.
+
+**Krimble — Your Creative Companion**
+
+[krimble.org](https://krimble.org)
+
+</div>
