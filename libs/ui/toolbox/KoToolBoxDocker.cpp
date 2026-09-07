@@ -19,6 +19,7 @@
 #include <QActionGroup>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QToolButton>
 
 #include <klocalizedstring.h>
 #include <kconfiggroup.h>
@@ -30,6 +31,7 @@
 #include <kis_display_color_converter.h>
 #include <kis_canvas2.h>
 #include <kis_image.h>
+#include <kis_icon_utils.h>
 
 KoToolBoxDocker::KoToolBoxDocker(KoToolBox *toolBox)
     : QDockWidget(i18n("Toolbox"))
@@ -131,6 +133,23 @@ void KoToolBoxDocker::setViewManager(KisViewManager *viewManager)
 
         connect(viewManager, &KisViewManager::viewChanged, this, &KoToolBoxDocker::slotUpdateDisplayRenderer);
         slotUpdateDisplayRenderer();
+
+        // Krimble: Screen Mode toggle at the bottom of the toolbox, matching
+        // Photoshop's toolbox layout. Reuses the existing view_show_canvas_only
+        // action (checkable, Tab shortcut) -- no new action needed, just a
+        // toolbox entry point for it. Icon overridden locally to view-fullscreen
+        // since the action's own icon (document-new) is a placeholder; the
+        // action definition itself in kritamenu.action is left untouched.
+        QAction *canvasOnlyAction = viewManager->actionCollection()->action("view_show_canvas_only");
+        if (canvasOnlyAction) {
+            QToolButton *screenModeButton = new QToolButton(this);
+            screenModeButton->setDefaultAction(canvasOnlyAction);
+            screenModeButton->setIcon(KisIconUtils::loadIcon("view-fullscreen"));
+            screenModeButton->setFixedSize(28, 28);
+            screenModeButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+            screenModeButton->setAutoRaise(true);
+            m_containerLayout->addWidget(screenModeButton, 0, Qt::AlignHCenter);
+        }
     }
 }
 

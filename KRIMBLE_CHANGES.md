@@ -738,3 +738,20 @@ added a date check to the Android branch of `getImageSource()`: active
 Dec 1 through Dec 26 inclusive, switching to `:/splash/holiday.png`.
 Desktop's holiday splash remains disabled (upstream's `#if 0` block,
 untouched) -- this only covers Android, Krimble's actual target.
+
+## 2026-09-06 — Added Screen Mode toggle to bottom of toolbox
+
+**File:** `libs/ui/toolbox/KoToolBoxDocker.cpp`
+
+Third of Photoshop's three bottom-of-toolbox items (FG/BG swatches,
+Quick Mask, Screen Mode) -- this one didn't need a new feature, just a
+toolbox entry point. Reused the existing `view_show_canvas_only` action
+(already checkable, already bound to Tab) via a QToolButton with
+setDefaultAction(), added below the color swap widget in the same
+container layout.
+
+Icon overridden locally to `view-fullscreen` (the action's own icon,
+`document-new`, is a placeholder) -- kritamenu.action itself untouched.
+
+Quick Mask remains the one genuinely unbuilt item of the three (logged
+separately in KRIMBLE_ROADMAP.md).
