@@ -755,3 +755,29 @@ Icon overridden locally to `view-fullscreen` (the action's own icon,
 
 Quick Mask remains the one genuinely unbuilt item of the three (logged
 separately in KRIMBLE_ROADMAP.md).
+
+## 2026-09-07 — Added dedicated Soften tool to the toolbox
+
+**Files:**
+- `krita/pics/tools/SVG/16/light_krita_tool_soften.svg` (new)
+- `krita/pics/tools/SVG/16/dark_krita_tool_soften.svg` (new)
+- `krita/pics/tools/SVG/16/tools-svg-16-icons.qrc`
+- `plugins/tools/basictools/kis_tool_soften.h` (new)
+- `plugins/tools/basictools/kis_tool_soften.cc` (new)
+- `plugins/tools/basictools/default_tools.cc`
+- `plugins/tools/basictools/CMakeLists.txt`
+
+Second of the two roadmap tools (KRIMBLE_ROADMAP.md), same pattern as
+Smudge: Krita's filterop paintop engine (plugins/paintops/filterop/)
+already lets you paint with any filter applied per-stroke, and already
+ships a Gaussian-Blur-configured preset (plugins/paintops/defaultpresets/filter.kpp,
+internal resource name "DFP") -- but with no dedicated toolbox entry,
+matching Photoshop's Blur tool.
+
+Added KisToolSoften (subclasses KisToolBrush) and KisToolSoftenFactory,
+registered in default_tools.cc directly after Smudge. On activate(),
+looks up the "DFP" preset via KisResourceModel(ResourceType::PaintOpPresets)
+and applies it through KisCanvasResourceProvider -- identical mechanism
+to KisToolSmudge, just a different preset name. Own icon (water-droplet
+shape, Photoshop's Blur tool convention), toolbox priority 22 (directly
+after Smudge at 21), shortcut U (previously unused).
