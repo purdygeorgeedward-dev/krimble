@@ -17,8 +17,11 @@
 class KoCanvasBase;
 class KoToolBox;
 class KoToolBoxScrollArea;
+class KoDualColorButton;
+class KisViewManager;
 
 class QMenu;
+class QVBoxLayout;
 
 class KoToolBoxDocker : public QDockWidget, public KisMainwindowObserver
 {
@@ -41,6 +44,9 @@ protected Q_SLOTS:
     void updateToolBoxOrientation(Qt::DockWidgetArea);
     void updateFloating(bool);
 
+private Q_SLOTS:
+    void slotUpdateDisplayRenderer();
+
 private:
     enum Orientation {
         Horizontal = Qt::Horizontal,
@@ -57,6 +63,9 @@ private:
 private:
     KoToolBox *m_toolBox;
     KoToolBoxScrollArea *m_scrollArea;
+    QVBoxLayout *m_containerLayout {nullptr}; // Krimble: holds scroll area + dual color button
+    KoDualColorButton *m_dualColorButton {nullptr}; // Krimble: PS-style FG/BG swap widget, bottom of toolbox
+    KisViewManager *m_viewManager {nullptr}; // Krimble: stored for slotUpdateDisplayRenderer
     QMenu *m_contextMenu {nullptr};
     Qt::DockWidgetArea m_dockArea {Qt::NoDockWidgetArea};
     Qt::LayoutDirection m_layoutDir {Qt::LayoutDirectionAuto};

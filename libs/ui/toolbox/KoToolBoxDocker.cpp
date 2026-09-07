@@ -17,17 +17,36 @@
 #include <QAction>
 #include <QMenu>
 #include <QActionGroup>
+#include <QVBoxLayout>
+#include <QWidget>
 
 #include <klocalizedstring.h>
 #include <kconfiggroup.h>
 #include <ksharedconfig.h>
+
+#include <KoDualColorButton.h>
+#include <KisViewManager.h>
+#include <kis_canvas_resource_provider.h>
+#include <kis_display_color_converter.h>
+#include <kis_canvas2.h>
+#include <kis_image.h>
 
 KoToolBoxDocker::KoToolBoxDocker(KoToolBox *toolBox)
     : QDockWidget(i18n("Toolbox"))
     , m_toolBox(toolBox)
     , m_scrollArea(new KoToolBoxScrollArea(toolBox, this))
 {
-    setWidget(m_scrollArea);
+    // Krimble: wrap the tool-button scroll area in a container so a
+    // Photoshop-style foreground/background color swap widget can be added
+    // below it, matching Photoshop's toolbox layout. Kept alongside its
+    // existing home in the classic toolbar (kis_control_frame.cpp) -- both
+    // locations retained per project decision, not a relocation.
+    QWidget *toolBoxContainer = new QWidget(this);
+    m_containerLayout = new QVBoxLayout(toolBoxContainer);
+    m_containerLayout->setContentsMargins(0, 0, 0, 0);
+    m_containerLayout->setSpacing(4);
+    m_containerLayout->addWidget(m_scrollArea, 1);
+    setWidget(toolBoxContainer);
 
     QLabel *w = new QLabel(" ", this);
     w->setFrameShape(QFrame::StyledPanel);
@@ -92,6 +111,40 @@ void KoToolBoxDocker::unsetCanvas()
 void KoToolBoxDocker::setViewManager(KisViewManager *viewManager)
 {
     m_toolBox->setViewManager(viewManager);
+    m_viewManager = viewManager;
+
+    // Krimble: construct the color swap widget once a real KisViewManager
+    // (and its canvasResourceProvider) is available -- not possible any
+    // earlier, since the docker only gets a real one here.
+    if (!m_dualColorButton && viewManager) {
+        const KoColorDisplayRendererInterface *displayRenderer =
+            KisDisplayColorConverter::dumbConverterInstance()->displayRendererInterface();
+        m_dualColorButton = new KoDualColorButton(viewManager->canvasResourceProvider(), displayRenderer,
+                                                    viewManager->mainWindowAsQWidget(), viewManager->mainWindowAsQWidget());
+        m_dualColorButton->setFixedSize(28, 28);
+        m_containerLayout->addWidget(m_dualColorButton, 0, Qt::AlignHCenter);
+
+        connect(m_dualColorButton, SIGNAL(foregroundColorChanged(KoColor)), viewManager->canvasResourceProvider(), SLOT(slotSetFGColor(KoColor)));
+        connect(m_dualColorButton, SIGNAL(backgroundColorChanged(KoColor)), viewManager->canvasResourceProvider(), SLOT(slotSetBGColor(KoColor)));
+        connect(viewManager->canvasResourceProvider(), SIGNAL(sigBGColorChanged(KoColor)), m_dualColorButton, SLOT(setBackgroundColor(KoColor)));
+        connect(viewManager->canvasResourceProvider(), SIGNAL(sigFGColorChanged(KoColor)), m_dualColorButton, SLOT(setForegroundColor(KoColor)));
+
+        connect(viewManager, &KisViewManager::viewChanged, this, &KoToolBoxDocker::slotUpdateDisplayRenderer);
+        slotUpdateDisplayRenderer();
+    }
+}
+
+void KoToolBoxDocker::slotUpdateDisplayRenderer()
+{
+    if (!m_dualColorButton || !m_viewManager) return;
+    if (m_viewManager->canvasBase()) {
+        m_dualColorButton->setDisplayRenderer(m_viewManager->canvasBase()->displayColorConverter()->displayRendererInterface());
+        m_dualColorButton->updateColorSpace();
+        m_viewManager->canvasBase()->image()->disconnect(m_dualColorButton);
+        connect(m_viewManager->canvasBase()->image(), SIGNAL(sigColorSpaceChanged(const KoColorSpace*)), m_dualColorButton, SLOT(updateColorSpace()), Qt::UniqueConnection);
+    } else if (m_viewManager->viewCount() == 0) {
+        m_dualColorButton->setDisplayRenderer();
+    }
 }
 
 void KoToolBoxDocker::resizeEvent(QResizeEvent *event)

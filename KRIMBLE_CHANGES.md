@@ -695,3 +695,26 @@ it through the canvas's KisCanvasResourceProvider, so the tool
 smudges immediately with no manual preset selection. Own icon (16px
 SVG, dark/light), own toolbox slot (priority 21, directly after Brush
 at 20), own shortcut (R, previously unused).
+
+## 2026-09-06 — Added FG/BG color swap widget to bottom of toolbox
+
+**Files:** `libs/ui/toolbox/KoToolBoxDocker_p.h`,
+`libs/ui/toolbox/KoToolBoxDocker.cpp`
+
+Photoshop's toolbox has the foreground/background color swatches (with
+swap and reset-to-black/white controls) built into the bottom of the
+tool column itself. Krimble already has this widget (KoDualColorButton,
+swap/reset built in) but only in the classic toolbar
+(kis_control_frame.cpp).
+
+Wrapped the toolbox's existing tool-button scroll area in a container
+widget (QVBoxLayout) so a second KoDualColorButton instance could be
+appended below it, matching Photoshop's layout. Construction/wiring
+deferred to setViewManager() since that's the first point a real
+KisViewManager (and canvasResourceProvider) is available -- mirrors
+the classic toolbar's connection pattern exactly (FG/BG signals both
+directions, display renderer updates via a new slotUpdateDisplayRenderer,
+color-space-change reconnection).
+
+Kept in both locations (classic toolbar + toolbox) per project
+decision -- this is an addition, not a relocation.
