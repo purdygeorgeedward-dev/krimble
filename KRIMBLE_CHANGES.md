@@ -669,3 +669,29 @@ SvgTextToolFactory with KoToolRegistry. The plugin still builds and
 loads; the tool simply never enters the registry, so it can't appear
 in the toolbox or be activated by anything. Fully reversible --
 uncomment that line once the actual root cause is found and fixed.
+
+## 2026-09-06 — Added dedicated Smudge tool to the toolbox
+
+**Files:**
+- `krita/pics/tools/SVG/16/light_krita_tool_smudge.svg` (new)
+- `krita/pics/tools/SVG/16/dark_krita_tool_smudge.svg` (new)
+- `krita/pics/tools/SVG/16/tools-svg-16-icons.qrc`
+- `plugins/tools/basictools/kis_tool_smudge.h` (new)
+- `plugins/tools/basictools/kis_tool_smudge.cc` (new)
+- `plugins/tools/basictools/default_tools.cc`
+- `plugins/tools/basictools/CMakeLists.txt`
+
+Krita's colorsmudge paintop engine (plugins/paintops/colorsmudge/)
+already existed and is more capable than Photoshop's Smudge tool, but
+was only reachable by manually finding a smudge preset in the brush
+picker while using the generic Freehand tool -- no dedicated toolbox
+entry.
+
+Added KisToolSmudge (subclasses KisToolBrush, reusing its option
+widget) and KisToolSmudgeFactory, registered in default_tools.cc
+alongside Brush. On activate(), it looks up the bundled "smudge"
+preset via KisResourceModel(ResourceType::PaintOpPresets) and applies
+it through the canvas's KisCanvasResourceProvider, so the tool
+smudges immediately with no manual preset selection. Own icon (16px
+SVG, dark/light), own toolbox slot (priority 21, directly after Brush
+at 20), own shortcut (R, previously unused).

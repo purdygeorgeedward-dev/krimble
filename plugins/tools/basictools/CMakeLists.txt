@@ -3,6 +3,7 @@ add_subdirectory(tests)
 set(kritadefaulttools_static_SRCS
     kis_tool_colorsampler.cc
     kis_tool_brush.cc
+    kis_tool_smudge.cc
     kis_tool_line.cc
     kis_tool_line_helper.cpp
     kis_tool_fill.cc
