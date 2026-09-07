@@ -16,6 +16,7 @@
 #include <QDialogButtonBox>
 #include <QHBoxLayout>
 #include <QHideEvent>
+#include <QMouseEvent>
 #include <QPointer>
 #include <QStyle>
 #include <QTimer>
@@ -168,6 +169,11 @@ void KoDialogPrivate::init(KoDialog *q)
     q->setDefaultButton(KoDialog::Ok);
 
     q->setPlainCaption(qApp->applicationDisplayName()); // set appropriate initial window title for case it gets not set later
+
+    // Krimble: needed for the resize-cursor hover feedback in
+    // mouseMoveEvent() to fire without a button held; the actual
+    // touch-drag resize works regardless of this setting.
+    q->setMouseTracking(true);
 }
 
 void KoDialogPrivate::helpLinkClicked()
@@ -482,6 +488,126 @@ void KoDialog::showEvent(QShowEvent *e)
             move(x(), minY);
         }
     });
+}
+
+// Krimble: touch-friendly custom edge/corner resize -- see declaration
+// comment in KoDialog.h for why this exists (no reliable native resize
+// border on Android). Margin is intentionally generous, matching the
+// pattern used for the crop tool's handle hit-test padding.
+namespace {
+    const int kResizeMargin = 20;
+
+    enum ResizeEdgeFlag {
+        ResizeNone   = 0,
+        ResizeLeft   = 1 << 0,
+        ResizeRight  = 1 << 1,
+        ResizeTop    = 1 << 2,
+        ResizeBottom = 1 << 3
+    };
+
+    int edgeAt(const QRect &rect, const QPoint &pos, int margin)
+    {
+        int edge = ResizeNone;
+        if (pos.x() <= margin) edge |= ResizeLeft;
+        else if (pos.x() >= rect.width() - margin) edge |= ResizeRight;
+        if (pos.y() <= margin) edge |= ResizeTop;
+        else if (pos.y() >= rect.height() - margin) edge |= ResizeBottom;
+        return edge;
+    }
+}
+
+void KoDialog::mousePressEvent(QMouseEvent *e)
+{
+    Q_D(KoDialog);
+    if (e->button() == Qt::LeftButton) {
+        const int edge = edgeAt(rect(), e->pos(), kResizeMargin);
+        if (edge != ResizeNone) {
+            d->mResizing = true;
+            d->mResizeEdge = edge;
+            d->mResizeStartPos = e->globalPos();
+            d->mResizeStartGeometry = geometry();
+            e->accept();
+            return;
+        }
+    }
+    QDialog::mousePressEvent(e);
+}
+
+void KoDialog::mouseMoveEvent(QMouseEvent *e)
+{
+    Q_D(KoDialog);
+    if (d->mResizing) {
+        const QPoint delta = e->globalPos() - d->mResizeStartPos;
+        QRect g = d->mResizeStartGeometry;
+
+        if (d->mResizeEdge & ResizeLeft) g.setLeft(g.left() + delta.x());
+        if (d->mResizeEdge & ResizeRight) g.setRight(g.right() + delta.x());
+        if (d->mResizeEdge & ResizeTop) g.setTop(g.top() + delta.y());
+        if (d->mResizeEdge & ResizeBottom) g.setBottom(g.bottom() + delta.y());
+
+        // Krimble: respect the dialog's own min/max size constraints instead
+        // of letting it collapse to nothing or grow past its intended limits.
+        if (g.width() < minimumWidth()) {
+            if (d->mResizeEdge & ResizeLeft) g.setLeft(g.right() - minimumWidth());
+            else g.setRight(g.left() + minimumWidth());
+        }
+        if (g.height() < minimumHeight()) {
+            if (d->mResizeEdge & ResizeTop) g.setTop(g.bottom() - minimumHeight());
+            else g.setBottom(g.top() + minimumHeight());
+        }
+        if (maximumWidth() < QWIDGETSIZE_MAX && g.width() > maximumWidth()) {
+            if (d->mResizeEdge & ResizeLeft) g.setLeft(g.right() - maximumWidth());
+            else g.setRight(g.left() + maximumWidth());
+        }
+        if (maximumHeight() < QWIDGETSIZE_MAX && g.height() > maximumHeight()) {
+            if (d->mResizeEdge & ResizeTop) g.setTop(g.bottom() - maximumHeight());
+            else g.setBottom(g.top() + maximumHeight());
+        }
+
+        setGeometry(g);
+        e->accept();
+        return;
+    }
+
+    // Krimble: cursor feedback when hovering an edge with a mouse (harmless,
+    // no-op on touch input since there's no hover concept there).
+    const int edge = edgeAt(rect(), e->pos(), kResizeMargin);
+    switch (edge) {
+    case ResizeLeft:
+    case ResizeRight:
+        setCursor(Qt::SizeHorCursor);
+        break;
+    case ResizeTop:
+    case ResizeBottom:
+        setCursor(Qt::SizeVerCursor);
+        break;
+    case ResizeLeft | ResizeTop:
+    case ResizeRight | ResizeBottom:
+        setCursor(Qt::SizeFDiagCursor);
+        break;
+    case ResizeRight | ResizeTop:
+    case ResizeLeft | ResizeBottom:
+        setCursor(Qt::SizeBDiagCursor);
+        break;
+    default:
+        unsetCursor();
+        break;
+    }
+
+    QDialog::mouseMoveEvent(e);
+}
+
+void KoDialog::mouseReleaseEvent(QMouseEvent *e)
+{
+    Q_D(KoDialog);
+    if (d->mResizing) {
+        d->mResizing = false;
+        d->mResizeEdge = ResizeNone;
+        unsetCursor();
+        e->accept();
+        return;
+    }
+    QDialog::mouseReleaseEvent(e);
 }
 
 int KoDialog::marginHint()

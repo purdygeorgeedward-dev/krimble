@@ -13,6 +13,8 @@
 #include <KisSignalMapper.h>
 #include <QSize>
 #include <QHash>
+#include <QRect>
+#include <QPoint>
 
 class QBoxLayout;
 class QPushButton;
@@ -64,6 +66,12 @@ protected:
 
     QDialogButtonBox *mButtonBox {nullptr};
     QHash<int, QPushButton *> mButtonList;
+
+    // Krimble: touch-friendly custom edge/corner resize state.
+    int mResizeEdge {0};
+    bool mResizing {false};
+    QPoint mResizeStartPos;
+    QRect mResizeStartGeometry;
 
 protected Q_SLOTS:
     void queuedLayoutUpdate();

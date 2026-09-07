@@ -781,3 +781,27 @@ and applies it through KisCanvasResourceProvider -- identical mechanism
 to KisToolSmudge, just a different preset name. Own icon (water-droplet
 shape, Photoshop's Blur tool convention), toolbox priority 22 (directly
 after Smudge at 21), shortcut U (previously unused).
+
+## 2026-09-07 — Added touch-friendly edge/corner resize to all KoDialog dialogs
+
+**Files:** `libs/widgets/KoDialog.h`, `libs/widgets/KoDialog_p.h`,
+`libs/widgets/KoDialog.cpp`
+
+Krita's dialogs had no custom resize handling at all -- no QSizeGrip,
+no margin constant anywhere -- relying entirely on whatever the
+platform provides natively for frameless windows, which isn't
+something reliably touch-friendly (or possibly not present at all) on
+Android, unlike desktop window managers.
+
+Added a generous (20px) invisible resize margin along every edge of
+every KoDialog-derived dialog, implemented via mousePressEvent/
+mouseMoveEvent/mouseReleaseEvent overrides on the shared KoDialog base
+class -- every dialog in the app gets this for free, no per-dialog
+changes needed. Supports all 8 drag directions (4 edges + 4 corners),
+respects the dialog's existing minimumSize()/maximumSize(), and adds
+desktop cursor-hover feedback (harmless no-op on touch input) via
+setMouseTracking(true).
+
+Same decoupled-margin-from-visible-size pattern used for the crop
+tool's handle hit-test padding and m_minimumCropSize earlier this
+session.
