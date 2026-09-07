@@ -12,6 +12,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QCheckBox>
+#include <QDate>
 #include <kis_debug.h>
 #include <QFile>
 #include <QScreen>
@@ -278,6 +279,12 @@ KisSplashScreen::Source KisSplashScreen::getImageSource()
     // screen size or something, we'll just use a HD JPEG instead. It's fine.
 #ifdef Q_OS_ANDROID
     QString resourcePath = QStringLiteral(":/splash/hd.jpg");
+    // Krimble: holiday splash, active Dec 1 through Dec 26 inclusive.
+    QDate currentDate = QDate::currentDate();
+    if (currentDate >= QDate(currentDate.year(), 12, 1) &&
+            currentDate <= QDate(currentDate.year(), 12, 26)) {
+        resourcePath = QStringLiteral(":/splash/holiday.png");
+    }
 #else
     QString resourcePath = QStringLiteral(":/splash/0.png");
     // TODO: Re-add the holiday splash...

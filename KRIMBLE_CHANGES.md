@@ -718,3 +718,23 @@ color-space-change reconnection).
 
 Kept in both locations (classic toolbar + toolbox) per project
 decision -- this is an addition, not a relocation.
+
+## 2026-09-06 — Wired up Android holiday splash screen (Dec 1-26)
+
+**Files:** `libs/ui/kis_splash_screen.cpp`, `krita/data/splash/splash-android.qrc`,
+`krita/data/splash/logo_splash_holidays.png`
+
+Krita's holiday splash feature was a real, maintained feature 2015-2018,
+then explicitly disabled upstream in 2021 ("Dummy out the holidays splash
+for now") and never re-added -- confirmed via upstream commit history.
+It was never implemented for Android at all, even when active on desktop
+-- `kis_splash_screen.cpp`'s Android branch went straight to `hd.jpg`
+unconditionally, no date check ever existed there.
+
+Replaced the placeholder `logo_splash_holidays.png` with new artwork,
+registered it in `splash-android.qrc` (was previously missing from the
+Android build entirely -- only in the desktop-only `splash.qrc`), and
+added a date check to the Android branch of `getImageSource()`: active
+Dec 1 through Dec 26 inclusive, switching to `:/splash/holiday.png`.
+Desktop's holiday splash remains disabled (upstream's `#if 0` block,
+untouched) -- this only covers Android, Krimble's actual target.
