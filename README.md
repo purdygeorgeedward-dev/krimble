@@ -2,7 +2,7 @@
 
 <img src="https://krimble.org/images/github/hero.jpg" alt="Krimble — Your Creative Companion" width="100%">
 
-# Krimble
+# <font color="#ff7600">K</font><font color="white">rimble</font>
 
 ### Your Creative Companion
 
