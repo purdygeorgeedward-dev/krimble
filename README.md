@@ -2,10 +2,6 @@
 
 <img src="https://krimble.org/images/github/hero.jpg" alt="Krimble — Your Creative Companion" width="100%">
 
-# <font color="#ff7600">K</font><font color="white">rimble</font>
-
-### Your Creative Companion
-
 **A mobile-first graphics editor built from Krita for Android phones.**
 
 [![Website](https://img.shields.io/badge/Website-krimble.org-ff7a00?style=for-the-badge)](https://krimble.org)
