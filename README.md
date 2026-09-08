@@ -27,7 +27,7 @@ Krimble remains built on the extraordinary foundation of [Krita](https://invent.
 <img src="https://krimble.org/images/github/kimmy-phone.png" alt="Kimmy using Krimble on a phone" width="100%">
 </div>
 
-### Mobile first means mobile first
+### What is mobile-first?
 
 Krimble is designed around **phones and touch**, not around reproducing a desktop workstation on a smaller display.
 
