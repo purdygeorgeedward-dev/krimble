@@ -110,10 +110,18 @@ wrong initial readings are noted so they aren't repeated.
 11. **Cartoon mascot in support screen.** User is addressing this one
     themselves — not part of Claude's task list.
 12. ~~Tool docker panels render as unmanageable narrow column shapes~~
-    — **Likely fixed**, commit `c50f03a`, pending your on-device
-    confirmation. See the 2026-09-04 changelog entry above. (Described
-    as "vertical stripes" initially, corrected to "unmanageable column
-    shapes/proportions".)
+    — **Two separate contributing bugs found and fixed**, commits
+    `c50f03a` and `af46ff2`. (Described as "vertical stripes"
+    initially, corrected to "unmanageable column shapes/proportions".)
+    `c50f03a` (2026-09-04) fixed a global docking-mechanism bug in
+    `KisMainWindow.cpp` — a self-contradicting `setAllowedAreas()` call
+    was breaking dock/snap layout for every panel. `af46ff2`
+    (2026-09-10) separately fixed 4 dockers (Advanced Color Selector,
+    History, Histogram, SVG Symbol Collection) that all declared
+    `defaultDockPosition() = DockRight`, causing them to pile into the
+    same narrow column on fresh installs. Both plausibly contributed to
+    the same visible symptom; pending your on-device confirmation that
+    panels now render correctly with both fixes applied.
 13. ~~File dialogs open at roughly half the size they should be by
     default~~ — **Fixed**, commit `4016d2b`. See the 2026-09-04
     changelog entry above.
