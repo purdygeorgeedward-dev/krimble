@@ -846,3 +846,22 @@ lighten continuously the longer you paint over an area within a single
 stroke, which requires BUILDUP mode (PaintOpAction=1).
 
 Both tools now set PaintOpAction=1 alongside their CompositeOp override.
+
+## 2026-09-10 — Fixed cramped/unusable docker panels on mobile (bug item 12)
+
+**Files:** `plugins/dockers/advancedcolorselector/colorselectorng.cpp`,
+`plugins/dockers/historydocker/History.cpp`,
+`plugins/dockers/histogram/histogramdocker.cpp`,
+`plugins/dockers/svgcollectiondocker/SvgSymbolCollectionDocker.h`
+
+Four secondary dockers (Advanced Color Selector, History, Histogram, SVG
+Symbol Collection) all declared `defaultDockPosition() = DockRight`,
+meaning on any fresh install or Reset Configuration they all fought to
+auto-dock into the same narrow right-side column simultaneously --
+producing the unusable vertical-stripe panels reported in bug item 12.
+
+Changed all four to `DockMinimized`: they still exist and can be opened
+manually, but no longer auto-expand into the right column on load.
+Complements the earlier Default workspace simplification (`a73387e`),
+which controls saved-layout state -- this fixes the class-level fallback
+used when no saved layout applies.
