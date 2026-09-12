@@ -117,7 +117,7 @@ Krimble is intended to remain something creators can actually possess and work w
 ## We love A.I.
 
 <div align="center">
-<img src="https://krimble.org/images/github/kimmy-robot-ai.jpg" alt="Kimmy and the Krimble robot — We love A.I." width="100%">
+<img src="https://krimble.org/assets/kimmy-robot-ai.jpg" alt="Kimmy and the Krimble robot — We love A.I." width="100%">
 </div>
 
 Krimble does **not** have a blanket moratorium on artificial intelligence.
