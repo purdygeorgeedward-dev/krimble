@@ -24,7 +24,7 @@ The project focuses on the realities of touch input and limited screen space: re
 Krimble remains built on the extraordinary foundation of [Krita](https://invent.kde.org/graphics/krita), while deliberately taking a different direction for mobile use.
 
 <div align="center">
-<img src="https://krimble.org/images/github/kimmy-phone.png" alt="Kimmy using Krimble on a phone" width="100%">
+<img src="https://krimble.org/images/github/kimmy-phone.jpg" alt="Kimmy using Krimble on a phone" width="100%">
 </div>
 
 ### What is mobile-first?
@@ -51,7 +51,7 @@ I found myself using Krita on my smartphone as a daily driver for graphics tasks
 **Same creativity. More freedom.**
 
 <div align="center">
-<img src="https://krimble.org/images/github/kimmy-cat-small.png" alt="Kimmy and her cat" width="360">
+<img src="https://krimble.org/images/github/kimmy-cat-small.jpg" alt="Kimmy and her cat" width="360">
 </div>
 
 ---
@@ -101,7 +101,7 @@ Some of these are already implemented; others are still being developed and refi
 ## A gift for you
 
 <div align="center">
-<img src="https://krimble.org/images/github/gift-for-you.png" alt="Kimmy offering a gift — A gift for you!" width="100%">
+<img src="https://krimble.org/images/github/gift-for-you.jpg" alt="Kimmy offering a gift — A gift for you!" width="100%">
 </div>
 
 Krimble is **free and open-source software**.
