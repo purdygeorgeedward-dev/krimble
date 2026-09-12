@@ -7,7 +7,7 @@
         <activity
             android:name="org.krita.android.MainActivity"
             tools:replace="android:label"
-            android:label="Krimble Debug" />
+            android:label="Krimble" />
     </application>
 
 </manifest>
