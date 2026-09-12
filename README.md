@@ -130,6 +130,12 @@ The goal is not to turn Krimble into an “AI app.” The goal is to build a str
 
 ---
 
+<div align="center">
+<a href="https://www.buymeacoffee.com/GeorgeEdwardPurdy">
+<img src="https://krimble.org/assets/dreams.jpg" alt="Whatever it takes to make your dreams come true." width="100%">
+</a>
+</div>
+
 ## Development roadmap
 
 Krimble has already completed a large mobile-focused restructuring pass. The detailed engineering log is preserved below, but collapsed so the README remains readable.
