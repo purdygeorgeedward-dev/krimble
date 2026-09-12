@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://krimble.org/images/github/hero.jpg" alt="Krimble — Your Creative Companion" width="100%">
+<img src="https://krimble.org/assets/hero.jpg" alt="Krimble — Your Creative Companion" width="100%">
 
 **A mobile-first graphics editor built from Krita for Android phones.**
 
@@ -24,7 +24,7 @@ The project focuses on the realities of touch input and limited screen space: re
 Krimble remains built on the extraordinary foundation of [Krita](https://invent.kde.org/graphics/krita), while deliberately taking a different direction for mobile use.
 
 <div align="center">
-<img src="https://krimble.org/images/github/kimmy-phone.jpg" alt="Kimmy using Krimble on a phone" width="100%">
+<img src="https://krimble.org/assets/kimmy-phone.jpg" alt="Kimmy using Krimble on a phone" width="100%">
 </div>
 
 ### What is mobile-first?
@@ -51,7 +51,7 @@ I found myself using Krita on my smartphone as a daily driver for graphics tasks
 **Same creativity. More freedom.**
 
 <div align="center">
-<img src="https://krimble.org/images/github/kimmy-cat-small.jpg" alt="Kimmy and her cat" width="360">
+<img src="https://krimble.org/assets/kimmy-cat-small.jpg" alt="Kimmy and her cat" width="360">
 </div>
 
 ---
