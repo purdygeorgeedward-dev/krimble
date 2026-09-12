@@ -78,7 +78,7 @@ Krimble already includes extensive changes to make the application more practica
 ## New creative tools
 
 <div align="center">
-<img src="https://krimble.org/images/github/development-holograms.jpg" alt="Kimmy exploring new Krimble tools" width="100%">
+<img src="https://krimble.org/assets/holograms.jpg" alt="Kimmy exploring new Krimble tools" width="100%">
 </div>
 
 Krimble is expanding beyond interface adaptation into new graphics-editing capabilities.
