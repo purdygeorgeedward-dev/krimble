@@ -41,7 +41,9 @@ That means:
 - professional editing workflows that do not assume a mouse or keyboard
 
 ---
-
+<div align="center">
+<img src="https://krimble.org/assets/cat.jpg" alt="Kimmy's cat" width="360">
+</div>
 ## Why Krimble?
 
 I am a lifelong professional artist trained across traditional media and digital tools. On a phone, I do not want to imitate a desktop painting setup. I want a practical graphics editor that works naturally in my hand.
