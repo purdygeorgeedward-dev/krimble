@@ -101,7 +101,7 @@ Some of these are already implemented; others are still being developed and refi
 ## A gift for you
 
 <div align="center">
-<img src="https://krimble.org/images/github/gift-for-you.jpg" alt="Kimmy offering a gift — A gift for you!" width="100%">
+<img src="https://krimble.org/assets/a-gift-for-you.jpg" alt="Kimmy offering a gift — A gift for you!" width="100%">
 </div>
 
 Krimble is **free and open-source software**.
