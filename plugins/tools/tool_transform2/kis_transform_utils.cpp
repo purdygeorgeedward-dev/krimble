@@ -36,6 +36,14 @@ const int KisTransformUtils::rotationHandleRadius = 8;
 const int KisTransformUtils::handleVisualRadius = 12;
 const int KisTransformUtils::handleRadius = 8;
 
+// Krimble: additional touch-target padding applied only inside
+// effectiveHandleGrabRadius() below, on top of the existing 8px
+// handleRadius hit-test value -- does not touch handleRadius itself,
+// since mesh transform also uses it (halved) for drawing. Pads the
+// resize-handle grab tolerance to a 76px effective touch-target
+// diameter, matching the crop tool's handle padding fix.
+const int KisTransformUtils::handleGrabPadding = 30;
+
 
 QTransform KisTransformUtils::imageToFlakeTransform(const KisCoordinatesConverter *converter)
 {
@@ -44,7 +52,8 @@ QTransform KisTransformUtils::imageToFlakeTransform(const KisCoordinatesConverte
 
 qreal KisTransformUtils::effectiveHandleGrabRadius(const KisCoordinatesConverter *converter)
 {
-    QPointF handleRadiusPt = flakeToImage(converter, QPointF(handleRadius, handleRadius));
+    const int grabRadius = handleRadius + handleGrabPadding;
+    QPointF handleRadiusPt = flakeToImage(converter, QPointF(grabRadius, grabRadius));
     return (handleRadiusPt.x() > handleRadiusPt.y()) ? handleRadiusPt.x() : handleRadiusPt.y();
 }
 

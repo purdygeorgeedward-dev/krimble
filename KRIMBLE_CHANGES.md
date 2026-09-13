@@ -920,3 +920,39 @@ value today. No code changes needed to surface the two new files in the
 picker: it pulls from `ResourceType::Palettes`, the same global resource
 pool as everything else, driven purely by the install list in
 `krita/data/palettes/CMakeLists.txt`.
+
+## 2026-09-13 — Padded Transform tool resize-handle grab radius, enlarged
+aspect-lock button (bug #5)
+
+**Files:**
+- `plugins/tools/tool_transform2/kis_transform_utils.h`
+- `plugins/tools/tool_transform2/kis_transform_utils.cpp`
+- `libs/widgets/KoAspectButton.cpp`
+
+Two related touch-target fixes reported together as "resize handles hard
+to grab" (bug item 5).
+
+**Transform tool.** Free Transform's corner/edge scale handles,
+Perspective's handles, and Mesh transform's control-point/node/segment
+hit-testing all route through one function,
+`KisTransformUtils::effectiveHandleGrabRadius()`, which converted the
+raw 8px `handleRadius` constant straight into a hit-test radius with
+zero padding -- visual size and touch tolerance were the same number.
+(There's already a separate, larger `handleVisualRadius` (12px) used
+for drawing in Free Transform/Perspective; mesh transform draws using
+half of the *grab* constant instead, so the raw `handleRadius` value
+itself was left untouched to avoid changing mesh's drawn handle size.)
+Added `handleGrabPadding` (30px), applied only inside
+`effectiveHandleGrabRadius()`, bringing the effective grab radius to
+38px / 76px diameter -- matching the touch-target size already
+established for the crop tool's handle padding fix. Rotation handles
+use a separate, untouched function (`effectiveRotationHandleGrabRadius`)
+-- out of scope, since the report was specifically about resize.
+
+**Aspect-ratio lock button.** `KoAspectButton` (shared by the Image
+Size, Canvas Size, and Layer Size dialogs' lock-proportions toggle) had
+a hardcoded `setFixedSize(19, 34)` / `setIconSize(QSize(9, 24))` with no
+DPI or UI-scale awareness at all -- became especially hard to hit with
+the UI scaled down. Doubled both to 38x68 / 18x48, same proportions
+(kept narrow-tall since it spans two grid rows as a bracket between the
+Width/Height fields, not squared off).

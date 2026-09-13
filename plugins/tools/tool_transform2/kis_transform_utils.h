@@ -36,6 +36,7 @@ public:
     static const int handleVisualRadius;
     static const int handleRadius;
     static const int rotationHandleRadius;
+    static const int handleGrabPadding;
 
     template <class T>
     static T flakeToImage(const KisCoordinatesConverter *converter, T object) {
