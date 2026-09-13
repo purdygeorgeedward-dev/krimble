@@ -15,4 +15,6 @@ install( FILES
     swatch-rgb.gpl
     web.gpl
     animation-color-set.gpl
+    grayscale.gpl
+    black-and-white.gpl
 DESTINATION ${KDE_INSTALL_DATADIR}/krita/palettes)

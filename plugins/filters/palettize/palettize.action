@@ -4,10 +4,10 @@
     <text context="Filter as an effect">Filters</text>
     <Action name="krita_filter_palettize">
       <icon/>
-      <text>Palettize Filter</text>
+      <text>Indexed Color Filter</text>
       <whatsThis></whatsThis>
-      <toolTip>Palettize Filter</toolTip>
-      <iconText>Palettize Filter</iconText>
+      <toolTip>Indexed Color Filter</toolTip>
+      <iconText>Indexed Color Filter</iconText>
       <activationFlags>10000</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut></shortcut>

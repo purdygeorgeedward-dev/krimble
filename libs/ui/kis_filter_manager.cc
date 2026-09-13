@@ -143,7 +143,14 @@ void KisFilterManager::insertFilter(const QString & filterName)
     d->actionManager->addAction(QString("krita_filter_%1").arg(filterName), action);
     d->filters2Action[filter.data()] = action;
 
-    actionMenu->addAction(action);
+    // Krimble: Indexed Color (formerly Palettize) moved to Image > Mode,
+    // matching industry-standard placement -- skip the automatic Filter
+    // menu insertion for this one filter. Action is still created above
+    // so xmlgui can place it in Image > Mode and enable/disable state
+    // still tracks correctly.
+    if (filterName != "palettize") {
+        actionMenu->addAction(action);
+    }
 
     d->actionsMapper.setMapping(action, filterName);
     connect(action, SIGNAL(triggered()), &d->actionsMapper, SLOT(map()));

@@ -218,6 +218,12 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="imagecolorspaceconversion">
             <text>Convert to Profile...</text>
         </Action>
+        <!-- Krimble: Indexed Color (kis_filter_palettize) relocated here
+             from Filter > Adjust to match industry-standard menu placement.
+             See kis_filter_manager.cc for the Filter-menu exclusion. -->
+        <Action name="krita_filter_palettize">
+            <text>Indexed Color...</text>
+        </Action>
     </Menu>
     <Action name="adjust_filters">
         <text>Adjustments</text>

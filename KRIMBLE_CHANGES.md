@@ -873,3 +873,50 @@ manually, but no longer auto-expand into the right column on load.
 Complements the earlier Default workspace simplification (`a73387e`),
 which controls saved-layout state -- this fixes the class-level fallback
 used when no saved layout applies.
+
+## 2026-09-13 — Renamed Palettize to Indexed Color, moved to Image >
+Mode, added Grayscale and Black and White palettes
+
+**Files:**
+- `plugins/filters/palettize/palettize.cpp`
+- `plugins/filters/palettize/palettize.action`
+- `libs/ui/kis_filter_manager.cc`
+- `krita/krita5.xmlgui`
+- `krita/data/palettes/grayscale.gpl` (new)
+- `krita/data/palettes/black-and-white.gpl` (new)
+- `krita/data/palettes/CMakeLists.txt`
+
+Renamed the "Palettize" filter to "Indexed Color" (i18n string in the
+filter constructor, plus matching strings in the .action file so the
+Keyboard Shortcuts dialog stays consistent) and moved it from Filter >
+Adjust to Image > Mode, matching industry-standard menu placement.
+Filters are auto-inserted into their category's Filter-menu submenu in
+code (`KisFilterManager::insertFilter`), not xmlgui, so this required a
+one-filter exception there: the action is still created (so xmlgui can
+place it in Image > Mode and enable/disable state still tracks via
+`filters2Action`), only the line that adds it to the Filter-menu
+`KActionMenu` is skipped for `palettize` specifically.
+
+Not a true colorspace/document-mode change -- Krita has no indexed
+colorspace at all (confirmed: nothing registers one). This filter
+repaints pixel colors to match a chosen saved palette while the image
+stays full RGB/Lab; it does not reduce the document to paletted storage.
+Relevant for anyone chasing actual 8-bit indexed export later: of the
+formats checked, GIF is the only one that's genuinely paletted by
+format spec; BMP export (`plugins/impex/qimageio/kis_qimageio_export.cpp`)
+always calls `convertToQImage()` which produces full ARGB regardless of
+source, so indexed-color output never survives to a BMP file; PCX has
+no import/export plugin at all.
+
+Also added two new bundled palette resources (`.gpl`, same GIMP Palette
+format as the existing `web.gpl`/`ps.gpl`) so the Indexed Color picker's
+built-in options get closer to industry-standard parity: `grayscale.gpl`
+(256 entries, R=G=B=n for n=0..255) and `black-and-white.gpl` (2 entries:
+pure black, pure white). Web (`web.gpl`, 216 colors) and a classic
+industry-standard default swatch set (`ps.gpl`, 131 colors) already
+existed and needed no changes. Deliberately skipped the legacy System
+(Mac OS) / System (Windows) 256-color palettes from that dialog -- low
+value today. No code changes needed to surface the two new files in the
+picker: it pulls from `ResourceType::Palettes`, the same global resource
+pool as everything else, driven purely by the install list in
+`krita/data/palettes/CMakeLists.txt`.

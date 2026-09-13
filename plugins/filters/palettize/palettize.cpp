@@ -187,7 +187,10 @@ KisConfigWidget* KisFilterPalettize::createConfigurationWidget(QWidget *parent, 
 /*                      KisFilterPalettize                                     */
 /*******************************************************************************/
 
-KisFilterPalettize::KisFilterPalettize() : KisFilter(id(), FiltersCategoryAdjustId, i18n("&Palettize..."))
+// Krimble: renamed from "Palettize" to "Indexed Color" to match
+// industry-standard naming; also relocated to Image > Mode (see
+// kis_filter_manager.cc and krita5.xmlgui) instead of Filter > Adjust.
+KisFilterPalettize::KisFilterPalettize() : KisFilter(id(), FiltersCategoryAdjustId, i18n("&Indexed Color..."))
 {
     setColorSpaceIndependence(FULLY_INDEPENDENT);
     setSupportsPainting(true);
