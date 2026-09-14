@@ -333,6 +333,9 @@ private Q_SLOTS:
      * Closes all open documents.
      */
     bool slotFileCloseAll();
+    void slotVisitFeatureRequests();
+    void slotVisitKrimbleWebsite();
+    void slotVisitKrimbleForum();
 
     /**
      * @brief showAboutApplication show the about box

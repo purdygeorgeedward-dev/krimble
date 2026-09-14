@@ -231,6 +231,11 @@ void KisKHelpMenu::aboutKDE()
 
 void KisKHelpMenu::reportBug()
 {
+    // Krimble: always send to the Bug Reports tag on the community forum.
+    // Upstream Krita's KisKBugReport dialog (the KRITA_STABLE-undefined
+    // path below) submits to bugs.kde.org, which is wrong for this fork.
+    QDesktopServices::openUrl(QUrl("https://forum.krimble.org/t/bug-reports"));
+#if 0
 #ifdef KRITA_STABLE
     QDesktopServices::openUrl(QUrl("https://krimble.org"));
 #else
@@ -239,6 +244,7 @@ void KisKHelpMenu::reportBug()
         connect(d->mBugReport, SIGNAL(finished(int)), this, SLOT(dialogFinished()));
     }
     d->mBugReport->show();
+#endif
 #endif
 }
 

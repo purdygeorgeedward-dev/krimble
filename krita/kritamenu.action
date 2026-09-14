@@ -1962,6 +1962,36 @@
       <isCheckable>false</isCheckable>
       <statusTip></statusTip>
     </Action>
+    <Action name="help_feature_request">
+      <icon></icon>
+      <text>&amp;Feature Request...</text>
+      <whatsThis></whatsThis>
+      <toolTip>Feature Request</toolTip>
+      <iconText>Feature Request</iconText>
+      <shortcut></shortcut>
+      <isCheckable>false</isCheckable>
+      <statusTip></statusTip>
+    </Action>
+    <Action name="help_krimble_website">
+      <icon></icon>
+      <text>Krimble &amp;Website</text>
+      <whatsThis></whatsThis>
+      <toolTip>Krimble Website</toolTip>
+      <iconText>Krimble Website</iconText>
+      <shortcut></shortcut>
+      <isCheckable>false</isCheckable>
+      <statusTip></statusTip>
+    </Action>
+    <Action name="help_krimble_forum">
+      <icon></icon>
+      <text>Krimble &amp;Forum</text>
+      <whatsThis></whatsThis>
+      <toolTip>Krimble Forum</toolTip>
+      <iconText>Krimble Forum</iconText>
+      <shortcut></shortcut>
+      <isCheckable>false</isCheckable>
+      <statusTip></statusTip>
+    </Action>
     <Action name="help_about_app">
       <icon>krita</icon>
       <text>&amp;About Krimble</text>

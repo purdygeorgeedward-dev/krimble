@@ -251,6 +251,9 @@ public:
     KisAction *renderAnimation {nullptr};
     KisAction *renderAnimationAgain {nullptr};
     KisAction *closeAll {nullptr};
+    KisAction *visitFeatureRequests {nullptr};
+    KisAction *visitKrimbleWebsite {nullptr};
+    KisAction *visitKrimbleForum {nullptr};
     KisAction *importFile {nullptr};
     KisAction *exportFile {nullptr};
     KisAction *exportFileAdvance {nullptr};
@@ -3020,6 +3023,21 @@ void KisMainWindow::showAboutApplication()
     dlg.exec();
 }
 
+void KisMainWindow::slotVisitFeatureRequests()
+{
+    QDesktopServices::openUrl(QUrl("https://forum.krimble.org/t/feature-requests"));
+}
+
+void KisMainWindow::slotVisitKrimbleWebsite()
+{
+    QDesktopServices::openUrl(QUrl("https://krimble.org"));
+}
+
+void KisMainWindow::slotVisitKrimbleForum()
+{
+    QDesktopServices::openUrl(QUrl("https://forum.krimble.org"));
+}
+
 QPointer<KisView> KisMainWindow::activeKisView()
 {
     if (!d->mdiArea) return 0;
@@ -3105,6 +3123,15 @@ void KisMainWindow::createActions()
 
     d->closeAll = actionManager->createAction("file_close_all");
     connect(d->closeAll, SIGNAL(triggered()), this, SLOT(slotFileCloseAll()));
+
+    d->visitFeatureRequests = actionManager->createAction("help_feature_request");
+    connect(d->visitFeatureRequests, SIGNAL(triggered()), this, SLOT(slotVisitFeatureRequests()));
+
+    d->visitKrimbleWebsite = actionManager->createAction("help_krimble_website");
+    connect(d->visitKrimbleWebsite, SIGNAL(triggered()), this, SLOT(slotVisitKrimbleWebsite()));
+
+    d->visitKrimbleForum = actionManager->createAction("help_krimble_forum");
+    connect(d->visitKrimbleForum, SIGNAL(triggered()), this, SLOT(slotVisitKrimbleForum()));
 
     d->importFile  = actionManager->createAction("file_import_file");
     d->importFile->setActivationFlags(KisAction::IMAGE_IS_WRITABLE);

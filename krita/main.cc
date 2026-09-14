@@ -729,11 +729,12 @@ if (!qEnvironmentVariableIsEmpty("KRITA_OPENGL_DEBUG")) {
     KAboutData aboutData("krita",
                             i18n("Krita"),
                             KritaVersionWrapper::versionString(true),
-                            i18n("Krita is the full-featured digital art studio"),
+                            i18n("Krimble is your creative companion, a free graphics workhorse."),
                             KAboutLicense::GPL,
-                            i18nc("@info:credit", "© 1999–2026 The Krita Developers"));
-    aboutData.setHomepage(QStringLiteral("https://krita.org"));
+                            i18nc("@info:credit", "Krimble is based on Krita, © 1999–2026 The Krita Developers.\nKrimble modifications © 2026 Purdy Design.\nLicensed under the GNU General Public License."));
+    aboutData.setHomepage(QStringLiteral("https://krimble.org"));
     aboutData.setOrganizationDomain("krita.org");
+    aboutData.setBugAddress("https://forum.krimble.org/t/bug-reports");
 
     // this call sets corresponding fields of QApplication as well
     KAboutData::setApplicationData(aboutData);

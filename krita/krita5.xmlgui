@@ -1083,6 +1083,11 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <text>&amp;Help</text>
     <Action name="help_contents"/>
                      <Separator/>
+    <Action name="help_report_bug"/>
+    <Action name="help_feature_request"/>
+    <Action name="help_krimble_website"/>
+    <Action name="help_krimble_forum"/>
+                     <Separator/>
     <Action name="help_about_app"/>
 </Menu>
 
