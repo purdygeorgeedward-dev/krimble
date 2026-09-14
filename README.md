@@ -266,7 +266,7 @@ See the repository's [LICENSES](LICENSES) directory for details.
 
 <div align="center">
 
-<img src="https://krimble.org/images/github/thank-you.jpg" alt="Thank you from Krimble" width="430">
+<img src="https://krimble.org/assets/thank-you.jpg" alt="Thank you from Krimble" width="430">
 
 ### Create. Edit. Enhance. Everywhere.
 
