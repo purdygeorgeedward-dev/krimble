@@ -956,3 +956,49 @@ DPI or UI-scale awareness at all -- became especially hard to hit with
 the UI scaled down. Doubled both to 38x68 / 18x48, same proportions
 (kept narrow-tall since it spans two grid rows as a bracket between the
 Width/Height fields, not squared off).
+
+## 2026-09-14 — Krimble identity in About dialog, working Help menu links
+
+**Files:**
+- `krita/main.cc`
+- `libs/widgetutils/xmlgui/khelpmenu.cpp`
+- `krita/kritamenu.action`
+- `libs/ui/KisMainWindow.h`
+- `libs/ui/KisMainWindow.cpp`
+- `krita/krita5.xmlgui`
+
+The `KAboutData` block in `main.cc` was still upstream Krita's identity
+verbatim -- description ("Krita is the full-featured digital art
+studio"), copyright, and homepage (krita.org) all unchanged since the
+fork started. Updated description to Krimble's, copyright now credits
+Krita upstream plus Purdy Design's modifications, homepage points at
+krimble.org. Internal app-id string (`"krita"`) and `organizationDomain`
+left untouched -- both affect on-disk config paths and weren't part of
+what was asked.
+
+**Report Bug was invisible, and would have opened the wrong place.**
+`setBugAddress()` had never been called, so `KisKHelpMenu` never
+instantiated the Report Bug action at all -- it wasn't just missing from
+the menu, the QAction object itself didn't exist. Added
+`setBugAddress()`. Investigating the actual `reportBug()` slot turned up
+a second, more important problem: the function is a
+`#ifdef KRITA_STABLE`/`#else` split, and this build has `KRITA_STABLE`
+undefined (`KRITA_ALPHA` is set in the top-level `CMakeLists.txt`, which
+suppresses it) -- meaning the live branch was never the simple URL-open,
+it was `KisKBugReport`, a full dialog that submits to
+`https://bugs.kde.org/enter_bug.cgi`. Report Bug would have sent users
+to file issues against upstream KDE Krita, not this fork. Collapsed the
+function to unconditionally open the forum's Bug Reports tag
+(`https://forum.krimble.org/t/bug-reports`); old code commented out
+(`#if 0`), not deleted, per standing rule.
+
+**Three new Help menu items**, none of which had any prior framework
+hook (unlike Report Bug, which at least had partial KHelpMenu
+scaffolding): Feature Request, Krimble Website, Krimble Forum. Each is a
+plain `KisAction` wired straight to `QDesktopServices::openUrl()` with a
+fixed URL -- new `.action` declarations in `kritamenu.action` (Help
+category), new slots declared in `KisMainWindow.h`, created/connected in
+`KisMainWindow::createActions()`, defined next to `showAboutApplication()`.
+
+Help menu is now: Handbook, separator, Report Bug / Feature Request /
+Krimble Website / Krimble Forum, separator, About Krimble.
