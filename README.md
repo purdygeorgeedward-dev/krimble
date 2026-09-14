@@ -229,7 +229,7 @@ Android is the primary focus. Other platforms are intended to share the same Kri
 
 <div align="center">
 <a href="https://www.buymeacoffee.com/GeorgeEdwardPurdy">
-<img src="https://krimble.org/images/github/support-coffee.jpg" alt="Support Krimble" width="100%">
+<img src="https://krimble.org/assets/support-coffee.jpg" alt="Support Krimble" width="100%">
 </a>
 </div>
 
