@@ -276,7 +276,7 @@ void KoFileDialog::createFileDialog()
         }
 
         const QString dialogName = d->dialogName;
-        QPointer<QFileDialog> dialogPtr = d->fileDialog;
+        QPointer<QFileDialog> dialogPtr = d->fileDialog.get();
         // Krimble: d->fileDialog is a QScopedPointer, not a raw QFileDialog*;
         // connect() needs the underlying pointer, hence .get() here (matches
         // the .get() usage already in createFileDialog() above).

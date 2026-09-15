@@ -889,6 +889,12 @@ every overload with "no known conversion from
 Changed to `d->fileDialog.get()`, matching the `.get()` pattern already
 used for the other `connect()` calls in `createFileDialog()`.
 
+**Follow-up (same commit-day):** the line above the `connect()`,
+`QPointer<QFileDialog> dialogPtr = d->fileDialog;`, had the identical
+bug and was missed on the first pass -- same `QScopedPointer` ->
+`QObject*`-family conversion failure, this time against `QPointer`'s
+constructor. Changed to `d->fileDialog.get()` as well.
+
 ## 2026-09-13 — Renamed Palettize to Indexed Color, moved to Image >
 Mode, added Grayscale and Black and White palettes
 
