@@ -277,7 +277,10 @@ void KoFileDialog::createFileDialog()
 
         const QString dialogName = d->dialogName;
         QPointer<QFileDialog> dialogPtr = d->fileDialog;
-        connect(d->fileDialog, &QDialog::finished, this, [dialogName, dialogPtr](int) {
+        // Krimble: d->fileDialog is a QScopedPointer, not a raw QFileDialog*;
+        // connect() needs the underlying pointer, hence .get() here (matches
+        // the .get() usage already in createFileDialog() above).
+        connect(d->fileDialog.get(), &QDialog::finished, this, [dialogName, dialogPtr](int) {
             if (dialogPtr) {
                 KConfigGroup group = KSharedConfig::openConfig()->group("File Dialogs");
                 group.writeEntry(dialogName + "_geometry", dialogPtr->saveGeometry().toBase64());

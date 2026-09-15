@@ -874,6 +874,21 @@ Complements the earlier Default workspace simplification (`a73387e`),
 which controls saved-layout state -- this fixes the class-level fallback
 used when no saved layout applies.
 
+## 2026-09-15 — Fixed build break in KoFileDialog geometry-persistence
+connect() (bug item 14 follow-up)
+
+**Files:** `libs/widgetutils/KoFileDialog.cpp`
+
+The `connect(d->fileDialog, &QDialog::finished, ...)` call added for bug
+item 14 (dialog geometry persistence) passed `d->fileDialog` -- a
+`QScopedPointer<KisPreviewFileDialog>` -- directly as the sender, which
+doesn't convert to the `QObject*` `connect()` needs. Compiler rejected
+every overload with "no known conversion from
+'QScopedPointer<KisPreviewFileDialog>' to ... 'const QDialog *'".
+
+Changed to `d->fileDialog.get()`, matching the `.get()` pattern already
+used for the other `connect()` calls in `createFileDialog()`.
+
 ## 2026-09-13 — Renamed Palettize to Indexed Color, moved to Image >
 Mode, added Grayscale and Black and White palettes
 
