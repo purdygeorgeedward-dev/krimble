@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-package org.krita.android;
+package org.krimble.android;
 
 import android.content.ContentResolver;
 import android.content.Context;

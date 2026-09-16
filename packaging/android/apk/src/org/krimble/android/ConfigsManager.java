@@ -5,7 +5,7 @@
   * SPDX-License-Identifier: GPL-2.0-or-later
   */
 
-package org.krita.android;
+package org.krimble.android;
 
 import android.app.Activity;
 import android.app.AlertDialog;

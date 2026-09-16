@@ -1044,3 +1044,16 @@ Fixed build error in `KoToolBoxDocker.cpp`: `KisKActionCollection` was
 only forward-declared (via `KoToolManager.h`), but the file calls
 `viewManager->actionCollection()->action(...)`, which needs the complete
 type. Added `#include <kactioncollection.h>`.
+
+Rebranded the Android package identity from `org.krita` to `org.krimble`:
+manifest package + activity name (root + debug/next flavors), `build.gradle`
+namespace, moved 13 Java files from `src/org/krita/android/` to
+`src/org/krimble/android/` with updated package declarations, 7 JNI native
+symbols in `KisAndroidScaling.cpp`/`KisAndroidDonations.cpp` renamed to match
+(`Java_org_krita_android_*` -> `Java_org_krimble_android_*`), 8 `import
+org.krita.R;` statements, one notification channel ID string, and the
+ProGuard keep-rule. This is what installs on the device and what would show
+in a Play Store listing. Left unchanged: `android.app.lib_name` meta-data
+(still "krita" — tied to the CMake target/`.so` name, a separate,
+not-yet-decided rename), MIME type strings (`x-krita*`, for `.kra` file
+compatibility).

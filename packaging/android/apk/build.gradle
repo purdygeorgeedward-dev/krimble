@@ -141,7 +141,7 @@ android {
      * `package` attribute in the manifest, because androiddeployqt from Qt 5.15.x
      * does not know how to fetch the package name from the Manifest
      */
-    namespace = "org.krita"
+    namespace = "org.krimble"
 
     ndkPath ndkpath
 

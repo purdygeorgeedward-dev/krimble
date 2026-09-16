@@ -199,7 +199,7 @@ void KisAndroidScaling::maybeShowDialog(bool startup)
     }
 }
 
-extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_setPrimaryScreenScale(JNIEnv *env,
+extern "C" JNIEXPORT void JNICALL Java_org_krimble_android_JNIWrappers_setPrimaryScreenScale(JNIEnv *env,
                                                                                            jobject obj,
                                                                                            jdouble scale)
 {
@@ -211,7 +211,7 @@ extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_setPrimaryS
     }
 }
 
-extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_savePrimaryScreenScale(JNIEnv *env,
+extern "C" JNIEXPORT void JNICALL Java_org_krimble_android_JNIWrappers_savePrimaryScreenScale(JNIEnv *env,
                                                                                             jobject obj,
                                                                                             jboolean askOnStartup)
 {
@@ -223,7 +223,7 @@ extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_savePrimary
     }
 }
 
-extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_onScalingDialogShown(JNIEnv *env, jobject obj)
+extern "C" JNIEXPORT void JNICALL Java_org_krimble_android_JNIWrappers_onScalingDialogShown(JNIEnv *env, jobject obj)
 {
     Q_UNUSED(env);
     Q_UNUSED(obj);
@@ -233,7 +233,7 @@ extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_onScalingDi
     }
 }
 
-extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_onScalingDialogDismissed(JNIEnv *env, jobject obj)
+extern "C" JNIEXPORT void JNICALL Java_org_krimble_android_JNIWrappers_onScalingDialogDismissed(JNIEnv *env, jobject obj)
 {
     Q_UNUSED(env);
     Q_UNUSED(obj);

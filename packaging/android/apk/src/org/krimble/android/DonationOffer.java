@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-package org.krita.android;
+package org.krimble.android;
 
 import android.app.Activity;
 import android.util.Log;
@@ -7,7 +7,7 @@ import android.util.Log;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.ProductDetails;
 
-import org.krita.R;
+import org.krimble.R;
 
 import java.util.Collection;
 import java.util.Collections;

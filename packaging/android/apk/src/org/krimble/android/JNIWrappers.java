@@ -5,7 +5,7 @@
   * SPDX-License-Identifier: GPL-2.0-or-later
   */
 
-package org.krita.android;
+package org.krimble.android;
 
 class JNIWrappers {
     public static native void saveState();

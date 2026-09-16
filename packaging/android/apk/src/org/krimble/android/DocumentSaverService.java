@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-package org.krita.android;
+package org.krimble.android;
 
 import static android.os.Process.killProcess;
 import static android.os.Process.myPid;
@@ -23,12 +23,12 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import org.krita.R;
+import org.krimble.R;
 
 public class DocumentSaverService extends Service {
 
     private final String TAG = "DocumentSaverService";
-    private final String CHANNEL_ID = "org.krita.android";
+    private final String CHANNEL_ID = "org.krimble.android";
     private final int NOTIFICATION_ID = 3;
 
     public static final String START_SAVING = "START_SAVING";

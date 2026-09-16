@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-package org.krita.android;
+package org.krimble.android;
 
 import android.util.Log;
 import android.widget.Toast;
@@ -22,7 +22,7 @@ import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 
-import org.krita.R;
+import org.krimble.R;
 import org.qtproject.qt5.android.QtNative;
 
 import java.util.ArrayList;

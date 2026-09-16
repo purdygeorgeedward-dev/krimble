@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-package org.krita.android;
+package org.krimble.android;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -31,7 +31,7 @@ import androidx.annotation.RequiresApi;
 
 import java.util.List;
 
-import org.krita.R;
+import org.krimble.R;
 import org.libsdl.app.SDLAudioManager;
 import org.qtproject.qt5.android.QtNative;
 import org.qtproject.qt5.android.bindings.QtActivity;

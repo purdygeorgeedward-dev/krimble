@@ -234,7 +234,7 @@ void KisAndroidDonations::syncState()
     QAndroidJniObject::callStaticMethod<void>("org/krita/android/DonationHelper", "syncState", "()V");
 }
 
-extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_donationStateUpdated(JNIEnv * /*env*/,
+extern "C" JNIEXPORT void JNICALL Java_org_krimble_android_JNIWrappers_donationStateUpdated(JNIEnv * /*env*/,
                                                                                           jobject /*obj*/,
                                                                                           jint state,
                                                                                           jlong ownedProductFlags)
@@ -248,7 +248,7 @@ extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_donationSta
     }
 }
 
-extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_showDonationManagementDialog(JNIEnv * /*env*/,
+extern "C" JNIEXPORT void JNICALL Java_org_krimble_android_JNIWrappers_showDonationManagementDialog(JNIEnv * /*env*/,
                                                                                                   jobject /*obj*/)
 {
     KisApplication *app = qobject_cast<KisApplication *>(KisApplication::instance());
@@ -260,7 +260,7 @@ extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_showDonatio
     }
 }
 
-extern "C" JNIEXPORT void JNICALL Java_org_krita_android_JNIWrappers_onSplashDialogDismissed(JNIEnv * /*env*/,
+extern "C" JNIEXPORT void JNICALL Java_org_krimble_android_JNIWrappers_onSplashDialogDismissed(JNIEnv * /*env*/,
                                                                                              jobject /*obj*/)
 {
     KisApplication *app = qobject_cast<KisApplication *>(KisApplication::instance());
