@@ -27,6 +27,7 @@
 
 #include <KoDualColorButton.h>
 #include <KisViewManager.h>
+#include <kactioncollection.h>
 #include <kis_canvas_resource_provider.h>
 #include <kis_display_color_converter.h>
 #include <kis_canvas2.h>

@@ -874,6 +874,22 @@ Complements the earlier Default workspace simplification (`a73387e`),
 which controls saved-layout state -- this fixes the class-level fallback
 used when no saved layout applies.
 
+## 2026-09-16 — Fixed build break in KoToolBoxDocker (missing
+kactioncollection.h)
+
+**Files:** `libs/ui/toolbox/KoToolBoxDocker.cpp`
+
+The "Canvas Only" toolbox button added for the Photoshop-parity toolbox
+layout calls `viewManager->actionCollection()->action(...)`, but
+`KisKActionCollection` is only forward-declared by the headers this
+file already includes (e.g. `KoToolManager.h`) -- never given a full
+definition. Compiler rejected the `->action(...)` call with "member
+access into incomplete type 'KisKActionCollection'".
+
+Added `#include <kactioncollection.h>`, matching the pattern every
+other file calling `actionCollection()->action(...)` already follows
+(`KisMainWindow.cpp`, `KisViewManager.cpp`, `kis_node_manager.cpp`).
+
 ## 2026-09-15 — Fixed build break in KoFileDialog geometry-persistence
 connect() (bug item 14 follow-up)
 
