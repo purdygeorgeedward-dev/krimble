@@ -18,6 +18,10 @@
 #include <QMenu>
 #include <QActionGroup>
 #include <QVBoxLayout>
+
+// Full KisKActionCollection definition needed here (forward decl in KoToolManager.h isn't enough) —
+// KoToolBoxDocker.cpp calls actionCollection()->action(...), which needs the complete type.
+#include <kactioncollection.h>
 #include <QWidget>
 #include <QToolButton>
 

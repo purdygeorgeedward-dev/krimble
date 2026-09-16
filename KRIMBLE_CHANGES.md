@@ -1039,3 +1039,8 @@ category), new slots declared in `KisMainWindow.h`, created/connected in
 
 Help menu is now: Handbook, separator, Report Bug / Feature Request /
 Krimble Website / Krimble Forum, separator, About Krimble.
+
+Fixed build error in `KoToolBoxDocker.cpp`: `KisKActionCollection` was
+only forward-declared (via `KoToolManager.h`), but the file calls
+`viewManager->actionCollection()->action(...)`, which needs the complete
+type. Added `#include <kactioncollection.h>`.
