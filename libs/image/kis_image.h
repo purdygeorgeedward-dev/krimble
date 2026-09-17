@@ -25,6 +25,8 @@
 
 #include <kritaimage_export.h>
 
+#include <kundo2magicstring.h>
+
 #include <kis_node.h>
 class KoColorSpace;
 class KoColor;
@@ -233,7 +235,12 @@ public:
      * a background, so you cannot expect the image having new size
      * right after this call.
      */
-    void resizeImage(const QRect& newRect);
+    /**
+     * Krimble: optional customActionName lets callers (e.g. the Canvas Size
+     * dialog) label this in the undo history as something other than the
+     * generic "Resize Image" -- see KRIMBLE_CHANGES.md.
+     */
+    void resizeImage(const QRect& newRect, const KUndo2MagicString &customActionName = KUndo2MagicString());
 
     /**
      * @brief start asynchronous operation on cropping the image
@@ -1250,7 +1257,7 @@ private:
 
     void emitSizeChanged();
 
-    void resizeImageImpl(const QRect& newRect, bool cropLayers);
+    void resizeImageImpl(const QRect& newRect, bool cropLayers, const KUndo2MagicString &customActionName = KUndo2MagicString());
     void rotateImpl(const KUndo2MagicString &actionName, KisNodeSP rootNode, double radians,
                     bool resizeImage, KisSelectionSP selection);
     void rotateImpl(const KUndo2MagicString &actionName, KisNodeList nodes, double radians,
