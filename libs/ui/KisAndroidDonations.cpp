@@ -81,13 +81,13 @@ KisAndroidDonations *KisAndroidDonations::instance()
 
 void KisAndroidDonations::setLoaded(bool loaded)
 {
-    QAndroidJniObject::callStaticMethod<void>("org/krita/android/MainActivity", "setLoaded", "(Z)V", jboolean(loaded));
+    QAndroidJniObject::callStaticMethod<void>("org/krimble/android/MainActivity", "setLoaded", "(Z)V", jboolean(loaded));
 }
 
 void KisAndroidDonations::setLoadingText(const QString &text)
 {
     QAndroidJniObject textObject = QAndroidJniObject::fromString(text);
-    QAndroidJniObject::callStaticMethod<void>("org/krita/android/MainActivity",
+    QAndroidJniObject::callStaticMethod<void>("org/krimble/android/MainActivity",
                                               "setLoadingText",
                                               "(Ljava/lang/String;)V",
                                               textObject.object<jstring>());
@@ -119,7 +119,7 @@ void KisAndroidDonations::showDonationDialog(bool splash)
     }
     QAndroidJniObject splashArtistObject = QAndroidJniObject::fromString(splashArtist);
     QAndroidJniObject splashVersionObject = QAndroidJniObject::fromString(qApp->applicationVersion());
-    QAndroidJniObject::callStaticMethod<void>("org/krita/android/MainActivity",
+    QAndroidJniObject::callStaticMethod<void>("org/krimble/android/MainActivity",
                                               "showDonationDialog",
                                               "(Z[BLjava/lang/String;Ljava/lang/String;)V",
                                               jboolean(splash),
@@ -149,7 +149,7 @@ void KisAndroidDonations::setShowDonationManagementDialogPending(bool pending)
 QVector<KisSupporterProduct> KisAndroidDonations::getCurrentProducts() const
 {
     QVector<KisSupporterProduct> products;
-    QAndroidJniObject currentProducts = QAndroidJniObject::callStaticObjectMethod("org/krita/android/DonationHelper",
+    QAndroidJniObject currentProducts = QAndroidJniObject::callStaticObjectMethod("org/krimble/android/DonationHelper",
                                                                                   "getCurrentProducts",
                                                                                   "()Ljava/util/List;");
     jint size = currentProducts.callMethod<jint>("size", "()I");
@@ -175,7 +175,7 @@ void KisAndroidDonations::startBillingFlowFor(const QString &productId, const QS
 {
     QAndroidJniObject productIdObject = QAndroidJniObject::fromString(productId);
     QAndroidJniObject offerTokenObject = QAndroidJniObject::fromString(offerToken);
-    QAndroidJniObject::callStaticMethod<void>("org/krita/android/DonationHelper",
+    QAndroidJniObject::callStaticMethod<void>("org/krimble/android/DonationHelper",
                                               "startBillingFlowForProductId",
                                               "(Ljava/lang/String;Ljava/lang/String;)V",
                                               productIdObject.object<jstring>(),
@@ -189,13 +189,13 @@ void KisAndroidDonations::slotStartDonationFlow()
 
 void KisAndroidDonations::slotManageSubscriptions()
 {
-    QAndroidJniObject::callStaticMethod<void>("org/krita/android/MainActivity", "manageSubscriptions", "()V");
+    QAndroidJniObject::callStaticMethod<void>("org/krimble/android/MainActivity", "manageSubscriptions", "()V");
 }
 
 void KisAndroidDonations::slotManageSubscription(const QString &productId)
 {
     QAndroidJniObject productIdObject = QAndroidJniObject::fromString(productId);
-    QAndroidJniObject::callStaticMethod<void>("org/krita/android/MainActivity",
+    QAndroidJniObject::callStaticMethod<void>("org/krimble/android/MainActivity",
                                               "manageSubscription",
                                               "(Ljava/lang/String;)V",
                                               productIdObject.object<jstring>());
@@ -224,14 +224,14 @@ KisAndroidDonations::KisAndroidDonations(QObject *parent)
 bool KisAndroidDonations::isProductOwned(const QString &productId) const
 {
     QAndroidJniObject productIdObject = QAndroidJniObject::fromString(productId);
-    return QAndroidJniObject::callStaticMethod<jboolean>("org/krita/android/DonationHelper",
+    return QAndroidJniObject::callStaticMethod<jboolean>("org/krimble/android/DonationHelper",
                                                          "isProductOwned",
                                                          "(Ljava/lang/String;)B");
 }
 
 void KisAndroidDonations::syncState()
 {
-    QAndroidJniObject::callStaticMethod<void>("org/krita/android/DonationHelper", "syncState", "()V");
+    QAndroidJniObject::callStaticMethod<void>("org/krimble/android/DonationHelper", "syncState", "()V");
 }
 
 extern "C" JNIEXPORT void JNICALL Java_org_krimble_android_JNIWrappers_donationStateUpdated(JNIEnv * /*env*/,
