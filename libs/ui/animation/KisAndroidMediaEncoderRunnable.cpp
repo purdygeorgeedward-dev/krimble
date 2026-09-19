@@ -721,7 +721,7 @@ KisMediaEncoderRunnable::EncodeResult KisAndroidMediaEncoderRunnable::encode(QSt
         }
 
         ctx.setEncoder(QJniObject(
-            "org/krita/android/VideoEncoder",
+            "org/krimble/android/VideoEncoder",
             "(IIIFLjava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;III)V",
             jint(format->formatId()),
             jint(outputWidth),
@@ -1208,7 +1208,7 @@ void KisAndroidMediaEncoderRunnable::checkFormatSupport(Context &ctx,
     };
 
     for (const QPair<QVector<Format::Encoder> *, const char *> &p : ps) {
-        QJniObject supports = QJniObject::callStaticObjectMethod("org/krita/android/VideoEncoder",
+        QJniObject supports = QJniObject::callStaticObjectMethod("org/krimble/android/VideoEncoder",
                                                                  p.second,
                                                                  "(I)Ljava/util/List;",
                                                                  jint(formatId));

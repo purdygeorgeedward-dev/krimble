@@ -43,7 +43,7 @@ bool looksLikeXiaomiDevice()
     if (!checked) {
         checked = true;
         result =
-            QJniObject::callStaticMethod<jboolean>("org/krita/android/MainActivity", "looksLikeXiaomiDevice", "()Z");
+            QJniObject::callStaticMethod<jboolean>("org/krimble/android/MainActivity", "looksLikeXiaomiDevice", "()Z");
     }
     return result;
 }
@@ -55,7 +55,7 @@ bool isLowMemoryKillReportSupported()
     static bool result;
     if (!checked) {
         checked = true;
-        result = QJniObject::callStaticMethod<jboolean>("org/krita/android/MainActivity",
+        result = QJniObject::callStaticMethod<jboolean>("org/krimble/android/MainActivity",
                                                         "isLowMemoryKillReportSupported",
                                                         "()Z");
     }
