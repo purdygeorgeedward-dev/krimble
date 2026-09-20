@@ -170,8 +170,28 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            // Keystore lives outside the repo (in $HOME on the build
+            // machine); passwords come from env vars set on that machine's
+            // shell profile, never committed here. If either env var is
+            // unset (e.g. a plain debug/dev build), this silently falls
+            // back to no signing config rather than failing the build -
+            // only assembleRelease actually needs these set.
+            def ksPassword = System.getenv("KRIMBLE_KEYSTORE_PASSWORD")
+            def keyPass = System.getenv("KRIMBLE_KEY_PASSWORD")
+            if (ksPassword != null && keyPass != null) {
+                storeFile file("${System.getenv('HOME')}/krimble-release.jks")
+                storePassword ksPassword
+                keyAlias "krimble"
+                keyPassword keyPass
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
