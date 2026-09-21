@@ -1057,3 +1057,47 @@ in a Play Store listing. Left unchanged: `android.app.lib_name` meta-data
 (still "krita" — tied to the CMake target/`.so` name, a separate,
 not-yet-decided rename), MIME type strings (`x-krita*`, for `.kra` file
 compatibility).
+
+## 2026-09-19 — Fixed 6 remaining stale `org/krita/android` JNI class-path strings
+
+The earlier full package rebrand (`org.krita` → `org.krimble`, Java file
+moves, native symbol renames) missed a different mechanism: reflection-
+style JNI calls that pass the class path as a **string literal**, not a
+compiled symbol. `KisAndroidUtils.cpp` (x2), `KisLongPressEventFilter.cpp`,
+`KisKineticScroller.cpp`, and `KisAndroidMediaEncoderRunnable.cpp` (x2)
+were still calling `QJniObject::callStaticMethod("org/krita/android/...",
+...)` against class paths that no longer exist post-rebrand — these would
+throw `ClassNotFoundException` at runtime. `KisLongPressEventFilter` and
+`KisKineticScroller` run during normal window/widget init, not some rare
+path. Commits `612b8e2` (first batch found, in `KisAndroidDonations.cpp`,
+turned out to already be part of the full rebrand) and `21952b8` (the
+actual 6 remaining refs above).
+
+## 2026-09-19 — Replaced launcher icon (K + paw mark), all densities + debug/next variant
+
+Adaptive-icon foreground (`ic_launcher.webp` / `ic_launcher_round.webp`)
+replaced at all 5 mipmap densities (mdpi–xxxhdpi) with the new K+paw
+logo. Source: a transparent PNG with correct adaptive-icon safe-zone
+padding (a same-design JPG variant was rejected — baked-in white
+background, no transparency, tighter crop). Commit `888a590`. The
+`ic_launcher_next`/`_round` (nightly/debug flavor) variant was still
+carrying the old Krita mark — updated separately in commit `4bf581c` for
+consistency.
+
+## 2026-09-20 — Added release signing config
+
+`assembleRelease` had no `signingConfigs` block at all — would produce an
+unsigned build, not installable anywhere. Added one to `build.gradle`:
+keystore path resolved from `$HOME/krimble-release.jks` (must exist on
+whichever machine actually runs the build — the release keystore itself
+is generated once via `keytool` and lives outside the repo, never
+committed), passwords read from `KRIMBLE_KEYSTORE_PASSWORD` /
+`KRIMBLE_KEY_PASSWORD` env vars set in that machine's shell profile.
+Added `*.jks`/`*.keystore` to `.gitignore` so the keystore file can never
+land in the repo by accident. Commit `4c7c698`.
+
+Caught one bug in the fix itself before it shipped: the first draft used
+a local Groovy variable named `keyPassword`, which collides with the
+Gradle DSL setter of the same name — `keyPassword keyPassword` would
+have tried to call the string value as a method and broken the build.
+Renamed the local var to `keyPass` before committing.
