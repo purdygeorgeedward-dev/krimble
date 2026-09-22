@@ -143,6 +143,12 @@ android {
      */
     namespace = "org.krimble"
 
+    // AGP 8.x requires compileSdk set directly under android{}, not
+    // nested inside defaultConfig{} (where it used to live under much
+    // older AGP versions). It silently has no effect there under 8.x,
+    // which is why AGP reports it as unset even though a line existed.
+    compileSdk androidCompileSdkVersion.toInteger()
+
     ndkPath ndkpath
 
     packagingOptions {
@@ -221,7 +227,8 @@ android {
     def versionRelease  = 0
 
     defaultConfig {
-        compileSdk androidCompileSdkVersion.toInteger()
+        // compileSdk moved to the top of the android{} block above -
+        // AGP 8.x requires it there, this location was silently a no-op
 
         // even though buildToolsVersion is deprecated,
         // we should still explicitly state it. Otherwise,
