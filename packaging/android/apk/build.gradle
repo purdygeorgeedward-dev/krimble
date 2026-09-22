@@ -147,7 +147,14 @@ android {
     // nested inside defaultConfig{} (where it used to live under much
     // older AGP versions). It silently has no effect there under 8.x,
     // which is why AGP reports it as unset even though a line existed.
-    compileSdk androidCompileSdkVersion.toInteger()
+    // androidCompileSdkVersion was never actually defined anywhere in
+    // this repo, in any properties file, or passed by the real CI
+    // script (build-tools/ci-scripts/android.yml calls plain
+    // `./gradlew assembleRelease`, no extra properties). It silently
+    // never got evaluated before this fix (wrong location meant AGP
+    // never read it) - now that it's in the right spot, hardcoded to
+    // match the targetSdkVersion already hardcoded below (35).
+    compileSdk 35
 
     ndkPath ndkpath
 
