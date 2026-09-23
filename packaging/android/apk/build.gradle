@@ -194,7 +194,12 @@ android {
             def ksPassword = System.getenv("KRIMBLE_KEYSTORE_PASSWORD")
             def keyPass = System.getenv("KRIMBLE_KEY_PASSWORD")
             if (ksPassword != null && keyPass != null) {
-                storeFile file("${System.getenv('HOME')}/krimble-release.jks")
+                // Using file("${...}/...") with an interpolated GString
+                // hits a known Groovy ambiguity ("Ambiguous method
+                // overloading for method java.io.File#<init>") - Gradle
+                // can't cleanly resolve which File constructor to use.
+                // Explicit two-arg File(parent, child) avoids it entirely.
+                storeFile new File(System.getenv('HOME'), 'krimble-release.jks')
                 storePassword ksPassword
                 keyAlias "krimble"
                 keyPassword keyPass
