@@ -242,7 +242,11 @@ android {
         // AGP will use the default one
         buildToolsVersion "35.0.0"
 
-        ndkVersion "27.3.13750724"
+        // Matches the NDK actually present on the build server (r22b) -
+        // was hardcoded to 27.3.13750724, a version that was never
+        // installed here, which made AGP fail to strip every native
+        // library and fail the final packaging step entirely.
+        ndkVersion "22.1.7171670"
 
         targetSdkVersion 35
         minSdkVersion 24
