@@ -194,12 +194,21 @@ android {
             def ksPassword = System.getenv("KRIMBLE_KEYSTORE_PASSWORD")
             def keyPass = System.getenv("KRIMBLE_KEY_PASSWORD")
             if (ksPassword != null && keyPass != null) {
-                // Using file("${...}/...") with an interpolated GString
-                // hits a known Groovy ambiguity ("Ambiguous method
-                // overloading for method java.io.File#<init>") - Gradle
-                // can't cleanly resolve which File constructor to use.
-                // Explicit two-arg File(parent, child) avoids it entirely.
-                storeFile new File(System.getenv('HOME'), 'krimble-release.jks')
+                // file("${...}/...") with an interpolated GString hits a
+                // known Groovy ambiguity ("Ambiguous method overloading
+                // for method java.io.File#<init>"). An explicit two-arg
+                // File(parent, child) constructor looked like the fix,
+                // but hit the exact same ambiguity again - the real
+                // cause is that System.getenv('HOME') returns null in
+                // whatever context Gradle actually runs in here
+                // (daemon/SSH environments don't always inherit shell
+                // env vars the way a plain shell does), and a null
+                // first argument to File(x, String) is inherently
+                // ambiguous between File(String,String) and
+                // File(File,String) regardless of constructor style.
+                // Using Java's user.home system property instead, which
+                // Gradle always populates correctly.
+                storeFile new File(System.properties['user.home'] as String, 'krimble-release.jks')
                 storePassword ksPassword
                 keyAlias "krimble"
                 keyPassword keyPass
