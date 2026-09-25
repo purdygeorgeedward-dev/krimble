@@ -1101,3 +1101,30 @@ a local Groovy variable named `keyPassword`, which collides with the
 Gradle DSL setter of the same name — `keyPassword keyPassword` would
 have tried to call the string value as a method and broken the build.
 Renamed the local var to `keyPass` before committing.
+
+## 2026-09-25 — Two build fixes pushed from server; build pipeline corrected
+
+Two source fixes had been sitting uncommitted on the build server. Pushed:
+
+- `CMakeLists.txt`: added `find_package(Threads REQUIRED)` just before the
+  WebP lookup in the optional-dependencies section.
+- `plugins/filters/colorsfilters/kis_vibrance_filter.cpp`: added
+  `#include <KoUpdater.h>` — the type was only forward-declared, so the
+  progress-update calls failed to compile.
+
+Both carry inline comments.
+
+Build pipeline findings (full procedure now in `BUILD_ANDROID.md`):
+
+- The build server is **ARM64** (Oracle Ampere). NDK 27.3's host tools are
+  x86_64 and run under emulation there. The emulated `ld.lld` segfaults,
+  which surfaced as a misleading CMake error: "Host compiler must support
+  64-bit std::atomic!". Fix: the NDK's `lld` was swapped for Ubuntu's
+  native `lld-18` (server-side only, not a repo change).
+- Hand-patching `build.gradle` / hand-running cmake was abandoned. The
+  build now follows Krita's own CI recipe in
+  `build-tools/ci-scripts/android.yml`.
+- `androiddeployqt` silently drops all Qt QML modules when `_install` is
+  inside the source tree. Earlier hand-rolled builds had exactly that
+  layout — likely cause of the earlier crash-on-launch APK. Builds now go
+  to `~/kwd`, outside the source tree.

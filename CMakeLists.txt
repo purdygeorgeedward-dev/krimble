@@ -1182,6 +1182,9 @@ configure_file(config-gsl.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-gsl.h )
 ###########################
 
 
+# Krimble: explicit Threads lookup before optional deps. Required for the
+# Android arm64-v8a build on the Oracle server (2026-09-25). See KRIMBLE_CHANGES.md.
+find_package(Threads REQUIRED)
 find_package(WebP 1.2.0 COMPONENTS demux mux)
 set_package_properties(WebP PROPERTIES
     URL "https://developers.google.com/speed/webp"

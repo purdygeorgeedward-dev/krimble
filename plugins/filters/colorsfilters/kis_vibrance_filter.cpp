@@ -11,6 +11,9 @@
 #include <filter/kis_filter_category_ids.h>
 #include <filter/kis_filter_configuration.h>
 #include <KoColorSpace.h>
+// Krimble: KoUpdater was only forward-declared; full header needed for
+// progress updates to compile (2026-09-25). See KRIMBLE_CHANGES.md.
+#include <KoUpdater.h>
 #include <kis_paint_device.h>
 #include <kis_processing_information.h>
 #include <KisSequentialIteratorProgress.h>
