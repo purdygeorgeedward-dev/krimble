@@ -1128,3 +1128,17 @@ Build pipeline findings (full procedure now in `BUILD_ANDROID.md`):
   inside the source tree. Earlier hand-rolled builds had exactly that
   layout — likely cause of the earlier crash-on-launch APK. Builds now go
   to `~/kwd`, outside the source tree.
+
+## 2026-09-26 — First clean native build via the official CI pipeline
+
+Native build (step 2 in `BUILD_ANDROID.md`) completed clean on commit
+`bf2f7b3`: started ~00:56, finished ~08:30 server time. All Krimble libs
+(`libkrita_arm64-v8a.so` etc.) and the `qml` folder landed in
+`~/kwd/krita/_install`. First build on the server using Krita's own CI
+recipe and the native ARM linker.
+
+Also corrected `BUILD_ANDROID.md`: the lld-swap undo command no longer
+works on this server (the swap was run twice and overwrote the Intel
+backup). Old undo line commented out; re-run guard added.
+
+APK packaging (step 3) not yet run.

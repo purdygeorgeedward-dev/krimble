@@ -38,7 +38,12 @@ was the checkout — that directory does not exist.)
   ln -s /usr/lib/llvm-18/bin/lld lld
   ./ld.lld --version     # expect: Ubuntu LLD 18.x
   ```
-  Undo: `rm lld && mv lld.x86_64.orig lld` in the same folder.
+  <!-- Undo: `rm lld && mv lld.x86_64.orig lld` in the same folder. -->
+  Undo: NOT AVAILABLE on the current server (2026-09-26). The swap was
+  run twice, so lld.x86_64.orig is also a symlink — the Intel lld
+  backup is gone. Reverting means reinstalling NDK 27.3.13750724.
+  Guard against re-runs: only run the mv if `lld` is NOT already a
+  symlink (`test -L lld || mv lld lld.x86_64.orig`).
   (ld -> ld.lld -> lld symlink chain follows automatically.)
 
 ## Toolchain
@@ -65,6 +70,9 @@ Then check ~/krimble/env points every NDK variable
 27.3.13750724, not 30.x.
 
 ### Step 2 — native build (re-run the whole block in every new SSH session)
+CONFIRMED WORKING 2026-09-26: started ~00:56, finished clean ~08:30
+(server time) on commit bf2f7b3 with native lld. Output libs in
+~/kwd/krita/_install/lib, qml present in ~/kwd/krita/_install.
 ```
 cd ~/krimble
 source ~/krimble/env
@@ -90,6 +98,11 @@ Notes:
 - After a failed configure, `rm -rf ~/kwd/krita/_build` before retrying
   — CMake caches failed checks.
 - nohup keeps the build alive if SSH drops. Ctrl+C only stops `tail`.
+- If the Termux screen freezes during `tail -f`, the SSH link dropped.
+  Close the session, reconnect, then check:
+  `pgrep -f run-ci-build.py || echo "BUILD PROCESS FINISHED"`
+- A full build takes ~7.5 hours on this server (x86 compiler under
+  emulation). ccache makes rebuilds faster.
 
 ### Step 3 — package the APK
 [UNCONFIRMED as of 2026-09-25 — not yet run.] Same shell/exports as
