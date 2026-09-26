@@ -1142,3 +1142,27 @@ works on this server (the swap was run twice and overwrote the Intel
 backup). Old undo line commented out; re-run guard added.
 
 APK packaging (step 3) not yet run.
+
+## 2026-09-26 — Fixed the weeks-long "no launcher icon" bug
+
+Root cause found: `ic_launcher_foreground.xml` (and the `_next` variant),
+the foreground layer of the adaptive launcher icon, had
+`android:src="@mipmap/ic_launcher"` — but on Android 8+ that name
+resolves to the adaptive-icon XML itself (`mipmap-anydpi-v26/ic_launcher.xml`),
+which requires this very file to render its foreground. A self-reference.
+The icon renderer fails silently on the loop, leaving a blank icon.
+Confirmed by installing a built release APK on a Samsung Galaxy A26
+(Android 16) and finding no icon on the install prompt or home screen.
+
+Fix: added `res/drawable-nodpi/ic_launcher_fg.webp` and
+`ic_launcher_next_fg.webp` (copies of the existing xxxhdpi artwork,
+given their own resource names), and pointed both foreground XML files
+at those instead. No more self-reference.
+
+Files:
+- `packaging/android/apk/res/drawable-nodpi/ic_launcher_fg.webp` (new)
+- `packaging/android/apk/res/drawable-nodpi/ic_launcher_next_fg.webp` (new)
+- `packaging/android/apk/res/drawable/ic_launcher_foreground.xml`
+- `packaging/android/apk/res/drawable/ic_launcher_next_foreground.xml`
+
+Not yet re-verified with a fresh build/install — next step.
