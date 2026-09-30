@@ -1166,3 +1166,39 @@ Files:
 - `packaging/android/apk/res/drawable/ic_launcher_next_foreground.xml`
 
 Not yet re-verified with a fresh build/install — next step.
+
+## 2026-09-30 — Launcher icon: rainbow background removed, K enlarged
+
+Two problems seen on a Samsung Galaxy A26 after installing the
+beta2 release APK built from `5b84bcd`: the icon showed the K+paw
+over the Krita rainbow gradient instead of white, and the K was
+small.
+
+Background: all four adaptive-icon files pointed at
+`@drawable/ic_launcher_background` (or `ic_launcher_next_background`),
+which resolves to the drawable XML that holds the Krita rainbow
+gradient. A white `<color>` with the same name already existed in
+`res/values/` but was never used. Each file now points at
+`@color/...` (white). The old `<background>` line is kept as a
+comment. The rainbow drawable files are untouched.
+
+K size: `ic_launcher_fg.webp` and `ic_launcher_next_fg.webp` are
+192x192 px images. The foreground XMLs used `gravity="center"`, which
+places a bitmap at its own pixel size without scaling, so the K
+covered only about 26% of the icon width on a high-density screen.
+Both foreground XMLs now wrap the bitmap in a 12dp `<inset>` with
+`gravity="fill"`, which scales it up to about 45% of the icon width.
+The old `<bitmap>` element is kept as a comment.
+
+Note: the 192px source art will look slightly soft when scaled up.
+A larger K+paw source image would fix that.
+
+Files (all under `packaging/android/apk/res/`):
+- `mipmap-anydpi-v26/ic_launcher.xml`
+- `mipmap-anydpi-v26/ic_launcher_round.xml`
+- `mipmap-anydpi-v26/ic_launcher_next.xml`
+- `mipmap-anydpi-v26/ic_launcher_next_round.xml`
+- `drawable/ic_launcher_foreground.xml`
+- `drawable/ic_launcher_next_foreground.xml`
+
+Not yet verified with a fresh build and install.

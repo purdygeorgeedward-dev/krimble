@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Krimble: K was unscaled and too small. Now scaled to fill an inset area. -->
+<!-- <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
     android:src="@drawable/ic_launcher_next_fg"
-    android:gravity="center" />
+    android:gravity="center" /> -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:inset="12dp">
+    <bitmap
+        android:src="@drawable/ic_launcher_next_fg"
+        android:gravity="fill" />
+</inset>
