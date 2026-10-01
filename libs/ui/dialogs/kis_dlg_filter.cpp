@@ -28,6 +28,8 @@
 #include <kis_icon_utils.h>
 
 #include <kstandardguiitem.h>
+#include <QGuiApplication>
+#include <QScreen>
 
 struct KisDlgFilter::Private {
     Private(KisFilterManager *_filterManager, KisViewManager *_view)
@@ -113,6 +115,17 @@ KisDlgFilter::KisDlgFilter(KisViewManager *view, KisNodeSP node, KisFilterManage
     d->uiFilterDialog.chkFilterSelectedFrames->setToolTip(i18n("In addition to filtering the currently visible frame, \nfilter all other keyframe selected in the Animation Timeline panel."));
 
     restoreGeometry(KisConfig(true).readEntry("filterdialog/geometry", QByteArray()));
+
+    // KRIMBLE: filter dialogs were wider than the screen on Android (OK and
+    // Cancel unreachable in portrait). If the restored width is more than
+    // half the screen's available width, shrink it to exactly half. Height
+    // is unchanged. The restoreGeometry line above is kept as-is.
+    if (QScreen *scr = QGuiApplication::primaryScreen()) {
+        const int halfWidth = scr->availableGeometry().width() / 2;
+        if (width() > halfWidth) {
+            resize(halfWidth, height());
+        }
+    }
     connect(&d->updateCompressor, SIGNAL(timeout()), this, SLOT(updatePreview()));
 
 }

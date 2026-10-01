@@ -1214,3 +1214,27 @@ kept as a comment. The Wide Gamut Color Selector docker keeps its name.
 Not changed: the same name still appears in the dropdown in
 `kis_color_selector_settings.cpp` (line 43). Not yet verified with a
 fresh build and install.
+
+## 2026-10-01 — Hue/Saturation naming; filter dialog width cap
+
+**Hue/Saturation rename.** The existing HSV filter (already under
+Image > Adjustments, shortcut Ctrl+U) is now named to match the
+industry-standard name. Files:
+- `plugins/filters/colorsfilters/kis_hsv_adjustment_filter.cpp` -- menu
+  text "&HSV Adjustment..." -> "&Hue/Saturation..." (old line commented).
+- `plugins/filters/colorsfilters/kis_hsv_adjustment_filter.h` -- display
+  name "HSV/HSL Adjustment" -> "Hue/Saturation" (old line commented).
+  The internal id `hsvadjustment` is unchanged.
+Decision: Hue and Saturation sliders are NOT added to Brightness/Contrast,
+since this filter already provides them.
+
+**Filter dialog width cap.** File: `libs/ui/dialogs/kis_dlg_filter.cpp`.
+After the saved geometry is restored, if the dialog is wider than half
+the screen's available width it is resized to exactly half. Applies to
+every filter dialog. Height unchanged. Cause of the original width not
+confirmed (saved geometry vs. content size hint). Not yet verified with a
+fresh build and install; the dialog's later `adjustSize()` call may
+override it.
+
+**Not done:** Brightness/Contrast dialog title not drawn (cause
+unknown); color selector docker half-size (no change made).

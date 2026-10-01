@@ -34,7 +34,10 @@ public:
     KoColorTransformation* createTransformation(const KoColorSpace* cs, const KisFilterConfigurationSP config) const override;
 
     static inline KoID id() {
-        return KoID("hsvadjustment", i18n("HSV/HSL Adjustment"));
+        // KRIMBLE: display name renamed from "HSV/HSL Adjustment" to
+        // "Hue/Saturation" - original kept below. Internal id unchanged.
+        // return KoID("hsvadjustment", i18n("HSV/HSL Adjustment"));
+        return KoID("hsvadjustment", i18n("Hue/Saturation"));
     }
 
     KisFilterConfigurationSP defaultConfiguration(KisResourcesInterfaceSP resourcesInterface) const override;
