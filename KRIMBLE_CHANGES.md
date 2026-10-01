@@ -1202,3 +1202,15 @@ Files (all under `packaging/android/apk/res/`):
 - `drawable/ic_launcher_next_foreground.xml`
 
 Not yet verified with a fresh build and install.
+
+## 2026-10-01 — Renamed "Advanced Color Selector" docker to "Color Selector"
+
+**File:** `plugins/dockers/advancedcolorselector/kis_color_selector_ng_dock.cpp`
+
+The docker title (also used as its tab label) changed from "Advanced
+Color Selector" to "Color Selector". The old `setWindowTitle` line is
+kept as a comment. The Wide Gamut Color Selector docker keeps its name.
+
+Not changed: the same name still appears in the dropdown in
+`kis_color_selector_settings.cpp` (line 43). Not yet verified with a
+fresh build and install.

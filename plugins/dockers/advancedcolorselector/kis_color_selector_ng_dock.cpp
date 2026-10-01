@@ -21,7 +21,9 @@ KisColorSelectorNgDock::KisColorSelectorNgDock()
     setWidget(m_colorSelectorNgWidget);
     m_colorSelectorNgWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    setWindowTitle(i18n("Advanced Color Selector"));
+    // KRIMBLE: renamed from "Advanced Color Selector" - original kept below.
+    // setWindowTitle(i18n("Advanced Color Selector"));
+    setWindowTitle(i18n("Color Selector"));
 }
 
 void KisColorSelectorNgDock::setCanvas(KoCanvasBase * canvas)
