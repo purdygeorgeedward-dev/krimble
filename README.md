@@ -29,16 +29,16 @@ Krimble remains built on the extraordinary foundation of [Krita](https://invent.
 
 ### What is mobile-first?
 
-Krimble is designed around **phones and touch**, not around reproducing a desktop workstation on a smaller display.
+Krimble is designed around **phones and touch**, and reproducing a desktop workstation on a smaller display. The focus is not on painting, but on graphics editing tasks.
 
 That means:
 
 - touch-sized controls and resize handles
-- menus reorganized for limited screen space
+- menus and dialogs designed by screen space
 - mobile-friendly defaults
 - simplified tool and panel behavior
-- conventional graphics-editing terminology
-- professional editing workflows that do not assume a mouse or keyboard
+- industry-standard terminology
+- workflows that do not assume a mouse or keyboard
 
 ---
 <div align="center">
@@ -46,11 +46,11 @@ That means:
 </div>
 ## Why Krimble?
 
-I am a lifelong professional artist trained across traditional media and digital tools. On a phone, I do not want to imitate a desktop painting setup. I want a practical graphics editor that works naturally in my hand.
+I am a lifelong graphics professional trained across traditional media and digital tools. On a phone, I do not want to paint. I want a practical graphics editor in the palm of my hand.
 
-I found myself using Krita on my smartphone as a daily driver for graphics tasks, so I began modifying it for that purpose. Krimble is the result.
+I found myself using Krita on my smartphone as a daily driver for graphics tasks, so I began modifying it for that purpose. Krimble is the resulting work-in-progress.
 
-**Same creativity. More freedom.**
+**Same job, but smaller.**
 
 <div align="center">
 <img src="https://krimble.org/assets/kimmy-cat-small.jpg" alt="Kimmy and her cat" width="360">
@@ -60,19 +60,19 @@ I found myself using Krita on my smartphone as a daily driver for graphics tasks
 
 ## What Krimble changes
 
-Krimble already includes extensive changes to make the application more practical and familiar on mobile:
+Krimble already includes changes to make the application more practical and familiar on mobile:
 
 | Area | Krimble direction |
 |---|---|
 | **Navigation** | Pan/Hand as the default tool, touch-first movement, fewer accidental gestures |
-| **Toolbox** | Reordered around familiar graphics-editing conventions |
+| **Toolbox** | Reordered around familiar graphics-editing terminology |
 | **Menus** | Simplified, renamed, and reorganized for mobile use |
-| **Panels** | User-facing “docker” terminology replaced with **panel**; floating panels no longer snap back into dock zones |
-| **Touch** | Larger crop handles, wider resize targets, mobile text-selection handles |
+| **Panels** | User-facing “docker” terminology replaced with **panel** |
+| **Touch** | Larger crop handles, wider resize targets, mobile selection handles |
 | **Transform** | Free Transform as the predictable default; accidental shear reduced |
-| **Color** | Touch-friendly square color selector; improved Match Color workflow |
+| **Color** | User-friendly simple square color selector; improved Match Color |
 | **Editing** | Healing Brush, Content-Aware Fill, improved adjustments and replayable Actions |
-| **Branding** | Full Krimble identity, app labels, splash, icons, links, versioning and support graphics |
+| **Branding** | Krimble identity, app labels, splash, icons, links, versioning and support graphics |
 | **Shortcuts** | Large shortcut-alignment pass for familiar tool keys where practical |
 
 ---
@@ -89,14 +89,14 @@ Recent and active work includes:
 
 - **Healing Brush**
 - **Content-Aware Fill**
-- **Vibrance controls**
+- **Vibrance color adjustment**
 - **Upscaling**
-- **advanced Color Matching**
-- improved adjustment workflows
+- **advanced Color Match tool**
+- improved graphics editing workflows
 - replayable Actions with captured parameters
 - additional restoration and editing tools
 
-Some of these are already implemented; others are still being developed and refined.
+Some of these are already implemented; others are still in development.
 
 ---
 
