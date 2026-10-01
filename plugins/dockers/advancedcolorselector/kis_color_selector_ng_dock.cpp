@@ -12,6 +12,9 @@
 
 #include "kis_color_selector_ng_docker_widget.h"
 
+#include <QGuiApplication>
+#include <QScreen>
+
 
 KisColorSelectorNgDock::KisColorSelectorNgDock()
     : QDockWidget()
@@ -20,6 +23,17 @@ KisColorSelectorNgDock::KisColorSelectorNgDock()
 
     setWidget(m_colorSelectorNgWidget);
     m_colorSelectorNgWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    // KRIMBLE: the color selector was far too tall on Android (about 910px of
+    // a 2340px portrait screen). Cap its content height at 42% of the
+    // screen's shorter side (about 454px on a 1080px-wide portrait screen,
+    // roughly half of before). In landscape the docker is already shorter
+    // than this cap, so it is unaffected.
+    if (QScreen *scr = QGuiApplication::primaryScreen()) {
+        const QSize screenSize = scr->availableGeometry().size();
+        const int shortSide = qMin(screenSize.width(), screenSize.height());
+        m_colorSelectorNgWidget->setMaximumHeight(int(shortSide * 0.42));
+    }
 
     // KRIMBLE: renamed from "Advanced Color Selector" - original kept below.
     // setWindowTitle(i18n("Advanced Color Selector"));

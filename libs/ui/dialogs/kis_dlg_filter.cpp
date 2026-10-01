@@ -30,6 +30,9 @@
 #include <kstandardguiitem.h>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QLabel>
+#include <QBoxLayout>
+#include <QFont>
 
 struct KisDlgFilter::Private {
     Private(KisFilterManager *_filterManager, KisViewManager *_view)
@@ -68,6 +71,23 @@ KisDlgFilter::KisDlgFilter(KisViewManager *view, KisNodeSP node, KisFilterManage
 
     d->uiFilterDialog.setupUi(this);
     d->node = node;
+
+#ifdef Q_OS_ANDROID
+    // KRIMBLE: on Android the window title is not drawn (blank strip at the
+    // top of the dialog), so no filter name was visible. Show the filter name
+    // in a label at the top of the dialog. Updated in setDialogTitle().
+    {
+        QLabel *titleLabel = new QLabel(this);
+        titleLabel->setObjectName(QStringLiteral("krimbleFilterTitleLabel"));
+        titleLabel->setAlignment(Qt::AlignCenter);
+        QFont titleFont = titleLabel->font();
+        titleFont.setBold(true);
+        titleLabel->setFont(titleFont);
+        if (QBoxLayout *box = qobject_cast<QBoxLayout*>(layout())) {
+            box->insertWidget(0, titleLabel);
+        }
+    }
+#endif
 
     d->uiFilterDialog.filterSelection->setView(view);
     d->uiFilterDialog.filterSelection->showFilterGallery(KisConfig(true).showFilterGallery());
@@ -150,6 +170,12 @@ void KisDlgFilter::setFilter(KisFilterSP f, KisFilterConfigurationSP overrideDef
 void KisDlgFilter::setDialogTitle(KisFilterSP filter)
 {
     setWindowTitle(filter.isNull() ? i18nc("@title:window", "Filter") : i18nc("@title:window", "Filter: %1", filter->name()));
+#ifdef Q_OS_ANDROID
+    // KRIMBLE: mirror the title into the on-dialog label (see constructor).
+    if (QLabel *titleLabel = findChild<QLabel*>(QStringLiteral("krimbleFilterTitleLabel"))) {
+        titleLabel->setText(filter.isNull() ? i18nc("@title:window", "Filter") : filter->name());
+    }
+#endif
 }
 
 void KisDlgFilter::startApplyingFilter(KisFilterConfigurationSP config)

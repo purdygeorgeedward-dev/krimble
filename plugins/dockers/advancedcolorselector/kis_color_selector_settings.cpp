@@ -40,7 +40,9 @@ KisColorSelectorSettings::KisColorSelectorSettings(QWidget *parent) :
     connect(ui->useDifferentColorSpaceCheckbox, SIGNAL(clicked(bool)), this, SLOT(useDifferentColorSpaceChecked(bool)));
 
     /* color docker selector drop down */
-    ui->dockerColorSettingsComboBox->addItem(i18n("Advanced Color Selector"));
+    // KRIMBLE: renamed from "Advanced Color Selector" to match the docker title.
+    // ui->dockerColorSettingsComboBox->addItem(i18n("Advanced Color Selector"));
+    ui->dockerColorSettingsComboBox->addItem(i18n("Color Selector"));
     ui->dockerColorSettingsComboBox->addItem(i18n("Color Hotkeys"));
 
     connect(ui->dockerColorSettingsComboBox,

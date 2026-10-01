@@ -1258,3 +1258,28 @@ stays; it could not take effect while this row set the minimum width.
 Remaining known width source: the preset row (preset dropdown, Use last
 preset, Edit Presets, XML) in `wdgfilterselector.ui`, about 650px
 minimum. Not changed. Not yet verified with a fresh build and install.
+
+## 2026-10-01 — Color Selector height cap; Android filter dialog title label; settings dropdown rename
+
+**Color Selector docker height.** File:
+`plugins/dockers/advancedcolorselector/kis_color_selector_ng_dock.cpp`.
+The docker content is now capped at 42% of the screen's shorter side
+(about 454px on a 1080px-wide portrait screen). Before, it took about
+910px in portrait (measured from a screenshot), so this is roughly half.
+Landscape is unaffected. Width is not capped separately: the selector
+scales with its height. The 42% figure is an estimate and may need
+tuning after a test on the device. Not yet built or installed.
+
+**Filter dialog title label (Android only).** File:
+`libs/ui/dialogs/kis_dlg_filter.cpp`. The dialog title ("Filter:
+Brightness/Contrast...") is set in code but Android does not draw it,
+leaving a blank white strip. Added a bold, centered label at the top of
+the dialog that shows the filter name, wrapped in `#ifdef Q_OS_ANDROID`
+so desktop builds are unchanged. It updates through `setDialogTitle()`.
+Not yet built or installed. This code was not compiled before pushing.
+
+**Settings dropdown.** File:
+`plugins/dockers/advancedcolorselector/kis_color_selector_settings.cpp`.
+The color docker settings dropdown entry "Advanced Color Selector" is
+now "Color Selector" (old line commented). Index-based, so nothing else
+depends on the text.
