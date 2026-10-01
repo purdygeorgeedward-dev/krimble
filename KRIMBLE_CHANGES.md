@@ -1238,3 +1238,23 @@ override it.
 
 **Not done:** Brightness/Contrast dialog title not drawn (cause
 unknown); color selector docker half-size (no change made).
+
+## 2026-10-01 — Filter dialog bottom row split into two rows (real cause of width)
+
+**File:** `libs/ui/forms/wdgfilterdialog.ui`
+
+Brightness/Contrast and HSV (Hue/Saturation) dialogs were wider than the
+screen on Android. Measured from a screenshot: the bottom row held 6
+widgets (gallery toggle, Preview, Multiframe, Create Filter Mask, Cancel,
+OK) and needed about 1370px minimum, so no sizing code could shrink the
+dialog below it. This applies to every filter dialog.
+
+The row is now two rows: gallery toggle, Preview and Multiframe on the
+first; Create Filter Mask, Cancel and OK on the second. Widget names and
+connections are unchanged. The original row is kept as an XML comment.
+The half-screen width cap added earlier today in `kis_dlg_filter.cpp`
+stays; it could not take effect while this row set the minimum width.
+
+Remaining known width source: the preset row (preset dropdown, Use last
+preset, Edit Presets, XML) in `wdgfilterselector.ui`, about 650px
+minimum. Not changed. Not yet verified with a fresh build and install.
