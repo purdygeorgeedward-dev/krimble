@@ -3,6 +3,7 @@ set(kritalevelfilter_SOURCES
     KisLevelsFilter.cpp
     KisLevelsConfigWidget.cpp
     KisLevelsFilterConfiguration.cpp
+    KisAutoLevelsFilters.cpp
     ../colorsfilters/kis_multichannel_utils.cpp
     ../colorsfilters/virtual_channel_info.cpp
     )

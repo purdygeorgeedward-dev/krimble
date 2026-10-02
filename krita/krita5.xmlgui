@@ -184,9 +184,31 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
             <text>Indexed Color...</text>
         </Action>
     </Menu>
-    <Action name="adjust_filters">
+    <Menu name="adjustments">
         <text>Adjustments</text>
-    </Action>
+        <Action name="krita_filter_brightnesscontrast"/>
+        <Action name="krita_filter_levels"/>
+        <Action name="krita_filter_perchannel">
+            <text>Curves...</text>
+        </Action>
+        <Separator/>
+        <Action name="krita_filter_vibrance"/>
+        <Action name="krita_filter_hsvadjustment"/>
+        <Action name="krita_filter_colorbalance"/>
+        <Action name="krita_filter_photofilter"/>
+        <Separator/>
+        <Action name="krita_filter_invert"/>
+        <Action name="krita_filter_posterize"/>
+        <Action name="krita_filter_threshold"/>
+        <Action name="krita_filter_gradientmap"/>
+        <Separator/>
+        <Action name="krita_filter_desaturate"/>
+        <Action name="krita_filter_colortransfer"/>
+    </Menu>
+                     <Separator/>
+    <Action name="krita_filter_autotone"/>
+    <Action name="krita_filter_autocontrast"/>
+    <Action name="krita_filter_autocolor"/>
                      <Separator/>
     <Action name="imagesize">
         <text>Image Size...</text>
@@ -730,6 +752,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>Liquify...</text>
     </Action>
                      <Separator/>
+    <Action name="adjust_filters"/>
     <Action name="blur_filters">
         <text>Blur</text>
     </Action>

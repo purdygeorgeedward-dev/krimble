@@ -12,6 +12,7 @@
 #include <filter/kis_filter_registry.h>
 
 #include "KisLevelsFilter.h"
+#include "KisAutoLevelsFilters.h"
 #include "KisLevelsFilterPlugin.h"
 
 K_PLUGIN_FACTORY_WITH_JSON(LevelsFilterFactory, "kritalevelsfilter.json", registerPlugin<KisLevelsFilterPlugin>();)
@@ -20,6 +21,9 @@ KisLevelsFilterPlugin::KisLevelsFilterPlugin(QObject *parent, const QVariantList
     : QObject(parent)
 {
     KisFilterRegistry::instance()->add(new KisLevelsFilter());
+    // KRIMBLE 2026-10-02: one-click Auto Tone and Auto Color.
+    KisFilterRegistry::instance()->add(new KisAutoToneFilter());
+    KisFilterRegistry::instance()->add(new KisAutoColorFilter());
 }
 
 KisLevelsFilterPlugin::~KisLevelsFilterPlugin()

@@ -5,6 +5,7 @@ set(kritaextensioncolorsfilters_SOURCES
     kis_minmax_filters.cpp
     KisFilterFastColorOverlay.cpp
     KisWdgFilterFastColorOverlay.cpp
+    KisFilterPhotoFilter.cpp
     )
 
 ki18n_wrap_ui(kritaextensioncolorsfilters_SOURCES

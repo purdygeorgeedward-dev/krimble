@@ -1323,3 +1323,61 @@ already saved on a device (`KoToolBox/iconSize` in the config) still wins,
 so existing installs keep their saved size until it is reset to
 "Default" from the toolbox context menu. Fresh installs get 16.
 Not yet built or verified.
+
+## 2026-10-02 — Photoshop-style Image > Adjustments menu; Auto Tone, Auto Color, Photo Filter
+
+Per project direction (reversal of the earlier "move the whole Adjust
+submenu" approach): the auto-generated Adjust submenu is back in the
+Filter menu, and Image > Adjustments is now a hand-built menu.
+
+**`krita/krita5.xmlgui` (no comments added to the file, per direction)**
+- Filter menu: `adjust_filters` (auto-generated "Adjust" submenu) placed
+  first among the filter categories, after Liquify.
+- Image menu: the single `adjust_filters` entry replaced by an
+  "Adjustments" submenu listing individual filters in this order:
+  Brightness/Contrast, Levels, Curves (label for `perchannel`) | Vibrance,
+  Hue/Saturation, Color Balance, Photo Filter | Invert, Posterize,
+  Threshold, Gradient Map | Desaturate, Match Color.
+  Directly below it: Auto Tone, Auto Contrast, Auto Color.
+- Not in the Adjustments menu (still available in Filter > Adjust and the
+  Filter Gallery): Dodge, Burn, Slope/Offset/Power, Cross-channel curves,
+  Normalize, Index Colors.
+- Actions are referenced as `krita_filter_<id>`; an action name that does
+  not exist is ignored by the menu loader.
+
+**New filters (no new algorithms)**
+- `plugins/filters/levelfilter/KisAutoLevelsFilters.{h,cpp}` (registered in
+  `KisLevelsFilterPlugin.cpp`, added to that plugin's `CMakeLists.txt`):
+  - Auto Tone (`autotone`): per-channel contrast stretch using the
+    existing auto levels engine (`KisAutoLevels::adjustPerChannelContrast`),
+    0.1% clipping each end, midtones untouched.
+  - Auto Color (`autocolor`): the same, plus midtone neutralization: each
+    channel's mean is moved to 50% gray at full strength.
+  - Both apply the result through the existing Levels transformation.
+    RGB images only (same limit as the "auto levels for all channels" button
+    in the Levels dialog); other color models are left unchanged.
+  - Clipping, offset and target values are the defaults of the Levels
+    auto dialog; they are our choices and are not claimed to match any other
+    program numerically.
+- `plugins/filters/colors/KisFilterPhotoFilter.{h,cpp}` (registered in
+  `colors.cpp`, added to that plugin's `CMakeLists.txt`): Photo Filter
+  (`photofilter`) with Color, Density and Preserve Luminosity. It reuses the
+  Fast Color Overlay blend: Color blend mode when Preserve Luminosity is on,
+  Multiply when off. Defaults: warm orange (236,138,0), density 25%, preserve
+  luminosity on. Blend modes are approximations of a photo filter, not a
+  copy of any other program's math.
+
+**What was and was not verified**
+- Verified: both new `.cpp` files and both plugin registration files pass a
+  compiler syntax-only check against the real Krita headers (generated
+  config/export/moc headers stubbed). The auto levels math was reproduced on a
+  synthetic low-contrast color-cast image: Auto Tone stretches every channel to
+  the full range; Auto Color additionally brings the channel means to about
+  50%.
+- NOT verified: a real build, linking, running the filters in the app, the
+  menu layout on a device, and the `Curves...` label override. The first
+  server build after this commit may still surface errors.
+
+**Not done (need new algorithms):** Exposure, Black & White, Channel Mixer,
+Equalize, Shadows/Highlights, Replace Color, Selective Color, HDR Toning,
+Color Lookup.
