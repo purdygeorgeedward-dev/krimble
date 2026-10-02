@@ -1856,3 +1856,27 @@ The old `QSizeGrip` include is commented out.
 
 **Verified:** standalone Qt test (wide and narrow panel). **Not verified:** a
 device; `KisMainWindow.cpp` cannot be syntax-checked here.
+
+## 2026-10-02 — Edit > Preferences window far wider than the screen
+
+**File:** `libs/ui/dialogs/kis_dlg_preferences.cc` (Android only)
+
+Device feedback: Preferences opened as a very wide window.
+
+**Cause found:** the form of the General page (`libs/ui/forms/wdggeneralsettings.ui`)
+gives its top widget a hard minimum width of 552. At the phone's app scale (about 2.5)
+that is about 1380 screen pixels, and a window cannot be narrower than its widest
+page. The page already scrolls inside (it has a scroll area), so it does not need that
+minimum.
+
+**Fix:** (1) the General page's minimum width is set to 0. (2) After the dialog is
+built it is resized to no more than 95% of the screen width and 90% of the screen
+height (the smaller of that and its natural size).
+
+**Checked:** other pages' forms have only smaller hard minimum widths (the tablet
+pressure curve 200, brush preview 320 and scratch pad 250 on a brush settings form
+that may not be part of this dialog). **Not verified:** that every page now fits;
+another page may still force it wider. **Not verified:** a build or a device. The file
+could not be syntax-checked here (it includes headers from the external `lager`
+library); the added lines are plain Qt calls. If Preferences is still too wide, a
+screenshot of the page that is too wide will show which form to fix next.

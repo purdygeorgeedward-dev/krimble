@@ -13,6 +13,10 @@
 #include <opengl/kis_opengl.h>
 
 #include <QBitmap>
+#ifdef Q_OS_ANDROID
+#include <QGuiApplication>
+#include <QScreen>
+#endif
 #include <QCheckBox>
 #include <QComboBox>
 #include <QClipboard>
@@ -2711,6 +2715,13 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
     m_pages << page;
     addPage(page);
     m_general = new GeneralTab(vbox);
+#ifdef Q_OS_ANDROID
+    // KRIMBLE 2026-10-02: the General page form has a hard minimum width of 552
+    // (about 1380 screen pixels on a phone), which made the whole Preferences
+    // window far wider than a screen. The page already scrolls inside, so it does
+    // not need that minimum. Android only.
+    m_general->setMinimumWidth(0);
+#endif
 
     // Shortcuts
     vbox = new KoVBox();
@@ -2849,6 +2860,18 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
                 titleFrame->widget()->setBackgroundRole(QPalette::Window);
             }
         }
+    }
+#endif
+
+#ifdef Q_OS_ANDROID
+    // KRIMBLE 2026-10-02: open the Preferences window no wider than 95% and no taller
+    // than 90% of the screen. If a page still needs more than that, the page's own
+    // minimum size wins; send a screenshot of that page.
+    if (QScreen *scr = QGuiApplication::primaryScreen()) {
+        const QSize screenSize = scr->availableGeometry().size();
+        const QSize hint = sizeHint();
+        resize(qMin(hint.width(), int(screenSize.width() * 0.95)),
+               qMin(hint.height(), int(screenSize.height() * 0.90)));
     }
 #endif
 }
