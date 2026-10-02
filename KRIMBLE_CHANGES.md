@@ -1612,3 +1612,28 @@ in app units. The left list (22%) is about 95; the page should now need roughly
 290, so the total is about 385. The 290 is an estimate from the other rows, not a
 measurement. **Verified:** both files pass a compiler syntax-only check. **Not
 verified:** the real dialog on a device.
+
+## 2026-10-02 — Detach Panel and Attach Panel moved under "Panels" in the Settings menu
+
+**Files:** `libs/ui/KisMainWindow.cpp`, `krita/krita5.xmlgui` (George approved
+this edit to the file; no comments were added to it)
+
+Device feedback: the Settings > Panels list already has far too many entries, so
+Detach Panel and Attach Panel should not be at the bottom of it.
+
+- `KisMainWindow.cpp`: both are now `KActionMenu` actions registered in the
+  action collection as `settings_detach_panel_menu` and
+  `settings_attach_panel_menu`, instead of submenus added to the Panels list.
+  Their contents and behaviour are unchanged. The old lines that added them to
+  the Panels list are commented out.
+- `krita5.xmlgui`: two `<Action>` entries added in the Settings menu, directly
+  after the `settings_dockers_menu` ("Panels") entry.
+
+**Caveat:** `KisMainWindow` loads a locally customized `krita5.xmlgui` from the
+app's data folder if one exists, and that file replaces the built-in one. A phone
+with such a file will not show the two new entries until that local copy is
+removed or updated.
+
+**Verified:** `krita5.xmlgui` is well-formed XML. **Not verified:** the menu on a
+device; `KisMainWindow.cpp` cannot be syntax-checked here (missing external
+`lager` headers).

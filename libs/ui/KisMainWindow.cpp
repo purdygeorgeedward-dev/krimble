@@ -499,12 +499,15 @@ KisMainWindow::KisMainWindow(QUuid uuid)
         d->dockWidgetMenu->addAction(dockwidgetActions[title]);
     }
 
-    // KRIMBLE 2026-10-02: "Detach Panel" submenu at the bottom of Settings >
-    // Panels. Lists the panels that are currently shown and docked; choosing
-    // one makes it a free-floating window. A locked panel (lock icon in its
-    // title bar) is unlocked first, because a locked panel cannot float.
-    // The list is rebuilt every time the submenu opens.
-    QMenu *detachPanelMenu = new QMenu(i18nc("@action:inmenu", "Detach Panel"), this);
+    // KRIMBLE 2026-10-02: "Detach Panel" submenu. Lists the panels that are
+    // currently shown and docked; choosing one makes it a free-floating window.
+    // A locked panel (lock icon in its title bar) is unlocked first, because a
+    // locked panel cannot float. The list is rebuilt every time the submenu opens.
+    // Moved out of the (very long) Settings > Panels list: it is registered as an
+    // action ("settings_detach_panel_menu") and placed in krita5.xmlgui, directly
+    // below the Panels entry of the Settings menu.
+    KActionMenu *detachPanelAction = new KActionMenu(i18nc("@action:inmenu", "Detach Panel"), this);
+    QMenu *detachPanelMenu = detachPanelAction->menu();
     connect(detachPanelMenu, &QMenu::aboutToShow, this, [this, detachPanelMenu]() {
         detachPanelMenu->clear();
         Q_FOREACH (QDockWidget *dock, dockWidgets()) {
@@ -528,13 +531,17 @@ KisMainWindow::KisMainWindow(QUuid uuid)
             noneAction->setEnabled(false);
         }
     });
-    d->dockWidgetMenu->addSeparator();
-    d->dockWidgetMenu->menu()->addMenu(detachPanelMenu);
+    // (Earlier version, kept for reference: added the submenu at the bottom of the
+    // Panels list.)
+    // d->dockWidgetMenu->addSeparator();
+    // d->dockWidgetMenu->menu()->addMenu(detachPanelMenu);
+    actionCollection()->addAction("settings_detach_panel_menu", detachPanelAction);
 
     // KRIMBLE 2026-10-02: "Attach Panel" submenu, the counterpart of "Detach
     // Panel". Lists the panels that are currently floating; choosing one docks
-    // it back into its previous dock area.
-    QMenu *attachPanelMenu = new QMenu(i18nc("@action:inmenu", "Attach Panel"), this);
+    // it back into its previous dock area. Placed like Detach Panel.
+    KActionMenu *attachPanelAction = new KActionMenu(i18nc("@action:inmenu", "Attach Panel"), this);
+    QMenu *attachPanelMenu = attachPanelAction->menu();
     connect(attachPanelMenu, &QMenu::aboutToShow, this, [this, attachPanelMenu]() {
         attachPanelMenu->clear();
         Q_FOREACH (QDockWidget *dock, dockWidgets()) {
@@ -551,7 +558,8 @@ KisMainWindow::KisMainWindow(QUuid uuid)
             noneAction->setEnabled(false);
         }
     });
-    d->dockWidgetMenu->menu()->addMenu(attachPanelMenu);
+    // d->dockWidgetMenu->menu()->addMenu(attachPanelMenu);
+    actionCollection()->addAction("settings_attach_panel_menu", attachPanelAction);
 
 
     // Style menu actions

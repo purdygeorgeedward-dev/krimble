@@ -1010,6 +1010,12 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <toolTip>Panels</toolTip>
         <iconText>Panels</iconText>
     </Action>
+    <Action name="settings_detach_panel_menu">
+        <text>Detach Panel</text>
+    </Action>
+    <Action name="settings_attach_panel_menu">
+        <text>Attach Panel</text>
+    </Action>
                      <Separator/>
     <Action name="manage_resources">
         <text>Presets...</text>
