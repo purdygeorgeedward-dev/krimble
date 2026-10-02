@@ -131,13 +131,19 @@ endif()
 #######################
 ######################
 if (BUILD_WITH_QT6)
-set(KRITA_VERSION_STRING "1.0.0-alpha1")
+# KRIMBLE: version string bumped from "1.0.0-alpha1" to "1.0.0-beta2" so the
+# splash and About dialog match the APK name. Original kept below.
+# set(KRITA_VERSION_STRING "1.0.0-alpha1")
+set(KRITA_VERSION_STRING "1.0.0-beta2")
 set(KRITA_STABLE_VERSION_MAJOR 1)
 set(KRITA_STABLE_VERSION_MINOR 0)
 else()
 # define common versions of Krita applications, used to generate kritaversion.h
 # update these version for every release:
-set(KRITA_VERSION_STRING "1.0.0-alpha1")
+# KRIMBLE: version string bumped from "1.0.0-alpha1" to "1.0.0-beta2" so the
+# splash and About dialog match the APK name. Original kept below.
+# set(KRITA_VERSION_STRING "1.0.0-alpha1")
+set(KRITA_VERSION_STRING "1.0.0-beta2")
 # Major version: 3 for 3.x, 4 for 4.x, etc.
 set(KRITA_STABLE_VERSION_MAJOR 1)
 # Minor version: 0 for 4.0, 1 for 4.1, etc.

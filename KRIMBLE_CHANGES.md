@@ -1283,3 +1283,18 @@ Not yet built or installed. This code was not compiled before pushing.
 The color docker settings dropdown entry "Advanced Color Selector" is
 now "Color Selector" (old line commented). Index-based, so nothing else
 depends on the text.
+
+## 2026-10-01 — Version string alpha1 -> beta2 (splash and About)
+
+**File:** `CMakeLists.txt` (both `KRITA_VERSION_STRING` lines, Qt5 and Qt6
+branches). The splash and About dialog read this string and still said
+"1.0.0-alpha1"; only the Gradle `versionName` (APK filename) had been
+bumped to beta2. Old lines kept as comments.
+
+Deliberately NOT changed: `KRITA_ALPHA 1` stays set. Switching it to
+`KRITA_BETA` would change `BRANDING` from "Next" to "Beta" and swap the
+icon and splash asset sets already customised for the "Next" variant.
+
+Needs a CMake reconfigure on the next build (`make` does this
+automatically). The git hash on the splash also updates then. Not yet
+built or verified.
