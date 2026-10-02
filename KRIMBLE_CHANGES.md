@@ -1381,3 +1381,37 @@ Filter menu, and Image > Adjustments is now a hand-built menu.
 **Not done (need new algorithms):** Exposure, Black & White, Channel Mixer,
 Equalize, Shadows/Highlights, Replace Color, Selective Color, HDR Toning,
 Color Lookup.
+
+### Resulting Image menu (2026-10-02)
+
+```
+Image
+  Mode                       >
+  Adjustments                >
+      Brightness/Contrast...
+      Levels...                      Ctrl+L
+      Curves...                      Ctrl+M
+      ---------------------------
+      Vibrance...
+      Hue/Saturation...              Ctrl+U
+      Color Balance...               Ctrl+B
+      Photo Filter...                (new)
+      ---------------------------
+      Invert                         Ctrl+I
+      Posterize...
+      Threshold...
+      Gradient Map...
+      ---------------------------
+      Desaturate...                  Ctrl+Shift+U
+      Match Color...
+  ---------------------------
+  Auto Tone                          (new)
+  Auto Contrast
+  Auto Color                         (new)
+  ---------------------------
+  Image Size...                      (unchanged below this line)
+```
+
+Shortcuts are the ones already assigned to each filter in code; no
+shortcut was added or changed. Auto Tone, Auto Contrast, Auto Color and
+Photo Filter have none.
