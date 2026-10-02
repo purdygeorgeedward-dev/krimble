@@ -37,7 +37,9 @@ KisColorSelectorNgDock::KisColorSelectorNgDock()
 
     // KRIMBLE: renamed from "Advanced Color Selector" - original kept below.
     // setWindowTitle(i18n("Advanced Color Selector"));
-    setWindowTitle(i18n("Color Selector"));
+    // KRIMBLE 2026-10-02: panel renamed again, "Color Selector" -> "Color".
+    // setWindowTitle(i18n("Color Selector"));
+    setWindowTitle(i18n("Color"));
 }
 
 void KisColorSelectorNgDock::setCanvas(KoCanvasBase * canvas)

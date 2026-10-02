@@ -1805,3 +1805,31 @@ still enforces any minimum it needs. The 80% is a first guess from "a little too
 **Verified:** `KisDlgInternalColorSelector.cpp` passes a compiler syntax-only
 check; the strip logic was tested as a standalone copy. **Not verified:** a real
 build or a device; `KisMainWindow.cpp` cannot be syntax-checked here.
+
+## 2026-10-02 — Four panels renamed to match industry-standard names
+
+**Files (title lines only, old lines kept as comments):**
+`plugins/dockers/advancedcolorselector/kis_color_selector_ng_dock.cpp`,
+`plugins/dockers/compositiondocker/compositiondocker_dock.cpp`,
+`plugins/dockers/snapshotdocker/SnapshotDocker.cpp`,
+`libs/ui/toolbox/KoToolBoxDocker.cpp`
+
+| Was | Now |
+|---|---|
+| Color Selector | **Color** |
+| Compositions | **Layer Comps** |
+| Snapshot Panel | **Snapshots** |
+| Toolbox | **Tools** |
+
+Together with "Brush Presets" -> "Brushes" (765acdb). The names also change in
+Settings > Panels. Saved panel layouts refer to panels by an internal name, not by
+title, so they are not affected, and no code compares against the old titles
+(a search found none).
+
+**Kept on purpose (George's decision):** "Swatches (Palette)", because it is more
+explanatory. **Not changed:** Tool Options, Text Properties, Grid and Guides.
+The Color Selector entry in the color settings dropdown
+(`kis_color_selector_settings.cpp`) still says "Color Selector".
+
+**Verified:** all four files pass a compiler syntax-only check. **Not verified:**
+a real build or a device.

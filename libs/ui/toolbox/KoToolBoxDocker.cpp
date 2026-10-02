@@ -39,7 +39,9 @@
 #include <kis_icon_utils.h>
 
 KoToolBoxDocker::KoToolBoxDocker(KoToolBox *toolBox)
-    : QDockWidget(i18n("Toolbox"))
+    // KRIMBLE 2026-10-02: panel renamed "Toolbox" -> "Tools".
+    // : QDockWidget(i18n("Toolbox"))
+    : QDockWidget(i18n("Tools"))
     , m_toolBox(toolBox)
     , m_scrollArea(new KoToolBoxScrollArea(toolBox, this))
 {
