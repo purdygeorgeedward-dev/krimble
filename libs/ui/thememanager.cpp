@@ -109,7 +109,11 @@ QString ThemeManager::currentThemeName() const
     }
     if (themeName.isEmpty()) {
         //qDebug() << "\tfallback";
-        themeName = "Krita dark";
+        // KRIMBLE 2026-10-02: fallback renamed. The theme is now called
+        // "Krimble dark"; falling back to the old name "Krita dark" found no
+        // theme file and left the app with the plain gray default palette.
+        // themeName = "Krita dark";
+        themeName = "Krimble dark";
     }
     //qDebug() << "\tresult" << themeName;
     return themeName;
@@ -248,8 +252,15 @@ void ThemeManager::populateThemeMenu()
     QStringList actionMapKeys = actionMap.keys();
     actionMapKeys.sort();
 
+    // KRIMBLE 2026-10-02: currentThemeName() cannot be used here. The action
+    // group was just created and has nothing checked yet, so it returns the
+    // fallback name and no menu entry got checked. Compare against the theme
+    // name that was requested instead.
+    const QString requestedThemeName = d->currentThemeName.isEmpty() ? QStringLiteral("Krimble dark")
+                                                                     : d->currentThemeName;
     Q_FOREACH (const QString& name, actionMapKeys) {
-        if ( name ==  currentThemeName()) {
+        // if ( name ==  currentThemeName()) {
+        if (name == requestedThemeName) {
             actionMap.value(name)->setChecked(true);
         }
         d->themeMenuAction->addAction(actionMap.value(name));

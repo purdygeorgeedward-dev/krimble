@@ -1447,3 +1447,26 @@ exactly ToolBox, Tool Options and Layers are visible (90 of 93 hidden).
 old workspace file in their app data may keep using it until the app data is
 cleared; not tested. Dock widths are Qt defaults for a 1080 px-wide screen and
 may need tuning.
+
+## 2026-10-02 — Theme fallback and Themes menu check (first-launch gray theme)
+
+**File:** `libs/ui/thememanager.cpp` (two small changes, old lines commented out)
+
+Symptom: on a fresh install the first launch showed the plain gray default
+palette instead of "Krimble dark"; the second launch was correct.
+
+Two leftovers from renaming the theme were found in `ThemeManager`:
+1. `currentThemeName()` fell back to `"Krita dark"` when no name was known.
+   No theme file has that name any more, so the palette lookup found nothing and
+   the app kept Qt's gray default. Now falls back to `"Krimble dark"`.
+2. `populateThemeMenu()` decided which Themes-menu entry to check by calling
+   `currentThemeName()` on a menu group that had just been created with nothing
+   checked. That call returned the fallback name, so no entry was checked, and
+   any later palette refresh used the fallback. It now compares against the theme
+   name that was requested (default `"Krimble dark"`).
+
+Confidence: these are real bugs and the fixes are correct, but I have NOT
+confirmed they are the whole cause of the first-launch gray theme; I could not
+reproduce it. Not compiled (the syntax-check setup could not resolve
+`kstandardshortcut.h` for this file; the change only uses QString/QStringLiteral
+already used in the file). Test: clear app data, install, first launch.
