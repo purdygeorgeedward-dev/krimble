@@ -190,20 +190,27 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="krita_filter_levels"/>
         <Action name="krita_filter_perchannel">
             <text>Curves...</text>
+<!-- Exposure? -->
         </Action>
-        <Separator/>
+                     <Separator/>
         <Action name="krita_filter_vibrance"/>
         <Action name="krita_filter_hsvadjustment"/>
         <Action name="krita_filter_colorbalance"/>
+<!-- Black and White? -->
         <Action name="krita_filter_photofilter"/>
-        <Separator/>
+<!-- Channel Mixer... -->
+<!-- Color Lookup... -->
+                     <Separator/>
         <Action name="krita_filter_invert"/>
         <Action name="krita_filter_posterize"/>
         <Action name="krita_filter_threshold"/>
         <Action name="krita_filter_gradientmap"/>
-        <Separator/>
+<!-- Selective Color -->
+                     <Separator/>
         <Action name="krita_filter_desaturate"/>
         <Action name="krita_filter_colortransfer"/>
+<!-- Replace Color -->
+<!-- Equalize -->
     </Menu>
                      <Separator/>
     <Action name="krita_filter_autotone"/>
