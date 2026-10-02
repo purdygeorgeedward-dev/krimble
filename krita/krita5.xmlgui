@@ -6,56 +6,44 @@ version="543"
 xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org/standards/kxmlgui/1.0/kxmlgui.xsd">
 
 <MenuBar>
-<Menu name="file">
-    <text>&amp;File</text>
-
-    <Action name="file_new">
-        <text>New...</text>
-    </Action>
-    <Action name="file_open">
-        <text>Open...</text>
-    </Action>
-    <Action name="file_open_recent">
-        <text>Open Recent</text>
-    </Action>
-                     <Separator/>
-    <Action name="file_close">
-        <text>Close</text>
-    </Action>
-                     <Separator/>
-    <Action name="file_save">
-        <text>Save</text>
-    </Action>
-    <Action name="file_save_as">
-        <text>Save As...</text>
-    </Action>
-    <Action name="file_reload_file">
-        <text>Revert</text>
-    </Action>
-                     <Separator/>
-    <Action name="file_import_file">
-        <text>Import</text>
-    </Action>
-    <Action name="file_export_file">
-        <text>Export</text>
-    </Action>
-    <Action name="file_export_pdf">
-        <text>Export as PDF...</text>
-    </Action>
-                     <Separator/>
-    <Action name="render_animation">
-        <text>Render Video...</text>
-    </Action>
-                     <Separator/>
-    <Action name="file_documentinfo">
-        <text>File Info...</text>
-    </Action>
-                     <Separator/>
-    <Action name="file_quit">
-        <text>Exit</text>
-    </Action>
-</Menu>
-
+    <Menu name="file">
+      <text>&amp;File</text>
+      <Action name="file_new"/>
+      <Action name="file_open"/>
+      <Action name="file_open_recent"/>
+      <Separator/>
+      <Action name="file_save"/>
+      <Action name="file_save_as"/>
+      <Action name="file_reload_file"/>
+      <Separator/>
+      <Action name="file_sessions"/>
+      <Separator/>
+      <Action name="file_import_file"/>
+      <Action name="file_export_file"/>
+      <Action name="file_export_advanced"/>
+      <Separator/>
+      <Action name="file_export_pdf"/>
+      <Separator/>
+      <Action name="file_import_animation"/>
+      <Action name="file_import_video_animation"/>
+      <Action name="render_animation"/>
+      <Separator/>
+      <Action name="save_incremental_version"/>
+      <Action name="save_incremental_backup"/>
+      <Separator/>
+      <Action name="create_template"/>
+      <Action name="create_copy"/>
+      <!--Separator/>
+      <Action name="file_print"/>
+      <Action name="file_print_preview"/-->
+      <Separator/>
+      <Action name="file_documentinfo"/>
+      <Separator/>
+      <Action name="file_close"/>
+      <Action name="file_close_all"/>
+      <Action name="file_quit"/>
+      </Menu>
+<!-- menu restored from Krita  -->
 
 <Menu name="edit">
     <text>&amp;Edit</text>
@@ -110,14 +98,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         </Action>
     </Menu>
                      <Separator/>
-    <!-- Krimble addition: industry-standard parity. These use Krita's existing,
-         fully-functional transform-tool submode actions (KisToolTransformFree/
-         Perspective/Warp/Cage), previously only reachable via the toolbox
-         flyout or the transform tool's right-click context menu, never from
-         a menu bar. No new tool logic, these already activate the
-         Transform tool in the given mode via activateSubtoolXxx() in
-         kis_tool_transform.cc. Cage is the closest existing equivalent to
-         the industry standard's mesh-pin-based Puppet Warp. -->
     <Action name="KisToolTransformCage">
         <text>Puppet Warp</text>
     </Action>
@@ -126,24 +106,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     </Action>
     <Menu name="EditTransform">
         <text>Transform</text>
-        <!-- Krimble: these 10 are the industry standard's exact Edit > Transform list mapped
-             onto Krita's existing, distinct, already-functional commands.
-             Text matches the industry standard's exact wording (no ellipsis) even though
-             Scale/Rotate/Skew open a numeric dialog in Krita rather than
-             the industry standard's live on-canvas drag, same command, different
-             interaction model, not worth a misleading label difference.
-             Verified none of these 8 underlying actions (layersize,
-             rotatelayer, shearlayer, rotateLayer180/CW90/CCW90, mirrorNodeX/Y)
-             call setExcludedNodeTypes() or are otherwise restricted to one
-             layer type, their activationFlags cover layers, shape layers,
-             transparency masks, and both selection types, so they behave
-             the same regardless of what kind of layer is active, matching
-             the industry standard's broad applicability.
-             "Distort" is deliberately omitted: Krita has no separate
-             constrained distort-only mode, only unconstrained corner drag
-             inside Free Transform, so a menu item here would just be a
-             duplicate label pointing at the same thing as Free Transform,
-             not real distinct functionality. -->
         <Action name="layersize">
             <text>Scale</text>
         </Action>
@@ -218,9 +180,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="imagecolorspaceconversion">
             <text>Convert to Profile...</text>
         </Action>
-        <!-- Krimble: Indexed Color (kis_filter_palettize) relocated here
-             from Filter > Adjust to match industry-standard menu placement.
-             See kis_filter_manager.cc for the Filter-menu exclusion. -->
         <Action name="krita_filter_palettize">
             <text>Indexed Color...</text>
         </Action>
@@ -263,11 +222,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         </Action>
     </Menu>
                      <Separator/>
-    <!-- Krimble addition: completes a pending crop drawn with the Crop
-         tool (see plugins/tools/tool_crop/kis_tool_crop.cc). Placed
-         directly above Crop to Image Size / Crop to Current Layer /
-         Crop to Selection, matching the industry standard's Crop-then-
-         Trim adjacency in the Image menu. -->
     <Action name="apply_crop">
         <text>Crop</text>
     </Action>
@@ -538,13 +492,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="merge_layer">
         <text>Merge Down</text>
     </Action>
-    <!-- Krimble addition: real industry-standard-parity "Merge Visible" (Ctrl+Shift+E).
-         Selects all visible layers then merges them down, per the Krita manual's
-         documented equivalent (Select Visible Layers + Merge with Layer Below).
-         Kept immediately adjacent to Merge Down and Flatten Image, matching
-         the industry standard's exact Layer menu order (confirmed against
-         real industry-standard screenshots): Merge Down, Merge Visible,
-         Flatten Image, with nothing else between them. -->
     <Action name="merge_visible_layers">
         <text>Merge Visible</text>
     </Action>
@@ -552,15 +499,10 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>Flatten Image</text>
     </Action>
                      <Separator/>
-    <!-- Krimble: these three are Krita-specific commands with no industry-standard
-         equivalent. Grouped here, after the industry-standard-parity triplet above,
-         so they don't break that triplet's exact adjacency. -->
     <Action name="merge_selected_layers">
         <text>Merge Selected Layers</text>
     </Action>
-    <!-- Krimble fix: this entry was mislabeled "Merge Visible" (flatten_layer only
-         flattens the single active layer, it doesn't merge visible layers).
-         Corrected to its real behavior. -->
+
     <Action name="flatten_layer">
         <text>Flatten Layer</text>
     </Action>
@@ -759,10 +701,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>Show Global Selection Mask</text>
     </Action>
                      <Separator/>
-    <!-- Krimble: SAP (Single Application Process) makes opening another
-         document try to reuse this app's already-running instance instead
-         of starting a new one, a desktop multi-window convenience with
-         little practical value on a mobile, single-instance build.
+    <!-- 
     <Action name="enable_sap">
         <text>Enable SAP</text>
     </Action>
@@ -787,11 +726,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>Filter Gallery...</text>
     </Action>
                      <Separator/>
-    <!-- Krimble addition: industry-standard parity. Uses the existing, fully-functional
-         KisToolTransformLiquify action (activateSubtoolLiquify() in
-         kis_tool_transform.cc), same tool already reachable from the
-         toolbox flyout, now also placed at the industry standard's Filter > Liquify
-         menu location. No new tool logic. -->
     <Action name="KisToolTransformLiquify">
         <text>Liquify...</text>
     </Action>
@@ -1093,65 +1027,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 
 </MenuBar>
 
-
-<ToolBar name="mainToolBar" fullWidth="false" noMerge="1">
-    <Text>File</Text>
-    <Action name="file_new"/>
-    <Action name="file_open"/>
-    <Action name="file_save"/>
-    <Action name="file_save_as"/>
-    <Action name="file_save_all"/>
-    <Separator/>
-    <!-- file_print / file_print_preview were removed from the codebase
-         entirely (not just this menu) in an untracked earlier change - no
-         action with these names exists anywhere anymore. The industry standard has
-         File > Print and File > Print One Copy, so these need to be
-         reimplemented as real features, not just restored here. See
-         KRIMBLE_CHANGES.md ("Missing industry-standard-parity features") -->
-    <!-- <Action name="file_print"/> -->
-    <!-- <Action name="file_print_preview"/> -->
-    <!-- <Separator/> -->
-    <!-- Restored 2026-09-02: file_close/file_close_all/file_quit were
-         accidentally deleted in commit 718e83878 ("Update krita5.xmlgui")
-         along with unrelated toolbar cleanup in the same commit. The
-         industry standard has Close, Close All, and Exit in File, so
-         these belong here per the industry-standard-parity rule. Per
-         policy, future removals should be commented out, not deleted,
-         so this doesn't happen silently again. -->
-    <Action name="file_close"/>
-    <Action name="file_close_all"/>
-    <Separator/>
-    <Action name="file_quit"/>
-</ToolBar>
-
-
-<ToolBar name="editToolBar" fullWidth="false" noMerge="1">
-    <Text>Edit</Text>
-    <Action name="edit_cut"/>
-    <Action name="edit_copy"/>
-    <Action name="edit_paste"/>
-    <Separator/>
-    <Action name="edit_undo"/>
-    <Action name="edit_redo"/>
-    <Action name="edit_clear"/>
-    <Separator/>
-    <Action name="edit_select_all"/>
-    <Action name="edit_deselect"/>
-    <!-- edit_find / edit_find_next / edit_find_prev / edit_replace were
-         removed from the codebase entirely (not just this menu) in an
-         untracked earlier change - no action with these names exists
-         anywhere anymore. The industry standard has Edit > Find and Replace..., so
-         this needs to be reimplemented as a real feature, not just
-         restored here. See KRIMBLE_CHANGES.md
-         ("Missing industry-standard-parity features") -->
-    <!-- <Separator/> -->
-    <!-- <Action name="edit_find"/> -->
-    <!-- <Action name="edit_find_next"/> -->
-    <!-- <Action name="edit_find_prev"/> -->
-    <!-- <Action name="edit_replace"/> -->
-</ToolBar>
-
-
 <ToolBar name="BacktoBasics" position="top">
     <Text>Back to Basics</Text>
     <Action name="KisToolSelectRectangular"/>
@@ -1175,10 +1050,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="KisToolTransformFree"/>
     <Separator/>
     <Action name="dual"/>
-    <!-- Restored 2026-09-02: these four were accidentally deleted in
-         commit 718e83878 ("Update krita5.xmlgui") along with unrelated
-         cleanup in the same commit. Per policy, future removals should be
-         commented out, not deleted. -->
+
     <Separator/>
     <Action name="toggle-selection-overlay-mode"/>
     <Action name="show-global-selection-mask"/>
