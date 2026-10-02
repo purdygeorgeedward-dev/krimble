@@ -1585,3 +1585,30 @@ dragged (650x800 dragged by -100 px wide gave 550 wide; the height result was
 limited by the test screen); docking again removes the padding and hides the
 handle. **Not verified:** on a device, touch dragging of the handle, and the size
 and padding numbers (14, 36, 60%, 75%) are first guesses.
+
+## 2026-10-02 — File > New still too wide: Profile dropdown minimum width found
+
+**Files:** `libs/ui/widgets/kis_color_space_selector.cc` (Android only),
+`libs/ui/KisOpenPane.cpp`
+
+Device test of the earlier narrowing (ff26aa9) showed the fields were narrower
+but the dialog was still wider than a portrait screen (left list cut off).
+
+**Cause found:** `libs/ui/forms/wdgcolorspaceselector.ui` gives the Profile
+dropdown (`cmbProfile`) a hard minimum width of 300. On the test phone the app
+scales by about 2.5, so that is about 750 screen pixels, matching the width of the
+dropdown in the screenshot (745 px). It set the minimum width of the whole Custom
+Document page on its own.
+
+**Fix:** on Android only, the dropdown's minimum width is set to 100 in the
+selector's constructor. The dropdown is a squeezed combo box that elides long
+profile names, so nothing is lost. The same selector is used by other dialogs
+(for example image properties and color conversion), which also get narrower on
+Android. The left list cap in `KisOpenPane.cpp` was lowered from 24% to 22% of the
+screen width.
+
+**Estimate, not measured:** with a 2.5 scale, a portrait screen is about 432 wide
+in app units. The left list (22%) is about 95; the page should now need roughly
+290, so the total is about 385. The 290 is an estimate from the other rows, not a
+measurement. **Verified:** both files pass a compiler syntax-only check. **Not
+verified:** the real dialog on a device.
