@@ -6,8 +6,14 @@
 <RCC version="1.0">
     <qresource prefix="/splash">
         <file>banner.svg</file>
+        <!-- KRIMBLE 2026-10-02: splash images are now JPG (about 380 KB each instead of
+             about 2 MB each) and the PNGs are no longer packaged. The PNG files stay in
+             the repository. Original lines:
         <file alias="hd.png">logo_splash.png</file>
         <file alias="holiday.png">logo_splash_holidays.png</file>
+        -->
+        <file alias="hd.jpg">logo_splash.jpg</file>
+        <file alias="holiday.jpg">logo_splash_holidays.jpg</file>
     </qresource>
 </RCC>
 

@@ -278,21 +278,26 @@ KisSplashScreen::Source KisSplashScreen::getImageSource()
     // Enterprise Splash Screen Solution where we choose the image based on
     // screen size or something, we'll just use a HD JPEG instead. It's fine.
 #ifdef Q_OS_ANDROID
-    QString resourcePath = QStringLiteral(":/splash/hd.png");
+    // KRIMBLE 2026-10-02: splash images are JPG now (see splash-android.qrc).
+    // QString resourcePath = QStringLiteral(":/splash/hd.png");
+    QString resourcePath = QStringLiteral(":/splash/hd.jpg");
     // Krimble: holiday splash, active Dec 1 through Dec 26 inclusive.
     QDate currentDate = QDate::currentDate();
     if (currentDate >= QDate(currentDate.year(), 12, 1) &&
             currentDate <= QDate(currentDate.year(), 12, 26)) {
-        resourcePath = QStringLiteral(":/splash/holiday.png");
+        // resourcePath = QStringLiteral(":/splash/holiday.png");
+        resourcePath = QStringLiteral(":/splash/holiday.jpg");
     }
 #else
-    QString resourcePath = QStringLiteral(":/splash/0.png");
+    // QString resourcePath = QStringLiteral(":/splash/0.png");
+    QString resourcePath = QStringLiteral(":/splash/0.jpg");
     // TODO: Re-add the holiday splash...
 #if 0
     QDate currentDate = QDate::currentDate();
     if (currentDate > QDate(currentDate.year(), 12, 4) ||
             currentDate < QDate(currentDate.year(), 1, 9)) {
-        resourcePath = QStringLiteral(":/splash/1.png");
+        // resourcePath = QStringLiteral(":/splash/1.png");
+        resourcePath = QStringLiteral(":/splash/1.jpg");
         artistCredit = QStringLiteral("???")};
     }
 #endif

@@ -1722,3 +1722,30 @@ copy already installed. The old plugin libraries (`kritaartisticcolorselector`,
 `kritastoryboarddocker`, `kritawgcolorselector`, each `_arm64-v8a.so`) stay in
 `_install/lib`, and packaging would still put them in the APK, so the panels would
 keep showing. They need to be deleted from `_install/lib` before packaging.
+
+## 2026-10-02 — Splash images are JPG; the old PNGs are no longer packaged
+
+**Files:** `krita/data/splash/splash-android.qrc`, `krita/data/splash/splash.qrc`,
+`libs/ui/kis_splash_screen.cpp`; new files `krita/data/splash/logo_splash.jpg` and
+`krita/data/splash/logo_splash_holidays.jpg` (added by George, commit 2c76225)
+
+The new splash images have no transparency, so they are saved as JPG: 379 KB and
+387 KB (1536 x 1024, RGB, no alpha), against about 2.1 MB and 2.4 MB for the PNGs.
+
+- Both resource lists now embed the two JPGs. The old PNG lines are kept as XML
+  comments in each file. Android uses `splash-android.qrc` (aliases `hd.jpg` and
+  `holiday.jpg`); the desktop list `splash.qrc` uses `0.jpg` and `1.jpg`.
+- `kis_splash_screen.cpp` loads the new alias names. The old lines are commented out.
+- The PNG files stay in the repository (George wants to keep them) but nothing
+  references them any more, so they are not built into the app. A search of the
+  code, resource and build files found no other reference.
+- The December 1-26 holiday splash is now landscape (it was portrait); the splash
+  code scales any image to a fixed height and keeps its aspect ratio.
+- The splash window still draws its own gray background, visible only in the bar
+  under the image that holds "Loading resources...".
+
+**Verified:** both resource files are well-formed XML; the splash code passes a
+compiler syntax-only check; Qt reads both JPGs (1536 x 1024, no alpha channel).
+**Not verified:** a real build, and that the Android build includes Qt's JPEG
+image plugin (upstream Krita's Android build used a JPEG splash, which suggests
+it does). Check after the build that the splash shows.

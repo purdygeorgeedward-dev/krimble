@@ -6,7 +6,12 @@
 <RCC version="1.0">
     <qresource prefix="/splash">
         <file>banner.svg</file>
+        <!-- KRIMBLE 2026-10-02: splash images are now JPG; the PNGs are no longer
+             packaged (they stay in the repository). Original lines:
         <file alias="0.png">logo_splash.png</file>
         <file alias="1.png">logo_splash_holidays.png</file>
+        -->
+        <file alias="0.jpg">logo_splash.jpg</file>
+        <file alias="1.jpg">logo_splash_holidays.jpg</file>
     </qresource>
 </RCC>
