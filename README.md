@@ -110,13 +110,13 @@ Krimble is **free and open-source software**.
 
 That is more than a price. It means the program is shared with its source code under a free-software license so people can study it, modify it, improve it, build it, and share compatible versions.
 
-Krimble is intended to remain something creators can actually possess and work with — not merely temporary access to a service.
+Krimble is meant to be something creators can actually possess and work with — not temporary access to a service.
 
-**Free software is a gift that can keep growing.**
+**Free software is the gift that keeps on giving.**
 
 ---
 
-## We love A.I.
+## We love A.I.!
 
 <div align="center">
 <img src="https://krimble.org/assets/kimmy-robot-ai.jpg" alt="Kimmy and the Krimble robot — We love A.I." width="100%">
@@ -128,7 +128,7 @@ AI is treated as another class of creative technology: useful when it can make a
 
 The goal is not to turn Krimble into an “AI app.” The goal is to build a strong graphics editor and use new technology where it genuinely helps.
 
-**Move fast. Test things. Fix what breaks. Keep improving.**
+**Move fast and break things. Then hide it behind the couch. Buy superglue and fix it in secret.**
 
 ---
 
@@ -140,7 +140,7 @@ The goal is not to turn Krimble into an “AI app.” The goal is to build a str
 
 ## Development roadmap
 
-Krimble has already completed a large mobile-focused restructuring pass. The detailed engineering log is preserved below, but collapsed so the README remains readable.
+Krimble has already completed a large restructuring pass. The detailed engineering log is preserved below, but collapsed so the README remains readable.
 
 ### Current open work
 
