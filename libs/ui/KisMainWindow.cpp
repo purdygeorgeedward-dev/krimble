@@ -224,6 +224,29 @@ private:
     QWidget *m_dock;
     QWidget *m_grip;
 };
+
+// Remembers the size a panel had while it was docked, so that it can be given
+// back when the panel is detached (used for the toolbox).
+class KisDockedSizeTracker : public QObject
+{
+public:
+    explicit KisDockedSizeTracker(QDockWidget *dock)
+        : QObject(dock)
+        , m_dock(dock)
+    {
+    }
+
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (watched == m_dock && event->type() == QEvent::Resize && !m_dock->isFloating()) {
+            m_dock->setProperty("krimbleDockedSize", m_dock->size());
+        }
+        return false;
+    }
+
+private:
+    QDockWidget *m_dock;
+};
 #endif
 
 class ToolDockerFactory : public KoDockFactoryBase
@@ -2676,6 +2699,7 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
         // 3) They were too big and could not be resized. A panel that floats is
         //    capped to a default size (60% x 75% of the screen's shorter side) and
         //    gets a resize handle in its lower right corner.
+        dockWidget->installEventFilter(new KisDockedSizeTracker(dockWidget));
         connect(dockWidget, &QDockWidget::topLevelChanged, this, [dockWidget](bool floating) {
             dockWidget->setAllowedAreas(floating ? Qt::NoDockWidgetArea : Qt::AllDockWidgetAreas);
 
@@ -2704,7 +2728,14 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
                     grip = new KisFloatingDockSizeGrip(dockWidget);
                     dockWidget->installEventFilter(new KisFloatingDockGripPlacer(dockWidget, grip));
                 }
-                if (QScreen *scr = QGuiApplication::primaryScreen()) {
+                // KRIMBLE 2026-10-02: the toolbox keeps the size it had while docked
+                // (a narrow strip of tools); it is not capped to the default size.
+                const QSize dockedSize = dockWidget->property("krimbleDockedSize").toSize();
+                if (dockWidget->objectName() == QLatin1String("ToolBox")) {
+                    if (dockedSize.isValid()) {
+                        dockWidget->resize(dockedSize);
+                    }
+                } else if (QScreen *scr = QGuiApplication::primaryScreen()) {
                     const QSize screenSize = scr->availableGeometry().size();
                     const int shortSide = qMin(screenSize.width(), screenSize.height());
                     dockWidget->resize(qMin(dockWidget->width(), int(shortSide * 0.6)),

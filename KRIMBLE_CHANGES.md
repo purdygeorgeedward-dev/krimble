@@ -1665,3 +1665,34 @@ the layout is applied again after a reset.
 **Verified:** no compile error in the added lines (the syntax-only check of the
 whole file reports unrelated errors from stubbed generated headers). **Not
 verified:** on a device.
+
+## 2026-10-02 — Detach Panel / Attach Panel: summary, README entry, toolbox keeps its size
+
+This entry summarizes the feature built across the 2026-10-02 entries above
+(86f1474, cad9232, 9a6c1b0, c71726a) and records two further changes.
+
+**What the feature is**
+- Settings > **Detach Panel** (below "Panels"): lists the panels that are shown
+  and docked; choosing one makes it a free-floating window. A locked panel is
+  unlocked first.
+- Settings > **Attach Panel**: lists the floating panels; choosing one docks it
+  back into its previous area.
+- A panel that floats stays where it is dropped (it is allowed in no dock area
+  while floating), has extra title bar padding for touch, is capped to a default
+  size (60% x 75% of the screen's shorter side) and has a resize handle in its
+  lower right corner. Android only, except the two menu items.
+- Code: `libs/ui/KisMainWindow.cpp`; menu placement: `krita/krita5.xmlgui`.
+
+**README:** the "Panels" row of the "What Krimble changes" table now mentions
+Detach Panel, Attach Panel, stay-where-dropped and the resize handle.
+
+**Toolbox keeps its size when detached** (`libs/ui/KisMainWindow.cpp`, Android
+only). Device feedback: the toolbox did not keep its dimensions when detached. The
+size every panel has while docked is now remembered, and the toolbox is given its
+docked size back when it floats instead of being capped to the default size.
+The cause of the size loss is not confirmed: in a standalone Qt test (including a
+scroll-area based panel like the toolbox) a panel keeps its size when floated, so
+this change restores the size explicitly rather than fixing a known cause.
+**Verified:** the size tracking and restore in a standalone Qt test. **Not
+verified:** on a device with the real toolbox; whether the toolbox then keeps its
+vertical layout.

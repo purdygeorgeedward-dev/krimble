@@ -67,7 +67,7 @@ Krimble already includes changes to make the application more practical and fami
 | **Navigation** | Pan/Hand as the default tool, touch-first movement, fewer accidental gestures |
 | **Toolbox** | Reordered around familiar graphics-editing terminology |
 | **Menus** | Simplified, renamed, and reorganized for mobile use |
-| **Panels** | User-facing “docker” terminology replaced with **panel** |
+| **Panels** | User-facing “docker” terminology replaced with **panel**; **Detach Panel** and **Attach Panel** in the Settings menu float any panel and dock it back; floating panels stay where dropped and have a corner resize handle |
 | **Touch** | Larger crop handles, wider resize targets, mobile selection handles |
 | **Transform** | Free Transform as the predictable default; accidental shear reduced |
 | **Color** | User-friendly simple square color selector; improved Match Color |
