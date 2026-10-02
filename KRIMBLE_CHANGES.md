@@ -1415,3 +1415,35 @@ Image
 Shortcuts are the ones already assigned to each filter in code; no
 shortcut was added or changed. Auto Tone, Auto Contrast, Auto Color and
 Photo Filter have none.
+
+## 2026-10-02 — Default workspace repaired: only ToolBox, Tool Options and Layers on startup
+
+**File:** `krita/data/workspaces/Default.kws`
+
+**Cause found.** Commit `a73387e` (2026-09-05, "Simplify Default workspace
+to ToolBox, Tool Options, Layers only") saved the panel layout (`<state>`,
+a base64 string) with every letter converted to upper case: 0 lower-case
+characters in 7,752, against about 1,500 lower-case in every earlier version.
+Base64 is case-sensitive, so the string decoded to garbage, Qt refused to
+restore it, and the app silently fell back to its built-in panel defaults.
+That is why Color Selector and Brush Presets kept appearing at startup and the
+Sept 4 simplification never took effect on a device.
+
+**Fix.** The `<state>` is replaced with a valid one that contains exactly three
+visible panels: ToolBox on the left; Tool Options (`sharedtooldocker`) above
+Layers (`KisLayerBox`) on the right. The other 90 dockers in the file are
+present and hidden, so they can still be opened from Settings > Dockers.
+The rest of the file (settings, thumbnail) is the last valid version from
+`62a77b2` (2026-08-24). The broken state from `a73387e` is not kept in the
+file; recover it from that commit if ever needed.
+
+**How the new state was made and checked.** A small Qt program built a main
+window with a dock widget for every name found in the Aug 24 state, set the
+layout above, and called `saveState()`. The result starts with the correct
+Qt magic bytes, restores successfully into a fresh window, and in that window
+exactly ToolBox, Tool Options and Layers are visible (90 of 93 hidden).
+
+**Not verified:** on a real device. Installs that already have a copy of the
+old workspace file in their app data may keep using it until the app data is
+cleared; not tested. Dock widths are Qt defaults for a 1080 px-wide screen and
+may need tuning.
