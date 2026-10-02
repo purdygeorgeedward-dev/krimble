@@ -439,6 +439,38 @@ KisMainWindow::KisMainWindow(QUuid uuid)
         d->dockWidgetMenu->addAction(dockwidgetActions[title]);
     }
 
+    // KRIMBLE 2026-10-02: "Detach Panel" submenu at the bottom of Settings >
+    // Panels. Lists the panels that are currently shown and docked; choosing
+    // one makes it a free-floating window. A locked panel (lock icon in its
+    // title bar) is unlocked first, because a locked panel cannot float.
+    // The list is rebuilt every time the submenu opens.
+    QMenu *detachPanelMenu = new QMenu(i18nc("@action:inmenu", "Detach Panel"), this);
+    connect(detachPanelMenu, &QMenu::aboutToShow, this, [this, detachPanelMenu]() {
+        detachPanelMenu->clear();
+        Q_FOREACH (QDockWidget *dock, dockWidgets()) {
+            if (!dock || !dock->isVisible() || dock->isFloating()) {
+                continue;
+            }
+            QAction *detachAction = detachPanelMenu->addAction(dock->windowTitle());
+            connect(detachAction, &QAction::triggered, this, [dock]() {
+                if (dock->property("Locked").toBool()) {
+                    if (KoDockWidgetTitleBar *bar = dynamic_cast<KoDockWidgetTitleBar*>(dock->titleBarWidget())) {
+                        bar->setLocked(false);
+                    } else if (KisUtilityTitleBar *utilityBar = dynamic_cast<KisUtilityTitleBar*>(dock->titleBarWidget())) {
+                        utilityBar->setLocked(false);
+                    }
+                }
+                dock->setFloating(true);
+            });
+        }
+        if (detachPanelMenu->isEmpty()) {
+            QAction *noneAction = detachPanelMenu->addAction(i18nc("@action:inmenu", "No docked panels"));
+            noneAction->setEnabled(false);
+        }
+    });
+    d->dockWidgetMenu->addSeparator();
+    d->dockWidgetMenu->menu()->addMenu(detachPanelMenu);
+
 
     // Style menu actions
     d->styleActions = new QActionGroup(this);

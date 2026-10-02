@@ -1497,3 +1497,31 @@ may need tuning.
 
 Also re-checked with the same syntax-only compile: `libs/ui/thememanager.cpp`
 (theme fix from earlier today) now passes; it could not be checked before.
+
+## 2026-10-02 — Settings > Panels > Detach Panel
+
+**File:** `libs/ui/KisMainWindow.cpp` (after the panel list is built; no
+`krita5.xmlgui` change, the item is added to the code-generated Panels menu)
+
+New submenu at the bottom of Settings > Panels, "Detach Panel". It lists the
+panels that are currently shown and docked (hidden panels and panels that are
+already floating are not listed). Choosing one makes it a free-floating window.
+The list is rebuilt each time the submenu opens. If no panel is docked it shows a
+disabled "No docked panels" entry.
+
+A locked panel (lock icon in its title bar) cannot float, so choosing it
+unlocks it first, then detaches it.
+
+**Why Tool Options was greyed out in Settings > Panels:** that is Krita's
+built-in panel lock, not a bug. While a panel's lock is on, its entry in the
+Panels list is disabled and its close/float buttons are hidden. Tapping the lock
+icon in the panel's title bar turns the lock off and re-enables the entry.
+Nothing was changed for this; the lock still works as before.
+
+**Verified:** the menu logic was run in a small standalone Qt program using
+stand-ins for the two title-bar classes (copying their real lock behaviour): only
+visible docked panels are listed, a locked panel is unlocked and floated, it
+disappears from the list afterwards, and the empty case is handled.
+**Not verified:** `KisMainWindow.cpp` as a whole could not be syntax-checked here
+(it needs the external `lager` library headers, which are not available), the
+real build, and floating panels on a real Android device.
