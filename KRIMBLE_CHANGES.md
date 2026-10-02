@@ -1696,3 +1696,29 @@ this change restores the size explicitly rather than fixing a known cause.
 **Verified:** the size tracking and restore in a standalone Qt test. **Not
 verified:** on a device with the real toolbox; whether the toolbox then keeps its
 vertical layout.
+
+## 2026-10-02 — Six panel plugins no longer built (George's edit, commit 563cc24)
+
+**File:** `plugins/dockers/CMakeLists.txt` (the `add_subdirectory` lines were
+commented out, not deleted)
+
+To make the app leaner, these panel plugins are no longer compiled or packaged:
+- Artistic Color Selector (`artisticcolorselector`)
+- Animation panels: Animation Timeline, Animation Curves, Onion Skins (`animation`)
+- Brush Preset History (`presethistory`)
+- Log Viewer (`logdocker`)
+- Storyboard (`storyboarddocker`)
+- Wide Gamut Color Selector (`widegamutcolorselector`)
+
+They no longer appear in Settings > Panels, which also shortens that list.
+
+**Checked (read-only):** nothing else in the build refers to these plugin targets
+(a search of all CMake files, scripts and CI files found no references outside the
+six directories), so the build should still configure and link.
+
+**Important for the server build:** commenting a plugin out does not delete the
+copy already installed. The old plugin libraries (`kritaartisticcolorselector`,
+`kritaanimationdocker`, `kritapresethistory`, `kritalogdocker`,
+`kritastoryboarddocker`, `kritawgcolorselector`, each `_arm64-v8a.so`) stay in
+`_install/lib`, and packaging would still put them in the APK, so the panels would
+keep showing. They need to be deleted from `_install/lib` before packaging.
