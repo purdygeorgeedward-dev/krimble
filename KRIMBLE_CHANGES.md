@@ -1880,3 +1880,29 @@ another page may still force it wider. **Not verified:** a build or a device. Th
 could not be syntax-checked here (it includes headers from the external `lager`
 library); the added lines are plain Qt calls. If Preferences is still too wide, a
 screenshot of the page that is too wide will show which form to fix next.
+
+## 2026-10-02 — Type tool re-enabled (George's decision); cause of bug #9 still unknown
+
+**File:** `plugins/tools/svgtexttool/Plugin.cpp`
+
+Re-enabled the line that registers the Type tool (`SvgTextToolFactory`) with
+`KoToolRegistry`, which had been commented out since 2026-09-06 (bug #9). The
+old comment and the old commented line are kept above the new line. With the tool
+registered again, the Type tool appears in the toolbox and all 18 items in the
+Type menu work again; they had nothing to act on while the tool was off.
+
+**Bug #9 is NOT fixed.** The Type tool was randomly activating itself, and the
+reason was never found. This session's read-only search of the automatic tool
+switching code found no cause: `KoToolManager::preferredToolForSelection`
+(used by `KisShapeController::setInitialShapeForCanvas` and
+`DefaultTool::explicitUserStrokeEndRequest`) picks the lowest-priority-number
+tool whose shape list matches the selected shapes, and the Type tool matches only
+text shapes (plus `flake/always`, which no shape uses); the "no active tool"
+fallback only looks at the Main section, and the Type tool is in `PSOrder`. The
+Type tool's own priority (1) and section (`PSOrder`) are Krimble settings (upstream
+Krita uses priority 5 and the Vector section); I did not change them.
+
+If it activates by itself again, please note what was being done (which tool was
+active, what was tapped, whether a text layer existed) so it can be traced.
+**Not verified:** a build or a device; the file could not be syntax-checked here (the
+Qt QML headers are not installed in the sandbox). The change is one uncommented line.

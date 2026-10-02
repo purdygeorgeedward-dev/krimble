@@ -37,6 +37,11 @@ Plugin::Plugin(QObject *parent, const QVariantList &)
     // appear in the toolbox or be auto-activated by anything since it's never
     // added to KoToolRegistry. Re-enable by uncommenting once root cause found.
     // KoToolRegistry::instance()->add(new SvgTextToolFactory());
+
+    // KRIMBLE 2026-10-02: RE-ENABLED at George's request, with the root cause of
+    // the self-activation (bug #9) still not found. If the Type tool activates by
+    // itself again, note what was being done and report it.
+    KoToolRegistry::instance()->add(new SvgTextToolFactory());
 }
 
 #include <Plugin.moc>
