@@ -40,7 +40,8 @@
 #ifdef Q_OS_ANDROID
 #include <QGuiApplication>
 #include <QScreen>
-#include <QSizeGrip>
+#include <QMouseEvent>
+// #include <QSizeGrip>  // no longer used, see KisFloatingDockSizeGrip
 #include <QPainter>
 #endif
 #include <QMenuBar>
@@ -176,17 +177,42 @@
 #ifdef Q_OS_ANDROID
 // KRIMBLE 2026-10-02: resize handle for floating panels (see the
 // topLevelChanged handler in createDockWidget()). A visible corner handle with
-// a large touch target; QSizeGrip does the actual resizing of the floating window.
-class KisFloatingDockSizeGrip : public QSizeGrip
+// a large touch target that resizes its floating panel from the lower right:
+// the left and top edges stay where they are.
+// (It replaces a QSizeGrip subclass. QSizeGrip works out which corner it is in
+// from where it sits in the window: on a narrow panel such as the toolbox its
+// 36 pixel width put it in the left half, so it moved the lower left corner.)
+class KisFloatingDockSizeGrip : public QWidget
 {
 public:
     explicit KisFloatingDockSizeGrip(QWidget *parent)
-        : QSizeGrip(parent)
+        : QWidget(parent)
     {
         setFixedSize(36, 36);
     }
 
 protected:
+    void mousePressEvent(QMouseEvent *event) override
+    {
+        if (event->button() == Qt::LeftButton) {
+            m_pressPos = event->globalPos();
+            m_startSize = window()->size();
+            event->accept();
+        } else {
+            event->ignore();
+        }
+    }
+
+    void mouseMoveEvent(QMouseEvent *event) override
+    {
+        if (event->buttons() & Qt::LeftButton) {
+            const QPoint delta = event->globalPos() - m_pressPos;
+            window()->resize(qMax(1, m_startSize.width() + delta.x()),
+                             qMax(1, m_startSize.height() + delta.y()));
+            event->accept();
+        }
+    }
+
     void paintEvent(QPaintEvent *) override
     {
         QPainter p(this);
@@ -199,6 +225,10 @@ protected:
             p.drawLine(width() - 4 - offset, height() - 4, width() - 4, height() - 4 - offset);
         }
     }
+
+private:
+    QPoint m_pressPos;
+    QSize m_startSize;
 };
 
 // Keeps the resize handle in the lower right corner of its floating panel.

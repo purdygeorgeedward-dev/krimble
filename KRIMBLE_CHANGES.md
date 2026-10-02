@@ -1833,3 +1833,26 @@ The Color Selector entry in the color settings dropdown
 
 **Verified:** all four files pass a compiler syntax-only check. **Not verified:**
 a real build or a device.
+
+## 2026-10-02 — Resize handle moved the wrong corner on the toolbox
+
+**File:** `libs/ui/KisMainWindow.cpp` (Android only)
+
+Device feedback: the handle in the lower right corner of the floating toolbox
+moved the lower left corner.
+
+**Cause (reproduced in a standalone Qt test):** the handle was a `QSizeGrip`. Qt
+decides which corner a size grip controls from where it sits in the window: if
+its left edge is in the left half of the window it acts as a lower left grip. The
+toolbox is narrow, so the 36 pixel wide handle was in the left half. Test: on a
+panel 70 wide, dragging the handle right moved the left edge from 302 to 310
+and shrank the panel; on a 300 wide panel it behaved correctly.
+
+**Fix:** the handle is now a plain widget that resizes its panel from the lower
+right: the left and top edges never move; dragging by (+60, +80) adds 60 to the
+width and 80 to the height. Same test, both widths: left edge fixed, right edge
+and bottom edge move as dragged. Look, size (36 x 36) and position are unchanged.
+The old `QSizeGrip` include is commented out.
+
+**Verified:** standalone Qt test (wide and narrow panel). **Not verified:** a
+device; `KisMainWindow.cpp` cannot be syntax-checked here.
