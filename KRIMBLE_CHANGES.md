@@ -1311,3 +1311,15 @@ built or verified.
   History line 180 ("Version reset to alpha1") left as-is; it is history.
 
 Not yet built or verified. The next `make` re-runs CMake automatically.
+
+## 2026-10-01 — Default toolbox icon size 32 -> 16 (16 x 16)
+
+**File:** `libs/ui/toolbox/KoToolBox.cpp`
+
+On Android the default toolbox icon size was a fixed 32. It is now 16
+(16 x 16), matching the "16x16" entry already in the toolbox's icon size
+menu. Old line commented out. Only the default changes: an icon size
+already saved on a device (`KoToolBox/iconSize` in the config) still wins,
+so existing installs keep their saved size until it is reset to
+"Default" from the toolbox context menu. Fresh installs get 16.
+Not yet built or verified.

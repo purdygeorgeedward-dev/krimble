@@ -52,7 +52,10 @@ static int buttonSize(int screen)
     // targets widened elsewhere this session (crop handles, dock
     // separators, text-selection handles).
     Q_UNUSED(screen);
-    return 32;
+    // KRIMBLE 2026-10-01: default toolbox icon size changed from 32 to 16
+    // (16 x 16), per project direction. Original line kept below.
+    // return 32;
+    return 16;
 #else
     QRect rc = QGuiApplication::screens().at(screen)->availableGeometry();
     if (rc.width() <= 1024) {
