@@ -623,6 +623,27 @@ bool KisApplication::start(const KisApplicationArguments &args)
                 }
             }
 
+            // KRIMBLE 2026-10-02: Krita only applies the "Default" workspace when it
+            // is asked for explicitly (command line, canvas-only mode, Reset All
+            // Settings). On a normal first launch the panels therefore came from
+            // each panel's built-in default, which is why Color Selector and Brush
+            // Presets showed up even though the Default workspace was set to
+            // ToolBox, Tool Options and Layers only. Apply the Default workspace once,
+            // on the first launch of an installation. Later launches keep whatever
+            // layout the user left.
+            if (args.workspace().isEmpty()) {
+                KConfigGroup krimbleGroup = KSharedConfig::openConfig()->group("Krimble");
+                if (!krimbleGroup.readEntry("DefaultWorkspaceApplied", false)) {
+                    KoResourceServer<KisWorkspaceResource> * rserver = KisResourceServerProvider::instance()->workspaceServer();
+                    KisWorkspaceResourceSP workspace = rserver->resource("", "", "Default");
+                    if (workspace) {
+                        d->mainWindow->restoreWorkspace(workspace);
+                    }
+                    krimbleGroup.writeEntry("DefaultWorkspaceApplied", true);
+                    krimbleGroup.sync();
+                }
+            }
+
             if (args.canvasOnly()) {
                 d->mainWindow->viewManager()->switchCanvasOnly(true);
             }

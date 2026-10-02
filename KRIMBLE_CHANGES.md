@@ -1637,3 +1637,31 @@ removed or updated.
 **Verified:** `krita5.xmlgui` is well-formed XML. **Not verified:** the menu on a
 device; `KisMainWindow.cpp` cannot be syntax-checked here (missing external
 `lager` headers).
+
+## 2026-10-02 — Default workspace applied once on first launch (Brush Presets / Color Selector at startup)
+
+**File:** `libs/ui/KisApplication.cpp` (right after the existing `--workspace`
+handling in `KisApplication::start()`)
+
+Device test with cleared app data showed Brush Presets and Color Selector still
+visible, even after `Default.kws` was repaired (9f951f5). Reading the startup
+code showed why: Krita applies a workspace only when asked (command line option,
+canvas-only mode, Reset All Settings). On a normal first launch no workspace is
+applied, so the panels come from each panel's built-in default, and the repaired
+`Default.kws` was never used.
+
+**Fix:** on the first launch of an installation (no `DefaultWorkspaceApplied`
+entry in the `Krimble` config group), the workspace named "Default" is applied
+once and the entry is written. Later launches keep whatever layout the user
+left, so panels the user opens or moves are not reset. Skipped when a workspace
+was given on the command line.
+
+**Limits:** it needs the repaired `Default.kws` to be the "Default" workspace in
+the app's resource database, which is true on a fresh install (clear app data).
+An install over an older one keeps the old workspace and is not changed by this.
+Settings > Reset All Settings clears the flag along with the other settings, so
+the layout is applied again after a reset.
+
+**Verified:** no compile error in the added lines (the syntax-only check of the
+whole file reports unrelated errors from stubbed generated headers). **Not
+verified:** on a device.
