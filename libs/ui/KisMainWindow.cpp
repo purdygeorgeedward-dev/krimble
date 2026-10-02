@@ -471,6 +471,28 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     d->dockWidgetMenu->addSeparator();
     d->dockWidgetMenu->menu()->addMenu(detachPanelMenu);
 
+    // KRIMBLE 2026-10-02: "Attach Panel" submenu, the counterpart of "Detach
+    // Panel". Lists the panels that are currently floating; choosing one docks
+    // it back into its previous dock area.
+    QMenu *attachPanelMenu = new QMenu(i18nc("@action:inmenu", "Attach Panel"), this);
+    connect(attachPanelMenu, &QMenu::aboutToShow, this, [this, attachPanelMenu]() {
+        attachPanelMenu->clear();
+        Q_FOREACH (QDockWidget *dock, dockWidgets()) {
+            if (!dock || !dock->isVisible() || !dock->isFloating()) {
+                continue;
+            }
+            QAction *attachAction = attachPanelMenu->addAction(dock->windowTitle());
+            connect(attachAction, &QAction::triggered, this, [dock]() {
+                dock->setFloating(false);
+            });
+        }
+        if (attachPanelMenu->isEmpty()) {
+            QAction *noneAction = attachPanelMenu->addAction(i18nc("@action:inmenu", "No floating panels"));
+            noneAction->setEnabled(false);
+        }
+    });
+    d->dockWidgetMenu->menu()->addMenu(attachPanelMenu);
+
 
     // Style menu actions
     d->styleActions = new QActionGroup(this);
@@ -2568,6 +2590,26 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
             KisUtilityTitleBar *utilityTitleBar = dynamic_cast<KisUtilityTitleBar*>(dockWidget->titleBarWidget());
             utilityTitleBar->setLocked(true);
         }
+
+#ifdef Q_OS_ANDROID
+        // KRIMBLE 2026-10-02: floating panels on a touch screen.
+        // 1) They re-docked too easily: dragging a floating panel across a dock
+        //    area snapped it back in. While a panel floats it is now allowed in
+        //    no dock area, so it stays where it is dropped. It goes back into the
+        //    layout only through its float button or Settings > Panels > Attach
+        //    Panel; its allowed areas are restored as soon as it is docked again.
+        //    (The allowed areas are changed only here, after the panel has been
+        //    added to a dock area. Setting them before addDockWidget() was
+        //    tried on 2026-09-04 and broke docking; see the note above.)
+        // 2) They were hard to grab. While floating, the title bar gets a larger
+        //    minimum height so there is more to touch.
+        connect(dockWidget, &QDockWidget::topLevelChanged, this, [dockWidget](bool floating) {
+            dockWidget->setAllowedAreas(floating ? Qt::NoDockWidgetArea : Qt::AllDockWidgetAreas);
+            if (QWidget *bar = dockWidget->titleBarWidget()) {
+                bar->setMinimumHeight(floating ? 40 : 0);
+            }
+        });
+#endif
 
         d->dockWidgetsMap.insert(factory->id(), dockWidget);
     }

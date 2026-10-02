@@ -1525,3 +1525,33 @@ disappears from the list afterwards, and the empty case is handled.
 **Not verified:** `KisMainWindow.cpp` as a whole could not be syntax-checked here
 (it needs the external `lager` library headers, which are not available), the
 real build, and floating panels on a real Android device.
+
+## 2026-10-02 — Floating panels on touch: stay detached, easier to grab, Attach Panel
+
+**File:** `libs/ui/KisMainWindow.cpp` (the first part is Android only,
+`#ifdef Q_OS_ANDROID`)
+
+Feedback from device testing: floating panels re-docked too eagerly when
+dropped, and were hard to grab with touch.
+
+- **Stay detached.** When a panel floats it is now allowed in no dock area
+  (`setAllowedAreas(Qt::NoDockWidgetArea)`), so dropping it over a dock area
+  does not snap it back. It is docked again through its float button or the new
+  Settings > Panels > Attach Panel item. Its allowed areas are restored when it is
+  docked. The change is made only from the `topLevelChanged` signal, i.e. after
+  the panel was already added to a dock area. (The 2026-09-04 attempt set
+  the allowed areas before `addDockWidget()` and broke docking; this does not.)
+- **Easier to grab.** While floating, the panel's title bar has a minimum
+  height of 40 (app-scaled pixels; docked panels are unchanged).
+- **Attach Panel.** New submenu under Settings > Panels, below Detach Panel. Lists
+  floating panels; choosing one docks it back into its previous area.
+
+**Verified:** in a standalone Qt program (offscreen): the allowed-areas change
+and the taller title bar happen on floating, `setFloating(false)` still docks a
+panel back into its previous area even while its allowed areas are empty, and
+the allowed areas and title height are restored afterwards.
+**Not verified:** on a device. In particular, whether Qt on Android honours the
+empty allowed areas while a floating panel is being dragged (this is how Qt
+decides whether a drop docks the panel), and whether 40 is the right height.
+The offscreen test cannot simulate dragging. `KisMainWindow.cpp` still cannot be
+syntax-checked here (missing external `lager` headers).
