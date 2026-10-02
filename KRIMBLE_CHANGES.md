@@ -1470,3 +1470,30 @@ confirmed they are the whole cause of the first-launch gray theme; I could not
 reproduce it. Not compiled (the syntax-check setup could not resolve
 `kstandardshortcut.h` for this file; the change only uses QString/QStringLiteral
 already used in the file). Test: clear app data, install, first launch.
+
+## 2026-10-02 — File > New dialog narrowed on Android
+
+**Files:** `libs/ui/KisOpenPane.cpp`, `libs/ui/widgets/kis_custom_image_widget.cc`
+(both changes wrapped in `#ifdef Q_OS_ANDROID`; desktop builds unchanged)
+
+Symptom: the New Image dialog was wider than a portrait screen (its left list
+was cut off) and, in landscape, the Width / Height / Resolution fields, their
+unit dropdowns and the Predefined dropdown stretched across a lot of empty
+space.
+
+- `KisOpenPane.cpp`: the left list (Custom Document, templates...) gets a
+  maximum width of 24% of the screen width. Longer names are elided. On a
+  landscape screen the cap is larger than the list's natural width, so
+  landscape is unchanged.
+- `kis_custom_image_widget.cc`: maximum widths (in the app's scaled pixels) of
+  90 for the width, height and resolution fields, 95 for their unit dropdowns,
+  and 130 for the Predefined dropdown. They were about 123 each before. Only
+  maximums were added, nothing can become smaller than it needs to be.
+
+Both files pass a compiler syntax-only check against the real Krita and KDE
+headers (generated headers stubbed). Not verified: a real build, and how the
+dialog looks on a device. The numbers are estimates taken from a screenshot and
+may need tuning.
+
+Also re-checked with the same syntax-only compile: `libs/ui/thememanager.cpp`
+(theme fix from earlier today) now passes; it could not be checked before.

@@ -68,6 +68,21 @@ KisCustomImageWidget::KisCustomImageWidget(QWidget* parent, qint32 defWidth, qin
     m_openPane = qobject_cast<KisOpenPane*>(parent);
     Q_ASSERT(m_openPane);
 
+#ifdef Q_OS_ANDROID
+    // KRIMBLE 2026-10-02: the width, height and resolution fields, their unit
+    // dropdowns and the Predefined dropdown stretched to fill all available
+    // width, which made the dialog wider than a portrait screen and left large
+    // empty gaps. Cap them (values are in the app's scaled pixels, about 123
+    // before). Only maximums are set, so nothing gets smaller than it needs.
+    doubleWidth->setMaximumWidth(90);
+    doubleHeight->setMaximumWidth(90);
+    doubleResolution->setMaximumWidth(90);
+    cmbWidthUnit->setMaximumWidth(95);
+    cmbHeightUnit->setMaximumWidth(95);
+    cmbResolutionUnit->setMaximumWidth(95);
+    cmbPredefined->setMaximumWidth(130);
+#endif
+
     txtName->setText(imageName);
     m_widthUnit = KoUnit(KoUnit::Pixel, resolution);
     doubleWidth->setValue(defWidth);

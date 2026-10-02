@@ -20,6 +20,8 @@
 #include <QStandardPaths>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QGuiApplication>
+#include <QScreen>
 #include <QMimeData>
 
 #include <klocalizedstring.h>
@@ -113,6 +115,16 @@ KisOpenPane::KisOpenPane(QWidget *parent, const QStringList& mimeFilter, const Q
     , d(new KisOpenPanePrivate)
 {
     d->setupUi(this);
+
+#ifdef Q_OS_ANDROID
+    // KRIMBLE 2026-10-02: the File > New pane was wider than a portrait screen.
+    // Cap the left list (Custom Document, templates...) to 24% of the screen
+    // width; longer names are elided. The cap is larger than the list's natural
+    // width on a landscape screen, so landscape is unaffected.
+    if (QScreen *scr = QGuiApplication::primaryScreen()) {
+        d->m_sectionList->setMaximumWidth(int(scr->availableGeometry().width() * 0.24));
+    }
+#endif
 
     m_mimeFilter = mimeFilter;
 
