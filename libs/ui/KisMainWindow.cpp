@@ -36,6 +36,12 @@
 #include <QStatusBar>
 #include <QStyleFactory>
 #include <QMenu>
+#ifdef Q_OS_ANDROID
+#include <QGuiApplication>
+#include <QScreen>
+#include <QSizeGrip>
+#include <QPainter>
+#endif
 #include <QMenuBar>
 #include <KisMimeDatabase.h>
 #include <QMimeData>
@@ -164,6 +170,60 @@
 
 #if defined(Q_OS_ANDROID) && KRITA_QT_HAS_ANDROID_QPLATFORMSCREEN_DENSITY_ADJUSTMENT
 #include <KisAndroidScaling.h>
+#endif
+
+#ifdef Q_OS_ANDROID
+// KRIMBLE 2026-10-02: resize handle for floating panels (see the
+// topLevelChanged handler in createDockWidget()). A visible corner handle with
+// a large touch target; QSizeGrip does the actual resizing of the floating window.
+class KisFloatingDockSizeGrip : public QSizeGrip
+{
+public:
+    explicit KisFloatingDockSizeGrip(QWidget *parent)
+        : QSizeGrip(parent)
+    {
+        setFixedSize(36, 36);
+    }
+
+protected:
+    void paintEvent(QPaintEvent *) override
+    {
+        QPainter p(this);
+        p.setRenderHint(QPainter::Antialiasing);
+        QPen pen(palette().color(QPalette::WindowText));
+        pen.setWidthF(2.0);
+        p.setPen(pen);
+        for (int i = 1; i <= 3; ++i) {
+            const int offset = i * 8;
+            p.drawLine(width() - 4 - offset, height() - 4, width() - 4, height() - 4 - offset);
+        }
+    }
+};
+
+// Keeps the resize handle in the lower right corner of its floating panel.
+class KisFloatingDockGripPlacer : public QObject
+{
+public:
+    KisFloatingDockGripPlacer(QWidget *dock, QWidget *grip)
+        : QObject(dock)
+        , m_dock(dock)
+        , m_grip(grip)
+    {
+    }
+
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (watched == m_dock && (event->type() == QEvent::Resize || event->type() == QEvent::Show)) {
+            m_grip->move(m_dock->width() - m_grip->width(), m_dock->height() - m_grip->height());
+            m_grip->raise();
+        }
+        return false;
+    }
+
+private:
+    QWidget *m_dock;
+    QWidget *m_grip;
+};
 #endif
 
 class ToolDockerFactory : public KoDockFactoryBase
@@ -2601,12 +2661,52 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
         //    (The allowed areas are changed only here, after the panel has been
         //    added to a dock area. Setting them before addDockWidget() was
         //    tried on 2026-09-04 and broke docking; see the note above.)
-        // 2) They were hard to grab. While floating, the title bar gets a larger
-        //    minimum height so there is more to touch.
+        // 2) They were hard to grab. While floating, the title bar gets extra
+        //    padding top and bottom. This is done with the title bar's layout
+        //    margins so the panel lays out correctly; a larger minimum height on
+        //    the title bar made it overlap the panel's content.
+        // 3) They were too big and could not be resized. A panel that floats is
+        //    capped to a default size (60% x 75% of the screen's shorter side) and
+        //    gets a resize handle in its lower right corner.
         connect(dockWidget, &QDockWidget::topLevelChanged, this, [dockWidget](bool floating) {
             dockWidget->setAllowedAreas(floating ? Qt::NoDockWidgetArea : Qt::AllDockWidgetAreas);
+
             if (QWidget *bar = dockWidget->titleBarWidget()) {
-                bar->setMinimumHeight(floating ? 40 : 0);
+                if (QLayout *barLayout = bar->layout()) {
+                    const int extra = 14;
+                    QMargins margins = barLayout->contentsMargins();
+                    const bool padded = bar->property("krimbleTitlePadded").toBool();
+                    if (floating && !padded) {
+                        margins.setTop(margins.top() + extra);
+                        margins.setBottom(margins.bottom() + extra);
+                        barLayout->setContentsMargins(margins);
+                        bar->setProperty("krimbleTitlePadded", true);
+                    } else if (!floating && padded) {
+                        margins.setTop(margins.top() - extra);
+                        margins.setBottom(margins.bottom() - extra);
+                        barLayout->setContentsMargins(margins);
+                        bar->setProperty("krimbleTitlePadded", false);
+                    }
+                }
+            }
+
+            KisFloatingDockSizeGrip *grip = dockWidget->findChild<KisFloatingDockSizeGrip*>();
+            if (floating) {
+                if (!grip) {
+                    grip = new KisFloatingDockSizeGrip(dockWidget);
+                    dockWidget->installEventFilter(new KisFloatingDockGripPlacer(dockWidget, grip));
+                }
+                if (QScreen *scr = QGuiApplication::primaryScreen()) {
+                    const QSize screenSize = scr->availableGeometry().size();
+                    const int shortSide = qMin(screenSize.width(), screenSize.height());
+                    dockWidget->resize(qMin(dockWidget->width(), int(shortSide * 0.6)),
+                                       qMin(dockWidget->height(), int(shortSide * 0.75)));
+                }
+                grip->move(dockWidget->width() - grip->width(), dockWidget->height() - grip->height());
+                grip->show();
+                grip->raise();
+            } else if (grip) {
+                grip->hide();
             }
         });
 #endif

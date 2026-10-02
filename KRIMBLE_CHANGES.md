@@ -1555,3 +1555,33 @@ empty allowed areas while a floating panel is being dragged (this is how Qt
 decides whether a drop docks the panel), and whether 40 is the right height.
 The offscreen test cannot simulate dragging. `KisMainWindow.cpp` still cannot be
 syntax-checked here (missing external `lager` headers).
+
+## 2026-10-02 — Floating panels: title bar overlap fixed, default size, resize handle
+
+**File:** `libs/ui/KisMainWindow.cpp` (Android only, `#ifdef Q_OS_ANDROID`).
+Replaces part of the 2026-10-02 "stay detached" change after device testing.
+
+**Bug found on device:** floating panels showed their title text and buttons on
+top of the panel's content (Layers header over the blend mode box, Color
+Selector title over the hue bar). Cause: I made the title bar taller by setting
+a minimum height. The dock layout only reserves the title bar's size hint, so the
+taller title bar was drawn over the content below it. Reproduced in a standalone
+Qt test: title bar 80 px tall, content starting at 34 px.
+
+**Fix:** the extra title height is now added as padding in the title bar's own
+layout (14 on top and bottom while floating; removed when docked again), which
+the dock layout does reserve. Same test: title bar and content no longer overlap.
+
+**New:**
+- Default size. A panel that starts floating is capped to 60% x 75% of the
+  screen's shorter side (a panel already smaller stays as it is).
+- Resize handle. A visible 36 x 36 corner handle (three diagonal lines) in the
+  lower right of each floating panel; hidden when the panel is docked. It uses
+  Qt's size grip, so the panel is resized by dragging the handle.
+
+**Verified (standalone Qt test, offscreen):** no overlap; the default size is
+applied; the handle sits in the lower right corner and resizes the panel when
+dragged (650x800 dragged by -100 px wide gave 550 wide; the height result was
+limited by the test screen); docking again removes the padding and hides the
+handle. **Not verified:** on a device, touch dragging of the handle, and the size
+and padding numbers (14, 36, 60%, 75%) are first guesses.
