@@ -1782,3 +1782,26 @@ Docking via the panel's own float button still returns it to its old place.
 **Not verified:** a real build and a device. `KisMainWindow.cpp` cannot be
 syntax-checked here (missing external `lager` headers); the new code was tested as
 a standalone copy.
+
+## 2026-10-02 — Resize handle no longer covers the Layers Delete button; smaller color picker
+
+**Files:** `libs/ui/KisMainWindow.cpp` (Android only),
+`libs/widgets/KisDlgInternalColorSelector.cpp` (Android only)
+
+**Resize handle over the Delete button.** On a floating Layers panel the corner
+handle sat on top of the Delete (trash) button. Instead of moving the button, the
+handle now has its own strip: while a panel floats, a 36-high strip is reserved
+under its content (via the panel's content margins) and the handle sits in that
+strip. When the panel is docked again the strip is removed. This applies to every
+floating panel, so no panel loses anything under the handle. Verified in a
+standalone Qt test: the content shrinks by exactly the strip height while floating
+and the margin returns to 0 when docked. The Delete button was not moved.
+
+**Color picker too big.** The dialog opened by tapping a color well (for example
+the foreground/background colors in the toolbox) is designed at 505 x 490. On
+Android it now opens at 80% of that, never more than 90% of the screen; the layout
+still enforces any minimum it needs. The 80% is a first guess from "a little too big".
+
+**Verified:** `KisDlgInternalColorSelector.cpp` passes a compiler syntax-only
+check; the strip logic was tested as a standalone copy. **Not verified:** a real
+build or a device; `KisMainWindow.cpp` cannot be syntax-checked here.

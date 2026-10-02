@@ -2796,6 +2796,24 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
                 }
             }
 
+            // KRIMBLE 2026-10-02: the resize handle covered whatever sits in the
+            // lower right corner of a panel (the Delete button of Layers). While a
+            // panel floats, a strip as high as the handle is reserved under its
+            // content, and the handle sits in that strip. Docked: strip removed.
+            const int gripStrip = 36;
+            const bool stripped = dockWidget->property("krimbleGripStrip").toBool();
+            if (floating && !stripped) {
+                QMargins m = dockWidget->contentsMargins();
+                m.setBottom(m.bottom() + gripStrip);
+                dockWidget->setContentsMargins(m);
+                dockWidget->setProperty("krimbleGripStrip", true);
+            } else if (!floating && stripped) {
+                QMargins m = dockWidget->contentsMargins();
+                m.setBottom(qMax(0, m.bottom() - gripStrip));
+                dockWidget->setContentsMargins(m);
+                dockWidget->setProperty("krimbleGripStrip", false);
+            }
+
             KisFloatingDockSizeGrip *grip = dockWidget->findChild<KisFloatingDockSizeGrip*>();
             if (floating) {
                 if (!grip) {
