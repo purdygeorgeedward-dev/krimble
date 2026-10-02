@@ -7,7 +7,7 @@
 [![Website](https://img.shields.io/badge/Website-krimble.org-ff7a00?style=for-the-badge)](https://krimble.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-white?style=for-the-badge&logo=gnu&logoColor=black)](LICENSE)
 [![Platform](https://img.shields.io/badge/Android-Mobile_First-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#build-targets)
-[![Status](https://img.shields.io/badge/Status-1.0.0--alpha1-orange?style=for-the-badge)](#development-roadmap)
+[![Status](https://img.shields.io/badge/Status-1.0.0--beta2-orange?style=for-the-badge)](#development-roadmap)
 
 [Website](https://krimble.org) · [Source](https://github.com/purdygeorgeedward-dev/krimble) · [Roadmap](#development-roadmap) · [Support Krimble](#support-krimble)
 

@@ -169,8 +169,10 @@ math(EXPR KRITA_MSI_VERSION_RELEASE_TRANSITIONAL "10000 + 100 * ${KRITA_VERSION_
 # Uncomment the following if this is currently in the "stable" branch.
 # Do not uncomment for master branch.
 #set(KRITA_STABLE_BRANCH 1)
-set(KRITA_ALPHA 1) # uncomment only for Alpha
-#set(KRITA_BETA 1) # uncomment only for Beta
+# KRIMBLE: Krimble is in beta. Flag switched from Alpha to Beta - original
+# line kept below.
+# set(KRITA_ALPHA 1) # uncomment only for Alpha
+set(KRITA_BETA 1) # uncomment only for Beta
 #set(KRITA_RC 1) # uncomment only for RC
 
 if(NOT DEFINED KRITA_ALPHA AND NOT DEFINED KRITA_BETA AND NOT DEFINED KRITA_RC)
@@ -366,6 +368,13 @@ if(BUILD_WITH_QT6 AND NOT "QT6" IN_LIST ALLOW_UNSTABLE)
         "If you want to continue regardless, pass:\n"
         "    -DALLOW_UNSTABLE=QT6"
     )
+endif()
+
+# KRIMBLE: with KRITA_BETA set, the automatic choice below would switch
+# BRANDING from "Next" to "Beta" and swap the customised icon/splash assets.
+# Keep "Next" unless BRANDING was given on the command line.
+if ("${BRANDING}" STREQUAL "")
+    set(BRANDING "Next")
 endif()
 
 # Branding. Available options: default, Beta, Plus, Next. Can be set from command line

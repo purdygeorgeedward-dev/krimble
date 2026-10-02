@@ -1298,3 +1298,16 @@ icon and splash asset sets already customised for the "Next" variant.
 Needs a CMake reconfigure on the next build (`make` does this
 automatically). The git hash on the splash also updates then. Not yet
 built or verified.
+
+## 2026-10-01 — Krimble marked as Beta (CMake flag, README badge)
+
+**Files:** `CMakeLists.txt`, `README.md`.
+- `CMakeLists.txt`: `KRITA_ALPHA` is now `KRITA_BETA` (old line commented).
+  To stop that from switching `BRANDING` from "Next" to "Beta" (which would
+  swap the customised icon and splash assets), `BRANDING` is set to "Next"
+  when not given on the command line. The version string was already bumped
+  to `1.0.0-beta2` earlier today.
+- `README.md`: Status badge text `1.0.0--alpha1` -> `1.0.0--beta2`.
+  History line 180 ("Version reset to alpha1") left as-is; it is history.
+
+Not yet built or verified. The next `make` re-runs CMake automatically.
