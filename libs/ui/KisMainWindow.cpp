@@ -35,6 +35,7 @@
 #include <QMessageBox>
 #include <QStatusBar>
 #include <QStyleFactory>
+#include <algorithm>
 #include <QMenu>
 #ifdef Q_OS_ANDROID
 #include <QGuiApplication>
@@ -248,6 +249,64 @@ private:
     QDockWidget *m_dock;
 };
 #endif
+
+// KRIMBLE 2026-10-02: used by Settings > Attach Panel.
+// Docks a floating panel where the user put it: the dock area nearest to the panel's
+// current position, and, in that area, between the panels above and below it.
+static void krimbleAttachDockWhereItIs(QMainWindow *win, QDockWidget *dock)
+{
+    const QRect windowRect = win->geometry();
+    const QPoint center = dock->geometry().center();
+    if (windowRect.width() <= 0 || windowRect.height() <= 0) {
+        dock->setFloating(false);
+        return;
+    }
+
+    // Left or right: the side of the main window the panel is nearest to. (Panels are
+    // not put above or below the canvas.)
+    const qreal fx = qreal(center.x() - windowRect.left()) / windowRect.width();
+    const Qt::DockWidgetArea area = (fx < 0.5) ? Qt::LeftDockWidgetArea : Qt::RightDockWidgetArea;
+
+    const bool vertical = (area == Qt::LeftDockWidgetArea || area == Qt::RightDockWidgetArea);
+    const Qt::Orientation stackOrientation = vertical ? Qt::Vertical : Qt::Horizontal;
+    const int centerAlong = vertical ? center.y() : center.x();
+
+    // Panels already docked in that area, in their order along it.
+    QList<QDockWidget*> docked;
+    Q_FOREACH (QDockWidget *other, win->findChildren<QDockWidget*>()) {
+        if (other != dock && other->isVisible() && !other->isFloating() && win->dockWidgetArea(other) == area) {
+            docked.append(other);
+        }
+    }
+    std::sort(docked.begin(), docked.end(), [vertical](QDockWidget *a, QDockWidget *b) {
+        return vertical ? a->geometry().top() < b->geometry().top() : a->geometry().left() < b->geometry().left();
+    });
+
+    // The panel after which the moved panel goes: the last one whose middle lies before it.
+    QDockWidget *after = nullptr;
+    Q_FOREACH (QDockWidget *other, docked) {
+        const QPoint otherCenter = other->geometry().center();
+        if ((vertical ? otherCenter.y() : otherCenter.x()) < centerAlong) {
+            after = other;
+        }
+    }
+
+    // A floating panel is only allowed in no area; allow all before docking it.
+    dock->setAllowedAreas(Qt::AllDockWidgetAreas);
+    win->addDockWidget(area, dock);
+    if (after) {
+        win->splitDockWidget(after, dock, stackOrientation);
+    } else if (!docked.isEmpty()) {
+        // Goes before every panel already there: put the others after it, in order.
+        QDockWidget *previous = dock;
+        Q_FOREACH (QDockWidget *other, docked) {
+            win->splitDockWidget(previous, other, stackOrientation);
+            previous = other;
+        }
+    }
+    dock->setFloating(false);
+    dock->show();
+}
 
 class ToolDockerFactory : public KoDockFactoryBase
 {
@@ -572,8 +631,11 @@ KisMainWindow::KisMainWindow(QUuid uuid)
                 continue;
             }
             QAction *attachAction = attachPanelMenu->addAction(dock->windowTitle());
-            connect(attachAction, &QAction::triggered, this, [dock]() {
-                dock->setFloating(false);
+            connect(attachAction, &QAction::triggered, this, [this, dock]() {
+                // KRIMBLE 2026-10-02: dock the panel where it was put (nearest side,
+                // between the panels above and below) instead of sending it back to
+                // its old place. Old behaviour: dock->setFloating(false);
+                krimbleAttachDockWhereItIs(this, dock);
             });
         }
         if (attachPanelMenu->isEmpty()) {
@@ -2246,6 +2308,18 @@ bool KisMainWindow::restoreWorkspace(KoResourceSP res)
     KisWorkspaceResourceSP workspace = res.dynamicCast<KisWorkspaceResource>();
 
     bool success = restoreWorkspaceState(workspace->dockerState());
+
+    // KRIMBLE 2026-10-02: while the welcome page is shown (no document open) the
+    // panels are hidden and the layout from before they were hidden is kept in
+    // dockerStateBeforeHiding; it is put back when a document opens. A workspace
+    // applied at that point (for example the first-launch Default workspace) left
+    // that saved layout untouched, so the first new file brought back the panels
+    // from before the workspace (Brush Presets, Color Selector) instead of the
+    // workspace's panels. Capture the workspace layout and hide the panels again,
+    // exactly as the welcome page does.
+    if (success && d->mdiArea->subWindowList().isEmpty()) {
+        toggleDockersVisibility(false, true);
+    }
 
     const bool showTitlebars = KisConfig(false).showDockerTitleBars();
     Q_FOREACH (QDockWidget *dock, dockWidgets()) {

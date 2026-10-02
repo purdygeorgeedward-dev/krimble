@@ -1749,3 +1749,36 @@ compiler syntax-only check; Qt reads both JPGs (1536 x 1024, no alpha channel).
 **Not verified:** a real build, and that the Android build includes Qt's JPEG
 image plugin (upstream Krita's Android build used a JPEG splash, which suggests
 it does). Check after the build that the splash shows.
+
+## 2026-10-02 — Brush Presets still at startup (real cause), panel renamed "Brushes", Attach docks where the panel is
+
+**Files:** `libs/ui/KisMainWindow.cpp`,
+`plugins/dockers/presetdocker/presetdocker_dock.cpp`
+
+**1. Brush Presets and Color Selector still showed after the first new file, even with the first-launch workspace (d250bcc).**
+Cause: while the welcome page is shown the panels are hidden and the layout from
+before hiding is kept in `dockerStateBeforeHiding`; it is put back when a document
+opens. The first-launch workspace was applied while the welcome page was up and
+left that saved layout untouched, so the first new file brought back the old
+layout. Reproduced in a standalone Qt test: without the fix the old panels return
+after the first new file, with it only ToolBox, Tool Options and Layers do.
+Fix: `KisMainWindow::restoreWorkspace()` now, when no document is open, calls
+`toggleDockersVisibility(false, true)` right after restoring the workspace, which
+captures the workspace layout and hides the panels again as the welcome page does.
+
+**2. Panel renamed "Brush Presets" -> "Brushes"** (`presetdocker_dock.cpp`; old
+line commented out). It also changes the name in Settings > Panels.
+
+**3. Settings > Attach Panel now docks where the panel was put**, instead of back
+into its old place. The panel goes to the nearer side of the window (left or right,
+by the position of the panel's centre) and, on that side, between the panels above
+and below it. While detached it still does not snap anywhere. The old behaviour is
+kept in a comment. Panels are not put above or below the canvas.
+Verified in a standalone Qt test with five drop positions: left/right side chosen
+by position; top, middle or bottom of the side order correctly among three docked
+panels; the panel is docked afterwards and its allowed areas are restored.
+Docking via the panel's own float button still returns it to its old place.
+
+**Not verified:** a real build and a device. `KisMainWindow.cpp` cannot be
+syntax-checked here (missing external `lager` headers); the new code was tested as
+a standalone copy.

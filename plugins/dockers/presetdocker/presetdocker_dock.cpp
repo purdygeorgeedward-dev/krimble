@@ -22,7 +22,9 @@
 
 
 PresetDockerDock::PresetDockerDock( )
-    : QDockWidget(i18nc("@title:window Brush presets chooser panel", "Brush Presets"))
+    // KRIMBLE 2026-10-02: panel renamed from "Brush Presets" to "Brushes".
+    // : QDockWidget(i18nc("@title:window Brush presets chooser panel", "Brush Presets"))
+    : QDockWidget(i18nc("@title:window Brush presets chooser panel", "Brushes"))
     , m_canvas(0)
 {
     m_presetChooser = new KisPaintOpPresetsChooserPopup(this);
