@@ -19,7 +19,9 @@
 	<string name="donation_dialog_header_support">Support Krimble</string>
 	<string name="donation_dialog_header_button">♥︎ Show Supporter Options</string>
 	<string name="donation_dialog_supporter_text">Thank you for supporting Krimble! Your contribution helps to keep its continued development going.</string>
-	<string name="product_donations_description"><![CDATA[<h2>Donations</h2><p>Help Krimble\'s continued development with a direct donation through PayPal, via credit or debit card and many other payment methods.</p>]]></string>
+	<!-- KRIMBLE 2026-10-03: wording changed from "PayPal ..." (Krita's donation page) to Buy Me a Coffee. Original: -->
+	<!-- <string name="product_donations_description"><![CDATA[<h2>Donations</h2><p>Help Krimble\'s continued development with a direct donation through PayPal, via credit or debit card and many other payment methods.</p>]]></string> -->
+	<string name="product_donations_description"><![CDATA[<h2>Support Krimble</h2><p>Help Krimble\'s continued development with a donation through Buy Me a Coffee.</p>]]></string>
 	<string name="product_donations_button">Donate</string>
 	<string name="product_development_fund_description"><![CDATA[<h2>Development Fund</h2><p>Join Krimble\'s development fund and help its continued development with a monthly contribution. Different tiers with benefits are available.</p>]]></string>
 	<string name="product_development_fund_button">Join the Fund</string>

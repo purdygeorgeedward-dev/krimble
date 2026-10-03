@@ -2023,3 +2023,35 @@ The build only uses `krita/pics/branding/Next` (BRANDING is forced to Next); a s
 CMake, script, CI and resource files found no other reference to the deleted files.
 **Not changed (still the old art):** the Windows installer assets in `packaging/windows/msix/pkg/Assets`
 (45 files) and the macOS icon in `packaging/macos`; neither is used by the Android build.
+
+## 2026-10-03 — Support notice that opens at start now goes to Buy Me a Coffee, not Krita
+
+**Files:** `packaging/android/apk/src/org/krimble/android/DonationProductView.java`,
+`packaging/android/apk/res/values/strings.xml`
+
+George pointed out that the support notice shown when the app starts sent people to
+Krita instead of his Buy Me a Coffee campaign.
+
+**Found:** the start-up "Support Krimble" dialog (Java, Android) shows two fallback
+buttons when Google Play billing is not available. "Join the Fund" opened
+`https://fund.krita.org/` and "Donate" opened `https://krita.org/en/donations`; the
+Donate text also described a PayPal donation on Krita's page.
+
+**Changed:** the fallback list is now one product, "Donate", that opens
+`https://www.buymeacoffee.com/GeorgeEdwardPurdy` (the same link the Start page and the
+splash already used). Its description now reads "Help Krimble's continued development
+with a donation through Buy Me a Coffee." The old two-button list and the old wording are
+kept as comments. Strings file is well-formed XML.
+
+**Already correct (checked):** the Start page "Support Krimble" link and the splash
+screen link both already point to Buy Me a Coffee; the README does too.
+
+**Still open, not changed:**
+- The Google Play billing products (Supporter Subscription, one-time Supporter Pack,
+  supporter badge) and the Settings menu entries "Manage Supporter Benefits..." and
+  "Manage Subscriptions..." are Krita's Google Play purchase flow. Their product ids belong
+  to Krita's Play Console account, so they cannot work for Krimble's own Play account. Decide
+  whether to hide them for now.
+- The one-time pack is still titled "Krimble 1.0.0-alpha1 Supporter Pack" and promises
+  resource bundles (brushes, "Digital Atelier") that Krimble does not sell.
+**Not verified:** a build or a device.
