@@ -24,6 +24,12 @@
 #endif
 
 #include <QStandardPaths>
+#ifdef Q_OS_ANDROID
+#include <QDialog>
+#include <QGuiApplication>
+#include <QPointer>
+#include <QTimer>
+#endif
 #include <QScreen>
 #include <QDir>
 #include <QFile>
@@ -223,6 +229,66 @@ public:
     int m_fileCount;
 };
 
+#ifdef Q_OS_ANDROID
+// KRIMBLE 2026-10-03: dialogs sometimes opened partly above the top of the screen, so their
+// title bar and edges could not be grabbed (a saved position from another screen orientation,
+// or a size larger than the screen). Every top-level dialog is now brought back inside the
+// usable screen area right after it is shown and again after it is resized: it is made no
+// larger than the screen and moved so that its top-left corner is on screen.
+class KrimbleDialogKeeper : public QObject
+{
+public:
+    explicit KrimbleDialogKeeper(QObject *parent) : QObject(parent) {}
+
+    static void keepOnScreen(QDialog *dialog)
+    {
+        if (!dialog || !dialog->isWindow() || !dialog->isVisible()) {
+            return;
+        }
+        QScreen *screen = dialog->screen();
+        if (!screen) {
+            screen = QGuiApplication::primaryScreen();
+        }
+        if (!screen) {
+            return;
+        }
+        const QRect avail = screen->availableGeometry();
+        QRect g = dialog->geometry();
+        const QRect original = g;
+
+        if (g.width() > avail.width()) {
+            g.setWidth(avail.width());
+        }
+        if (g.height() > avail.height()) {
+            g.setHeight(avail.height());
+        }
+        g.moveLeft(qBound(avail.left(), g.left(), avail.right() - g.width() + 1));
+        g.moveTop(qBound(avail.top(), g.top(), avail.bottom() - g.height() + 1));
+
+        if (g != original) {
+            dialog->setGeometry(g);
+        }
+    }
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (event->type() == QEvent::Show || event->type() == QEvent::Resize) {
+            if (QDialog *dialog = qobject_cast<QDialog*>(watched)) {
+                if (dialog->isWindow()) {
+                    // After the current event, once the dialog has its final size and place.
+                    QPointer<QDialog> guard(dialog);
+                    QTimer::singleShot(0, dialog, [guard]() {
+                        keepOnScreen(guard);
+                    });
+                }
+            }
+        }
+        return false;
+    }
+};
+#endif
+
 KisApplication::KisApplication(const QString &key, int &argc, char **argv)
     : QtSingleApplication(key, argc, argv)
     , d(new Private)
@@ -232,6 +298,9 @@ KisApplication::KisApplication(const QString &key, int &argc, char **argv)
     // causing windows with QtQuick widgets to always stack behind everything
     // else, including our own dialog decorations.
     qputenv("QT_QUICK_BACKEND", "software");
+
+    // KRIMBLE 2026-10-03: keep dialogs on screen (see KrimbleDialogKeeper above).
+    installEventFilter(new KrimbleDialogKeeper(this));
 #endif
 #ifdef Q_OS_MACOS
     setMouseCoalescingEnabled(false);

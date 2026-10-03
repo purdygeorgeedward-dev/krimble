@@ -2134,3 +2134,20 @@ compiled and run with stand-in headers. **Not verified:** a real build.
 **Note:** the counter goes up on every `make` run, including one that is repeated after a
 failed build; re-running only the packaging step does not change it. Suggested APK name:
 `Krimble-Beta2-Oct3-1447-b58.apk` (the last part is the counter).
+
+## 2026-10-03 — Dialogs that opened above the screen are now kept on screen (Android)
+
+**File:** `libs/ui/KisApplication.cpp` (class `KrimbleDialogKeeper`, Android only)
+
+Device feedback: new dialogs sometimes pop up partly above the top of the screen, so their
+title bar and edges cannot be grabbed.
+
+**Change:** an app-wide event filter watches every top-level dialog. After it is shown, and again
+after it is resized, the dialog is made no larger than the usable screen area and moved so its
+top-left corner is on screen (checked after the current event, once the dialog has its final
+size and place). Dialogs that are already fine are not touched.
+**Verified (standalone Qt test, same code, 800 x 600 test screen):** a dialog asked for at y -180
+ended at y 2; one at x -120 ended at x 2; one past the bottom-right moved fully inside; a
+1500 x 1200 dialog became 800 x 600; a dialog already inside stayed where it was.
+**Not verified:** a build or a device; `KisApplication.cpp` could not be syntax-checked as a whole in
+the sandbox (the checker lacks some brush headers); the new class compiled and ran on its own.
