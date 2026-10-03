@@ -2231,3 +2231,22 @@ which will simply find no action; no menu depends on them.
 `moc_` file that does not exist in the sandbox (not caused by this change).
 **Not verified:** a build or a device. **Not changed:** the order of the remaining groups (the
 industry-standard block now comes first; the Krita-only groups still sit after Zoom).
+
+## 2026-10-03 — Six new toolbox icons that read like the industry-standard tools
+
+**Files (same names, light and dark versions each, 12 files) in `krita/pics/tools/SVG/16/`:**
+`krita_tool_move` (Move: pointer arrow plus the four-way cross), `tool_outline_selection`
+(Lasso: loop with a rope tail), `krita_draw_path` (Pen: pen nib), `krita_tool_smart_patch`
+(Healing Brush: adhesive bandage), `krita_tool_smudge` (Smudge: pointing finger),
+`shape_handling` (Direct Selection: hollow arrow).
+
+George: toolbox icons should look like the tool in the industry-standard editor where Krita's did
+not. These are original drawings, not copies of that editor's artwork; they use the same
+well-known symbols. 16 x 16 grid, round caps, strokes 1.2 to 1.5 so they stay readable at
+16 pixels; light theme version #d2d2d2, dark theme version #373737, the same colours as the
+neighbouring icons. George approved the look from an on-screen preview (72, 32 and 16 pixels).
+The old icons are in git history (the commit before this one). Note that these icon names are
+shared: the same file is used wherever the app shows that icon (for example the Lasso icon also
+appears for the outline selection action in menus).
+**Checked:** all 12 files are well-formed XML and render in the preview. **Not verified:** a build
+or a device (how they look on the real toolbox).
