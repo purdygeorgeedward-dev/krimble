@@ -275,6 +275,12 @@ public:
         if (watched == m_dock && event->type() == QEvent::Resize && !m_dock->isFloating()) {
             m_dock->setProperty("krimbleDockedSize", m_dock->size());
         }
+        // KRIMBLE 2026-10-02: remember where a floating panel was put (centre, in screen
+        // coordinates), so that its own float button can dock it there too.
+        if (watched == m_dock && m_dock->isFloating()
+                && (event->type() == QEvent::Move || event->type() == QEvent::Resize)) {
+            m_dock->setProperty("krimbleFloatingCenter", m_dock->geometry().center());
+        }
         return false;
     }
 
@@ -286,14 +292,16 @@ private:
 // KRIMBLE 2026-10-02: used by Settings > Attach Panel.
 // Docks a floating panel where the user put it: the dock area nearest to the panel's
 // current position, and, in that area, between the panels above and below it.
-static void krimbleAttachDockWhereItIs(QMainWindow *win, QDockWidget *dock)
+static void krimbleAttachDockWhereItIs(QMainWindow *win, QDockWidget *dock, const QPoint &center)
 {
     const QRect windowRect = win->geometry();
-    const QPoint center = dock->geometry().center();
     if (windowRect.width() <= 0 || windowRect.height() <= 0) {
         dock->setFloating(false);
         return;
     }
+    // Set while this runs, so the "docked again" handler in createDockWidget() does not
+    // start a second placement.
+    dock->setProperty("krimbleAttaching", true);
 
     // Left or right: the side of the main window the panel is nearest to. (Panels are
     // not put above or below the canvas.)
@@ -339,6 +347,13 @@ static void krimbleAttachDockWhereItIs(QMainWindow *win, QDockWidget *dock)
     }
     dock->setFloating(false);
     dock->show();
+    dock->setProperty("krimbleAttaching", false);
+    dock->setProperty("krimbleFloatingCenter", QVariant());
+}
+
+static void krimbleAttachDockWhereItIs(QMainWindow *win, QDockWidget *dock)
+{
+    krimbleAttachDockWhereItIs(win, dock, dock->geometry().center());
 }
 
 class ToolDockerFactory : public KoDockFactoryBase
@@ -2807,8 +2822,19 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
         //    capped to a default size (60% x 75% of the screen's shorter side) and
         //    gets a resize handle in its lower right corner.
         dockWidget->installEventFilter(new KisDockedSizeTracker(dockWidget));
-        connect(dockWidget, &QDockWidget::topLevelChanged, this, [dockWidget](bool floating) {
+        connect(dockWidget, &QDockWidget::topLevelChanged, this, [this, dockWidget](bool floating) {
             dockWidget->setAllowedAreas(floating ? Qt::NoDockWidgetArea : Qt::AllDockWidgetAreas);
+
+            // KRIMBLE 2026-10-02: a panel docked again with its own float button used to
+            // fly back to its old place. Dock it where it was put instead, exactly as
+            // Settings > Attach Panel does. (Attach Panel sets krimbleAttaching while it
+            // runs, so it is not handled twice.)
+            if (!floating && dockWidget->isVisible() && !dockWidget->property("krimbleAttaching").toBool()) {
+                const QVariant floatingCenter = dockWidget->property("krimbleFloatingCenter");
+                if (floatingCenter.isValid()) {
+                    krimbleAttachDockWhereItIs(this, dockWidget, floatingCenter.toPoint());
+                }
+            }
 
             if (QWidget *bar = dockWidget->titleBarWidget()) {
                 if (QLayout *barLayout = bar->layout()) {

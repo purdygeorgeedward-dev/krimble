@@ -1931,3 +1931,25 @@ found; after creating one -> found.
 device; `KisMainWindow.cpp` cannot be syntax-checked here. Lesson: a standalone
 test covered the handle's resizing but not this lookup; the next test should
 create the handle through the same code path as the app.
+
+## 2026-10-02 — A panel's own float button now docks it where it was put
+
+**File:** `libs/ui/KisMainWindow.cpp` (the tracking is Android only)
+
+Device feedback: detached panels "fly away" instead of snapping to the nearest
+zone. Settings > Attach Panel already docked a panel where it was put (765acdb),
+but the float button in the panel's own title bar still used Qt's default, which
+sends the panel back to its old place. That is the likely path that was used.
+
+**Fix:** the app remembers the centre of a floating panel as it is moved. When a
+panel is docked again by any route other than Attach Panel, it is docked with the
+same placement (nearer side, left or right; between the panels above and below).
+Attach Panel sets a flag while it runs so it is not handled twice; the remembered
+position is cleared after use. While floating, panels still do not snap anywhere.
+
+**Verified (standalone Qt test, same logic):** a panel that started at the end of
+the right column and was put near the top docks first; put in the middle docks
+between B and C; put near the left docks on the left; the menu path gives the same
+result as before. **Not verified:** a build or a device; `KisMainWindow.cpp` cannot
+be syntax-checked here. Dragging a floating panel onto a dock area still does
+nothing by design.
