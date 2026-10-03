@@ -2117,3 +2117,20 @@ part out when there is no checkout; the version text was compiled and run with s
 **Not verified:** a real build, and how the longer text fits on the splash screen (about 42
 characters instead of 26; it is drawn right-aligned over the image). The CMake file change
 makes the next build reconfigure CMake once.
+
+### Update 2026-10-03: build number is now a counter (replaces the date-time format above)
+
+George's decision: instead of the build time, add one to a number on every new build.
+`KrimbleBuildStamp.cmake` now keeps a counter in `~/krimble-build-number.txt` (home folder of
+whoever builds, so it survives a clean build folder). Each build adds one; if the file is
+missing it starts at 1. To start from another number, write the number BEFORE the one wanted
+into that file (for example `echo 9 > ~/krimble-build-number.txt` makes the next build 10).
+The app now shows **`1.0.<counter>-beta (<Month><Day>, git <hash>)`**, for example
+`1.0.58-beta (Oct3, git 76c7150)`. The "-beta" comes from the beta flag in `CMakeLists.txt`.
+The plain internal version (`1.0.0-beta2`, used in saved files and the resource database)
+is unchanged.
+**Verified:** three runs of the script gave 1, 2, 3; a start value of 9 gave 10; the text was
+compiled and run with stand-in headers. **Not verified:** a real build.
+**Note:** the counter goes up on every `make` run, including one that is repeated after a
+failed build; re-running only the packaging step does not change it. Suggested APK name:
+`Krimble-Beta2-Oct3-1447-b58.apk` (the last part is the counter).

@@ -20,17 +20,29 @@ QString KritaVersionWrapper::versionString(bool checkGit)
     QString version = kritaVersion;
 
     if (checkGit) {
-        // KRIMBLE 2026-10-03: "1.0.0-beta2 build 261003-1905 (git abc1234)". The build stamp is
-        // new on every build; its git hash is read at build time, unlike KRITA_GIT_SHA1_STRING,
-        // which is only refreshed when CMake reconfigures. versionString(false), the plain
-        // version used in saved files and the resource database, is left exactly as it was.
-#ifdef KRIMBLE_BUILD_STAMP
-        version = QStringLiteral("%1 build %2").arg(kritaVersion, QStringLiteral(KRIMBLE_BUILD_STAMP));
-#  ifdef KRIMBLE_BUILD_GIT
-        version = QStringLiteral("%1 (git %2)").arg(version, QStringLiteral(KRIMBLE_BUILD_GIT));
-#  elif defined(KRITA_GIT_SHA1_STRING)
-        version = QStringLiteral("%1 (git %2)").arg(version, QStringLiteral(KRITA_GIT_SHA1_STRING));
+        // KRIMBLE 2026-10-03: "1.0.58-beta (Oct3, git abc1234)". The number is a build counter,
+        // one more on every build (see KrimbleBuildStamp.cmake); the date is the day the build
+        // was made. All of it is new on every build, and the git hash is read at build time, unlike KRITA_GIT_SHA1_STRING, which is only refreshed when CMake
+        // reconfigures. versionString(false), the plain version used in saved files and the
+        // resource database, is left exactly as it was ("1.0.0-beta2").
+#ifdef KRIMBLE_BUILD_NUMBER
+        QString suffix;
+#  if defined(KRITA_BETA)
+        suffix = QStringLiteral("-beta");
+#  elif defined(KRITA_ALPHA)
+        suffix = QStringLiteral("-alpha");
 #  endif
+        // "1.0" from "1.0.0-beta2"
+        version = QStringLiteral("%1.%2%3").arg(kritaVersion.section(QLatin1Char('.'), 0, 1),
+                                                QStringLiteral(KRIMBLE_BUILD_NUMBER),
+                                                suffix);
+        QString detail = QStringLiteral(KRIMBLE_BUILD_DATE);
+#  ifdef KRIMBLE_BUILD_GIT
+        detail = QStringLiteral("%1, git %2").arg(detail, QStringLiteral(KRIMBLE_BUILD_GIT));
+#  elif defined(KRITA_GIT_SHA1_STRING)
+        detail = QStringLiteral("%1, git %2").arg(detail, QStringLiteral(KRITA_GIT_SHA1_STRING));
+#  endif
+        version = QStringLiteral("%1 (%2)").arg(version, detail);
 #else
         // (original behaviour)
 #  ifdef KRITA_GIT_SHA1_STRING

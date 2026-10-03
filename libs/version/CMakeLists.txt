@@ -14,10 +14,17 @@ kis_add_library(kritaversion SHARED ${kritaversion_LIB_SRCS})
 # so the version shown in the splash screen and logs changes with each build. The git hash from
 # kritagitversion.h is only refreshed when CMake reconfigures, which is why it used to be stale.
 set(KRIMBLE_BUILD_STAMP_HEADER ${CMAKE_CURRENT_BINARY_DIR}/krimble_build_stamp.h)
+# The build counter lives in the home folder of whoever builds, so it survives a clean build folder.
+if(DEFINED ENV{HOME} AND NOT "$ENV{HOME}" STREQUAL "")
+    set(KRIMBLE_BUILD_COUNTER_FILE "$ENV{HOME}/krimble-build-number.txt")
+else()
+    set(KRIMBLE_BUILD_COUNTER_FILE "${CMAKE_BINARY_DIR}/krimble-build-number.txt")
+endif()
 add_custom_target(krimble_build_stamp ALL
     COMMAND ${CMAKE_COMMAND}
         -DOUT=${KRIMBLE_BUILD_STAMP_HEADER}
         -DSRC=${CMAKE_SOURCE_DIR}
+        -DCOUNTER=${KRIMBLE_BUILD_COUNTER_FILE}
         -P ${CMAKE_CURRENT_SOURCE_DIR}/KrimbleBuildStamp.cmake
     BYPRODUCTS ${KRIMBLE_BUILD_STAMP_HEADER}
     COMMENT "Generating the Krimble build stamp")
