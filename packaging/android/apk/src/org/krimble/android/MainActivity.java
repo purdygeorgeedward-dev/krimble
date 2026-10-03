@@ -17,6 +17,7 @@ import android.app.ServiceStartNotAllowedException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Toast;
 
@@ -73,6 +75,41 @@ public class MainActivity extends QtActivity {
 
         DonationHelper.getInstance();
         DonationProduct.initAllProducts(this);
+
+        installEdgeGestureExclusion();
+    }
+
+    // KRIMBLE 2026-10-03: Android's back gesture (swipe in from the left or right screen edge,
+    // about 30 to 40 dp wide, depending on the phone's gesture sensitivity setting) takes any
+    // touch that starts there. Since the toolbox became a single narrow column (16 px icons),
+    // its resize bar sits right inside that zone, and the panels' outer edge is at the other
+    // screen edge, so neither could be grabbed. The system lets an app exclude up to 200 dp of
+    // each edge, so a 64 dp wide strip at the middle of each side is excluded here. Only the part
+    // of an edge inside that strip can be grabbed; the rest still triggers the back gesture.
+    private void installEdgeGestureExclusion() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            return;
+        }
+        try {
+            final View decor = getWindow().getDecorView();
+            decor.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
+                                             int oldLeft, int oldTop, int oldRight, int oldBottom) -> {
+                final int width = right - left;
+                final int height = bottom - top;
+                if (width <= 0 || height <= 0) {
+                    return;
+                }
+                final float density = getResources().getDisplayMetrics().density;
+                final int strip = (int) (64 * density);
+                final int tall = Math.min(height, (int) (200 * density));
+                final int stripTop = Math.max(0, (height - tall) / 2);
+                v.setSystemGestureExclusionRects(List.of(
+                        new Rect(0, stripTop, strip, stripTop + tall),
+                        new Rect(width - strip, stripTop, width, stripTop + tall)));
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to install system gesture exclusion", e);
+        }
     }
 
     @Override

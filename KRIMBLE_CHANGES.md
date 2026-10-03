@@ -2055,3 +2055,28 @@ screen link both already point to Buy Me a Coffee; the README does too.
 - The one-time pack is still titled "Krimble 1.0.0-alpha1 Supporter Pack" and promises
   resource bundles (brushes, "Digital Atelier") that Krimble does not sell.
 **Not verified:** a build or a device.
+
+## 2026-10-03 — Toolbox resize bar and panel edge could not be grabbed: system back gesture excluded at the screen edges (theory, not confirmed)
+
+**File:** `packaging/android/apk/src/org/krimble/android/MainActivity.java` (new method
+`installEdgeGestureExclusion`, called at the end of `onCreate`; Android 10 and up)
+
+Device feedback: the bar that resizes the toolbox, the frame edge of the panels, and
+dialog edges "can no longer be grabbed", even with the phone's magnifier on.
+
+**Theory:** Android's back gesture takes any touch that starts at the left or right screen
+edge (about 30 to 40 dp, depending on the phone's gesture sensitivity setting). Since
+the toolbox became a single narrow column (16 px icons, 2026-10-01), its resize bar sits
+inside the left edge zone, and the panels' outer edge is in the right edge zone, so the
+system takes those touches. The wider two-column toolbox kept the bar further in. Nothing
+in the app's own event code was changed in a way that could explain the loss of both.
+
+**Change:** a 64 dp wide strip at the middle of each side is excluded from system
+gestures (`setSystemGestureExclusionRects`, updated whenever the window is laid out). The
+system allows at most 200 dp of height per edge, so only the middle 200 dp of each edge
+can be grabbed; the rest of the edge still triggers the back gesture. Java syntax checked
+with a parser only.
+
+**How to test the theory without a build:** Settings > Display > Navigation bar > switch to
+"Buttons" (3-button navigation). If the bars can be grabbed then, the theory is right.
+**Not verified:** a build or a device. If it is wrong, the cause is somewhere else.
