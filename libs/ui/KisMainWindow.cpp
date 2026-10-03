@@ -46,6 +46,7 @@
 #include <QPolygonF>
 #include <QTimer>
 #include <functional>
+#include <memory>
 #endif
 #include <QMenuBar>
 #include <KisMimeDatabase.h>
@@ -360,11 +361,15 @@ static void krimbleAttachDockWhereItIs(QMainWindow *win, QDockWidget *dock)
 }
 
 // BEGIN KRIMBLE RIGHT PANELS
-// KRIMBLE 2026-10-03: hide / show all the panels on the right-hand side at once, without touching
-// the toolbox (which sits on the left). Available from Settings > "Hide Right Panels"; on Android
-// a tap on the bar between the canvas and the right panels does the same, while a drag still
-// resizes (see KrimbleRightPanelsFilter). While the right panels are hidden, a small handle at
-// the right edge of the window brings them back with a tap.
+// KRIMBLE 2026-10-03: one big, easy-to-press side button for the right-hand panels.
+//  - a quick TAP hides all the panels on the right-hand side (the toolbox on the left is not
+//    touched); while they are hidden the same button sits at the right edge of the window and a
+//    tap shows them again;
+//  - a LONG PRESS (hold about 0.35 s) turns it into a drag handle that resizes the panels' width
+//    (a quick sideways swipe of more than 16 px does the same).
+// It is a real widget laid over the middle of the thin bar between the canvas and the panels, so
+// it does not depend on Qt's own bar. The same thing is in Settings > "Hide Right Panels".
+// (The first version, commit eeb51e1, watched taps on Qt's own bar instead; replaced.)
 
 static QList<QDockWidget*> krimbleRightDocks(QMainWindow *win, bool visibleOnly)
 {
@@ -381,64 +386,154 @@ static QList<QDockWidget*> krimbleRightDocks(QMainWindow *win, bool visibleOnly)
     return docks;
 }
 
-// The small handle shown at the right edge while the right panels are hidden: a tap shows them.
-class KrimbleRightPanelHandle : public QWidget
+// Sets the width of the right-hand panel column (clamped so the panels keep their smallest width
+// and the canvas keeps some room).
+static void krimbleSetRightPanelsWidth(QMainWindow *win, int width)
+{
+    const QList<QDockWidget*> docks = krimbleRightDocks(win, true);
+    if (docks.isEmpty()) {
+        return;
+    }
+    int minimum = 80;
+    Q_FOREACH (QDockWidget *dock, docks) {
+        minimum = qMax(minimum, dock->minimumSizeHint().width());
+    }
+    const int maximum = qMax(minimum, win->width() - 140);
+    width = qBound(minimum, width, maximum);
+    QList<int> sizes;
+    Q_FOREACH (QDockWidget *dock, docks) {
+        Q_UNUSED(dock);
+        sizes << width;
+    }
+    win->resizeDocks(docks, sizes, Qt::Horizontal);
+}
+
+static int krimbleRightPanelsWidth(QMainWindow *win)
+{
+    int width = 0;
+    Q_FOREACH (QDockWidget *dock, krimbleRightDocks(win, true)) {
+        width = qMax(width, dock->width());
+    }
+    return width;
+}
+
+class KrimbleSideBarButton : public QWidget
 {
 public:
-    explicit KrimbleRightPanelHandle(QWidget *parent, std::function<void()> onTap)
-        : QWidget(parent), m_onTap(onTap)
+    // onTap: quick tap. onDrag(dx): finger moved dx pixels sideways since the drag began
+    // (negative = to the left); onDragStart is called once when a drag begins.
+    KrimbleSideBarButton(QWidget *parent, std::function<void()> onTap,
+                         std::function<void()> onDragStart, std::function<void(int)> onDrag)
+        : QWidget(parent), m_onTap(onTap), m_onDragStart(onDragStart), m_onDrag(onDrag)
     {
         setObjectName(QStringLiteral("krimbleRightPanelHandle"));
-        setFixedSize(40, 180);
+        setFixedSize(52, 170);
+        m_timer.setSingleShot(true);
+        m_timer.setInterval(350);
+        connect(&m_timer, &QTimer::timeout, this, [this]() {
+            if (m_pressed && !m_dragging) {
+                beginDrag();
+            }
+        });
+    }
+
+    void setCollapsed(bool collapsed)
+    {
+        if (m_collapsed != collapsed) {
+            m_collapsed = collapsed;
+            update();
+        }
     }
 
 protected:
     void mousePressEvent(QMouseEvent *event) override
     {
+        if (event->button() != Qt::LeftButton) {
+            event->ignore();
+            return;
+        }
+        m_pressed = true;
+        m_dragging = false;
         m_press = event->globalPos();
-        m_pressed = (event->button() == Qt::LeftButton);
+        m_timer.start();
+        update();
+        event->accept();
+    }
+    void mouseMoveEvent(QMouseEvent *event) override
+    {
+        if (!m_pressed) {
+            return;
+        }
+        const int dx = event->globalPos().x() - m_press.x();
+        if (!m_dragging && qAbs(dx) > 16) {
+            beginDrag();
+        }
+        if (m_dragging && m_onDrag) {
+            m_onDrag(dx);
+        }
         event->accept();
     }
     void mouseReleaseEvent(QMouseEvent *event) override
     {
-        if (m_pressed && (event->globalPos() - m_press).manhattanLength() < 24 && m_onTap) {
+        m_timer.stop();
+        const bool wasDragging = m_dragging;
+        const bool wasPressed = m_pressed;
+        m_pressed = false;
+        m_dragging = false;
+        update();
+        if (wasPressed && !wasDragging && (event->globalPos() - m_press).manhattanLength() <= 16 && m_onTap) {
             const std::function<void()> action = m_onTap;
             QTimer::singleShot(0, this, [action]() { action(); });
         }
-        m_pressed = false;
         event->accept();
     }
     void paintEvent(QPaintEvent *) override
     {
         QPainter p(this);
         p.setRenderHint(QPainter::Antialiasing);
-        QColor background = palette().color(QPalette::Window);
-        background.setAlpha(220);
+        QColor background = palette().color(QPalette::Highlight);
+        background.setAlpha(m_dragging ? 235 : (m_pressed ? 200 : 120));
         p.setPen(Qt::NoPen);
         p.setBrush(background);
-        p.drawRoundedRect(QRectF(0, 0, width() + 12, height()), 12, 12);   // flat on the window edge
-        QColor grip = palette().color(QPalette::WindowText);
-        grip.setAlpha(200);
+        p.drawRoundedRect(QRectF(m_collapsed ? 0 : 0, 0, width() + (m_collapsed ? 14 : 0), height()), 14, 14);
+        QColor grip = palette().color(QPalette::HighlightedText);
+        grip.setAlpha(230);
         p.setBrush(grip);
-        for (int i = 0; i < 6; ++i) {
-            p.drawRect(QRectF(12, 42 + i * 16, 7, 7));
+        for (int i = 0; i < 7; ++i) {
+            p.drawRect(QRectF(width() / 2.0 - 4, 28 + i * 17, 8, 8));
         }
-        // small arrow pointing into the window
-        QPolygonF arrow;
-        arrow << QPointF(30, 76) << QPointF(30, 104) << QPointF(21, 90);
-        p.drawPolygon(arrow);
+        if (m_collapsed) {
+            // arrow pointing into the window: the panels come back when tapped
+            QPolygonF arrow;
+            arrow << QPointF(34, 72) << QPointF(34, 98) << QPointF(24, 85);
+            p.drawPolygon(arrow);
+        }
     }
 
 private:
+    void beginDrag()
+    {
+        m_dragging = true;
+        update();
+        if (m_onDragStart) {
+            m_onDragStart();
+        }
+    }
+
     std::function<void()> m_onTap;
+    std::function<void()> m_onDragStart;
+    std::function<void(int)> m_onDrag;
+    QTimer m_timer;
     QPoint m_press;
     bool m_pressed {false};
+    bool m_dragging {false};
+    bool m_collapsed {false};
 };
 
-static KrimbleRightPanelHandle *krimbleRightPanelHandle(QMainWindow *win)
+static KrimbleSideBarButton *krimbleRightPanelHandle(QMainWindow *win)
 {
-    return win->findChild<KrimbleRightPanelHandle*>(QStringLiteral("krimbleRightPanelHandle"),
-                                                      Qt::FindDirectChildrenOnly);
+    return win->findChild<KrimbleSideBarButton*>(QStringLiteral("krimbleRightPanelHandle"),
+                                                  Qt::FindDirectChildrenOnly);
 }
 
 // Hides (hide == true) or shows the right-hand panels. When hiding, the panels that were visible
@@ -472,10 +567,11 @@ static void krimbleSetRightPanelsHidden(QMainWindow *win, bool hide)
     }
 }
 
-// Keeps the handle and the menu text in step with what is on screen.
+// Keeps the side button's place and the menu text in step with what is on screen.
 static void krimbleUpdateRightPanelUi(QMainWindow *win)
 {
-    const bool anyVisible = !krimbleRightDocks(win, true).isEmpty();
+    const QList<QDockWidget*> visibleDocks = krimbleRightDocks(win, true);
+    const bool anyVisible = !visibleDocks.isEmpty();
     const bool remembered = !win->property("krimbleHiddenRightDocks").toStringList().isEmpty();
 
     if (QAction *action = win->findChild<QAction*>(QStringLiteral("settings_toggle_right_panels"))) {
@@ -485,19 +581,38 @@ static void krimbleUpdateRightPanelUi(QMainWindow *win)
             action->setText(text);
         }
     }
-    if (KrimbleRightPanelHandle *handle = krimbleRightPanelHandle(win)) {
-        const bool showHandle = !anyVisible && remembered;
-        handle->setVisible(showHandle);
-        if (showHandle) {
-            handle->move(win->width() - handle->width(), (win->height() - handle->height()) / 2);
-            handle->raise();
-        }
+    KrimbleSideBarButton *button = krimbleRightPanelHandle(win);
+    if (!button) {
+        return;
     }
+    const bool show = anyVisible || remembered;
+    button->setCollapsed(!anyVisible);
+    if (!show) {
+        button->hide();
+        return;
+    }
+    int x = win->width() - button->width();
+    int y = (win->height() - button->height()) / 2;
+    if (anyVisible) {
+        // Centre it on the bar between the canvas and the left edge of the right-hand panels,
+        // half way down the panels.
+        int dockLeft = win->width();
+        int top = win->height();
+        int bottom = 0;
+        Q_FOREACH (QDockWidget *dock, visibleDocks) {
+            dockLeft = qMin(dockLeft, dock->geometry().left());
+            top = qMin(top, dock->geometry().top());
+            bottom = qMax(bottom, dock->geometry().bottom());
+        }
+        x = dockLeft - button->width() / 2;
+        y = (top + bottom) / 2 - button->height() / 2;
+    }
+    button->move(qBound(0, x, win->width() - button->width()), qBound(0, y, win->height() - button->height()));
+    button->show();
+    button->raise();
 }
 
-// Watches the main window: keeps the handle/menu text up to date and, on Android, turns a tap
-// (a press and release without moving) on the bar between the canvas and the right panels into
-// "hide the right panels". A drag on that bar is left alone and resizes as before.
+// Watches the main window and keeps the side button and menu text up to date.
 class KrimbleRightPanelsFilter : public QObject
 {
 public:
@@ -506,65 +621,21 @@ public:
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override
     {
-        if (watched != m_win) {
-            return false;
-        }
-        switch (event->type()) {
-        case QEvent::LayoutRequest:
-        case QEvent::Resize:
-        case QEvent::Show:
-            krimbleUpdateRightPanelUi(m_win);
-            break;
-#ifdef Q_OS_ANDROID
-        case QEvent::MouseButtonPress: {
-            QMouseEvent *mouse = static_cast<QMouseEvent*>(event);
-            m_tapStarted = (mouse->button() == Qt::LeftButton) && isOnSeparator(mouse->pos());
-            m_pressPos = mouse->globalPos();
-            break;
-        }
-        case QEvent::MouseButtonRelease: {
-            QMouseEvent *mouse = static_cast<QMouseEvent*>(event);
-            if (m_tapStarted && (mouse->globalPos() - m_pressPos).manhattanLength() < 12) {
-                QPointer<QMainWindow> win(m_win);
-                QTimer::singleShot(0, m_win, [win]() {
-                    if (win) {
-                        krimbleSetRightPanelsHidden(win, true);
-                        krimbleUpdateRightPanelUi(win);
-                    }
-                });
+        if (watched == m_win) {
+            switch (event->type()) {
+            case QEvent::LayoutRequest:
+            case QEvent::Resize:
+            case QEvent::Show:
+                krimbleUpdateRightPanelUi(m_win);
+                break;
+            default:
+                break;
             }
-            m_tapStarted = false;
-            break;
         }
-#endif
-        default:
-            break;
-        }
-        return false;   // never consumed: dragging the bar still resizes
+        return false;
     }
 
 private:
-#ifdef Q_OS_ANDROID
-    // The bar between the central area and the left edge of the right-hand panels, with some
-    // margin on each side for a finger.
-    bool isOnSeparator(const QPoint &pos) const
-    {
-        const QList<QDockWidget*> docks = krimbleRightDocks(m_win, true);
-        QWidget *central = m_win->centralWidget();
-        if (docks.isEmpty() || !central) {
-            return false;
-        }
-        int dockLeft = m_win->width();
-        Q_FOREACH (QDockWidget *dock, docks) {
-            dockLeft = qMin(dockLeft, dock->geometry().left());
-        }
-        const int slop = 10;
-        const int barLeft = central->geometry().right() + 1;
-        return pos.x() >= barLeft - slop && pos.x() <= dockLeft + slop;
-    }
-    bool m_tapStarted {false};
-    QPoint m_pressPos;
-#endif
     QMainWindow *m_win;
 };
 // END KRIMBLE RIGHT PANELS
@@ -916,12 +987,31 @@ KisMainWindow::KisMainWindow(QUuid uuid)
         krimbleSetRightPanelsHidden(this, !krimbleRightDocks(this, true).isEmpty());
         krimbleUpdateRightPanelUi(this);
     });
-    // The handle that brings the panels back, and the watcher for taps on the bar.
-    new KrimbleRightPanelHandle(this, [this]() {
-        krimbleSetRightPanelsHidden(this, false);
-        krimbleUpdateRightPanelUi(this);
-    });
-    krimbleRightPanelHandle(this)->hide();
+    // The big side button: tap = hide / show the right panels, long press or sideways swipe = resize.
+    // It is only made on Android; the menu entry works everywhere.
+#ifdef Q_OS_ANDROID
+    {
+        struct DragState { int startWidth {0}; };
+        auto dragState = std::make_shared<DragState>();
+        new KrimbleSideBarButton(this,
+            [this]() {                                             // tap
+                krimbleSetRightPanelsHidden(this, !krimbleRightDocks(this, true).isEmpty());
+                krimbleUpdateRightPanelUi(this);
+            },
+            [this, dragState]() {                                  // drag begins
+                if (krimbleRightDocks(this, true).isEmpty()) {
+                    krimbleSetRightPanelsHidden(this, false);      // dragging from the edge: show first
+                    QApplication::processEvents();
+                }
+                dragState->startWidth = krimbleRightPanelsWidth(this);
+            },
+            [this, dragState](int dx) {                            // drag moves (left = wider)
+                krimbleSetRightPanelsWidth(this, dragState->startWidth - dx);
+                krimbleUpdateRightPanelUi(this);
+            });
+        krimbleRightPanelHandle(this)->hide();
+    }
+#endif
     installEventFilter(new KrimbleRightPanelsFilter(this));
 
 

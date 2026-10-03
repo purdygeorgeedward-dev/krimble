@@ -2180,3 +2180,28 @@ hid the handle; with nothing remembered, "Show" brought back the usual three.
 the sandbox (the extracted code compiled with the translation call stubbed). Whether Qt's own
 bar-drag on a phone still works is the open problem from Oct 2; this change does not touch it.
 `krita5.xmlgui` checked as well-formed XML.
+
+### Update 2026-10-03: the side button replaces the tap-on-Qt's-bar idea (George: "long press is drag, a tap is short")
+
+**File:** `libs/ui/KisMainWindow.cpp` (block marked KRIMBLE RIGHT PANELS; Android only)
+
+George wanted the slender dotted button on the side made easier to press: a short tap should
+hide/show the side panels, a long press should drag (resize). The first version (`eeb51e1`) only
+watched taps on Qt's own thin bar, which was already hard to grab on the phone, so it is replaced.
+
+**Now:** a real button, 52 x 170 px, laid over the bar between the canvas and the right-hand
+panels, halfway down the panels. Quick tap (under 16 px of movement): hides all the right-hand
+panels (the toolbox is not touched). While they are hidden the same button sits at the right edge
+with an arrow; a tap shows them again. Long press (hold 0.35 s) turns it into a drag handle (it
+turns brighter); moving the finger sideways then changes the width of the panel column (left =
+wider). A quick sideways swipe of more than 16 px starts the drag without waiting. A long press
+without moving does nothing. Dragging from the edge button while the panels are hidden shows them
+first. The menu entry Settings > Hide/Show Right Panels is unchanged and works on every platform.
+**Verified (standalone Qt test, the same code, realistic finger positions):** quick tap hides and
+shows; long press + 90 px left grew the column as far as the layout allows (the test window was
+too small for the full 90); long press + 120 px right shrank it by exactly 120; a quick 40 px swipe
+widened it by exactly 40; long press without movement changed nothing; dragging from the hidden
+edge button showed the panels and resized them.
+**Not verified:** a build or a device (feel of the 0.35 s hold, the button size, whether it covers
+something you need at the left edge of the panels); `KisMainWindow.cpp` cannot be syntax-checked
+as a whole in the sandbox.
