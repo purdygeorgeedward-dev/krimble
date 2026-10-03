@@ -189,6 +189,9 @@ public:
         : QWidget(parent)
     {
         setFixedSize(36, 36);
+        // Looked up by this name (see the topLevelChanged handler). This class has no
+        // Q_OBJECT, so findChild<KisFloatingDockSizeGrip*>() would match any widget.
+        setObjectName(QStringLiteral("krimbleResizeHandle"));
     }
 
 protected:
@@ -2844,7 +2847,13 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
                 dockWidget->setProperty("krimbleGripStrip", false);
             }
 
-            KisFloatingDockSizeGrip *grip = dockWidget->findChild<KisFloatingDockSizeGrip*>();
+            // KRIMBLE 2026-10-02: look the handle up by name. With the class no longer
+            // derived from QSizeGrip (cfa2343), findChild<KisFloatingDockSizeGrip*>()
+            // matched whichever widget was the first child of the panel, so no handle was
+            // ever created and the panel's own widget was moved to the corner instead.
+            // KisFloatingDockSizeGrip *grip = dockWidget->findChild<KisFloatingDockSizeGrip*>();
+            KisFloatingDockSizeGrip *grip = static_cast<KisFloatingDockSizeGrip*>(
+                dockWidget->findChild<QWidget*>(QStringLiteral("krimbleResizeHandle"), Qt::FindDirectChildrenOnly));
             if (floating) {
                 if (!grip) {
                     grip = new KisFloatingDockSizeGrip(dockWidget);

@@ -1906,3 +1906,28 @@ If it activates by itself again, please note what was being done (which tool was
 active, what was tapped, whether a text layer existed) so it can be traced.
 **Not verified:** a build or a device; the file could not be syntax-checked here (the
 Qt QML headers are not installed in the sandbox). The change is one uncommented line.
+
+## 2026-10-02 — Resize handles missing on every panel (bug from cfa2343) fixed
+
+**File:** `libs/ui/KisMainWindow.cpp` (Android only)
+
+Device feedback on the 19:05 build: the sizing handles on all floating panels
+were missing.
+
+**Cause (my bug, from cfa2343):** when the handle stopped being a `QSizeGrip`
+subclass and became a plain `QWidget`, the code that checks "does this panel
+already have a handle?" (`findChild<KisFloatingDockSizeGrip*>()`) stopped
+working. The class has no `Q_OBJECT`, so Qt's type check matches any widget.
+It returned the first child of the panel (in a standalone test: the panel's own
+title button), the code concluded a handle existed, and no handle was ever
+created. It also moved and showed that other widget in the lower right corner.
+Reproduced in a standalone Qt test.
+
+**Fix:** the handle sets an object name (`krimbleResizeHandle`) and is looked up
+by that name among the panel's direct children. Same test: no handle -> nothing
+found; after creating one -> found.
+
+**Verified:** the lookup in a standalone Qt test. **Not verified:** a build or a
+device; `KisMainWindow.cpp` cannot be syntax-checked here. Lesson: a standalone
+test covered the handle's resizing but not this lookup; the next test should
+create the handle through the same code path as the app.
