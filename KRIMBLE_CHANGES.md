@@ -2090,3 +2090,30 @@ Nothing in the Android build uses them (the CMake, script and CI files searched)
 and macOS packaging scripts still mention these paths (`build_msix.py` and
 `macos-apptodmg.py` copy them), so building Windows or macOS packages will need new icons
 first. **Not verified:** a build.
+
+## 2026-10-03 — Build stamp: the version shown by the app now changes with every build
+
+**Files:** new `libs/version/KrimbleBuildStamp.cmake`; `libs/version/CMakeLists.txt`;
+`libs/version/KritaVersionWrapper.cpp`
+
+George asked why the version always reads "1.0.0 beta 2" when a new build number is made
+every build. Reason: the version text is a fixed string in `CMakeLists.txt`
+(`KRITA_VERSION_STRING`), and the git hash shown next to it is only refreshed when CMake
+reconfigures, which does not happen on most rebuilds (that is why the splash kept showing the
+hash `3a607b4` and `38d3800` on newer builds).
+
+**Change:** a small CMake script runs on every build (target `krimble_build_stamp`, part of
+the normal build) and writes `krimble_build_stamp.h` with the build time as `YYMMDD-HHMM` in
+Mountain time (the same clock as the APK file names) and the short hash of the checked-out
+commit. `KritaVersionWrapper::versionString(true)`, the text shown in the splash screen, logs,
+crash and bug reports, now reads for example
+**`1.0.0-beta2 build 261003-1905 (git 76c7150)`**.
+`versionString(false)`, the plain version used inside saved files and the resource database,
+is not changed. If the generated header is missing the old format is used.
+
+**Cost:** each build recompiles one small file and relinks one small library.
+**Verified:** the script run here gives the right Mountain time and git hash and leaves the git
+part out when there is no checkout; the version text was compiled and run with stand-in headers.
+**Not verified:** a real build, and how the longer text fits on the splash screen (about 42
+characters instead of 26; it is drawn right-aligned over the image). The CMake file change
+makes the next build reconfigure CMake once.
