@@ -54,8 +54,9 @@ DefaultTools::DefaultTools(QObject *parent, const QVariantList &)
     KoToolRegistry::instance()->add(new KisToolMeasureFactory());
     KoToolRegistry::instance()->add(new KisToolPathFactory());
     KoToolRegistry::instance()->add(new KisToolMoveFactory());
-    KoToolRegistry::instance()->add(new KisToolMultiBrushFactory());
-    KoToolRegistry::instance()->add(new KisToolPencilFactory());
+    // KRIMBLE 2026-10-03: removed from the toolbox at George's request so the first button is the Move tool (industry-standard order). Uncomment to bring it back. (Multibrush, Pencil)
+    // KoToolRegistry::instance()->add(new KisToolMultiBrushFactory());
+    // KoToolRegistry::instance()->add(new KisToolPencilFactory());
     KoToolRegistry::instance()->add(new KisToolPanFactory());
 }
 

@@ -30,7 +30,8 @@ K_PLUGIN_FACTORY_WITH_JSON(ToolPolylineFactory, "kritatoolpolyline.json", regist
 ToolPolyline::ToolPolyline(QObject *parent, const QVariantList &)
         : QObject(parent)
 {
-    KoToolRegistry::instance()->add(new KisToolPolylineFactory());
+    // KRIMBLE 2026-10-03: removed from the toolbox at George's request so the first button is the Move tool (industry-standard order). Uncomment to bring it back.
+    // KoToolRegistry::instance()->add(new KisToolPolylineFactory());
 }
 
 ToolPolyline::~ToolPolyline()

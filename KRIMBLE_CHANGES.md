@@ -2205,3 +2205,29 @@ edge button showed the panels and resized them.
 **Not verified:** a build or a device (feel of the 0.35 s hold, the button size, whether it covers
 something you need at the left edge of the panels); `KisMainWindow.cpp` cannot be syntax-checked
 as a whole in the sandbox.
+
+## 2026-10-03 — Seven tools removed from the top of the toolbox so Move is the first button
+
+**Files:** `plugins/tools/karbonplugins/tools/KarbonToolsPlugin.cpp`,
+`plugins/tools/tool_knife/ToolKnife.cpp`, `plugins/tools/tool_dyna/tool_dyna.cpp`,
+`plugins/tools/tool_polyline/tool_polyline.cc`, `plugins/tools/basictools/default_tools.cc`,
+`libs/ui/toolbox/KoToolBox.cpp`
+
+George: the first tool should be Move; the group above the industry-standard tools should go.
+That group was two toolbox sections: "Main" (Select Shapes, Calligraphy, Comic Panel Editing)
+and "Shape" (Dynamic Brush, Polyline, Multibrush, Pencil).
+
+**Changed:** the registration line of Calligraphy, Comic Panel Editing, Dynamic Brush, Polyline,
+Multibrush and Pencil is commented out (same method as the Type tool in September); they no
+longer exist in the app, so they have no toolbox button, tool options or shortcuts. To bring one
+back, uncomment its line. **Select Shapes** (`InteractionTool`) is NOT unregistered: the tool
+manager picks it as the default tool when a document opens and other code switches to it. Instead
+`KoToolBox::addButton` skips it, so it has no button. The toolbox layout already skips an empty
+section, so no stray divider line is expected above Move.
+**Checked:** other code only mentions these tool ids as text (a list in `kis_node_manager.cpp`
+and the recorder's tool list) or in `krita5.xmlgui` toolbar line 1084 (`KritaShape/KisToolMultiBrush`),
+which will simply find no action; no menu depends on them.
+**Syntax:** the five plugin files pass the compiler check; `KoToolBox.cpp` stops at a build-generated
+`moc_` file that does not exist in the sandbox (not caused by this change).
+**Not verified:** a build or a device. **Not changed:** the order of the remaining groups (the
+industry-standard block now comes first; the Krita-only groups still sit after Zoom).

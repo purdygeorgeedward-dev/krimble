@@ -171,6 +171,13 @@ void KoToolBox::setViewManager(KisViewManager *viewManager)
 
 void KoToolBox::addButton(KoToolAction *toolAction)
 {
+    // KRIMBLE 2026-10-03: the Select Shapes tool ("InteractionTool") stays registered because
+    // the tool manager needs it as the default tool, but it gets no toolbox button, so the
+    // first button is the Move tool. (An empty toolbox section is skipped by the layout.)
+    if (toolAction->id() == QLatin1String("InteractionTool")) {
+        return;
+    }
+
     KoToolBoxButton *button = new KoToolBoxButton(toolAction, this);
 
     d->buttons << button;
