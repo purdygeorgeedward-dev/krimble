@@ -2259,3 +2259,23 @@ used a pointer arrow with a small cross. He chose the plain version. `light_krit
 `dark_krita_tool_move.svg` now draw it (rounded caps and joins, stroke 1.5, same colours as before).
 The other five icons from the entry above are unchanged. **Verified:** both files are well-formed
 XML; the drawing was approved from an on-screen preview. **Not verified:** a build or a device.
+
+## 2026-10-03 — New rounded icons for all the toolbox tools (George approved the on-screen preview)
+
+**Files:** 52 icon files in `krita/pics/tools/SVG/16/` (light and dark version of each of 26 tools,
+same file names as before, so nothing in the code changes); plus `krita/pics/tools/krimble-future-icons/`
+(8 files and a README, not part of the build).
+
+Tools redrawn: Move (plain four-way cross), Rectangular and Elliptical Marquee, Lasso, Polygonal Lasso,
+Magnetic Lasso (horseshoe magnet), Magic Wand, Select Similar, Crop, Eyedropper, Healing Brush, Brush,
+Smudge, Blur (Soften), Dodge, Burn, Gradient, Paint Bucket, Pen, Direct Selection (Edit Shapes), Type,
+Rectangle, Ellipse, Line, Polygon, Hand, Zoom. All are original drawings in one style: 16 x 16 grid,
+round caps and joins, strokes 1.2 to 1.5 so they stay readable at 16 pixels. Light theme version is
+#d2d2d2, dark theme version #373737 (the colours of the icons they replace). They use the familiar
+symbols for each tool and are not copies of any other program's artwork.
+**Kept for later, not in the build:** Pencil, Path Selection, Eraser, Clone Stamp (in
+`krimble-future-icons`), for when those tools are added.
+**Note:** an icon name is used wherever the app shows that icon, so some menus that use the same icon
+(for example the selection tools in the Select menu) will show the new drawing too.
+**Verified:** every file is well-formed XML; the 27 light icons were rendered from the written files at
+32 and 16 pixels and checked. **Not verified:** a build or a device.
