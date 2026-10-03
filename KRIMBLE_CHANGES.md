@@ -2083,7 +2083,7 @@ with a parser only.
 
 ## 2026-10-03 — Stale Windows and macOS icon art deleted (George's instruction)
 
-**Deleted:** all 45 files in `packaging/windows/msix/pkg/Assets` (Windows Store tile and file
+**Deleted:** all 51 files in `packaging/windows/msix/pkg/Assets` (Windows Store tile and file
 icons: Square44/71/150/310, Wide310x150, StoreLogo, fileicon, in all scales) and
 `packaging/macos/KritaIcon.icns` (the macOS disk image volume icon). All were the old Krita art.
 Nothing in the Android build uses them (the CMake, script and CI files searched). The Windows
