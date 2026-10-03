@@ -1953,3 +1953,29 @@ between B and C; put near the left docks on the left; the menu path gives the sa
 result as before. **Not verified:** a build or a device; `KisMainWindow.cpp` cannot
 be syntax-checked here. Dragging a floating panel onto a dock area still does
 nothing by design.
+
+## 2026-10-02 — In-app window and tab icon: orange K + paw instead of the rainbow K
+
+**Files:** `krita/pics/branding/Next/sc-apps-krita.svgz` (replaced);
+`krita/pics/branding/Next/sc-apps-krita-rainbow-original.svgz` (the old rainbow icon,
+kept, not referenced by anything)
+
+Device feedback: the document tab and window icon was still the old rainbow K.
+That icon is `krita-branding`, loaded in `KisApplication.cpp` (line 243) and used
+for the document tabs (`KisMainWindow.cpp`). It comes from `branding.qrc`, which maps
+`krita-branding.svgz` to `sc-apps-krita.svgz`. The Android launcher icon had been
+replaced earlier (Sept 19) but this in-app icon had not.
+
+The new `sc-apps-krita.svgz` is an SVG that embeds the orange K + paw art (taken from
+`packaging/android/apk/res/drawable-nodpi/ic_launcher_fg.webp`, cropped to the art with
+a margin, scaled to 512 x 512, transparent background). Rendered with Qt at 16, 32,
+64 and 256 pixels it is clear at every size. The file is 101 KB, against 281 KB for the
+old one.
+
+**Limits:** the source art is only 192 pixels across, so very large uses (above about
+256 pixels) will be slightly soft; a vector or larger version of the art would fix
+that. The desktop PNG icons in the same folder (`16-apps-krita.png` ... `1024-apps-krita.png`)
+and the Play Store icon `packaging/android/apk/ic_launcher-playstore.png` (still the
+old rainbow gear K at 512 x 512) were NOT changed; the PNGs are not used by the Android
+app, but the Play Store icon will need replacing before any Play Store upload.
+**Not verified:** a build or a device.
