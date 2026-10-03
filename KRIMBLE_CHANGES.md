@@ -2080,3 +2080,13 @@ with a parser only.
 **How to test the theory without a build:** Settings > Display > Navigation bar > switch to
 "Buttons" (3-button navigation). If the bars can be grabbed then, the theory is right.
 **Not verified:** a build or a device. If it is wrong, the cause is somewhere else.
+
+## 2026-10-03 — Stale Windows and macOS icon art deleted (George's instruction)
+
+**Deleted:** all 45 files in `packaging/windows/msix/pkg/Assets` (Windows Store tile and file
+icons: Square44/71/150/310, Wide310x150, StoreLogo, fileicon, in all scales) and
+`packaging/macos/KritaIcon.icns` (the macOS disk image volume icon). All were the old Krita art.
+Nothing in the Android build uses them (the CMake, script and CI files searched). The Windows
+and macOS packaging scripts still mention these paths (`build_msix.py` and
+`macos-apptodmg.py` copy them), so building Windows or macOS packages will need new icons
+first. **Not verified:** a build.
