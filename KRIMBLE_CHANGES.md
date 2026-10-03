@@ -2250,3 +2250,12 @@ shared: the same file is used wherever the app shows that icon (for example the 
 appears for the outline selection action in menus).
 **Checked:** all 12 files are well-formed XML and render in the preview. **Not verified:** a build
 or a device (how they look on the real toolbox).
+
+### Update 2026-10-03: Move icon changed to the plain four-way cross
+
+George compared sample images of the industry-standard toolbox: the current versions use a plain
+four-way arrow cross (plus with an arrowhead on each end) for the Move tool; only older versions
+used a pointer arrow with a small cross. He chose the plain version. `light_krita_tool_move.svg` and
+`dark_krita_tool_move.svg` now draw it (rounded caps and joins, stroke 1.5, same colours as before).
+The other five icons from the entry above are unchanged. **Verified:** both files are well-formed
+XML; the drawing was approved from an on-screen preview. **Not verified:** a build or a device.
