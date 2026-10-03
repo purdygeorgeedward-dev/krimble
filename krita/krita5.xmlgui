@@ -1016,6 +1016,9 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="settings_attach_panel_menu">
         <text>Attach Panel</text>
     </Action>
+    <Action name="settings_toggle_right_panels">
+        <text>Hide Right Panels</text>
+    </Action>
                      <Separator/>
     <Action name="manage_resources">
         <text>Presets...</text>

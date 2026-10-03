@@ -2151,3 +2151,32 @@ ended at y 2; one at x -120 ended at x 2; one past the bottom-right moved fully 
 1500 x 1200 dialog became 800 x 600; a dialog already inside stayed where it was.
 **Not verified:** a build or a device; `KisApplication.cpp` could not be syntax-checked as a whole in
 the sandbox (the checker lacks some brush headers); the new class compiled and ran on its own.
+
+## 2026-10-03 — Hide / Show Right Panels (menu) and tap-the-bar behaviour (Android)
+
+**Files:** `libs/ui/KisMainWindow.cpp` (helper code marked BEGIN/END KRIMBLE RIGHT PANELS, and
+the action registered next to Attach Panel), `krita/krita5.xmlgui` (one new action line, added
+with George's permission)
+
+George's idea: collapse the whole right-hand panel column without closing the toolbox; a tap on
+the sizing bar hides/unhides the side panels, a drag still resizes.
+
+**Menu:** Settings > "Hide Right Panels" (becomes "Show Right Panels" while they are hidden),
+placed under Attach Panel. It hides every docked panel in the right-hand area and remembers which
+ones, so exactly those come back. The toolbox (left side) is never touched. After a restart, when
+nothing is remembered, "Show Right Panels" shows Tool Options, Layers and Color.
+**Tap on the bar (Android only):** a press and release without moving (under 12 px) on the bar
+between the canvas and the right panels hides them. A drag is not touched, so it resizes as
+before. The event is never consumed.
+**Handle:** while the right panels are hidden, a small handle (40 x 180) sits at the right edge of
+the window, vertically centred; a tap on it shows the panels again. It disappears as soon as any
+right panel is visible (also when one is shown by hand from Settings > Panels).
+**Verified (standalone Qt test, the same code, a main window with a toolbox on the left and three
+panels on the right):** tap on the bar hid the three right panels and left the toolbox; the handle
+appeared; a tap on the handle brought all three back; a 60 px drag on the bar did nothing; a tap
+on the canvas did nothing; the menu action toggled and its text changed; showing one panel by hand
+hid the handle; with nothing remembered, "Show" brought back the usual three.
+**Not verified:** a build or a device; `KisMainWindow.cpp` as a whole cannot be syntax-checked in
+the sandbox (the extracted code compiled with the translation call stubbed). Whether Qt's own
+bar-drag on a phone still works is the open problem from Oct 2; this change does not touch it.
+`krita5.xmlgui` checked as well-formed XML.

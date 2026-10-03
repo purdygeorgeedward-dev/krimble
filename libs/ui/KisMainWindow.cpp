@@ -43,6 +43,9 @@
 #include <QMouseEvent>
 // #include <QSizeGrip>  // no longer used, see KisFloatingDockSizeGrip
 #include <QPainter>
+#include <QPolygonF>
+#include <QTimer>
+#include <functional>
 #endif
 #include <QMenuBar>
 #include <KisMimeDatabase.h>
@@ -355,6 +358,217 @@ static void krimbleAttachDockWhereItIs(QMainWindow *win, QDockWidget *dock)
 {
     krimbleAttachDockWhereItIs(win, dock, dock->geometry().center());
 }
+
+// BEGIN KRIMBLE RIGHT PANELS
+// KRIMBLE 2026-10-03: hide / show all the panels on the right-hand side at once, without touching
+// the toolbox (which sits on the left). Available from Settings > "Hide Right Panels"; on Android
+// a tap on the bar between the canvas and the right panels does the same, while a drag still
+// resizes (see KrimbleRightPanelsFilter). While the right panels are hidden, a small handle at
+// the right edge of the window brings them back with a tap.
+
+static QList<QDockWidget*> krimbleRightDocks(QMainWindow *win, bool visibleOnly)
+{
+    QList<QDockWidget*> docks;
+    Q_FOREACH (QDockWidget *dock, win->findChildren<QDockWidget*>()) {
+        if (dock->isFloating() || win->dockWidgetArea(dock) != Qt::RightDockWidgetArea) {
+            continue;
+        }
+        if (visibleOnly && !dock->isVisible()) {
+            continue;
+        }
+        docks << dock;
+    }
+    return docks;
+}
+
+// The small handle shown at the right edge while the right panels are hidden: a tap shows them.
+class KrimbleRightPanelHandle : public QWidget
+{
+public:
+    explicit KrimbleRightPanelHandle(QWidget *parent, std::function<void()> onTap)
+        : QWidget(parent), m_onTap(onTap)
+    {
+        setObjectName(QStringLiteral("krimbleRightPanelHandle"));
+        setFixedSize(40, 180);
+    }
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override
+    {
+        m_press = event->globalPos();
+        m_pressed = (event->button() == Qt::LeftButton);
+        event->accept();
+    }
+    void mouseReleaseEvent(QMouseEvent *event) override
+    {
+        if (m_pressed && (event->globalPos() - m_press).manhattanLength() < 24 && m_onTap) {
+            const std::function<void()> action = m_onTap;
+            QTimer::singleShot(0, this, [action]() { action(); });
+        }
+        m_pressed = false;
+        event->accept();
+    }
+    void paintEvent(QPaintEvent *) override
+    {
+        QPainter p(this);
+        p.setRenderHint(QPainter::Antialiasing);
+        QColor background = palette().color(QPalette::Window);
+        background.setAlpha(220);
+        p.setPen(Qt::NoPen);
+        p.setBrush(background);
+        p.drawRoundedRect(QRectF(0, 0, width() + 12, height()), 12, 12);   // flat on the window edge
+        QColor grip = palette().color(QPalette::WindowText);
+        grip.setAlpha(200);
+        p.setBrush(grip);
+        for (int i = 0; i < 6; ++i) {
+            p.drawRect(QRectF(12, 42 + i * 16, 7, 7));
+        }
+        // small arrow pointing into the window
+        QPolygonF arrow;
+        arrow << QPointF(30, 76) << QPointF(30, 104) << QPointF(21, 90);
+        p.drawPolygon(arrow);
+    }
+
+private:
+    std::function<void()> m_onTap;
+    QPoint m_press;
+    bool m_pressed {false};
+};
+
+static KrimbleRightPanelHandle *krimbleRightPanelHandle(QMainWindow *win)
+{
+    return win->findChild<KrimbleRightPanelHandle*>(QStringLiteral("krimbleRightPanelHandle"),
+                                                      Qt::FindDirectChildrenOnly);
+}
+
+// Hides (hide == true) or shows the right-hand panels. When hiding, the panels that were visible
+// are remembered so exactly those come back.
+static void krimbleSetRightPanelsHidden(QMainWindow *win, bool hide)
+{
+    if (hide) {
+        QStringList names;
+        Q_FOREACH (QDockWidget *dock, krimbleRightDocks(win, true)) {
+            names << dock->objectName();
+            dock->hide();
+        }
+        if (!names.isEmpty()) {
+            win->setProperty("krimbleHiddenRightDocks", names);
+        }
+    } else {
+        QStringList names = win->property("krimbleHiddenRightDocks").toStringList();
+        if (names.isEmpty()) {
+            // Nothing remembered (for example after a restart): show the usual three.
+            names << QStringLiteral("sharedtooldocker") << QStringLiteral("KisLayerBox")
+                  << QStringLiteral("ColorSelectorNg");
+        }
+        Q_FOREACH (const QString &name, names) {
+            if (QDockWidget *dock = win->findChild<QDockWidget*>(name)) {
+                if (!dock->isFloating() && win->dockWidgetArea(dock) == Qt::RightDockWidgetArea) {
+                    dock->show();
+                }
+            }
+        }
+        win->setProperty("krimbleHiddenRightDocks", QStringList());
+    }
+}
+
+// Keeps the handle and the menu text in step with what is on screen.
+static void krimbleUpdateRightPanelUi(QMainWindow *win)
+{
+    const bool anyVisible = !krimbleRightDocks(win, true).isEmpty();
+    const bool remembered = !win->property("krimbleHiddenRightDocks").toStringList().isEmpty();
+
+    if (QAction *action = win->findChild<QAction*>(QStringLiteral("settings_toggle_right_panels"))) {
+        const QString text = anyVisible ? i18nc("@action:inmenu", "Hide Right Panels")
+                                        : i18nc("@action:inmenu", "Show Right Panels");
+        if (action->text() != text) {
+            action->setText(text);
+        }
+    }
+    if (KrimbleRightPanelHandle *handle = krimbleRightPanelHandle(win)) {
+        const bool showHandle = !anyVisible && remembered;
+        handle->setVisible(showHandle);
+        if (showHandle) {
+            handle->move(win->width() - handle->width(), (win->height() - handle->height()) / 2);
+            handle->raise();
+        }
+    }
+}
+
+// Watches the main window: keeps the handle/menu text up to date and, on Android, turns a tap
+// (a press and release without moving) on the bar between the canvas and the right panels into
+// "hide the right panels". A drag on that bar is left alone and resizes as before.
+class KrimbleRightPanelsFilter : public QObject
+{
+public:
+    explicit KrimbleRightPanelsFilter(QMainWindow *win) : QObject(win), m_win(win) {}
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (watched != m_win) {
+            return false;
+        }
+        switch (event->type()) {
+        case QEvent::LayoutRequest:
+        case QEvent::Resize:
+        case QEvent::Show:
+            krimbleUpdateRightPanelUi(m_win);
+            break;
+#ifdef Q_OS_ANDROID
+        case QEvent::MouseButtonPress: {
+            QMouseEvent *mouse = static_cast<QMouseEvent*>(event);
+            m_tapStarted = (mouse->button() == Qt::LeftButton) && isOnSeparator(mouse->pos());
+            m_pressPos = mouse->globalPos();
+            break;
+        }
+        case QEvent::MouseButtonRelease: {
+            QMouseEvent *mouse = static_cast<QMouseEvent*>(event);
+            if (m_tapStarted && (mouse->globalPos() - m_pressPos).manhattanLength() < 12) {
+                QPointer<QMainWindow> win(m_win);
+                QTimer::singleShot(0, m_win, [win]() {
+                    if (win) {
+                        krimbleSetRightPanelsHidden(win, true);
+                        krimbleUpdateRightPanelUi(win);
+                    }
+                });
+            }
+            m_tapStarted = false;
+            break;
+        }
+#endif
+        default:
+            break;
+        }
+        return false;   // never consumed: dragging the bar still resizes
+    }
+
+private:
+#ifdef Q_OS_ANDROID
+    // The bar between the central area and the left edge of the right-hand panels, with some
+    // margin on each side for a finger.
+    bool isOnSeparator(const QPoint &pos) const
+    {
+        const QList<QDockWidget*> docks = krimbleRightDocks(m_win, true);
+        QWidget *central = m_win->centralWidget();
+        if (docks.isEmpty() || !central) {
+            return false;
+        }
+        int dockLeft = m_win->width();
+        Q_FOREACH (QDockWidget *dock, docks) {
+            dockLeft = qMin(dockLeft, dock->geometry().left());
+        }
+        const int slop = 10;
+        const int barLeft = central->geometry().right() + 1;
+        return pos.x() >= barLeft - slop && pos.x() <= dockLeft + slop;
+    }
+    bool m_tapStarted {false};
+    QPoint m_pressPos;
+#endif
+    QMainWindow *m_win;
+};
+// END KRIMBLE RIGHT PANELS
+
 
 class ToolDockerFactory : public KoDockFactoryBase
 {
@@ -693,6 +907,22 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     });
     // d->dockWidgetMenu->menu()->addMenu(attachPanelMenu);
     actionCollection()->addAction("settings_attach_panel_menu", attachPanelAction);
+
+    // KRIMBLE 2026-10-03: "Hide Right Panels" / "Show Right Panels" (Settings menu), see
+    // krimbleSetRightPanelsHidden(). The toolbox on the left is not touched.
+    QAction *toggleRightPanelsAction = new QAction(i18nc("@action:inmenu", "Hide Right Panels"), this);
+    actionCollection()->addAction("settings_toggle_right_panels", toggleRightPanelsAction);
+    connect(toggleRightPanelsAction, &QAction::triggered, this, [this]() {
+        krimbleSetRightPanelsHidden(this, !krimbleRightDocks(this, true).isEmpty());
+        krimbleUpdateRightPanelUi(this);
+    });
+    // The handle that brings the panels back, and the watcher for taps on the bar.
+    new KrimbleRightPanelHandle(this, [this]() {
+        krimbleSetRightPanelsHidden(this, false);
+        krimbleUpdateRightPanelUi(this);
+    });
+    krimbleRightPanelHandle(this)->hide();
+    installEventFilter(new KrimbleRightPanelsFilter(this));
 
 
     // Style menu actions
