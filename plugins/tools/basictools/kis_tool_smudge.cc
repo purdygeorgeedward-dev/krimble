@@ -5,6 +5,7 @@
  */
 
 #include "kis_tool_smudge.h"
+#include "KrimbleEmbeddedPreset.h"
 
 #include <KoCanvasBase.h>
 
@@ -41,13 +42,16 @@ void KisToolSmudge::activate(const QSet<KoShape*> &shapes)
         return;
     }
 
-    KisResourceModel model(ResourceType::PaintOpPresets);
-    const QVector<KoResourceSP> matches = model.resourcesForName("smudge");
-    if (matches.isEmpty()) {
-        return;
-    }
-
-    KisPaintOpPresetSP smudgePreset = matches.first().dynamicCast<KisPaintOpPreset>();
+    // KRIMBLE 2026-10-02: the lookup below never found anything (the embedded presets are
+    // not in the resource database), so the tool painted with the current brush. Load the
+    // built-in Color Smudge preset directly instead. Old code kept for reference:
+    // KisResourceModel model(ResourceType::PaintOpPresets);
+    // const QVector<KoResourceSP> matches = model.resourcesForName("smudge");
+    // if (matches.isEmpty()) {
+    //     return;
+    // }
+    // KisPaintOpPresetSP smudgePreset = matches.first().dynamicCast<KisPaintOpPreset>();
+    KisPaintOpPresetSP smudgePreset = krimbleLoadEmbeddedPreset(QStringLiteral("colorsmudge"));
     if (smudgePreset) {
         canvas2->viewManager()->canvasResourceProvider()->setPaintOpPreset(smudgePreset);
     }

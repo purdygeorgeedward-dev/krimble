@@ -1979,3 +1979,47 @@ and the Play Store icon `packaging/android/apk/ic_launcher-playstore.png` (still
 old rainbow gear K at 512 x 512) were NOT changed; the PNGs are not used by the Android
 app, but the Play Store icon will need replacing before any Play Store upload.
 **Not verified:** a build or a device.
+
+## 2026-10-02 — Smudge, Soften, Dodge, Burn painted plain black (cause found); stale gear-K icons removed
+
+### 1. Smudge / Soften / Dodge / Burn tools
+
+**Files:** `plugins/tools/basictools/kis_tool_{smudge,soften,dodge,burn}.cc`, new
+`plugins/tools/basictools/KrimbleEmbeddedPreset.h`
+
+Device feedback: all four tools just paint black, like the freehand brush with a
+different icon.
+
+**Cause:** each tool looked its brush preset up by name in the resource database
+(`KisResourceModel::resourcesForName`: "smudge", "DFP", "defaultPreset"). Those presets
+are built into the app (`plugins/paintops/defaultpresets`, embedded as
+`:/presets/<engine>.kpp`); they are not database resources, so the lookup found nothing
+and the tools quietly kept the current brush. (The property names the Dodge/Burn
+tools set, `CompositeOp` and `PaintOpAction`, do exist in the engine, so those were fine.)
+
+**Fix:** a helper (`krimbleLoadEmbeddedPreset`) loads the embedded preset directly, the
+same way `KisPaintopBox::defaultPreset()` does. Smudge uses the Color Smudge engine
+(`colorsmudge`), Soften the filter brush ("DFP": gaussian blur, `filter`), Dodge and Burn
+the default brush (`paintbrush`) with dodge/burn blending and build-up as before. The old
+lookup code is kept as comments in each file.
+**Verified:** all four files pass a compiler syntax-only check; the preset names and engine
+ids were read from the embedded `.kpp` files. **Not verified:** a build or the tools
+actually smudging, softening, dodging or burning on a device.
+
+### 2. Stale icons
+
+At George's instruction the old metallic gear-K icons (with the rainbow ring or the
+orange "N" badge) were removed or replaced:
+- Replaced with the orange K + paw: `krita/pics/branding/Next/{16,22,24,32,48,64,128,256,512,1024}-apps-krita.png`,
+  `krita/pics/branding/Next/krita.ico`, and the Play Store icons
+  `packaging/android/apk/ic_launcher-playstore.png` and `ic_launcher_next-playstore.png`
+  (white square, K + paw centred). Large sizes are re-sharpened from the 192 pixel launcher art;
+  a bigger original would still be better.
+- Deleted: the unused branding sets `krita/pics/branding/default`, `Plus` and `Beta`; the
+  Next variant's macOS-only `krita.icon` assets; `krita/pics/branding/krita.ico`;
+  `krita/pics/branding/generate_icons.sh` (it generated the old icons); and the rainbow
+  copy `sc-apps-krita-rainbow-original.svgz` added earlier today.
+The build only uses `krita/pics/branding/Next` (BRANDING is forced to Next); a search of the
+CMake, script, CI and resource files found no other reference to the deleted files.
+**Not changed (still the old art):** the Windows installer assets in `packaging/windows/msix/pkg/Assets`
+(45 files) and the macOS icon in `packaging/macos`; neither is used by the Android build.

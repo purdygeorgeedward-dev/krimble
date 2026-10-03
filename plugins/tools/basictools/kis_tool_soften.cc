@@ -5,6 +5,7 @@
  */
 
 #include "kis_tool_soften.h"
+#include "KrimbleEmbeddedPreset.h"
 
 #include <KoCanvasBase.h>
 
@@ -40,13 +41,16 @@ void KisToolSoften::activate(const QSet<KoShape*> &shapes)
         return;
     }
 
-    KisResourceModel model(ResourceType::PaintOpPresets);
-    const QVector<KoResourceSP> matches = model.resourcesForName("DFP");
-    if (matches.isEmpty()) {
-        return;
-    }
-
-    KisPaintOpPresetSP softenPreset = matches.first().dynamicCast<KisPaintOpPreset>();
+    // KRIMBLE 2026-10-02: the lookup below never found anything (the embedded presets are
+    // not in the resource database). Load the built-in filter-brush preset (named "DFP",
+    // gaussian blur) directly instead. Old code kept for reference:
+    // KisResourceModel model(ResourceType::PaintOpPresets);
+    // const QVector<KoResourceSP> matches = model.resourcesForName("DFP");
+    // if (matches.isEmpty()) {
+    //     return;
+    // }
+    // KisPaintOpPresetSP softenPreset = matches.first().dynamicCast<KisPaintOpPreset>();
+    KisPaintOpPresetSP softenPreset = krimbleLoadEmbeddedPreset(QStringLiteral("filter"));
     if (softenPreset) {
         canvas2->viewManager()->canvasResourceProvider()->setPaintOpPreset(softenPreset);
     }

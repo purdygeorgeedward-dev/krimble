@@ -5,6 +5,7 @@
  */
 
 #include "kis_tool_dodge.h"
+#include "KrimbleEmbeddedPreset.h"
 
 #include <KoCanvasBase.h>
 #include <KoCompositeOpRegistry.h>
@@ -40,13 +41,17 @@ void KisToolDodge::activate(const QSet<KoShape*> &shapes)
         return;
     }
 
-    KisResourceModel model(ResourceType::PaintOpPresets);
-    const QVector<KoResourceSP> matches = model.resourcesForName("defaultPreset");
-    if (matches.isEmpty()) {
-        return;
-    }
-
-    KisPaintOpPresetSP basePreset = matches.first().dynamicCast<KisPaintOpPreset>();
+    // KRIMBLE 2026-10-02: the lookup below never found anything (the embedded presets are
+    // not in the resource database), so the tool painted with the current brush. Load the
+    // built-in default brush ("defaultPreset") directly instead; it is a fresh copy on every
+    // call, so the shared default brush is not changed. Old code kept for reference:
+    // KisResourceModel model(ResourceType::PaintOpPresets);
+    // const QVector<KoResourceSP> matches = model.resourcesForName("defaultPreset");
+    // if (matches.isEmpty()) {
+    //     return;
+    // }
+    // KisPaintOpPresetSP basePreset = matches.first().dynamicCast<KisPaintOpPreset>();
+    KisPaintOpPresetSP basePreset = krimbleLoadEmbeddedPreset(QStringLiteral("paintbrush"));
     if (!basePreset) {
         return;
     }
