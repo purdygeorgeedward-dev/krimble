@@ -3839,9 +3839,10 @@ void KisMainWindow::setActiveSubWindow(QWidget *window)
 void KisMainWindow::configChanged()
 {
     KisConfig cfg(true);
-    // KRIMBLE 2026-10-04: pictures open as floating windows by default (Multiple Document Mode: Subwindows).
-    // QMdiArea::ViewMode viewMode = (QMdiArea::ViewMode)cfg.readEntry<int>("mdi_viewmode", (int)QMdiArea::TabbedView);
-    QMdiArea::ViewMode viewMode = (QMdiArea::ViewMode)cfg.readEntry<int>("mdi_viewmode", (int)QMdiArea::SubWindowView);
+    // KRIMBLE 2026-10-04: Subwindows (floating pictures) were tried as the default and went back to tabs the same
+    // day ("the sub Windows are a little wonky"). The Subwindows line is kept for later.
+    // QMdiArea::ViewMode viewMode = (QMdiArea::ViewMode)cfg.readEntry<int>("mdi_viewmode", (int)QMdiArea::SubWindowView);
+    QMdiArea::ViewMode viewMode = (QMdiArea::ViewMode)cfg.readEntry<int>("mdi_viewmode", (int)QMdiArea::TabbedView);
     d->mdiArea->setViewMode(viewMode);
     Q_FOREACH (QMdiSubWindow *subwin, d->mdiArea->subWindowList()) {
         subwin->setOption(QMdiSubWindow::RubberBandMove, cfg.readEntry<int>("mdi_rubberband", cfg.useOpenGL()));

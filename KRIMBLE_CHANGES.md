@@ -2556,3 +2556,12 @@ Both menus use the existing action names, so `krita5.xmlgui` is unchanged (it st
 **Verified (standalone Qt test):** the Attach Panel list showed a floating "Layers" panel; choosing it docked it back into the right
 area where it started and the list then said "No floating panels". **Not verified:** a build or a device; the file cannot be
 syntax-checked as a whole in the sandbox.
+
+## 2026-10-04 — Default Multiple Document Mode back to tabs
+
+**Files:** `libs/ui/KisMainWindow.cpp`, `libs/ui/dialogs/kis_dlg_preferences.cc`
+
+George (after testing b12): "I think the sub Windows are a little wonky. Go back to tabs by default." The three default
+places changed earlier the same day (see the entry "Default Multiple Document Mode is now Subwindows") are tabs again
+(`QMdiArea::TabbedView`); the Subwindows lines are kept as comments. Subwindows stays a choice in Settings > Configure >
+General > Window > Multiple Document Mode. **Not verified:** a build or a device.
