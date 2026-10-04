@@ -369,7 +369,9 @@ GeneralTab::GeneralTab(QWidget *_parent, const char *_name)
         intFontSize->setValue(fontSize);
     }
 
-    m_cmbMDIType->setCurrentIndex(cfg.readEntry<int>("mdi_viewmode", (int)QMdiArea::TabbedView));
+    // KRIMBLE 2026-10-04: default is floating windows (Subwindows), was tabs.
+    // m_cmbMDIType->setCurrentIndex(cfg.readEntry<int>("mdi_viewmode", (int)QMdiArea::TabbedView));
+    m_cmbMDIType->setCurrentIndex(cfg.readEntry<int>("mdi_viewmode", (int)QMdiArea::SubWindowView));
     enableSubWindowOptions(m_cmbMDIType->currentIndex());
     connect(m_cmbMDIType, SIGNAL(currentIndexChanged(int)), SLOT(enableSubWindowOptions(int)));
 
@@ -837,7 +839,9 @@ void GeneralTab::setDefault()
     intFontSize->setValue(qApp->font().pointSize());
 
         
-    m_cmbMDIType->setCurrentIndex((int)QMdiArea::TabbedView);
+    // KRIMBLE 2026-10-04: Restore Defaults now selects floating windows (Subwindows), was tabs.
+    // m_cmbMDIType->setCurrentIndex((int)QMdiArea::TabbedView);
+    m_cmbMDIType->setCurrentIndex((int)QMdiArea::SubWindowView);
     m_chkRubberBand->setChecked(cfg.useOpenGL(true));
     KoColor mdiColor;
     mdiColor.fromXML(cfg.getMDIBackgroundColor(true));

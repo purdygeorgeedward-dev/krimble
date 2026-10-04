@@ -2491,3 +2491,16 @@ instead of making the window grow. The earlier lines are kept as comments next t
 was 875; inside a scroll area it was 91, and the dialog could be resized to 300 x 400 with the page scrolling.
 **Not verified:** a build or a device; the file cannot be syntax-checked as a whole in the sandbox (it needs the external lager
 headers). The page list on the left (icons and long labels) is not changed; if the window is still too wide, that is next.
+
+## 2026-10-04 — Default Multiple Document Mode is now Subwindows (floating picture windows)
+
+**Files:** `libs/ui/KisMainWindow.cpp`, `libs/ui/dialogs/kis_dlg_preferences.cc`
+
+George: "I want the default multiple document mode to be sub Windows" (Settings > Configure > General > Window > Multiple
+Document Mode > Subwindows). The default of the setting `mdi_viewmode` was tabs in three places; now it is
+`QMdiArea::SubWindowView` in all three: where the main window reads it (`KisMainWindow.cpp`), where the Preferences window
+shows it, and where "Restore Defaults" sets it (`kis_dlg_preferences.cc`). The old lines are kept as comments. The option
+list order in the settings form (Subwindows first, Tabs second) matches the value, so the Preferences window will show "Subwindows".
+**Note:** this only changes the default. A phone that already has the setting saved keeps its saved choice; George clears app
+data before each test, so a fresh start uses the new default. **Not verified:** a build or a device (how a new picture opens
+as a floating window on the phone).
