@@ -2471,3 +2471,23 @@ long press or a sideways swipe resizes them. The old placement code is kept as c
 edge of the panels with the window widened, with the panels narrowed, in floating picture-window mode and while the panels were
 hidden and shown again; it was hidden on the welcome page and never near the toolbox. **Not verified:** a build or a device.
 In floating-window mode the sliver lies above a picture window dragged to that edge and covers a strip about 22 px wide.
+
+## 2026-10-04 — Preferences window far too big: every page now scrolls (Android); sliver switched off again
+
+**Files:** `libs/ui/dialogs/kis_dlg_preferences.cc` (Android), `libs/ui/KisMainWindow.cpp`
+
+**Sliver:** George: "No. Comment out the sliver. I'll worry about it later." The block that creates it is `#if 0` again
+(change it to `#ifdef Q_OS_ANDROID` to bring it back); the new canvas-area placement code stays in the file.
+
+**Preferences window.** George (build b8, screenshots): "The Preferences window is waaaaaaaay too big." The 2026-10-02 fix
+(General page minimum width 0, and the window capped to the screen) was not enough: the window still came out wider than the
+screen, because the pages themselves (the General page with its row of eight tabs and long check box texts, the long labels of
+the page list, other pages) each ask for more room than a phone screen has, and a window cannot be smaller than the biggest page.
+**Fix:** every page is put inside a scroll area (`krimblePrefsPage`, Android only; other platforms use the page as it is): the
+11 pages (General, Keyboard Shortcuts, Canvas Input Settings, Display, Color Management, Performance, Tablet settings,
+Canvas-only settings, Pop-up Palette, Author, and the pages added from the preference set registry). A page too big for the window now scrolls
+instead of making the window grow. The earlier lines are kept as comments next to each page.
+**Verified (standalone Qt test with a page of eight tabs and long check box texts):** used as it is, the dialog's minimum width
+was 875; inside a scroll area it was 91, and the dialog could be resized to 300 x 400 with the page scrolling.
+**Not verified:** a build or a device; the file cannot be syntax-checked as a whole in the sandbox (it needs the external lager
+headers). The page list on the left (icons and long labels) is not changed; if the window is still too wide, that is next.

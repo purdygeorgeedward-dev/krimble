@@ -28,6 +28,9 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QLayout>
+#ifdef Q_OS_ANDROID
+#include <QScrollArea>
+#endif
 #include <QLineEdit>
 #include <QMdiArea>
 #include <QMessageBox>
@@ -2697,6 +2700,23 @@ void PopupPaletteTab::slotSelectorTypeChanged(int index) {
 
 //---------------------------------------------------------------------------------------------------
 
+// KRIMBLE 2026-10-04: on Android every page of the Preferences window is put inside a scroll area. The
+// window can then never be wider or taller than the screen: a page that is too big for the window scrolls
+// instead of making the window grow (the General page, with its row of tabs and long check box texts, made
+// the window several screens wide). On other platforms the page is used as it is.
+static QWidget *krimblePrefsPage(QWidget *page)
+{
+#ifdef Q_OS_ANDROID
+    QScrollArea *scroll = new QScrollArea;
+    scroll->setFrameShape(QFrame::NoFrame);
+    scroll->setWidgetResizable(true);
+    scroll->setWidget(page);
+    return scroll;
+#else
+    return page;
+#endif
+}
+
 KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
     : KPageDialog(parent)
 {
@@ -2708,7 +2728,8 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
 
     // General
     KoVBox *vbox = new KoVBox();
-    KPageWidgetItem *page = new KPageWidgetItem(vbox, i18n("General"));
+    // KRIMBLE 2026-10-04: was KPageWidgetItem *page = new KPageWidgetItem(vbox, i18n("General"));
+    KPageWidgetItem *page = new KPageWidgetItem(krimblePrefsPage(vbox), i18n("General"));
     page->setObjectName("general");
     page->setHeader(i18n("General"));
     page->setIcon(KisIconUtils::loadIcon("config-general"));
@@ -2725,7 +2746,8 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
 
     // Shortcuts
     vbox = new KoVBox();
-    page = new KPageWidgetItem(vbox, i18n("Keyboard Shortcuts"));
+    // KRIMBLE 2026-10-04: was page = new KPageWidgetItem(vbox, i18n("Keyboard Shortcuts"));
+    page = new KPageWidgetItem(krimblePrefsPage(vbox), i18n("Keyboard Shortcuts"));
     page->setObjectName("shortcuts");
     page->setHeader(i18n("Shortcuts"));
     page->setIcon(KisIconUtils::loadIcon("config-keyboard"));
@@ -2737,7 +2759,8 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
 
     // Canvas input settings
     m_inputConfiguration = new KisInputConfigurationPage();
-    page = addPage(m_inputConfiguration, i18n("Canvas Input Settings"));
+    // KRIMBLE 2026-10-04: was page = addPage(m_inputConfiguration, i18n("Canvas Input Settings"));
+    page = addPage(krimblePrefsPage(m_inputConfiguration), i18n("Canvas Input Settings"));
     page->setHeader(i18n("Canvas Input"));
     page->setObjectName("canvasinput");
     page->setIcon(KisIconUtils::loadIcon("config-canvas-input"));
@@ -2745,7 +2768,8 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
 
     // Display
     vbox = new KoVBox();
-    page = new KPageWidgetItem(vbox, i18n("Display"));
+    // KRIMBLE 2026-10-04: was page = new KPageWidgetItem(vbox, i18n("Display"));
+    page = new KPageWidgetItem(krimblePrefsPage(vbox), i18n("Display"));
     page->setObjectName("display");
     page->setHeader(i18n("Display"));
     page->setIcon(KisIconUtils::loadIcon("config-display"));
@@ -2755,7 +2779,8 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
 
     // Color
     vbox = new KoVBox();
-    page = new KPageWidgetItem(vbox, i18n("Color Management"));
+    // KRIMBLE 2026-10-04: was page = new KPageWidgetItem(vbox, i18n("Color Management"));
+    page = new KPageWidgetItem(krimblePrefsPage(vbox), i18n("Color Management"));
     page->setObjectName("colormanagement");
     page->setHeader(i18nc("Label of color as in Color Management", "Color"));
     page->setIcon(KisIconUtils::loadIcon("config-color-manage"));
@@ -2765,7 +2790,8 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
 
     // Performance
     vbox = new KoVBox();
-    page = new KPageWidgetItem(vbox, i18n("Performance"));
+    // KRIMBLE 2026-10-04: was page = new KPageWidgetItem(vbox, i18n("Performance"));
+    page = new KPageWidgetItem(krimblePrefsPage(vbox), i18n("Performance"));
     page->setObjectName("performance");
     page->setHeader(i18n("Performance"));
     page->setIcon(KisIconUtils::loadIcon("config-performance"));
@@ -2775,7 +2801,8 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
 
     // Tablet
     vbox = new KoVBox();
-    page = new KPageWidgetItem(vbox, i18n("Tablet settings"));
+    // KRIMBLE 2026-10-04: was page = new KPageWidgetItem(vbox, i18n("Tablet settings"));
+    page = new KPageWidgetItem(krimblePrefsPage(vbox), i18n("Tablet settings"));
     page->setObjectName("tablet");
     page->setHeader(i18n("Tablet"));
     page->setIcon(KisIconUtils::loadIcon("config-tablet"));
@@ -2785,7 +2812,8 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
 
     // full-screen mode
     vbox = new KoVBox();
-    page = new KPageWidgetItem(vbox, i18n("Canvas-only settings"));
+    // KRIMBLE 2026-10-04: was page = new KPageWidgetItem(vbox, i18n("Canvas-only settings"));
+    page = new KPageWidgetItem(krimblePrefsPage(vbox), i18n("Canvas-only settings"));
     page->setObjectName("canvasonly");
     page->setHeader(i18n("Canvas-only"));
     page->setIcon(KisIconUtils::loadIcon("config-canvas-only"));
@@ -2795,7 +2823,8 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
 
     // Pop-up Palette
     vbox = new KoVBox();
-    page = new KPageWidgetItem(vbox, i18n("Pop-up Palette"));
+    // KRIMBLE 2026-10-04: was page = new KPageWidgetItem(vbox, i18n("Pop-up Palette"));
+    page = new KPageWidgetItem(krimblePrefsPage(vbox), i18n("Pop-up Palette"));
     page->setObjectName("popuppalette");
     page->setHeader(i18n("Pop-up Palette"));
     page->setIcon(KisIconUtils::loadIcon("config-popup-palette"));
@@ -2805,7 +2834,8 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
 
     // Author profiles
     m_authorPage = new KoConfigAuthorPage();
-    page = addPage(m_authorPage, i18nc("@title:tab Author page", "Author" ));
+    // KRIMBLE 2026-10-04: was page = addPage(m_authorPage, i18nc("@title:tab Author page", "Author" ));
+    page = addPage(krimblePrefsPage(m_authorPage), i18nc("@title:tab Author page", "Author" ));
     page->setObjectName("author");
     page->setHeader(i18n("Author"));
     page->setIcon(KisIconUtils::loadIcon("user-identity"));
@@ -2826,7 +2856,8 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
         KisAbstractPreferenceSetFactory *preferenceSetFactory = preferenceSetRegistry->value(key);
         KisPreferenceSet* preferenceSet = preferenceSetFactory->createPreferenceSet();
         vbox = new KoVBox();
-        page = new KPageWidgetItem(vbox, preferenceSet->name());
+        // KRIMBLE 2026-10-04: was page = new KPageWidgetItem(vbox, preferenceSet->name());
+        page = new KPageWidgetItem(krimblePrefsPage(vbox), preferenceSet->name());
         page->setHeader(preferenceSet->header());
         page->setIcon(preferenceSet->icon());
         addPage(page);

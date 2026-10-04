@@ -1153,8 +1153,10 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     // It's a failure."). The button is no longer created, so nothing is drawn at the panels' edge; the
     // menu item Settings > Hide/Show Right Panels stays. To bring the button back, change "#if 0" to
     // "#ifdef Q_OS_ANDROID".
-    // KRIMBLE 2026-10-04 (2nd): ON again, now hanging on the canvas area (d->mdiArea) instead of the window.
-#ifdef Q_OS_ANDROID
+    // KRIMBLE 2026-10-04 (2nd): was switched on again, hanging on the canvas area (d->mdiArea) instead of the
+    // window; SWITCHED OFF AGAIN at George's decision ("Comment out the sliver. I'll worry about it later.").
+    // To bring it back change "#if 0" to "#ifdef Q_OS_ANDROID".
+#if 0
     {
         struct DragState { int startWidth {0}; };
         auto dragState = std::make_shared<DragState>();
