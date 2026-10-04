@@ -2454,3 +2454,20 @@ panels' edge any more. Kept: the menu item Settings > Hide Right Panels / Show R
 George also reported that the floating panels are much better in the same build: the smaller corner handle, and they snap
 into and out of place in a more natural way.
 **Not verified:** a build or a device. (The preprocessor lines of the file balance.)
+
+## 2026-10-04 — Side sliver back, now hung on the canvas area (George: "I want to test it. I know Ps users will want it")
+
+**File:** `libs/ui/KisMainWindow.cpp` (Android)
+
+George asked whether the sliver could be made to always sit on the left edge of the right-hand panels, and said he wants
+to test it (including the mode where the pictures are floating windows). The button is switched on again (`#ifdef Q_OS_ANDROID`)
+with a new way of placing it: it is a child of the canvas area (`d->mdiArea`) and sits at the area's right edge, which is
+where the right-hand panels begin (or the screen edge while they are hidden). Its place comes from the canvas area's own size and
+is refreshed whenever that area is resized or shown, or the window lays out, so it no longer depends on where the panels are
+reported to be (the cause of the earlier "over the toolbox" failure). On the welcome page, where the canvas area is not shown,
+the sliver is not shown. Same look and behaviour: a 6 x 90 px sliver, 22 x 140 touch area; tap hides/shows the right panels,
+long press or a sideways swipe resizes them. The old placement code is kept as comments.
+**Verified (standalone Qt test, same code, with a welcome page and a picture area in a stack):** the sliver stayed at the left
+edge of the panels with the window widened, with the panels narrowed, in floating picture-window mode and while the panels were
+hidden and shown again; it was hidden on the welcome page and never near the toolbox. **Not verified:** a build or a device.
+In floating-window mode the sliver lies above a picture window dragged to that edge and covers a strip about 22 px wide.

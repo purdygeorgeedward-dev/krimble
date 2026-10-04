@@ -553,8 +553,10 @@ private:
 
 static KrimbleSideBarButton *krimbleRightPanelHandle(QMainWindow *win)
 {
-    return win->findChild<KrimbleSideBarButton*>(QStringLiteral("krimbleRightPanelHandle"),
-                                                  Qt::FindDirectChildrenOnly);
+    // KRIMBLE 2026-10-04: the button hangs on the canvas area (a child of it), so look in all children.
+    // return win->findChild<KrimbleSideBarButton*>(QStringLiteral("krimbleRightPanelHandle"),
+    //                                               Qt::FindDirectChildrenOnly);
+    return win->findChild<KrimbleSideBarButton*>(QStringLiteral("krimbleRightPanelHandle"));
 }
 
 // Hides (hide == true) or shows the right-hand panels. When hiding, the panels that were visible
@@ -602,61 +604,82 @@ static void krimbleUpdateRightPanelUi(QMainWindow *win)
             action->setText(text);
         }
     }
-    // Watch the right-hand panels too, so the button follows them when they move or resize.
-    if (QObject *watcher = win->findChild<QObject*>(QStringLiteral("krimbleRightPanelsFilter"))) {
-        Q_FOREACH (QDockWidget *dock, krimbleRightDocks(win, false)) {
-            if (!dock->property("krimbleWatched").toBool()) {
-                dock->installEventFilter(watcher);
-                dock->setProperty("krimbleWatched", true);
-            }
-        }
-    }
+    // KRIMBLE 2026-10-04 (new way): the button is a child of the canvas area and sits at its right edge,
+    // which is exactly where the right-hand panels begin (or the edge of the screen while they are
+    // hidden). Its place comes from the canvas area's own size, not from the panels' positions, so it
+    // cannot end up anywhere else. Works the same with tabs and with floating picture windows.
+    // (The older version worked the place out from the panels' geometry; kept below as a comment.)
     KrimbleSideBarButton *button = krimbleRightPanelHandle(win);
     if (!button) {
         return;
     }
-    const bool show = anyVisible || remembered;
-    button->setCollapsed(!anyVisible);
-    if (!show) {
-        button->hide();
+    QWidget *area = button->parentWidget();
+    if (!area) {
         return;
     }
-    int x = win->width() - button->width();
-    int y = (win->height() - button->height()) / 2;
-    if (anyVisible) {
-        // Centre it on the bar between the canvas and the left edge of the right-hand panels,
-        // half way down the panels.
-        // KRIMBLE 2026-10-04: only panels that really lie to the right of the middle of the canvas
-        // area count. A panel hidden behind a tab, or not yet laid out, has an old position
-        // (left edge 0) and used to pull the sliver over the toolbox. Without any usable panel
-        // the sliver goes to the right edge of the canvas area.
-        QWidget *central = win->centralWidget();
-        const int canvasMiddle = central ? central->geometry().center().x() : win->width() / 2;
-        int dockLeft = win->width();
-        int top = win->height();
-        int bottom = 0;
-        bool found = false;
-        Q_FOREACH (QDockWidget *dock, visibleDocks) {
-            const QRect g = dock->geometry();
-            if (g.width() < 20 || g.left() <= canvasMiddle) {
-                continue;
-            }
-            found = true;
-            dockLeft = qMin(dockLeft, g.left());
-            top = qMin(top, g.top());
-            bottom = qMax(bottom, g.bottom());
-        }
-        if (!found) {
-            button->hide();
-            return;
-        }
-        x = dockLeft - button->width() + 4;      // 18 px left of the edge, 4 px over it
-        y = (top + bottom) / 2 - button->height() / 2;
-    }
-    button->move(qBound(0, x, win->width() - button->width()), qBound(0, y, win->height() - button->height()));
+    button->setCollapsed(!anyVisible);
+    button->move(area->width() - button->width(), (area->height() - button->height()) / 2);
     button->show();
     button->raise();
 }
+
+// ---- Older placement code (2026-10-03/04), kept for reference ----
+//     // Watch the right-hand panels too, so the button follows them when they move or resize.
+//     if (QObject *watcher = win->findChild<QObject*>(QStringLiteral("krimbleRightPanelsFilter"))) {
+//         Q_FOREACH (QDockWidget *dock, krimbleRightDocks(win, false)) {
+//             if (!dock->property("krimbleWatched").toBool()) {
+//                 dock->installEventFilter(watcher);
+//                 dock->setProperty("krimbleWatched", true);
+//             }
+//         }
+//     }
+//     KrimbleSideBarButton *button = krimbleRightPanelHandle(win);
+//     if (!button) {
+//         return;
+//     }
+//     const bool show = anyVisible || remembered;
+//     button->setCollapsed(!anyVisible);
+//     if (!show) {
+//         button->hide();
+//         return;
+//     }
+//     int x = win->width() - button->width();
+//     int y = (win->height() - button->height()) / 2;
+//     if (anyVisible) {
+//         // Centre it on the bar between the canvas and the left edge of the right-hand panels,
+//         // half way down the panels.
+//         // KRIMBLE 2026-10-04: only panels that really lie to the right of the middle of the canvas
+//         // area count. A panel hidden behind a tab, or not yet laid out, has an old position
+//         // (left edge 0) and used to pull the sliver over the toolbox. Without any usable panel
+//         // the sliver goes to the right edge of the canvas area.
+//         QWidget *central = win->centralWidget();
+//         const int canvasMiddle = central ? central->geometry().center().x() : win->width() / 2;
+//         int dockLeft = win->width();
+//         int top = win->height();
+//         int bottom = 0;
+//         bool found = false;
+//         Q_FOREACH (QDockWidget *dock, visibleDocks) {
+//             const QRect g = dock->geometry();
+//             if (g.width() < 20 || g.left() <= canvasMiddle) {
+//                 continue;
+//             }
+//             found = true;
+//             dockLeft = qMin(dockLeft, g.left());
+//             top = qMin(top, g.top());
+//             bottom = qMax(bottom, g.bottom());
+//         }
+//         if (!found) {
+//             button->hide();
+//             return;
+//         }
+//         x = dockLeft - button->width() + 4;      // 18 px left of the edge, 4 px over it
+//         y = (top + bottom) / 2 - button->height() / 2;
+//     }
+//     button->move(qBound(0, x, win->width() - button->width()), qBound(0, y, win->height() - button->height()));
+//     button->show();
+//     button->raise();
+// }
+//
 
 // Watches the main window and keeps the side button and menu text up to date.
 class KrimbleRightPanelsFilter : public QObject
@@ -679,6 +702,9 @@ protected:
         if (watched == m_win) {
             relevant = (event->type() == QEvent::LayoutRequest || event->type() == QEvent::Resize
                         || event->type() == QEvent::Show);
+        } else if (watched->objectName() == QLatin1String("krimbleCanvasArea")) {
+            // the canvas area changed size or was shown: its right edge moved
+            relevant = (event->type() == QEvent::Resize || event->type() == QEvent::Show);
         } else if (qobject_cast<QDockWidget*>(watched)) {
             relevant = (event->type() == QEvent::Move || event->type() == QEvent::Resize
                         || event->type() == QEvent::Show || event->type() == QEvent::Hide);
@@ -1127,11 +1153,13 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     // It's a failure."). The button is no longer created, so nothing is drawn at the panels' edge; the
     // menu item Settings > Hide/Show Right Panels stays. To bring the button back, change "#if 0" to
     // "#ifdef Q_OS_ANDROID".
-#if 0
+    // KRIMBLE 2026-10-04 (2nd): ON again, now hanging on the canvas area (d->mdiArea) instead of the window.
+#ifdef Q_OS_ANDROID
     {
         struct DragState { int startWidth {0}; };
         auto dragState = std::make_shared<DragState>();
-        new KrimbleSideBarButton(this,
+        d->mdiArea->setObjectName(QStringLiteral("krimbleCanvasArea"));
+        new KrimbleSideBarButton(d->mdiArea,
             [this]() {                                             // tap
                 krimbleSetRightPanelsHidden(this, !krimbleRightDocks(this, true).isEmpty());
                 krimbleUpdateRightPanelUi(this);
@@ -1147,10 +1175,14 @@ KisMainWindow::KisMainWindow(QUuid uuid)
                 krimbleSetRightPanelsWidth(this, dragState->startWidth - dx);
                 krimbleUpdateRightPanelUi(this);
             });
-        krimbleRightPanelHandle(this)->hide();
+        // krimbleRightPanelHandle(this)->hide();      // KRIMBLE 2026-10-04: it is placed and shown by krimbleUpdateRightPanelUi
     }
 #endif
-    installEventFilter(new KrimbleRightPanelsFilter(this));
+    {
+        KrimbleRightPanelsFilter *rightPanelsFilter = new KrimbleRightPanelsFilter(this);
+        installEventFilter(rightPanelsFilter);
+        d->mdiArea->installEventFilter(rightPanelsFilter);     // the canvas area: its edge is where the sliver sits
+    }
 
     // KRIMBLE 2026-10-04: apply the labels typed in krita5.xmlgui (see krimbleApplyXmlGuiLabels). Run
     // once everything is built, and again when a tool is chosen (tool actions appear later).
