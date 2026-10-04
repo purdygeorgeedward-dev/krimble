@@ -2363,3 +2363,12 @@ again the minimum is 318 x 299. With very small sizes some controls will be cut 
 **Verified (standalone Qt test):** the minimum size change and restore, and the allowed areas for ON (15 = can
 dock) and OFF (0 = never docks). **Not verified:** a build or a device (touch-dragging a floating panel to the
 edge, how the clipped small Layers panel looks). `KisMainWindow.cpp` cannot be syntax-checked as a whole here.
+
+### Update 2026-10-04: Magnetic Lasso icon redrawn as a horseshoe magnet
+
+George did not recognise the U-shaped magnet. `light_tool_magnetic_selection.svg` and
+`dark_tool_magnetic_selection.svg` now draw a classic horseshoe magnet: an arch that curves over the top and
+is open at the bottom, a lighter body (55% opacity) and solid bright pole tips. George chose this version
+(option D of three) from an on-screen preview. Same file names, so nothing in the code changes.
+**Verified:** both files are well-formed XML; the drawing was rendered at 96, 32 and 16 pixels. **Not verified:**
+a build or a device.
