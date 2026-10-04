@@ -2442,3 +2442,15 @@ Right Panels item kept its own text; with a tabbed panel in the test window the 
 toolbox. **Not verified:** a build or a device; `KisMainWindow.cpp` cannot be syntax-checked as a whole here (the signal
 connection `changedTool(KoCanvasController*)` was checked against the header). Note that George's 157 label edits will now all
 appear, including ones he may not have meant for the running app.
+
+## 2026-10-04 — Side button (sliver) switched off
+
+**File:** `libs/ui/KisMainWindow.cpp`
+
+George: "Just get rid of it. The sidebar gadget is just causing problems. It's a failure." The button that sat at the
+edge of the right-hand panels (tap = hide/show, long press = resize) is no longer created: the block that makes it is
+turned off with `#if 0` (it was `#ifdef Q_OS_ANDROID`; change it back to bring the button back). Nothing is drawn at the
+panels' edge any more. Kept: the menu item Settings > Hide Right Panels / Show Right Panels, and the code for the button.
+George also reported that the floating panels are much better in the same build: the smaller corner handle, and they snap
+into and out of place in a more natural way.
+**Not verified:** a build or a device. (The preprocessor lines of the file balance.)

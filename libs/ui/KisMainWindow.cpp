@@ -1123,7 +1123,11 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     });
     // The big side button: tap = hide / show the right panels, long press or sideways swipe = resize.
     // It is only made on Android; the menu entry works everywhere.
-#ifdef Q_OS_ANDROID
+    // KRIMBLE 2026-10-04: SWITCHED OFF at George's decision ("the sidebar gadget is just causing problems.
+    // It's a failure."). The button is no longer created, so nothing is drawn at the panels' edge; the
+    // menu item Settings > Hide/Show Right Panels stays. To bring the button back, change "#if 0" to
+    // "#ifdef Q_OS_ANDROID".
+#if 0
     {
         struct DragState { int startWidth {0}; };
         auto dragState = std::make_shared<DragState>();
