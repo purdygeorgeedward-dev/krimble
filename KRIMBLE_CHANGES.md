@@ -2418,3 +2418,27 @@ The first build with the dialog two-finger drag stopped with 6 errors "member ac
 in `libs/ui/KisApplication.cpp`: the QWindow header was only included in the Windows part of the file. Added
 `#include <QWindow>` to the Android include block. A syntax check of the file no longer reports QWindow; the
 remaining messages (KisGbrBrush and similar) are the sandbox lacking brush headers and are not caused by this change.
+
+## 2026-10-04 — Menu labels from krita5.xmlgui now show; sliver no longer drawn over the toolbox
+
+**File:** `libs/ui/KisMainWindow.cpp`
+
+George (build b8): "There is still a sizing gadget on top of the toolbox. Get rid of that thing." and "this is not the File menu
+from my most recent edits. It says Quit instead of Exit."
+
+**1. Menu labels.** The `<text>` that krita5.xmlgui gives to an `<Action>` was never used: an action's label comes from its own
+definition (the `.action` files or the code), so edits like Quit -> Exit did not show. A comparison found 157 actions whose
+label in krita5.xmlgui differs from their definition (most of George's Photoshop-style names, e.g. "Layer via Copy",
+"Crop to Selection", "Exit"). New code (`krimbleApplyXmlGuiLabels`) reads the loaded menu file and sets each action's label
+to the `<text>` given for it. It runs once the window is built, whenever the active view changes, and when a tool is chosen
+(tool actions appear later). From now on a label typed in krita5.xmlgui is the label in the app. Excluded: "Hide/Show Right
+Panels" (its text changes by itself) and the hidden Attach/Detach items. Mnemonics (&) are only present if typed in the file.
+**2. The sliver over the toolbox.** The button was placed from the left edge of the panels, but a panel hidden behind a tab (or
+not yet laid out) has an old position with its left edge at 0, which pulled the button over the toolbox. Now only panels that
+lie to the right of the middle of the canvas area are used, and the toolbox is never counted as a right-hand panel; if there is
+no usable panel the button is hidden.
+**Verified (standalone Qt test, same code):** file_quit became "Exit", an action without a label in the file kept its text, the
+Right Panels item kept its own text; with a tabbed panel in the test window the button stayed on the bar and clear of the
+toolbox. **Not verified:** a build or a device; `KisMainWindow.cpp` cannot be syntax-checked as a whole here (the signal
+connection `changedTool(KoCanvasController*)` was checked against the header). Note that George's 157 label edits will now all
+appear, including ones he may not have meant for the running app.

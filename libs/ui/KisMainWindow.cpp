@@ -44,6 +44,9 @@
 // #include <QSizeGrip>  // no longer used, see KisFloatingDockSizeGrip
 #include <QPainter>
 #include <QPolygonF>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QHash>
 #include <QTimer>
 #include <functional>
 #include <memory>
@@ -382,6 +385,10 @@ static QList<QDockWidget*> krimbleRightDocks(QMainWindow *win, bool visibleOnly)
         if (dock->isFloating() || win->dockWidgetArea(dock) != Qt::RightDockWidgetArea) {
             continue;
         }
+        // KRIMBLE 2026-10-04: the toolbox is never one of the "right-hand panels".
+        if (dock->objectName() == QLatin1String("ToolBox")) {
+            continue;
+        }
         if (visibleOnly && !dock->isVisible()) {
             continue;
         }
@@ -619,13 +626,29 @@ static void krimbleUpdateRightPanelUi(QMainWindow *win)
     if (anyVisible) {
         // Centre it on the bar between the canvas and the left edge of the right-hand panels,
         // half way down the panels.
+        // KRIMBLE 2026-10-04: only panels that really lie to the right of the middle of the canvas
+        // area count. A panel hidden behind a tab, or not yet laid out, has an old position
+        // (left edge 0) and used to pull the sliver over the toolbox. Without any usable panel
+        // the sliver goes to the right edge of the canvas area.
+        QWidget *central = win->centralWidget();
+        const int canvasMiddle = central ? central->geometry().center().x() : win->width() / 2;
         int dockLeft = win->width();
         int top = win->height();
         int bottom = 0;
+        bool found = false;
         Q_FOREACH (QDockWidget *dock, visibleDocks) {
-            dockLeft = qMin(dockLeft, dock->geometry().left());
-            top = qMin(top, dock->geometry().top());
-            bottom = qMax(bottom, dock->geometry().bottom());
+            const QRect g = dock->geometry();
+            if (g.width() < 20 || g.left() <= canvasMiddle) {
+                continue;
+            }
+            found = true;
+            dockLeft = qMin(dockLeft, g.left());
+            top = qMin(top, g.top());
+            bottom = qMax(bottom, g.bottom());
+        }
+        if (!found) {
+            button->hide();
+            return;
         }
         x = dockLeft - button->width() + 4;      // 18 px left of the edge, 4 px over it
         y = (top + bottom) / 2 - button->height() / 2;
@@ -675,6 +698,48 @@ private:
     bool m_pending {false};
 };
 // END KRIMBLE RIGHT PANELS
+
+// KRIMBLE 2026-10-04: the <text> that krita5.xmlgui gives to an <Action> was never used: an action's
+// label comes from its own definition (the .action files or the code), so edits of the labels in
+// krita5.xmlgui (for example Quit -> Exit) did not show. This applies them: every <Action> in the
+// loaded menu file that carries a <text> sets the label of the action with that name.
+// The "Hide/Show Right Panels" item and the hidden Attach/Detach items keep their own text.
+static void krimbleApplyXmlGuiLabels(KisMainWindow *win)
+{
+    static QHash<QString, QString> labels;
+    if (labels.isEmpty()) {
+        const QDomDocument doc = win->domDocument();
+        const QDomNodeList actions = doc.elementsByTagName(QStringLiteral("Action"));
+        for (int i = 0; i < actions.count(); ++i) {
+            const QDomElement element = actions.at(i).toElement();
+            const QString name = element.attribute(QStringLiteral("name"));
+            const QDomElement text = element.firstChildElement(QStringLiteral("text"));
+            if (name.isEmpty() || text.isNull() || text.text().trimmed().isEmpty()) {
+                continue;
+            }
+            if (name == QLatin1String("settings_toggle_right_panels")
+                    || name == QLatin1String("settings_attach_panel_menu")
+                    || name == QLatin1String("settings_detach_panel_menu")) {
+                continue;
+            }
+            labels.insert(name, text.text().trimmed());
+        }
+    }
+    if (labels.isEmpty()) {
+        return;
+    }
+    QList<QObject*> roots;
+    roots << win << KoToolManager::instance();
+    Q_FOREACH (QObject *root, roots) {
+        Q_FOREACH (QAction *action, root->findChildren<QAction*>()) {
+            const auto it = labels.constFind(action->objectName());
+            if (it != labels.constEnd() && action->text() != it.value()) {
+                action->setText(it.value());
+            }
+        }
+    }
+}
+
 
 
 class ToolDockerFactory : public KoDockFactoryBase
@@ -1082,6 +1147,12 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     }
 #endif
     installEventFilter(new KrimbleRightPanelsFilter(this));
+
+    // KRIMBLE 2026-10-04: apply the labels typed in krita5.xmlgui (see krimbleApplyXmlGuiLabels). Run
+    // once everything is built, and again when a tool is chosen (tool actions appear later).
+    QTimer::singleShot(0, this, [this]() { krimbleApplyXmlGuiLabels(this); });
+    connect(KoToolManager::instance(), &KoToolManager::changedTool, this,
+            [this](KoCanvasController*) { krimbleApplyXmlGuiLabels(this); });
 
 
     // Style menu actions
@@ -2373,6 +2444,7 @@ void KisMainWindow::adjustLayoutForWelcomePage()
 void KisMainWindow::setActiveView(KisView* view)
 {
     d->activeView = view;
+    krimbleApplyXmlGuiLabels(this);     // KRIMBLE 2026-10-04: labels from krita5.xmlgui
 
     if (d->undoActionsUpdateManager) {
         d->undoActionsUpdateManager->setCurrentDocument(view ? view->document() : 0);
