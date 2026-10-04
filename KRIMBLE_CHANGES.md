@@ -2526,3 +2526,17 @@ appears exactly once, and the file is still well-formed XML.
 They sit where the loose entries were: after Proof Colors and Gamut Warning, before Reset Display. The short item labels
 (like the ones in Snap To) show in the app after the next build, because of the label fix of 2026-10-04.
 **Not verified:** a build or a device.
+
+### Update 2026-10-04: View menu: Screen Mode and Show submenus (George: "Yes")
+
+**File:** `krita/krita5.xmlgui` (edited at George's request)
+
+Eight loose View menu items were moved into two submenus, as in the industry-standard View menu. Every action still appears
+exactly as often as before (323 action entries before and after, the same set; the file is well-formed XML; no comments added).
+- **View > Screen Mode:** Full Screen (`fullscreen`), Canvas Only (`view_show_canvas_only`), Detached Canvas (`view_detached_canvas`).
+  Placed right after the Zoom submenu.
+- **View > Show:** Guides (`view_show_guides`), Grid (`view_grid`), Pixel Grid (`view_pixel_grid`), Reference Images
+  (`view_toggle_reference_images`), Rulers Track Mouse (`rulers_track_mouse`). Placed after Lock Guides, before Snap To.
+Left at the top level: Show Status Bar, Rulers, Lock Guides, Proof Colors, Gamut Warning, Reset Display, the Wrap Around items,
+Level of Detail Mode, Show Painting Assistants, Show Assistant Previews, Palette and Refresh. Short labels show in the app after
+the next build. **Not verified:** a build or a device.

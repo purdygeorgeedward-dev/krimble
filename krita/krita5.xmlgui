@@ -1088,17 +1088,20 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     
                      <Separator/>
                      
-    <Action name="fullscreen">
+    <Menu name="ScreenMode">
         <text>Screen Mode</text>
-    </Action>
-    
-    <Action name="view_show_canvas_only">
-        <text>Canvas Only</text>
-    </Action>
-    
-    <Action name="view_detached_canvas">
-        <text>Detached Canvas</text>
-    </Action>
+        <Action name="fullscreen">
+            <text>Full Screen</text>
+        </Action>
+        
+        <Action name="view_show_canvas_only">
+            <text>Canvas Only</text>
+        </Action>
+        
+        <Action name="view_detached_canvas">
+            <text>Detached Canvas</text>
+        </Action>
+    </Menu>
     
                      <Separator/>
                      
@@ -1110,27 +1113,34 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <text>Rulers</text>
     </Action>
     
-    <Action name="rulers_track_mouse">
-        <text>Rulers Track Mouse</text>
-    </Action>
-    
                      <Separator/>
                      
-    <Action name="view_show_guides">
-        <text>Show Guides</text>
-    </Action>
-    
     <Action name="view_lock_guides">
         <text>Lock Guides</text>
     </Action>
     
-    <Action name="view_grid">
-        <text>Show Grid</text>
-    </Action>
-    
-    <Action name="view_pixel_grid">
-        <text>Show Pixel Grid</text>
-    </Action>
+    <Menu name="ShowExtras">
+        <text>Show</text>
+        <Action name="view_show_guides">
+            <text>Guides</text>
+        </Action>
+        
+        <Action name="view_grid">
+            <text>Grid</text>
+        </Action>
+        
+        <Action name="view_pixel_grid">
+            <text>Pixel Grid</text>
+        </Action>
+        
+        <Action name="view_toggle_reference_images">
+            <text>Reference Images</text>
+        </Action>
+        
+        <Action name="rulers_track_mouse">
+            <text>Rulers Track Mouse</text>
+        </Action>
+    </Menu>
     
                      <Separator/>
                      
@@ -1259,10 +1269,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     
     <Action name="view_toggle_assistant_previews">
         <text>Show Assistant Previews</text>
-    </Action>
-    
-    <Action name="view_toggle_reference_images">
-        <text>Show Reference Images</text>
     </Action>
     
                      <Separator/>
