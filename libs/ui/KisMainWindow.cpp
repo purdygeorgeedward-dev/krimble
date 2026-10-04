@@ -192,7 +192,9 @@ public:
     explicit KisFloatingDockSizeGrip(QWidget *parent)
         : QWidget(parent)
     {
-        setFixedSize(36, 36);
+        // KRIMBLE 2026-10-04: smaller, was 36 x 36.
+        // setFixedSize(36, 36);
+        setFixedSize(26, 26);
         // Looked up by this name (see the topLevelChanged handler). This class has no
         // Q_OBJECT, so findChild<KisFloatingDockSizeGrip*>() would match any widget.
         setObjectName(QStringLiteral("krimbleResizeHandle"));
@@ -228,8 +230,8 @@ protected:
         pen.setWidthF(2.0);
         p.setPen(pen);
         for (int i = 1; i <= 3; ++i) {
-            const int offset = i * 8;
-            p.drawLine(width() - 4 - offset, height() - 4, width() - 4, height() - 4 - offset);
+            const int offset = i * 6;     // was i * 8 for the 36 px handle
+            p.drawLine(width() - 3 - offset, height() - 3, width() - 3, height() - 3 - offset);
         }
     }
 
@@ -983,33 +985,63 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     // d->dockWidgetMenu->addSeparator();
     // d->dockWidgetMenu->menu()->addMenu(detachPanelMenu);
     actionCollection()->addAction("settings_detach_panel_menu", detachPanelAction);
+    // KRIMBLE 2026-10-04: replaced by the single on/off item "Attach Panels" below; the old
+    // submenu stays in the code but is hidden. (A panel is detached with its float button.)
+    detachPanelAction->setVisible(false);
 
-    // KRIMBLE 2026-10-02: "Attach Panel" submenu, the counterpart of "Detach
-    // Panel". Lists the panels that are currently floating; choosing one docks
-    // it back into its previous dock area. Placed like Detach Panel.
-    KActionMenu *attachPanelAction = new KActionMenu(i18nc("@action:inmenu", "Attach Panel"), this);
-    QMenu *attachPanelMenu = attachPanelAction->menu();
-    connect(attachPanelMenu, &QMenu::aboutToShow, this, [this, attachPanelMenu]() {
-        attachPanelMenu->clear();
-        Q_FOREACH (QDockWidget *dock, dockWidgets()) {
-            if (!dock || !dock->isVisible() || !dock->isFloating()) {
-                continue;
+    // KRIMBLE 2026-10-04: "Attach Panels" on/off (replaces the "Attach Panel" submenu, which is
+    // kept below as a comment). ON = the standard behaviour: a panel that floats snaps to the
+    // edge of the window when dragged there. OFF = floating panels stay wherever they are put.
+    // The setting is remembered. The menu item keeps the old action name so krita5.xmlgui is
+    // unchanged.
+    {
+        KConfigGroup krimbleGroup = KSharedConfig::openConfig()->group("Krimble");
+        const bool attachOn = krimbleGroup.readEntry("AttachPanels", true);
+        setProperty("krimbleAttachPanels", attachOn);
+        QAction *attachPanelsAction = new QAction(i18nc("@action:inmenu", "Attach Panels"), this);
+        attachPanelsAction->setCheckable(true);
+        attachPanelsAction->setChecked(attachOn);
+        actionCollection()->addAction("settings_attach_panel_menu", attachPanelsAction);
+        connect(attachPanelsAction, &QAction::toggled, this, [this](bool on) {
+            setProperty("krimbleAttachPanels", on);
+            KConfigGroup group = KSharedConfig::openConfig()->group("Krimble");
+            group.writeEntry("AttachPanels", on);
+            group.sync();
+            Q_FOREACH (QDockWidget *dock, dockWidgets()) {
+                if (dock && dock->isFloating()) {
+                    dock->setAllowedAreas(on ? Qt::AllDockWidgetAreas : Qt::NoDockWidgetArea);
+                }
             }
-            QAction *attachAction = attachPanelMenu->addAction(dock->windowTitle());
-            connect(attachAction, &QAction::triggered, this, [this, dock]() {
-                // KRIMBLE 2026-10-02: dock the panel where it was put (nearest side,
-                // between the panels above and below) instead of sending it back to
-                // its old place. Old behaviour: dock->setFloating(false);
-                krimbleAttachDockWhereItIs(this, dock);
-            });
-        }
-        if (attachPanelMenu->isEmpty()) {
-            QAction *noneAction = attachPanelMenu->addAction(i18nc("@action:inmenu", "No floating panels"));
-            noneAction->setEnabled(false);
-        }
-    });
-    // d->dockWidgetMenu->menu()->addMenu(attachPanelMenu);
-    actionCollection()->addAction("settings_attach_panel_menu", attachPanelAction);
+        });
+    }
+
+    // ---- Old "Attach Panel" submenu (2026-10-02), kept for reference ----
+    //     // KRIMBLE 2026-10-02: "Attach Panel" submenu, the counterpart of "Detach
+    //     // Panel". Lists the panels that are currently floating; choosing one docks
+    //     // it back into its previous dock area. Placed like Detach Panel.
+    //     KActionMenu *attachPanelAction = new KActionMenu(i18nc("@action:inmenu", "Attach Panel"), this);
+    //     QMenu *attachPanelMenu = attachPanelAction->menu();
+    //     connect(attachPanelMenu, &QMenu::aboutToShow, this, [this, attachPanelMenu]() {
+    //         attachPanelMenu->clear();
+    //         Q_FOREACH (QDockWidget *dock, dockWidgets()) {
+    //             if (!dock || !dock->isVisible() || !dock->isFloating()) {
+    //                 continue;
+    //             }
+    //             QAction *attachAction = attachPanelMenu->addAction(dock->windowTitle());
+    //             connect(attachAction, &QAction::triggered, this, [this, dock]() {
+    //                 // KRIMBLE 2026-10-02: dock the panel where it was put (nearest side,
+    //                 // between the panels above and below) instead of sending it back to
+    //                 // its old place. Old behaviour: dock->setFloating(false);
+    //                 krimbleAttachDockWhereItIs(this, dock);
+    //             });
+    //         }
+    //         if (attachPanelMenu->isEmpty()) {
+    //             QAction *noneAction = attachPanelMenu->addAction(i18nc("@action:inmenu", "No floating panels"));
+    //             noneAction->setEnabled(false);
+    //         }
+    //     });
+    //     // d->dockWidgetMenu->menu()->addMenu(attachPanelMenu);
+    //     actionCollection()->addAction("settings_attach_panel_menu", attachPanelAction);
 
     // KRIMBLE 2026-10-03: "Hide Right Panels" / "Show Right Panels" (Settings menu), see
     // krimbleSetRightPanelsHidden(). The toolbox on the left is not touched.
@@ -3175,13 +3207,20 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
         //    gets a resize handle in its lower right corner.
         dockWidget->installEventFilter(new KisDockedSizeTracker(dockWidget));
         connect(dockWidget, &QDockWidget::topLevelChanged, this, [this, dockWidget](bool floating) {
-            dockWidget->setAllowedAreas(floating ? Qt::NoDockWidgetArea : Qt::AllDockWidgetAreas);
+            // KRIMBLE 2026-10-04: Settings > "Attach Panels" decides what a floating panel does.
+            // ON (the default) = the standard behaviour: a panel dragged to the edge of the window
+            // docks there. OFF = floating panels never snap anywhere. Old line:
+            // dockWidget->setAllowedAreas(floating ? Qt::NoDockWidgetArea : Qt::AllDockWidgetAreas);
+            const bool attachOn = property("krimbleAttachPanels").toBool();
+            dockWidget->setAllowedAreas((floating && !attachOn) ? Qt::NoDockWidgetArea : Qt::AllDockWidgetAreas);
 
             // KRIMBLE 2026-10-02: a panel docked again with its own float button used to
             // fly back to its old place. Dock it where it was put instead, exactly as
             // Settings > Attach Panel does. (Attach Panel sets krimbleAttaching while it
             // runs, so it is not handled twice.)
-            if (!floating && dockWidget->isVisible() && !dockWidget->property("krimbleAttaching").toBool()) {
+            // KRIMBLE 2026-10-04: switched off. Detach and Attach together became unpredictable
+            // (a panel could vanish), so the float button is back to the standard behaviour.
+            if (false && !floating && dockWidget->isVisible() && !dockWidget->property("krimbleAttaching").toBool()) {
                 const QVariant floatingCenter = dockWidget->property("krimbleFloatingCenter");
                 if (floatingCenter.isValid()) {
                     krimbleAttachDockWhereItIs(this, dockWidget, floatingCenter.toPoint());
@@ -3190,7 +3229,10 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
 
             if (QWidget *bar = dockWidget->titleBarWidget()) {
                 if (QLayout *barLayout = bar->layout()) {
-                    const int extra = 14;
+                    // KRIMBLE 2026-10-04: the extra title padding (was 14 on top and 14 at the bottom)
+                    // made floating panels show big empty bands; removed.
+                    // const int extra = 14;
+                    const int extra = 0;
                     QMargins margins = barLayout->contentsMargins();
                     const bool padded = bar->property("krimbleTitlePadded").toBool();
                     if (floating && !padded) {
@@ -3207,11 +3249,37 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
                 }
             }
 
+            // KRIMBLE 2026-10-04: a floating panel may be made much smaller than its docked
+            // minimum (Layers could not go below about 312 x 276). While floating, its content
+            // gets a small minimum size and its layout no longer forces the bigger one; docked
+            // again, both are put back.
+            if (QWidget *content = dockWidget->widget()) {
+                QLayout *contentLayout = content->layout();
+                if (floating) {
+                    if (!dockWidget->property("krimbleContentMin").isValid()) {
+                        dockWidget->setProperty("krimbleContentMin", content->minimumSize());
+                        dockWidget->setProperty("krimbleLayoutConstraint",
+                                                contentLayout ? int(contentLayout->sizeConstraint()) : int(QLayout::SetDefaultConstraint));
+                    }
+                    if (contentLayout) {
+                        contentLayout->setSizeConstraint(QLayout::SetNoConstraint);
+                    }
+                    content->setMinimumSize(150, 120);
+                } else if (dockWidget->property("krimbleContentMin").isValid()) {
+                    content->setMinimumSize(dockWidget->property("krimbleContentMin").toSize());
+                    if (contentLayout) {
+                        contentLayout->setSizeConstraint(QLayout::SizeConstraint(dockWidget->property("krimbleLayoutConstraint").toInt()));
+                    }
+                    dockWidget->setProperty("krimbleContentMin", QVariant());
+                }
+            }
+
             // KRIMBLE 2026-10-02: the resize handle covered whatever sits in the
             // lower right corner of a panel (the Delete button of Layers). While a
             // panel floats, a strip as high as the handle is reserved under its
             // content, and the handle sits in that strip. Docked: strip removed.
-            const int gripStrip = 36;
+            // const int gripStrip = 36;     // KRIMBLE 2026-10-04: smaller, matches the 26 px handle
+            const int gripStrip = 26;
             const bool stripped = dockWidget->property("krimbleGripStrip").toBool();
             if (floating && !stripped) {
                 QMargins m = dockWidget->contentsMargins();

@@ -2336,3 +2336,30 @@ at y 48; one bigger than the screen was cut to fit; a two-finger drag of (+100, 
 that; a drag far above the top came back to y 48 when the fingers lifted; a one-finger touch was not taken.
 **Not verified:** a build or a device (real touch events on the phone; whether the title bar sits above or
 inside the dialog's area). `KisApplication.cpp` as a whole cannot be syntax-checked in the sandbox.
+
+## 2026-10-04 — Attach Panels on/off replaces Detach/Attach; floating panels: no empty bands, smaller handle, smaller minimum size
+
+**File:** `libs/ui/KisMainWindow.cpp` (Android parts as before; the menu item works everywhere)
+
+George (build b4): Attach Panel > Layers made the Layers panel vanish; Detach and Attach had become
+unpredictable; he asked for a single on/off item that restores the standard attach behaviour. Also: floating
+panels had big empty bands at the top and bottom, the Layers panel could not be made small enough, and the
+corner handle was too big.
+
+**Attach Panels (Settings menu, tick box).** Replaces the Detach Panel and Attach Panel submenus (the code of
+both is kept, commented or hidden; the menu entry keeps the old action name, so `krita5.xmlgui` is unchanged
+and the hidden Detach Panel line simply shows nothing). ON (default) = the standard behaviour: a floating
+panel dragged to the edge of the window docks there. OFF = floating panels never snap anywhere. The choice is
+remembered (`Krimble` group, key `AttachPanels`) and applies at once to panels that are already floating. A panel
+is detached with its own float button. The float button is back to the standard behaviour (the "dock where it
+was put" code from 7945b55 is switched off, `if (false && ...)`, the code stays), which is what removes the
+unpredictable parts.
+**Empty bands:** the extra 14 px added above and below the title bar of a floating panel is now 0 (old value kept in a comment).
+**Corner handle:** 36 px -> 26 px, and the strip reserved under the panel for it 36 -> 26.
+**Smaller minimum size:** while a panel floats its content gets a minimum of 150 x 120 and its layout stops
+forcing the larger one; docked again, the old minimum and layout setting are restored. Test with a panel whose
+buttons force 318 x 299: floating it can be resized to 200 x 160 and its minimum hint is 150 x 120; docked
+again the minimum is 318 x 299. With very small sizes some controls will be cut off (clipped), not squeezed.
+**Verified (standalone Qt test):** the minimum size change and restore, and the allowed areas for ON (15 = can
+dock) and OFF (0 = never docks). **Not verified:** a build or a device (touch-dragging a floating panel to the
+edge, how the clipped small Layers panel looks). `KisMainWindow.cpp` cannot be syntax-checked as a whole here.
