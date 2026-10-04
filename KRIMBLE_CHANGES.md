@@ -2298,3 +2298,18 @@ watched directly so the button follows them. The button is also a little smaller
 and well clear of the toolbox, at the start, after the panels are narrowed, and after the window is
 widened and narrowed; tap, long press, swipe and the edge button behave as before. **Not verified:** a
 build or a device.
+
+### Update 2026-10-04: the side button is a thin sliver again (George: "a tiny thin sliver on the edge of the panel")
+
+**File:** `libs/ui/KisMainWindow.cpp` (block marked KRIMBLE RIGHT PANELS, Android)
+
+The first version was a big 52 x 170 pill, and the 44 x 150 one after it was still too big. Now only a
+**6 px wide, 90 px tall rounded sliver** with three small dots is drawn, flush against the left edge of the
+right-hand panels (a little over 2 mm on a phone). The touch area behind it is **22 x 140**: 18 px on the
+canvas side of the panels' edge and 4 px over it, so the sliver is easy to press while the panels' own
+content is barely covered. While the panels are hidden it becomes a slightly wider tab (14 x 90) with an
+arrow on the right edge of the window. Behaviour is unchanged: tap hides/shows the right panels, long press
+or a sideways swipe resizes.
+**Verified (standalone Qt test, same code):** it stays on the bar after the panels and the window change
+size, clear of the toolbox; tap, long press, swipe and the edge tab work; the drawn shape was rendered and
+looked at. **Not verified:** a build or a device (how easy it is to press).

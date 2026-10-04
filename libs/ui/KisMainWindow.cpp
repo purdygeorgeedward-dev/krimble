@@ -427,7 +427,9 @@ public:
         : QWidget(parent), m_onTap(onTap), m_onDragStart(onDragStart), m_onDrag(onDrag)
     {
         setObjectName(QStringLiteral("krimbleRightPanelHandle"));
-        setFixedSize(44, 150);
+        // A thin sliver on the edge of the panels. The touch area is wider than what is drawn
+        // (22 x 140), so it is easy to press, but only a 6 px sliver is visible.
+        setFixedSize(22, 140);
         m_timer.setSingleShot(true);
         m_timer.setInterval(350);
         connect(&m_timer, &QTimer::timeout, this, [this]() {
@@ -492,20 +494,28 @@ protected:
         QPainter p(this);
         p.setRenderHint(QPainter::Antialiasing);
         QColor background = palette().color(QPalette::Highlight);
-        background.setAlpha(m_dragging ? 235 : (m_pressed ? 200 : 120));
+        background.setAlpha(m_dragging ? 255 : (m_pressed ? 230 : 170));
         p.setPen(Qt::NoPen);
         p.setBrush(background);
-        p.drawRoundedRect(QRectF(m_collapsed ? 0 : 0, 0, width() + (m_collapsed ? 14 : 0), height()), 14, 14);
         QColor grip = palette().color(QPalette::HighlightedText);
         grip.setAlpha(230);
-        p.setBrush(grip);
-        for (int i = 0; i < 7; ++i) {
-            p.drawRect(QRectF(width() / 2.0 - 4, 28 + i * 17, 8, 8));
-        }
-        if (m_collapsed) {
-            // arrow pointing into the window: the panels come back when tapped
+        if (!m_collapsed) {
+            // A thin rounded sliver (6 px wide, 90 px tall) at the right side of the touch area,
+            // which sits against the left edge of the panels.
+            const QRectF sliver(width() - 10, (height() - 90) / 2.0, 6, 90);
+            p.drawRoundedRect(sliver, 3, 3);
+            p.setBrush(grip);
+            for (int i = -1; i <= 1; ++i) {
+                p.drawEllipse(QPointF(sliver.center().x(), height() / 2.0 + i * 9), 1.2, 1.2);
+            }
+        } else {
+            // Panels hidden: a slightly wider tab on the window's right edge with an arrow.
+            const QRectF tab(width() - 12, (height() - 90) / 2.0, 14, 90);
+            p.drawRoundedRect(tab, 5, 5);
+            p.setBrush(grip);
             QPolygonF arrow;
-            arrow << QPointF(34, 72) << QPointF(34, 98) << QPointF(24, 85);
+            arrow << QPointF(width() - 4.5, height() / 2.0 - 5) << QPointF(width() - 4.5, height() / 2.0 + 5)
+                  << QPointF(width() - 9.5, height() / 2.0);
             p.drawPolygon(arrow);
         }
     }
@@ -613,7 +623,7 @@ static void krimbleUpdateRightPanelUi(QMainWindow *win)
             top = qMin(top, dock->geometry().top());
             bottom = qMax(bottom, dock->geometry().bottom());
         }
-        x = dockLeft - button->width() / 2;
+        x = dockLeft - button->width() + 4;      // 18 px left of the edge, 4 px over it
         y = (top + bottom) / 2 - button->height() / 2;
     }
     button->move(qBound(0, x, win->width() - button->width()), qBound(0, y, win->height() - button->height()));
