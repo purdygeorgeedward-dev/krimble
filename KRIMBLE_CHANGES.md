@@ -2372,3 +2372,18 @@ is open at the bottom, a lighter body (55% opacity) and solid bright pole tips. 
 (option D of three) from an on-screen preview. Same file names, so nothing in the code changes.
 **Verified:** both files are well-formed XML; the drawing was rendered at 96, 32 and 16 pixels. **Not verified:**
 a build or a device.
+
+## 2026-10-04 — Brushes panel switched off in the build (George's decision)
+
+**File:** `plugins/dockers/CMakeLists.txt` (line 8: `# add_subdirectory(presetdocker)`, same method as the six panels
+switched off on 2026-10-02)
+
+The Brushes panel (the Brush Presets docker) kept opening by itself when a file was opened, even after the app data
+was cleared; code review found nothing that shows it, and the first-launch layout does not contain it. George chose to
+leave it out of the build. The plugin source is untouched; to bring the panel back, remove the `#` and rebuild.
+**What is lost:** the Brushes panel and its list of brush presets. Not checked: which other way there is on the phone to
+pick a brush preset (for example a preset button in the toolbar); check on the device.
+**Build note:** switching a plugin off does not remove its library from the install folder; delete
+`libkritapresetdocker*` from `~/kwd/krita/_install/lib` (and any copy under `lib/kritaplugins`) before packaging so it
+is not in the APK. CMake reconfigures once on the next build.
+**Not verified:** a build or a device.
