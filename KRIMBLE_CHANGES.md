@@ -2565,3 +2565,17 @@ George (after testing b12): "I think the sub Windows are a little wonky. Go back
 places changed earlier the same day (see the entry "Default Multiple Document Mode is now Subwindows") are tabs again
 (`QMdiArea::TabbedView`); the Subwindows lines are kept as comments. Subwindows stays a choice in Settings > Configure >
 General > Window > Multiple Document Mode. **Not verified:** a build or a device.
+
+## 2026-10-04 — Toolbox docks only close to a side of the window (docking tolerance)
+
+**File:** `libs/ui/KisMainWindow.cpp` (Android; new class `KrimbleDockTolerance`)
+
+George (after testing b12, which "looks really good so far"): "I had a bit of an issue with the toolbox wanting a bit too desperately
+to dock." While the floating toolbox is dragged, it may now dock in a side of the window only when the finger is within 36 px
+(logical; about 90 px on the Galaxy A26 screen, roughly 7 mm) of that side. Anywhere else it stays a floating window. This is done by
+changing the dock areas the toolbox is allowed in as the finger moves (left side near the left edge, right near the right edge, and
+likewise top and bottom); when the finger is lifted, all areas are allowed again. Only the toolbox is affected (found by its name
+"ToolBox"); a docked toolbox and all other panels behave as before. The distance is `KrimbleDockTolerance::Distance`.
+**Verified (standalone Qt test, same code):** finger in the middle or 100 px from a side: no dock area allowed; 20 px from the left side:
+left only; 20 px from the right side: right only; top-left corner: left and top; after lifting the finger: all areas again; a docked
+toolbox untouched. **Not verified:** a build or a device (whether it feels right while dragging by touch; the distance may need tuning).

@@ -725,6 +725,61 @@ private:
 };
 // END KRIMBLE RIGHT PANELS
 
+#ifdef Q_OS_ANDROID
+// KRIMBLE 2026-10-04: the toolbox docked too eagerly (George: "the toolbox wanting a bit too desperately to
+// dock"). While the toolbox is being dragged as a floating window, it may dock in a side of the window only when
+// the finger is within a small distance of that side; anywhere else in the window it just stays a floating
+// window. It works by changing the dock areas the toolbox is allowed in while the finger moves (the window
+// system asks for them each time). When the finger is lifted, all areas are allowed again.
+// KrimbleDockTolerance::Distance is that distance in pixels (logical, so about 2.5 times as many on the screen).
+class KrimbleDockTolerance : public QObject
+{
+public:
+    static const int Distance = 36;
+
+    KrimbleDockTolerance(QMainWindow *win, QDockWidget *dock)
+        : QObject(dock), m_win(win), m_dock(dock) {}
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (watched != m_dock || !m_dock->isFloating()) {
+            return false;
+        }
+        if (event->type() == QEvent::MouseMove) {
+            QMouseEvent *mouse = static_cast<QMouseEvent*>(event);
+            if (mouse->buttons() & Qt::LeftButton) {
+                const QPoint p = mouse->globalPos();
+                const QRect r(m_win->mapToGlobal(QPoint(0, 0)), m_win->size());
+                Qt::DockWidgetAreas allowed = Qt::NoDockWidgetArea;
+                if (p.x() - r.left() < Distance) allowed |= Qt::LeftDockWidgetArea;
+                if (r.right() - p.x() < Distance) allowed |= Qt::RightDockWidgetArea;
+                if (p.y() - r.top() < Distance) allowed |= Qt::TopDockWidgetArea;
+                if (r.bottom() - p.y() < Distance) allowed |= Qt::BottomDockWidgetArea;
+                if (m_dock->allowedAreas() != allowed) {
+                    m_dock->setAllowedAreas(allowed);
+                }
+                m_dragging = true;
+            }
+        } else if (event->type() == QEvent::MouseButtonRelease && m_dragging) {
+            m_dragging = false;
+            QPointer<QDockWidget> dock(m_dock);
+            QTimer::singleShot(0, m_dock, [dock]() {
+                if (dock) {
+                    dock->setAllowedAreas(Qt::AllDockWidgetAreas);
+                }
+            });
+        }
+        return false;
+    }
+
+private:
+    QMainWindow *m_win;
+    QDockWidget *m_dock;
+    bool m_dragging {false};
+};
+#endif
+
 // KRIMBLE 2026-10-04: the <text> that krita5.xmlgui gives to an <Action> was never used: an action's
 // label comes from its own definition (the .action files or the code), so edits of the labels in
 // krita5.xmlgui (for example Quit -> Exit) did not show. This applies them: every <Action> in the
@@ -3352,6 +3407,10 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
         //    capped to a default size (60% x 75% of the screen's shorter side) and
         //    gets a resize handle in its lower right corner.
         dockWidget->installEventFilter(new KisDockedSizeTracker(dockWidget));
+        // KRIMBLE 2026-10-04: the toolbox docks only close to a side of the window (see KrimbleDockTolerance).
+        if (dockWidget->objectName() == QLatin1String("ToolBox")) {
+            dockWidget->installEventFilter(new KrimbleDockTolerance(this, dockWidget));
+        }
         connect(dockWidget, &QDockWidget::topLevelChanged, this, [this, dockWidget](bool floating) {
             // KRIMBLE 2026-10-04: Settings > "Attach Panels" decides what a floating panel does.
             // ON (the default) = the standard behaviour: a panel dragged to the edge of the window
