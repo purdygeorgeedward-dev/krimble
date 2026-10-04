@@ -26,6 +26,7 @@
 #include <QStandardPaths>
 #ifdef Q_OS_ANDROID
 #include <QDialog>
+#include <QTouchEvent>
 #include <QGuiApplication>
 #include <QPointer>
 #include <QTimer>
@@ -230,11 +231,17 @@ public:
 };
 
 #ifdef Q_OS_ANDROID
-// KRIMBLE 2026-10-03: dialogs sometimes opened partly above the top of the screen, so their
-// title bar and edges could not be grabbed (a saved position from another screen orientation,
-// or a size larger than the screen). Every top-level dialog is now brought back inside the
-// usable screen area right after it is shown and again after it is resized: it is made no
-// larger than the screen and moved so that its top-left corner is on screen.
+// KRIMBLE 2026-10-03/04: keeps dialogs where they can be reached, and lets any dialog be moved with
+// two fingers.
+//  - Dialogs sometimes opened partly above the top of the screen, so their title bar and edges could
+//    not be grabbed. Every top-level dialog is brought back inside the usable screen area right after
+//    it is shown and again after it is resized: no larger than the screen, and its top-left corner on
+//    screen. A strip at the top (at least 48 px, or the height of the window's own title bar if that
+//    is larger) is kept free, so a title bar drawn above the dialog's area is not cut off either.
+//  - Two-finger drag: put two fingers anywhere on a dialog and drag, and the whole dialog moves with
+//    the middle point between the fingers (the idea of the unmerged branch move/two-finger-window-mover,
+//    rebuilt here). One finger behaves as before. Lifting the fingers brings the dialog back on screen
+//    if it was dragged too far.
 class KrimbleDialogKeeper : public QObject
 {
 public:
@@ -252,7 +259,12 @@ public:
         if (!screen) {
             return;
         }
-        const QRect avail = screen->availableGeometry();
+        QRect avail = screen->availableGeometry();
+        // Keep a strip free at the top for a title bar that may be drawn outside the dialog's area.
+        const int titleBar = qMax(0, dialog->geometry().top() - dialog->frameGeometry().top());
+        const int topStrip = qMax(48, titleBar);
+        avail.setTop(avail.top() + topStrip);
+
         QRect g = dialog->geometry();
         const QRect original = g;
 
@@ -273,9 +285,21 @@ public:
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override
     {
-        if (event->type() == QEvent::Show || event->type() == QEvent::Resize) {
+        switch (event->type()) {
+        case QEvent::Show:
+        case QEvent::Resize: {
             if (QDialog *dialog = qobject_cast<QDialog*>(watched)) {
                 if (dialog->isWindow()) {
+                    // Watch the dialog's window for touches: a window sees ALL fingers, while a
+                    // widget only sees them if it accepts the first touch (which would stop one-finger
+                    // taps from reaching buttons).
+                    if (QWindow *handle = dialog->windowHandle()) {
+                        if (!handle->property("krimbleKeeper").toBool()) {
+                            handle->installEventFilter(this);
+                            handle->setProperty("krimbleKeeper", true);
+                            handle->setProperty("krimbleDialog", QVariant::fromValue(static_cast<QObject*>(dialog)));
+                        }
+                    }
                     // After the current event, once the dialog has its final size and place.
                     QPointer<QDialog> guard(dialog);
                     QTimer::singleShot(0, dialog, [guard]() {
@@ -283,9 +307,59 @@ protected:
                     });
                 }
             }
+            break;
+        }
+        case QEvent::TouchBegin:
+        case QEvent::TouchUpdate:
+        case QEvent::TouchEnd:
+        case QEvent::TouchCancel:
+            if (QWindow *window = qobject_cast<QWindow*>(watched)) {
+                return handleTouch(window, static_cast<QTouchEvent*>(event));
+            }
+            break;
+        default:
+            break;
         }
         return false;
     }
+
+private:
+    bool handleTouch(QWindow *window, QTouchEvent *touch)
+    {
+        QDialog *dialog = qobject_cast<QDialog*>(qvariant_cast<QObject*>(window->property("krimbleDialog")));
+        if (!dialog || !dialog->isWindow()) {
+            return false;
+        }
+        const QList<QTouchEvent::TouchPoint> points = touch->touchPoints();
+        const bool twoFingers = points.count() >= 2 && touch->type() != QEvent::TouchEnd
+                                && touch->type() != QEvent::TouchCancel;
+        if (twoFingers) {
+            const QPointF centre = (points.at(0).screenPos() + points.at(1).screenPos()) * 0.5;
+            if (m_target != dialog) {
+                m_target = dialog;
+                m_last = centre;
+            } else {
+                const QPointF delta = centre - m_last;
+                m_last = centre;
+                dialog->move(dialog->pos() + delta.toPoint());
+            }
+            touch->accept();
+            return true;     // the dialog's contents do not react to the two-finger move
+        }
+        if (m_target) {
+            QPointer<QDialog> moved(m_target);
+            m_target.clear();
+            QTimer::singleShot(0, dialog, [moved]() { keepOnScreen(moved); });
+            if (points.count() >= 2) {
+                touch->accept();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    QPointer<QDialog> m_target;
+    QPointF m_last;
 };
 #endif
 

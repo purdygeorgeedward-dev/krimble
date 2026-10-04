@@ -2313,3 +2313,26 @@ or a sideways swipe resizes.
 **Verified (standalone Qt test, same code):** it stays on the bar after the panels and the window change
 size, clear of the toolbox; tap, long press, swipe and the edge tab work; the drawn shape was rendered and
 looked at. **Not verified:** a build or a device (how easy it is to press).
+
+## 2026-10-04 — Dialogs: top strip kept free, and two-finger drag moves any dialog (Android)
+
+**File:** `libs/ui/KisApplication.cpp` (class `KrimbleDialogKeeper`, extended)
+
+George: the New file window still opened above the top of the screen so it could not be grabbed, and asked
+for the two-finger window drag that had been planned. (Neither the plan nor the code is in my own notes; the
+unmerged branch `move/two-finger-window-mover` holds an early version: a file in `src/ui/`, a folder that does
+not exist in this project, never added to the build. That idea is rebuilt here.)
+
+**1. Top strip.** A dialog is kept at least 48 px below the top of the usable screen area (or lower, if
+the window's own title bar is taller). Before, only the dialog's own area was kept on screen; a title bar
+drawn just above it could still be off the top.
+**2. Two-finger drag.** Put two fingers anywhere on a dialog and drag: the whole dialog moves with the
+middle point between the fingers. One finger behaves exactly as before (taps still reach buttons). When the
+fingers lift, the dialog is brought back on screen if it was dragged too far. The touches are watched on the
+dialog's window, which sees every finger; a widget only sees them if it accepts the first touch, which
+would have stopped one-finger taps from reaching buttons. (My first attempt did it that way and failed in test.)
+**Verified (standalone Qt test, same code, 800 x 600 test screen):** a dialog asked for at y -180 or y 0 ended
+at y 48; one bigger than the screen was cut to fit; a two-finger drag of (+100, +50) moved the dialog by exactly
+that; a drag far above the top came back to y 48 when the fingers lifted; a one-finger touch was not taken.
+**Not verified:** a build or a device (real touch events on the phone; whether the title bar sits above or
+inside the dialog's area). `KisApplication.cpp` as a whole cannot be syntax-checked in the sandbox.
