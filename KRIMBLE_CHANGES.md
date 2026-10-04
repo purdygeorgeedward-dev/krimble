@@ -2540,3 +2540,19 @@ exactly as often as before (323 action entries before and after, the same set; t
 Left at the top level: Show Status Bar, Rulers, Lock Guides, Proof Colors, Gamut Warning, Reset Display, the Wrap Around items,
 Level of Detail Mode, Show Painting Assistants, Show Assistant Previews, Palette and Refresh. Short labels show in the app after
 the next build. **Not verified:** a build or a device.
+
+## 2026-10-04 — Detach Panel and Attach Panel menus are back
+
+**File:** `libs/ui/KisMainWindow.cpp`
+
+George (after testing build b12: "So far it looks really good, but I think I want the detach and attach panels menus too").
+- **Settings > Detach Panel:** visible again (the line that hid it is commented out). It lists the docked panels; choosing one
+  unlocks it if needed and makes it float, as before.
+- **Settings > Attach Panel:** a submenu again (the "Attach Panels" on/off tick box is switched off with `#if 0`, code kept). It
+  lists the panels that are floating; choosing one docks it with the STANDARD behaviour, back into its previous dock area
+  (`setFloating(false)`). The older "dock where it was put" version (nearest side, between the panels above and below) is NOT used:
+  it threw panels to the opposite side and made Layers vanish. The commented copy of it stays in the file.
+Both menus use the existing action names, so `krita5.xmlgui` is unchanged (it still has the two entries).
+**Verified (standalone Qt test):** the Attach Panel list showed a floating "Layers" panel; choosing it docked it back into the right
+area where it started and the list then said "No floating panels". **Not verified:** a build or a device; the file cannot be
+syntax-checked as a whole in the sandbox.

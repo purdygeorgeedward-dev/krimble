@@ -1078,15 +1078,18 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     // d->dockWidgetMenu->addSeparator();
     // d->dockWidgetMenu->menu()->addMenu(detachPanelMenu);
     actionCollection()->addAction("settings_detach_panel_menu", detachPanelAction);
-    // KRIMBLE 2026-10-04: replaced by the single on/off item "Attach Panels" below; the old
-    // submenu stays in the code but is hidden. (A panel is detached with its float button.)
-    detachPanelAction->setVisible(false);
+    // KRIMBLE 2026-10-04: was hidden when the single on/off item "Attach Panels" replaced it; George wants the
+    // Detach Panel and Attach Panel menus back (2026-10-04, build b12), so it is visible again.
+    // detachPanelAction->setVisible(false);
 
     // KRIMBLE 2026-10-04: "Attach Panels" on/off (replaces the "Attach Panel" submenu, which is
     // kept below as a comment). ON = the standard behaviour: a panel that floats snaps to the
     // edge of the window when dragged there. OFF = floating panels stay wherever they are put.
     // The setting is remembered. The menu item keeps the old action name so krita5.xmlgui is
     // unchanged.
+    // KRIMBLE 2026-10-04 (3rd): switched off again (#if 0): George wants the "Detach Panel" and "Attach Panel" menus
+    // back. The Attach Panel submenu is made right after this block.
+#if 0
     {
         KConfigGroup krimbleGroup = KSharedConfig::openConfig()->group("Krimble");
         const bool attachOn = krimbleGroup.readEntry("AttachPanels", true);
@@ -1109,6 +1112,34 @@ KisMainWindow::KisMainWindow(QUuid uuid)
                 }
             }
         });
+    }
+#endif
+
+    // KRIMBLE 2026-10-04 (3rd): "Attach Panel" submenu, the counterpart of "Detach Panel", back again. It lists the
+    // panels that are currently floating; choosing one docks it with the STANDARD behaviour (back into its previous
+    // dock area). The earlier "dock where it was put" version (commented below) is not used: it sent panels to the
+    // wrong side and one vanished. Placed like Detach Panel (krita5.xmlgui, action "settings_attach_panel_menu").
+    {
+        KActionMenu *attachPanelAction = new KActionMenu(i18nc("@action:inmenu", "Attach Panel"), this);
+        QMenu *attachPanelMenu = attachPanelAction->menu();
+        connect(attachPanelMenu, &QMenu::aboutToShow, this, [this, attachPanelMenu]() {
+            attachPanelMenu->clear();
+            Q_FOREACH (QDockWidget *dock, dockWidgets()) {
+                if (!dock || !dock->isVisible() || !dock->isFloating()) {
+                    continue;
+                }
+                QAction *attachAction = attachPanelMenu->addAction(dock->windowTitle());
+                connect(attachAction, &QAction::triggered, this, [dock]() {
+                    dock->setFloating(false);
+                    dock->show();
+                });
+            }
+            if (attachPanelMenu->isEmpty()) {
+                QAction *noneAction = attachPanelMenu->addAction(i18nc("@action:inmenu", "No floating panels"));
+                noneAction->setEnabled(false);
+            }
+        });
+        actionCollection()->addAction("settings_attach_panel_menu", attachPanelAction);
     }
 
     // ---- Old "Attach Panel" submenu (2026-10-02), kept for reference ----
