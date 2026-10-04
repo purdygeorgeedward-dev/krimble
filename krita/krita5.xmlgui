@@ -5,46 +5,70 @@ name="Krita"
 version="543"
 xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org/standards/kxmlgui/1.0/kxmlgui.xsd">
 
+<!-- Do not add the word "Krimble" to this menu. It serves no purpose. -->
+
 <MenuBar>
     <Menu name="file">
+    	
       <text>&amp;File</text>
       <Action name="file_new"/>
       <Action name="file_open"/>
       <Action name="file_open_recent"/>
-      <Separator/>
+      
+                    <Separator/>
+                    
       <Action name="file_save"/>
       <Action name="file_save_as"/>
-<!--  <Action name="file_reload_file"/>
-      <Separator/>
-      <Action name="file_sessions"/>
-      <Separator/>
-      <Action name="file_import_file"/> -->
+      <Action name="file_reload_file"/>
+
+                 <Separator/>
+                 
+<!--      <Action name="file_sessions"/>
+      
+                 <Separator/>
+                 -->
+      <Action name="file_import_file"/>
       <Action name="file_export_file"/>
-      <Action name="file_export_advanced"/>
+      <Action name="file_export_advanced">
          <text>Export.../Export Options</text>
-      <Separator/>
+        </Action>
+        
+                  <Separator/>
+      
       <Action name="file_export_pdf"/>
-      <Separator/>
+      
+                       <Separator/>
+                  
  <!-- <Action name="file_import_animation"/>
       <Action name="file_import_video_animation"/>
       <Action name="render_animation"/>
-      <Separator/>
+      
+                       <Separator/>
+      
       <Action name="save_incremental_version"/>
       <Action name="save_incremental_backup"/>
-      <Separator/>
+      
+                      <Separator/>
+                      
       <Action name="create_template"/>
       <Action name="create_copy"/>
-      <Separator/>
+      -->
+                      <Separator/>
+                      
       <Action name="file_print"/>
-      <Action name="file_print_preview"/-->
-      <Separator/> -->
-      <Action name="file_documentinfo"/>
+      <Action name="file_print_preview"/>
+      <Action name="file_documentinfo">
          <text>File info...</text>
-      <Separator/>
+       </Action>
+        
+                   <Separator/>
+      
       <Action name="file_close"/>
       <Action name="file_close_all"/>
-      <Action name="file_quit"/>
+      <Action name="file_quit">
          <text>Exit</text>
+       </Action>
+         
       </Menu>
 
 <Menu name="edit">
@@ -53,61 +77,82 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="edit_undo">
         <text>Undo</text>
     </Action>
+    
     <Action name="edit_redo">
         <text>Redo</text>
     </Action>
-                     <Separator/>
+
+                   <Separator/>
+
     <Action name="edit_cut">
         <text>Cut</text>
     </Action>
+    
     <Action name="edit_copy">
         <text>Copy</text>
     </Action>
+    
     <Action name="copy_merged">
         <text>Copy Merged</text>
     </Action>
+    
     <Action name="edit_paste">
         <text>Paste</text>
     </Action>
+    
     <Action name="paste_into">
         <text>Paste Into</text>
     </Action>
+    
     <Action name="paste_new">
         <text>Paste as New Image</text>
     </Action>
-                     <Separator/>
+
+                <Separator/>
+
     <Action name="clear">
         <text>Clear</text>
     </Action>
-                     <Separator/>
+
+                <Separator/>
+
     <Menu name="fill">
         <text>Fill</text>
+
         <Action name="fill_selection_foreground_color">
             <text>Foreground Color</text>
         </Action>
+        
         <Action name="fill_selection_background_color">
             <text>Background Color</text>
         </Action>
+        
         <Action name="fill_selection_pattern">
             <text>Pattern</text>
         </Action>
+        
         <Action name="content_aware_fill">
             <text>Content-Aware...</text>
         </Action>
-                     <Separator/>
-        <Action name="stroke_selection">
-            <text>Stroke...</text>
-        </Action>
+        
     </Menu>
+
+    <Action name="stroke_selection">
+        <text>Stroke...</text>
+    </Action>
+
                      <Separator/>
+
     <Action name="KisToolTransformCage">
         <text>Puppet Warp</text>
     </Action>
     <Action name="KisToolTransformFree">
         <text>Free Transform</text>
     </Action>
+
     <Menu name="EditTransform">
         <text>Transform</text>
+
         <Action name="layersize">
             <text>Scale</text>
         </Action>
@@ -123,7 +168,9 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="KisToolTransformWarp">
             <text>Warp</text>
         </Action>
-                     <Separator/>
+
+                      <Separator/>
+
         <Action name="rotateLayer180">
             <text>Rotate 180°</text>
         </Action>
@@ -133,7 +180,9 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="rotateLayerCCW90">
             <text>Rotate 90° Counter Clockwise</text>
         </Action>
-                     <Separator/>
+
+                    <Separator/>
+
         <Action name="mirrorNodeX">
             <text>Flip Horizontal</text>
         </Action>
@@ -141,28 +190,37 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
             <text>Flip Vertical</text>
         </Action>
     </Menu>
-                     <Separator/>
+
+                    <Separator/>
+
     <Action name="copy_layer_style">
         <text>Copy Layer Style</text>
     </Action>
     <Action name="paste_layer_style">
         <text>Paste Layer Style</text>
     </Action>
-                     <Separator/>
+
+                   <Separator/>
+
     <Action name="sample_screen_color">
         <text>Sample Color</text>
     </Action>
-                     <Separator/>
+
+                   <Separator/>
+
     <Action name="imagecolorspaceconversion">
         <text>Convert to Profile...</text>
     </Action>
+
     <Action name="options_configure_keybinding">
         <text>Configure Shortcuts...</text>
     </Action>
     <Action name="options_configure_toolbars">
         <text>Customize Toolbar...</text>
     </Action>
-                     <Separator/>
+
+                   <Separator/>
+
     <Action name="options_configure">
         <text>&amp;Preferences...</text>
         <toolTip>Preferences</toolTip>
@@ -173,14 +231,10 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 
 <Menu name="Image">
     <text>&amp;Image</text>
-
     <Menu name="Mode">
         <text>&amp;Mode</text>
         <Action name="image_color">
             <text>Color Mode</text>
-        </Action>
-        <Action name="imagecolorspaceconversion">
-            <text>Convert to Profile...</text>
         </Action>
         <Action name="krita_filter_palettize">
             <text>Indexed Color...</text>
@@ -192,103 +246,142 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="krita_filter_levels"/>
         <Action name="krita_filter_perchannel">
             <text>Curves...</text>
-<!-- Exposure? -->
+        <!-- Exposure? -->
         </Action>
+        
                      <Separator/>
+                     
         <Action name="krita_filter_vibrance"/>
         <Action name="krita_filter_hsvadjustment"/>
         <Action name="krita_filter_colorbalance"/>
-<!-- Black and White? -->
+        <!-- Black and White? -->
         <Action name="krita_filter_photofilter"/>
-<!-- Channel Mixer... -->
-<!-- Color Lookup... -->
+        <!-- Channel Mixer... -->
+        <!-- Color Lookup... -->
+        	
                      <Separator/>
+                     
         <Action name="krita_filter_invert"/>
         <Action name="krita_filter_posterize"/>
         <Action name="krita_filter_threshold"/>
         <Action name="krita_filter_gradientmap"/>
-<!-- Selective Color -->
+        <!-- Selective Color -->
+        	
                      <Separator/>
+                     
         <Action name="krita_filter_desaturate"/>
         <Action name="krita_filter_colortransfer"/>
-<!-- Replace Color -->
-<!-- Equalize -->
+        <!-- Replace Color -->
+        <!-- Equalize -->
     </Menu>
+    
                      <Separator/>
+                     
     <Action name="krita_filter_autotone"/>
     <Action name="krita_filter_autocontrast"/>
     <Action name="krita_filter_autocolor"/>
+    
                      <Separator/>
+                     
     <Action name="imagesize">
         <text>Image Size...</text>
     </Action>
+    
     <Action name="imageresolution">
         <text>Resolution...</text>
     </Action>
+    
     <Action name="canvassize">
         <text>Canvas Size...</text>
     </Action>
+    
                      <Separator/>
+                     
     <Menu name="ImageRotation">
         <text>Image &amp;Rotation</text>
+        
         <Action name="rotateimage">
             <text>Arbitrary...</text>
         </Action>
+        
                      <Separator/>
+                     
         <Action name="rotateImageCW90">
             <text>90° CW</text>
         </Action>
+        
         <Action name="rotateImageCCW90">
             <text>90° CCW</text>
         </Action>
+        
         <Action name="rotateImage180">
             <text>180°</text>
         </Action>
+        
                      <Separator/>
+                     
         <Action name="mirrorImageHorizontal">
             <text>Flip Canvas Horizontal</text>
         </Action>
+        
         <Action name="mirrorImageVertical">
             <text>Flip Canvas Vertical</text>
         </Action>
+        
     </Menu>
+    
                      <Separator/>
+                     
     <Action name="apply_crop">
         <text>Crop</text>
     </Action>
+
     <Action name="trim_to_image">
         <text>Crop to Image Size</text>
     </Action>
+
     <Action name="resizeimagetolayer">
         <text>Crop to Current Layer</text>
     </Action>
+
     <Action name="resizeimagetoselection">
         <text>Crop to Selection</text>
     </Action>
+
     <Action name="duplicate_image">
         <text>Duplicate...</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="shearimage">
         <text>Shear...</text>
     </Action>
+
     <Action name="offsetimage">
         <text>Offset...</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="image_properties">
         <text>Properties...</text>
     </Action>
+
     <Action name="purge_unused_image_data">
         <text>Purge Unused Image Data</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="imagesplit">
         <text>Split Image...</text>
     </Action>
+
     <Action name="waveletdecompose">
         <text>Wavelet Decompose...</text>
     </Action>
+
     <Action name="separate">
         <text>Separate</text>
     </Action>
@@ -303,48 +396,65 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="add_new_paint_layer">
             <text>Layer</text>
         </Action>
+
         <Action name="add_new_group_layer">
             <text>Group</text>
         </Action>
+
         <Action name="add_new_clone_layer">
             <text>Clone Layer</text>
         </Action>
+
         <Action name="add_new_shape_layer">
             <text>Shape Layer</text>
         </Action>
+
         <Action name="add_new_adjustment_layer">
             <text>Adjustment Layer</text>
         </Action>
+
         <Action name="add_new_fill_layer">
             <text>Fill Layer</text>
         </Action>
+
         <Action name="add_new_file_layer">
             <text>File Layer</text>
         </Action>
+        
                      <Separator/>
+                     
         <Action name="add_new_transparency_mask">
             <text>Layer Mask</text>
         </Action>
+
         <Action name="add_new_filter_mask">
             <text>Filter Mask</text>
         </Action>
+
         <Action name="add_new_colorize_mask">
             <text>Colorize Mask</text>
         </Action>
+
         <Action name="add_new_transform_mask">
             <text>Transform Mask</text>
         </Action>
+
         <Action name="add_new_selection_mask">
             <text>Selection Mask</text>
         </Action>
+        
                      <Separator/>
+                     
         <Action name="new_from_visible">
             <text>New Layer from Visible</text>
         </Action>
+        
                      <Separator/>
+                     
         <Action name="cut_selection_to_new_layer">
             <text>Layer via Cut</text>
         </Action>
+
         <Action name="copy_selection_to_new_layer">
             <text>Layer via Copy</text>
         </Action>
@@ -353,115 +463,149 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="duplicatelayer">
         <text>Duplicate Layer...</text>
     </Action>
+
     <Action name="layer_style">
         <text>Layer Style...</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="cut_layer_clipboard">
         <text>Cut</text>
     </Action>
+
     <Action name="copy_layer_clipboard">
         <text>Copy</text>
     </Action>
+
     <Action name="paste_layer_from_clipboard">
         <text>Paste</text>
     </Action>
+    
                      <Separator/>
+                     
     <Menu name="LayerSelect">
         <text>Select Layers</text>
         <Action name="select_all_layers">
             <text>All Layers</text>
         </Action>
+
         <Action name="select_visible_layers">
             <text>Visible Layers</text>
         </Action>
+
         <Action name="select_invisible_layers">
             <text>Invisible Layers</text>
         </Action>
+
         <Action name="select_locked_layers">
             <text>Locked Layers</text>
         </Action>
+
         <Action name="select_unlocked_layers">
             <text>Unlocked Layers</text>
         </Action>
+
     </Menu>
+
     <Menu name="LayerGroup">
         <text>Group Layers</text>
         <Action name="create_quick_group">
             <text>Group Layers</text>
         </Action>
+
         <Action name="create_quick_clipping_group">
             <text>Create Clipping Group</text>
         </Action>
+
         <Action name="quick_ungroup">
             <text>Ungroup Layers</text>
         </Action>
     </Menu>
+    
                      <Separator/>
+                     
     <Menu name="LayerTransform">
         <text>&amp;Transform</text>
         <Action name="layersize" group="layer_transform_merge">
             <text>Layer Size...</text>
         </Action>
+
         <Action name="mirrorNodeX">
             <text>Mirror Layer Horizontally</text>
         </Action>
+
         <Action name="mirrorNodeY">
             <text>Mirror Layer Vertically</text>
         </Action>
+
         <Menu name="Rotate">
             <text>&amp;Rotate</text>
             <Action name="rotatelayer">
                 <text>Rotate Layer...</text>
             </Action>
+
                      <Separator/>
             <Action name="rotateLayerCW90">
                 <text>Rotate Layer 90° CW</text>
             </Action>
+
             <Action name="rotateLayerCCW90">
                 <text>Rotate Layer 90° CCW</text>
             </Action>
+
             <Action name="rotateLayer180">
                 <text>Rotate Layer 180°</text>
             </Action>
+
         </Menu>
         <Action name="shearlayer">
             <text>Shear Layer...</text>
         </Action>
+
         <Action name="offsetlayer">
             <text>Offset Layer...</text>
         </Action>
+
     </Menu>
     <Menu name="LayerTransformAll">
         <text>Transform &amp;All</text>
         <Action name="mirrorAllNodesX">
             <text>Mirror All Layers Horizontally</text>
         </Action>
+
         <Action name="mirrorAllNodesY">
             <text>Mirror All Layers Vertically</text>
         </Action>
+
         <Action name="scaleAllLayers">
             <text>Scale All Layers...</text>
         </Action>
+
         <Menu name="Rotate">
             <text>&amp;Rotate</text>
             <Action name="rotateAllLayers">
                 <text>Rotate All Layers...</text>
             </Action>
+
                      <Separator/>
             <Action name="rotateAllLayersCW90">
                 <text>Rotate All Layers 90° CW</text>
             </Action>
+
             <Action name="rotateAllLayersCCW90">
                 <text>Rotate All Layers 90° CCW</text>
             </Action>
+
             <Action name="rotateAllLayers180">
                 <text>Rotate All Layers 180°</text>
             </Action>
+
         </Menu>
         <Action name="shearAllLayers">
             <text>Shear All Layers...</text>
         </Action>
+
     </Menu>
                      <Separator/>
     <Menu name="LayerConvert">
@@ -469,67 +613,91 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="convert_to_paint_layer">
             <text>Rasterize</text>
         </Action>
+
         <Action name="convert_to_transparency_mask">
             <text>Convert to Transparency Mask</text>
         </Action>
+
         <Action name="convert_to_filter_mask">
             <text>Convert to Filter Mask</text>
         </Action>
+
         <Action name="convert_to_selection_mask">
             <text>Convert to Selection Mask</text>
         </Action>
+
         <Action name="convert_to_file_layer">
             <text>Convert to File Layer</text>
         </Action>
+
         <Action name="convert_group_to_animated">
             <text>Convert to Animated Layer</text>
         </Action>
+
         <Action name="layercolorspaceconversion">
-            <text>Convert to Profile...</text>
+            <text>Convert Layer to Profile...</text>
         </Action>
+
     </Menu>
+
     <Menu name="LayerImportExport">
         <text>&amp;Import/Export</text>
         <Action name="save_node_as_image">
             <text>Export As...</text>
         </Action>
+
         <Action name="save_vector_node_to_svg">
             <text>Export as SVG...</text>
         </Action>
+
         <Action name="save_groups_as_images">
             <text>Export Layers...</text>
         </Action>
+
                      <Separator/>
+
         <Action name="import_layer_from_file">
             <text>Import Layer...</text>
         </Action>
+
         <Menu name="LayerImportAs">
             <text>Import As</text>
             <Action name="import_layer_as_paint_layer">
                 <text>Paint Layer</text>
             </Action>
+
             <Action name="import_layer_as_transparency_mask">
                 <text>Transparency Mask</text>
             </Action>
+
             <Action name="import_layer_as_filter_mask">
                 <text>Filter Mask</text>
             </Action>
+
             <Action name="import_layer_as_selection_mask">
                 <text>Selection Mask</text>
             </Action>
+
         </Menu>
+
     </Menu>
+
                      <Separator/>
+
     <Action name="merge_layer">
         <text>Merge Down</text>
     </Action>
+
     <Action name="merge_visible_layers">
         <text>Merge Visible</text>
     </Action>
+
     <Action name="flatten_image">
         <text>Flatten Image</text>
     </Action>
+
                      <Separator/>
+
     <Action name="merge_selected_layers">
         <text>Merge Selected Layers</text>
     </Action>
@@ -537,17 +705,23 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="flatten_layer">
         <text>Flatten Layer</text>
     </Action>
+
     <Action name="merge_all_shape_layers">
         <text>Merge Shape Layers</text>
     </Action>
+
                      <Separator/>
+
     <Action name="EditLayerMetaData">
         <text>Edit Layer Metadata...</text>
     </Action>
+
     <Action name="histogram">
         <text>Histogram</text>
     </Action>
+
                      <Separator/>
+
     <Menu name="LayerSplitAlpha">
         <text>S&amp;plit</text>
         <Menu name="LayerSplitAlphaMenu">
@@ -555,19 +729,25 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
             <Action name="split_alpha_into_mask">
                 <text>Split Alpha into Mask</text>
             </Action>
+
             <Action name="split_alpha_write">
                 <text>Split Alpha</text>
             </Action>
+
             <Action name="split_alpha_save_merged">
                 <text>Split Alpha and Save Merged</text>
             </Action>
+            
         </Menu>
+        
         <Action name="layersplit">
             <text>Split Layer</text>
         </Action>
+        
         <Action name="clones_array">
             <text>Clones Array</text>
         </Action>
+        
     </Menu>
 </Menu>
 
@@ -579,75 +759,95 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="svg_insert_special_character">
             <text>Glyphs</text>
         </Action>
+        
     </Menu>
     <Menu name="TypeOrientation">
         <text>Orientation</text>
         <Action name="svg_orientation_horizontal">
             <text>Horizontal</text>
         </Action>
+        
         <Action name="svg_orientation_vertical">
             <text>Vertical</text>
         </Action>
+        
     </Menu>
+    
     <Menu name="TypeAntiAlias">
         <text>Anti-Alias</text>
         <Action name="svg_antialias_auto">
             <text>None</text>
         </Action>
+        
         <Action name="svg_antialias_speed">
             <text>Sharp</text>
         </Action>
+        
         <Action name="svg_antialias_legibility">
             <text>Crisp</text>
         </Action>
+        
         <Action name="svg_antialias_precision">
             <text>Smooth</text>
         </Action>
+        
     </Menu>
-    <Separator/>
+    
+                   <Separator/>
+    
     <Action name="svg_paste_rich_text">
         <text>Paste Rich Text</text>
     </Action>
+    
     <Action name="svg_paste_plain_text">
         <text>Paste Plain Text</text>
     </Action>
+    
     <Action name="svg_clear_formatting">
         <text>Clear Formatting</text>
     </Action>
-    <Separator/>
+    
+                   <Separator/>
+    
     <Menu name="TextType">
-        <text>Type Setting (Krimble)</text>
+        <text>Type Setting</text>
         <Action name="text_type_preformatted">
             <text>Preformatted</text>
         </Action>
+        
         <Action name="text_type_inline_wrap">
             <text>Inline Wrapped</text>
         </Action>
+        
         <Action name="text_type_pre_positioned">
             <text>Pre-positioned</text>
         </Action>
+        
     </Menu>
     <Menu name="TypeSelectionNudge">
-        <text>Nudge Text Selection (Krimble)</text>
+        <text>Nudge Text Selection</text>
+        
         <Action name="svg_type_setting_move_selection_start_left_1_px">
             <text>Left 1 Pixel</text>
         </Action>
+        
         <Action name="svg_type_setting_move_selection_start_right_1_px">
             <text>Right 1 Pixel</text>
         </Action>
+        
         <Action name="svg_type_setting_move_selection_start_up_1_px">
             <text>Up 1 Pixel</text>
         </Action>
+        
         <Action name="svg_type_setting_move_selection_start_down_1_px">
             <text>Down 1 Pixel</text>
         </Action>
+        
     </Menu>
     <Action name="svg_remove_transforms_from_range">
-        <text>Remove Character Transforms (Krimble)</text>
+        <text>Remove Character Transforms</text>
     </Action>
 </Menu>
-
-
 
 <Menu name="Select">
     <text>&amp;Select</text>
@@ -655,83 +855,115 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="select_all">
         <text>All</text>
     </Action>
+    
     <Action name="deselect">
         <text>Deselect</text>
     </Action>
+    
     <Action name="reselect">
         <text>Reselect</text>
     </Action>
+    
     <Action name="invert_selection">
         <text>Inverse</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="similar">
         <text>Similar</text>
     </Action>
+    
     <Action name="colorrange">
         <text>Color Range...</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="growselection">
         <text>Grow...</text>
     </Action>
+    
     <Action name="shrinkselection">
         <text>Contract...</text>
     </Action>
+    
     <Action name="borderselection">
         <text>Border...</text>
     </Action>
+    
     <Action name="smoothselection">
         <text>Smooth</text>
     </Action>
+    
     <Action name="featherselection">
         <text>Feather...</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="selectionscale">
         <text>Transform Selection...</text>
     </Action>
+    
     <Action name="edit_selection">
         <text>Edit in Quick Mask Mode</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="convert_to_vector_selection">
         <text>Convert to Vector Selection</text>
     </Action>
+    
     <Action name="convert_to_raster_selection">
         <text>Convert to Raster Selection</text>
     </Action>
+    
     <Action name="convert_shapes_to_vector_selection">
         <text>Convert Shapes to Vector Selection</text>
     </Action>
+    
     <Action name="convert_selection_to_shape">
         <text>Convert Selection to Shape</text>
     </Action>
+    
                      <Separator/>
+                     
     <Menu name="selectopaquemenu">
         <text>Select &amp;Opaque</text>
+        
         <Action name="selectopaque">
             <text>Select Opaque</text>
         </Action>
+        
                      <Separator/>
+                     
         <Action name="selectopaque_add">
             <text>Add to Selection</text>
         </Action>
+        
         <Action name="selectopaque_subtract">
             <text>Subtract from Selection</text>
         </Action>
+        
         <Action name="selectopaque_intersect">
             <text>Intersect with Selection</text>
         </Action>
     </Menu>
+    
                      <Separator/>
+                     
     <Action name="toggle_display_selection">
         <text>Show Selection Edges</text>
     </Action>
+    
     <Action name="show-global-selection-mask">
         <text>Show Global Selection Mask</text>
     </Action>
+    
                      <Separator/>
+                     
     <!-- 
     <Action name="enable_sap">
         <text>Enable SAP</text>
@@ -749,47 +981,65 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="filter_apply_again">
         <text>Last Filter</text>
     </Action>
+    
     <Action name="filter_apply_reprompt">
         <text>Last Filter Prompt</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="filter_gallery">
         <text>Filter Gallery...</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="KisToolTransformLiquify">
         <text>Liquify...</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="adjust_filters"/>
+    
     <Action name="blur_filters">
         <text>Blur</text>
     </Action>
+    
     <Action name="distort_filters">
         <text>Distort</text>
     </Action>
+    
     <Action name="noise_filters">
         <text>Noise</text>
     </Action>
+    
     <Action name="pixelate_filters">
         <text>Pixelate</text>
     </Action>
+    
     <Action name="render_filters">
         <text>Render</text>
     </Action>
+    
     <Action name="sharpen_filters">
         <text>Sharpen</text>
     </Action>
+    
     <Action name="stylize_filters">
         <text>Stylize</text>
     </Action>
+    
     <Action name="other_filters">
         <text>Other</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="QMic">
         <text>G'MIC-Qt...</text>
     </Action>
+    
     <Action name="QMicAgain">
         <text>G'MIC-Qt Again</text>
     </Action>
@@ -804,159 +1054,217 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Action name="view_zoom_in">
             <text>Zoom In</text>
         </Action>
+        
         <Action name="view_zoom_out">
             <text>Zoom Out</text>
         </Action>
+        
         <Action name="zoom_to_100pct">
             <text>100%</text>
         </Action>
+        
         <Action name="zoom_to_200pct">
             <text>200%</text>
         </Action>
+        
         <Action name="zoom_to_fit">
             <text>Fit on Screen</text>
         </Action>
+        
         <Action name="zoom_to_fit_width">
             <text>Fit on Screen Width</text>
         </Action>
+        
         <Action name="zoom_to_fit_height">
             <text>Fit on Screen Height</text>
         </Action>
+        
                      <Separator/>
+                     
         <Action name="view_print_size">
             <text>Print Size</text>
         </Action>
     </Menu>
+    
                      <Separator/>
+                     
     <Action name="fullscreen">
         <text>Screen Mode</text>
     </Action>
+    
     <Action name="view_show_canvas_only">
         <text>Canvas Only</text>
     </Action>
+    
     <Action name="view_detached_canvas">
         <text>Detached Canvas</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="showStatusBar">
         <text>Show Status Bar</text>
     </Action>
+    
     <Action name="view_ruler">
         <text>Rulers</text>
     </Action>
+    
     <Action name="rulers_track_mouse">
         <text>Rulers Track Mouse</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="view_show_guides">
         <text>Show Guides</text>
     </Action>
+    
     <Action name="view_lock_guides">
         <text>Lock Guides</text>
     </Action>
+    
     <Action name="view_grid">
         <text>Show Grid</text>
     </Action>
+    
     <Action name="view_pixel_grid">
         <text>Show Pixel Grid</text>
     </Action>
+    
                      <Separator/>
+                     
     <Menu name="SnapTo">
         <text>&amp;Snap To</text>
         <Action name="view_snap_to_guides">
             <text>Guides</text>
         </Action>
+        
         <Action name="view_snap_to_grid">
             <text>Grid</text>
         </Action>
+        
         <Action name="view_snap_to_pixel">
             <text>Pixel</text>
         </Action>
+        
         <Action name="view_snap_orthogonal">
             <text>Orthogonal</text>
         </Action>
+        
         <Action name="view_snap_node">
             <text>Node</text>
         </Action>
+        
         <Action name="view_snap_extension">
             <text>Extension</text>
         </Action>
+        
         <Action name="view_snap_intersection">
             <text>Intersection</text>
         </Action>
+        
         <Action name="view_snap_bounding_box">
             <text>Bounding Box</text>
         </Action>
+        
         <Action name="view_snap_image_bounds">
             <text>Image Bounds</text>
         </Action>
+        
         <Action name="view_snap_image_center">
             <text>Image Center</text>
         </Action>
     </Menu>
+    
                      <Separator/>
+                     
     <Action name="softProof">
         <text>Proof Colors</text>
     </Action>
+    
     <Action name="gamutCheck">
         <text>Gamut Warning</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="rotate_canvas_right">
         <text>Rotate Canvas Clockwise</text>
     </Action>
+    
     <Action name="rotate_canvas_left">
         <text>Rotate Canvas Counterclockwise</text>
     </Action>
+    
     <Action name="reset_canvas_rotation">
         <text>Reset Canvas Rotation</text>
     </Action>
+    
     <Action name="mirror_canvas">
         <text>Mirror Canvas</text>
     </Action>
+    
     <Action name="mirror_canvas_around_cursor">
         <text>Mirror Canvas Around Cursor</text>
     </Action>
+    
     <Action name="mirror_canvas_around_canvas">
         <text>Mirror Canvas Around Canvas</text>
     </Action>
+    
     <Action name="reset_display">
         <text>Reset Display</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="wrap_around_mode">
         <text>Wrap Around Mode</text>
     </Action>
+    
     <Menu name="wrap_around_mode_direction">
         <text>Wrap Around Mode Direction</text>
+        
         <Action name="wrap_around_hv_axis">
             <text>Horizontal and Vertical</text>
         </Action>
+        
         <Action name="wrap_around_h_axis">
             <text>Horizontal</text>
         </Action>
+        
         <Action name="wrap_around_v_axis">
             <text>Vertical</text>
         </Action>
     </Menu>
+    
     <Action name="level_of_detail_mode">
         <text>Level of Detail Mode</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="view_toggle_painting_assistants">
         <text>Show Painting Assistants</text>
     </Action>
+    
     <Action name="view_toggle_assistant_previews">
         <text>Show Assistant Previews</text>
     </Action>
+    
     <Action name="view_toggle_reference_images">
         <text>Show Reference Images</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="view_palette_action_menu">
         <text>Palette</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="refresh_canvas">
         <text>Refresh</text>
     </Action>
@@ -979,70 +1287,93 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <toolTip>Interface Scale</toolTip>
         <iconText>Interface Scale</iconText>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="theme_menu">
         <text>&amp;Themes</text>
     </Action>
+    
     <Action name="style_menu">
         <text>&amp;Styles</text>
     </Action>
+    
     <Action name="switch_application_language">
         <text>Language...</text>
         <toolTip>Switch Application Language</toolTip>
         <iconText>Language</iconText>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="options_configure_toolbars">
         <text>Customize Toolbar...</text>
         <toolTip>Customize Toolbar</toolTip>
         <iconText>Customize Toolbar</iconText>
     </Action>
+    
     <Merge name="StandardToolBarMenuHandler"/>
     <Action name="lock_toolbars">
         <text>Lock Toolbars</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="view_toggledockers">
         <text>Toggle &amp;Panels</text>
         <toolTip>Show or Hide Panels</toolTip>
         <iconText>Panels</iconText>
     </Action>
+    
     <Action name="settings_dockers_menu">
         <text>Panels</text>
         <toolTip>Panels</toolTip>
         <iconText>Panels</iconText>
     </Action>
+    
     <Action name="settings_detach_panel_menu">
         <text>Detach Panel</text>
     </Action>
+    
     <Action name="settings_attach_panel_menu">
         <text>Attach Panel</text>
     </Action>
+    
     <Action name="settings_toggle_right_panels">
         <text>Hide Right Panels</text>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="manage_resources">
         <text>Presets...</text>
         <toolTip>Manage Presets</toolTip>
         <iconText>Presets</iconText>
     </Action>
+    
     <Action name="manage_bundles">
         <text>Resource Libraries...</text>
         <toolTip>Manage Resource Libraries</toolTip>
         <iconText>Resource Libraries</iconText>
     </Action>
+    
     <Action name="manage_supporter_bundles"/>
+                     
                      <Separator/>
+                     
     <Action name="manage_donations"/>
     <Action name="manage_subscriptions"/>
+    
                      <Separator/>
+                     
     <Action name="settings_active_author">
         <text>Author Profile...</text>
         <toolTip>Author Profile</toolTip>
         <iconText>Author Profile</iconText>
     </Action>
+    
                      <Separator/>
+                     
     <Action name="reset_configurations">
         <text>Reset Preferences...</text>
         <toolTip>Reset Preferences</toolTip>
@@ -1051,19 +1382,24 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 </Menu>
 
 <Action name="window"/>
-                     <Separator/>
 
+                     <Separator/>
 
 <Menu name="help">
     <text>&amp;Help</text>
     <Action name="help_contents"/>
+    
                      <Separator/>
+                     
     <Action name="help_report_bug"/>
     <Action name="help_feature_request"/>
     <Action name="help_krimble_website"/>
     <Action name="help_krimble_forum"/>
+    
                      <Separator/>
+                     
     <Action name="help_about_app"/>
+    
 </Menu>
 
 </MenuBar>
@@ -1089,10 +1425,14 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="KritaTransform/KisToolMove"/>
     <Action name="KisToolTransform"/>
     <Action name="KisToolTransformFree"/>
-    <Separator/>
+    
+                     <Separator/>
+    
+    
     <Action name="dual"/>
 
-    <Separator/>
+                     <Separator/>
+    
     <Action name="toggle-selection-overlay-mode"/>
     <Action name="show-global-selection-mask"/>
     <Action name="view_show_canvas_only"/>
