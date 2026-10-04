@@ -1004,6 +1004,9 @@ KisMainWindow::KisMainWindow(QUuid uuid)
         attachPanelsAction->setCheckable(true);
         attachPanelsAction->setChecked(attachOn);
         actionCollection()->addAction("settings_attach_panel_menu", attachPanelsAction);
+        // KRIMBLE 2026-10-04 (2nd): hidden and switched off; see the note in the topLevelChanged handler.
+        attachPanelsAction->setVisible(false);
+        attachPanelsAction->setEnabled(false);
         connect(attachPanelsAction, &QAction::toggled, this, [this](bool on) {
             setProperty("krimbleAttachPanels", on);
             KConfigGroup group = KSharedConfig::openConfig()->group("Krimble");
@@ -3213,8 +3216,12 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
             // ON (the default) = the standard behaviour: a panel dragged to the edge of the window
             // docks there. OFF = floating panels never snap anywhere. Old line:
             // dockWidget->setAllowedAreas(floating ? Qt::NoDockWidgetArea : Qt::AllDockWidgetAreas);
-            const bool attachOn = property("krimbleAttachPanels").toBool();
-            dockWidget->setAllowedAreas((floating && !attachOn) ? Qt::NoDockWidgetArea : Qt::AllDockWidgetAreas);
+            // KRIMBLE 2026-10-04 (2nd): the Attach/Detach features are switched off again, so panels
+            // behave as they did before them: they may always dock, wherever they float. (The
+            // "Attach Panels" menu item is hidden below; the lines below are kept for reference.)
+            // const bool attachOn = property("krimbleAttachPanels").toBool();
+            // dockWidget->setAllowedAreas((floating && !attachOn) ? Qt::NoDockWidgetArea : Qt::AllDockWidgetAreas);
+            dockWidget->setAllowedAreas(Qt::AllDockWidgetAreas);
 
             // KRIMBLE 2026-10-02: a panel docked again with its own float button used to
             // fly back to its old place. Dock it where it was put instead, exactly as

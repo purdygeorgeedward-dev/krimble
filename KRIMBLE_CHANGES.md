@@ -2397,3 +2397,17 @@ space around the content (earlier this pass the extra title bar padding of 14 px
 The old values are kept in comments. **Verified:** the handle was drawn at phone scale next to the old sizes.
 **Not verified:** a build or a device. **Not changed:** the title bar's own height (set by its buttons); if the top is
 still too tall after the next build, that is the next place to cut.
+
+## 2026-10-04 — Detach / Attach features switched off; panels behave as before them
+
+**File:** `libs/ui/KisMainWindow.cpp`
+
+George (build b4): the Attach feature threw panels to the opposite side of the screen; "we should just disable that
+feature and restore their previous behavior. All I really wanted was tolerances adjusted."
+**Changed:** the "Attach Panels" menu item (which replaced the Attach Panel / Detach Panel submenus the day before)
+is hidden and disabled, and its effect on the panels is removed: a panel's allowed dock areas are always "all", floating
+or not, as before the 2026-10-02 Attach/Detach work. The Detach Panel submenu was already hidden; the "dock where it was
+put" code on the float button stays switched off. The old code is all still there, commented or hidden. The other
+changes to floating panels stay (corner handle, no extra title padding, smaller minimum and default size).
+**Not changed:** `krita5.xmlgui` (the menu lines are still there; the actions are hidden, so they show nothing).
+**Not verified:** a build or a device. **Open question for George:** which tolerance he wants adjusted (see the reply).
