@@ -2387,3 +2387,13 @@ pick a brush preset (for example a preset button in the toolbar); check on the d
 `libkritapresetdocker*` from `~/kwd/krita/_install/lib` (and any copy under `lib/kritaplugins`) before packaging so it
 is not in the APK. CMake reconfigures once on the next build.
 **Not verified:** a build or a device.
+
+### Update 2026-10-04 (2nd pass): corner handle and the top and bottom of floating panels smaller again
+
+George: the corner handles are too big and the top and bottom edges of the windows are way too big.
+**Changed:** corner handle 26 -> 20 px (it was 36), and the strip reserved for it under the panel 26 -> 20 (it was 36);
+the default size of a panel that floats 60% x 75% -> 50% x 50% of the screen's shorter side, so there is less unused
+space around the content (earlier this pass the extra title bar padding of 14 px above and below was already set to 0).
+The old values are kept in comments. **Verified:** the handle was drawn at phone scale next to the old sizes.
+**Not verified:** a build or a device. **Not changed:** the title bar's own height (set by its buttons); if the top is
+still too tall after the next build, that is the next place to cut.

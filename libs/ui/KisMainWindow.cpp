@@ -194,7 +194,9 @@ public:
     {
         // KRIMBLE 2026-10-04: smaller, was 36 x 36.
         // setFixedSize(36, 36);
-        setFixedSize(26, 26);
+        // KRIMBLE 2026-10-04 (2nd pass): 20 px, was 26 (and 36 before that).
+        // setFixedSize(26, 26);
+        setFixedSize(20, 20);
         // Looked up by this name (see the topLevelChanged handler). This class has no
         // Q_OBJECT, so findChild<KisFloatingDockSizeGrip*>() would match any widget.
         setObjectName(QStringLiteral("krimbleResizeHandle"));
@@ -230,8 +232,8 @@ protected:
         pen.setWidthF(2.0);
         p.setPen(pen);
         for (int i = 1; i <= 3; ++i) {
-            const int offset = i * 6;     // was i * 8 for the 36 px handle
-            p.drawLine(width() - 3 - offset, height() - 3, width() - 3, height() - 3 - offset);
+            const qreal offset = i * 4.5;     // was i * 6 (26 px handle) and i * 8 (36 px handle)
+            p.drawLine(QPointF(width() - 2.5 - offset, height() - 2.5), QPointF(width() - 2.5, height() - 2.5 - offset));
         }
     }
 
@@ -3279,7 +3281,8 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
             // panel floats, a strip as high as the handle is reserved under its
             // content, and the handle sits in that strip. Docked: strip removed.
             // const int gripStrip = 36;     // KRIMBLE 2026-10-04: smaller, matches the 26 px handle
-            const int gripStrip = 26;
+            // const int gripStrip = 26;     // KRIMBLE 2026-10-04 (2nd pass): 20, matches the 20 px handle
+            const int gripStrip = 20;
             const bool stripped = dockWidget->property("krimbleGripStrip").toBool();
             if (floating && !stripped) {
                 QMargins m = dockWidget->contentsMargins();
@@ -3315,8 +3318,11 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
                 } else if (QScreen *scr = QGuiApplication::primaryScreen()) {
                     const QSize screenSize = scr->availableGeometry().size();
                     const int shortSide = qMin(screenSize.width(), screenSize.height());
-                    dockWidget->resize(qMin(dockWidget->width(), int(shortSide * 0.6)),
-                                       qMin(dockWidget->height(), int(shortSide * 0.75)));
+                    // KRIMBLE 2026-10-04: smaller default, was 60% x 75% of the screen's shorter side.
+                    // dockWidget->resize(qMin(dockWidget->width(), int(shortSide * 0.6)),
+                    //                    qMin(dockWidget->height(), int(shortSide * 0.75)));
+                    dockWidget->resize(qMin(dockWidget->width(), int(shortSide * 0.5)),
+                                       qMin(dockWidget->height(), int(shortSide * 0.5)));
                 }
                 grip->move(dockWidget->width() - grip->width(), dockWidget->height() - grip->height());
                 grip->show();
