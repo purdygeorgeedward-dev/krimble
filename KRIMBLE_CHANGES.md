@@ -2132,7 +2132,7 @@ is unchanged.
 **Verified:** three runs of the script gave 1, 2, 3; a start value of 9 gave 10; the text was
 compiled and run with stand-in headers. **Not verified:** a real build.
 **Note:** the counter goes up on every `make` run, including one that is repeated after a
-failed build; re-running only the packaging step does not change it. Suggested APK name:
+failed build. CORRECTION 2026-10-03: the packaging step ALSO adds one, because it rebuilds the project first (the first packaging try failed, so one APK took three tries and showed 4, not 1). The number in the app and the number in the APK file name stay the same, so they always match. Suggested APK name:
 `Krimble-Beta2-Oct3-1447-b58.apk` (the last part is the counter).
 
 ## 2026-10-03 — Dialogs that opened above the screen are now kept on screen (Android)
