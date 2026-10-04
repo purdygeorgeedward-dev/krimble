@@ -2504,3 +2504,11 @@ list order in the settings form (Subwindows first, Tabs second) matches the valu
 **Note:** this only changes the default. A phone that already has the setting saved keeps its saved choice; George clears app
 data before each test, so a fresh start uses the new default. **Not verified:** a build or a device (how a new picture opens
 as a floating window on the phone).
+
+### Update 2026-10-04: Magic Wand icon redrawn
+
+George: the wand "looks like a tube you keep a toothbrush in"; more sparkles; taper the sparkle end. The icon
+(`light_tool_contiguous_selection.svg` and `dark_tool_contiguous_selection.svg`, same names) is now a slim wand that
+tapers from a round handle to a fine point, with a small cluster of sparkles (four star shapes, the largest about 2 units,
+and three tiny dots) at the tip, plus two trailing dots at the top left. George chose it step by step from on-screen previews
+("Very nice"). **Verified:** both files are well-formed XML; rendered at 96, 32 and 16 pixels. **Not verified:** a build or a device.
