@@ -14,17 +14,18 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       <Separator/>
       <Action name="file_save"/>
       <Action name="file_save_as"/>
-      <Action name="file_reload_file"/>
+<!--  <Action name="file_reload_file"/>
       <Separator/>
       <Action name="file_sessions"/>
       <Separator/>
-      <Action name="file_import_file"/>
+      <Action name="file_import_file"/> -->
       <Action name="file_export_file"/>
       <Action name="file_export_advanced"/>
+         <text>Export.../Export Options</text>
       <Separator/>
       <Action name="file_export_pdf"/>
       <Separator/>
-      <Action name="file_import_animation"/>
+ <!-- <Action name="file_import_animation"/>
       <Action name="file_import_video_animation"/>
       <Action name="render_animation"/>
       <Separator/>
@@ -33,17 +34,18 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       <Separator/>
       <Action name="create_template"/>
       <Action name="create_copy"/>
-      <!--Separator/>
+      <Separator/>
       <Action name="file_print"/>
       <Action name="file_print_preview"/-->
-      <Separator/>
+      <Separator/> -->
       <Action name="file_documentinfo"/>
+         <text>File info...</text>
       <Separator/>
       <Action name="file_close"/>
       <Action name="file_close_all"/>
       <Action name="file_quit"/>
+         <text>Exit</text>
       </Menu>
-<!-- menu restored from Krita  -->
 
 <Menu name="edit">
     <text>&amp;Edit</text>
