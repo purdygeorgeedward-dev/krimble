@@ -2411,3 +2411,10 @@ put" code on the float button stays switched off. The old code is all still ther
 changes to floating panels stay (corner handle, no extra title padding, smaller minimum and default size).
 **Not changed:** `krita5.xmlgui` (the menu lines are still there; the actions are hidden, so they show nothing).
 **Not verified:** a build or a device. **Open question for George:** which tolerance he wants adjusted (see the reply).
+
+### Fix 2026-10-04: build error in KisApplication.cpp (missing QWindow include on Android)
+
+The first build with the dialog two-finger drag stopped with 6 errors "member access into incomplete type 'QWindow'"
+in `libs/ui/KisApplication.cpp`: the QWindow header was only included in the Windows part of the file. Added
+`#include <QWindow>` to the Android include block. A syntax check of the file no longer reports QWindow; the
+remaining messages (KisGbrBrush and similar) are the sandbox lacking brush headers and are not caused by this change.

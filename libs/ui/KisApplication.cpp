@@ -27,6 +27,7 @@
 #ifdef Q_OS_ANDROID
 #include <QDialog>
 #include <QTouchEvent>
+#include <QWindow>
 #include <QGuiApplication>
 #include <QPointer>
 #include <QTimer>
