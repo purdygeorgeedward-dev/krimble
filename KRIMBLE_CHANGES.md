@@ -2279,3 +2279,22 @@ symbols for each tool and are not copies of any other program's artwork.
 (for example the selection tools in the Select menu) will show the new drawing too.
 **Verified:** every file is well-formed XML; the 27 light icons were rendered from the written files at
 32 and 16 pixels and checked. **Not verified:** a build or a device.
+
+## 2026-10-04 — Side button appeared over the toolbox instead of on the bar between the canvas and the panels
+
+**File:** `libs/ui/KisMainWindow.cpp` (block marked KRIMBLE RIGHT PANELS, Android)
+
+Device feedback on build b4: the new side button sat over the toolbox (top left), not on the bar by the
+right-hand panels. Its drag did resize the panel column, so the button itself worked.
+
+**Cause:** the button's place was worked out when the window asked for a layout, which happens BEFORE
+the window has actually positioned its panels. The panels still had empty positions (left edge 0), so
+the button was put at the left edge of the window. In my earlier test the layout had already settled,
+so it looked right there.
+**Fix:** every change (window layout, resize, show; and a move, resize, show or hide of any right-hand
+panel) now schedules the update for one step later, after the layout is done. The right-hand panels are
+watched directly so the button follows them. The button is also a little smaller (44 x 150 px).
+**Verified (standalone Qt test, same code):** the button stays on the bar, centred on the panels' left edge
+and well clear of the toolbox, at the start, after the panels are narrowed, and after the window is
+widened and narrowed; tap, long press, swipe and the edge button behave as before. **Not verified:** a
+build or a device.

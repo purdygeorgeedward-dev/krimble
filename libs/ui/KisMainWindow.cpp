@@ -427,7 +427,7 @@ public:
         : QWidget(parent), m_onTap(onTap), m_onDragStart(onDragStart), m_onDrag(onDrag)
     {
         setObjectName(QStringLiteral("krimbleRightPanelHandle"));
-        setFixedSize(52, 170);
+        setFixedSize(44, 150);
         m_timer.setSingleShot(true);
         m_timer.setInterval(350);
         connect(&m_timer, &QTimer::timeout, this, [this]() {
@@ -581,6 +581,15 @@ static void krimbleUpdateRightPanelUi(QMainWindow *win)
             action->setText(text);
         }
     }
+    // Watch the right-hand panels too, so the button follows them when they move or resize.
+    if (QObject *watcher = win->findChild<QObject*>(QStringLiteral("krimbleRightPanelsFilter"))) {
+        Q_FOREACH (QDockWidget *dock, krimbleRightDocks(win, false)) {
+            if (!dock->property("krimbleWatched").toBool()) {
+                dock->installEventFilter(watcher);
+                dock->setProperty("krimbleWatched", true);
+            }
+        }
+    }
     KrimbleSideBarButton *button = krimbleRightPanelHandle(win);
     if (!button) {
         return;
@@ -616,27 +625,40 @@ static void krimbleUpdateRightPanelUi(QMainWindow *win)
 class KrimbleRightPanelsFilter : public QObject
 {
 public:
-    explicit KrimbleRightPanelsFilter(QMainWindow *win) : QObject(win), m_win(win) {}
+    explicit KrimbleRightPanelsFilter(QMainWindow *win) : QObject(win), m_win(win)
+    {
+        setObjectName(QStringLiteral("krimbleRightPanelsFilter"));
+    }
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override
     {
+        // KRIMBLE 2026-10-04: the update must run AFTER the window has laid out its panels. A
+        // layout request reaches this filter before that, so the panels' positions were still
+        // the old (empty) ones and the side button was drawn at the left edge, on top of the
+        // toolbox. Now every change is handled one step later, and moves/resizes of the
+        // right-hand panels themselves also trigger it.
+        bool relevant = false;
         if (watched == m_win) {
-            switch (event->type()) {
-            case QEvent::LayoutRequest:
-            case QEvent::Resize:
-            case QEvent::Show:
+            relevant = (event->type() == QEvent::LayoutRequest || event->type() == QEvent::Resize
+                        || event->type() == QEvent::Show);
+        } else if (qobject_cast<QDockWidget*>(watched)) {
+            relevant = (event->type() == QEvent::Move || event->type() == QEvent::Resize
+                        || event->type() == QEvent::Show || event->type() == QEvent::Hide);
+        }
+        if (relevant && !m_pending) {
+            m_pending = true;
+            QTimer::singleShot(0, this, [this]() {
+                m_pending = false;
                 krimbleUpdateRightPanelUi(m_win);
-                break;
-            default:
-                break;
-            }
+            });
         }
         return false;
     }
 
 private:
     QMainWindow *m_win;
+    bool m_pending {false};
 };
 // END KRIMBLE RIGHT PANELS
 
