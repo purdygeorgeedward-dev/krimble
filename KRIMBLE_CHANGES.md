@@ -2512,3 +2512,17 @@ George: the wand "looks like a tube you keep a toothbrush in"; more sparkles; ta
 tapers from a round handle to a fine point, with a small cluster of sparkles (four star shapes, the largest about 2 units,
 and three tiny dots) at the tip, plus two trailing dots at the top left. George chose it step by step from on-screen previews
 ("Very nice"). **Verified:** both files are well-formed XML; rendered at 96, 32 and 16 pixels. **Not verified:** a build or a device.
+
+## 2026-10-04 — View menu: Canvas Rotation and Mirror View submenus
+
+**File:** `krita/krita5.xmlgui` (edited at George's request: "Can you make those two submenus in the View menu for me")
+
+The six loose canvas actions in the View menu were moved into two submenus; nothing was added or removed, each action still
+appears exactly once, and the file is still well-formed XML.
+- **View > Canvas Rotation:** Clockwise (`rotate_canvas_right`), Counterclockwise (`rotate_canvas_left`), a separator,
+  Reset Rotation (`reset_canvas_rotation`).
+- **View > Mirror View:** Mirror Canvas (`mirror_canvas`), Around Cursor (`mirror_canvas_around_cursor`),
+  Around Canvas (`mirror_canvas_around_canvas`).
+They sit where the loose entries were: after Proof Colors and Gamut Warning, before Reset Display. The short item labels
+(like the ones in Snap To) show in the app after the next build, because of the label fix of 2026-10-04.
+**Not verified:** a build or a device.

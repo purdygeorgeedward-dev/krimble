@@ -1189,29 +1189,37 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     
                      <Separator/>
                      
-    <Action name="rotate_canvas_right">
-        <text>Rotate Canvas Clockwise</text>
-    </Action>
+    <Menu name="CanvasRotation">
+        <text>Canvas Rotation</text>
+        <Action name="rotate_canvas_right">
+            <text>Clockwise</text>
+        </Action>
+        
+        <Action name="rotate_canvas_left">
+            <text>Counterclockwise</text>
+        </Action>
+        
+                     <Separator/>
+                     
+        <Action name="reset_canvas_rotation">
+            <text>Reset Rotation</text>
+        </Action>
+    </Menu>
     
-    <Action name="rotate_canvas_left">
-        <text>Rotate Canvas Counterclockwise</text>
-    </Action>
-    
-    <Action name="reset_canvas_rotation">
-        <text>Reset Canvas Rotation</text>
-    </Action>
-    
-    <Action name="mirror_canvas">
-        <text>Mirror Canvas</text>
-    </Action>
-    
-    <Action name="mirror_canvas_around_cursor">
-        <text>Mirror Canvas Around Cursor</text>
-    </Action>
-    
-    <Action name="mirror_canvas_around_canvas">
-        <text>Mirror Canvas Around Canvas</text>
-    </Action>
+    <Menu name="MirrorView">
+        <text>Mirror View</text>
+        <Action name="mirror_canvas">
+            <text>Mirror Canvas</text>
+        </Action>
+        
+        <Action name="mirror_canvas_around_cursor">
+            <text>Around Cursor</text>
+        </Action>
+        
+        <Action name="mirror_canvas_around_canvas">
+            <text>Around Canvas</text>
+        </Action>
+    </Menu>
     
     <Action name="reset_display">
         <text>Reset Display</text>
