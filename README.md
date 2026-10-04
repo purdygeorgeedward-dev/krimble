@@ -129,8 +129,9 @@ AI is treated as another class of creative technology: useful when it can make a
 The goal is not to turn Krimble into an “AI app.” The goal is to build a strong graphics editor and use new technology where it genuinely helps.
 
 <div align="center">
-<img src="https://krimble.org/assets/friend-robot-2.jpg" alt="Robot — I am your friend!" width="100%">
+<img src="https://krimble.org/assets/friend-robot-2.jpg" alt="Robot — I am your friend!" width="80%">
 </div>
+
 
 **Artificial Intelligence is like a brilliant child. Children sometimes make mistakes. That's what Daddy is for.**
 
