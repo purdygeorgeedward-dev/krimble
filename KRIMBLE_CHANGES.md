@@ -2704,3 +2704,11 @@ hollow/solid pair is gone. **Verified:** both files are well-formed XML; rendere
 The build of 2026-10-05 compiled everything but stopped at the link step: `undefined symbol: KoSvgText::parseFontStyle(QString const&)`. The function exists in the flake library but
 is not exported, so the main library could not call it. `KisTypeOptionsBar.cpp` now builds the value directly (`KoSvgText::CssFontStyleData(QFont::StyleItalic / StyleNormal)`, an inline
 type), as the library's own code does elsewhere. The old call is kept as a comment. **Not verified:** the link (needs a build); no other undefined symbol was reported.
+
+### Update 2026-10-05: toolbox Brush icon redrawn (long-handled brush, hollow metal sleeve, original hair)
+
+George asked for the brush end to be solid, then for the handle to taper (thick next to the bristles, thin at the far end), the hair on the end of the handle, "like the long ones" in the photos of
+real paintbrushes, a long thin metal sleeve drawn as an outline that tapers toward the hair, and his original curved hair shape only moved and made smaller and centred on the stick. He chose option
+Z1 ("Z1 is close to perfect", then "Z1 is still best so far" after two teardrop-shaped alternatives, D1 and D2, which were not used). `light_krita_tool_freehand.svg` and
+`dark_krita_tool_freehand.svg` (same names, so nothing in the code changes). The icon is one filled shape (handle, hollow sleeve and hair, with a cut-out for the sleeve), made as plain polygons so it
+looks the same in every renderer (checked in two). **Verified:** both files are well-formed XML; rendered at 16, 32 and 88 pixels. **Not verified:** a build or a device.
