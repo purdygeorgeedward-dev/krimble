@@ -2712,3 +2712,10 @@ real paintbrushes, a long thin metal sleeve drawn as an outline that tapers towa
 Z1 ("Z1 is close to perfect", then "Z1 is still best so far" after two teardrop-shaped alternatives, D1 and D2, which were not used). `light_krita_tool_freehand.svg` and
 `dark_krita_tool_freehand.svg` (same names, so nothing in the code changes). The icon is one filled shape (handle, hollow sleeve and hair, with a cut-out for the sleeve), made as plain polygons so it
 looks the same in every renderer (checked in two). **Verified:** both files are well-formed XML; rendered at 16, 32 and 88 pixels. **Not verified:** a build or a device.
+
+### Update 2026-10-05 (2nd): toolbox Brush icon, final proportions (K4)
+
+George asked for the metal sleeve to be a little smaller with nothing else shrunk (K1/K2 shown), picked K1, then asked to move the hair down a little and lengthen the sleeve a little (K3/K4 shown) and chose
+K4: the sleeve is shorter and thinner than Z1 (half-width 0.68 -> 0.47, wall 0.28), runs from 7.9 to 12.2 along the brush so it meets the hair, and the hair (original curved shape at 62%, centred on the stick) sits
+0.8 further down the brush. Handle and hair shape and size are unchanged. Replaces the Z1 version saved earlier today. `light_krita_tool_freehand.svg` and `dark_krita_tool_freehand.svg`
+(same names). **Verified:** both files are well-formed XML; rendered at 16, 32 and 72 pixels. **Not verified:** a build or a device.
