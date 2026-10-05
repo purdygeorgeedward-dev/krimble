@@ -2589,3 +2589,14 @@ the name of the font resource type in the resource manager, "Font Families" -> "
 tool, "Font Family" -> "Font". The old lines are kept as comments. Names inside the code (`KoFontFamily`, `FontFamilies`, the
 resource folder) are not user-visible and are unchanged. **Not changed:** how the font box groups fonts (it still pairs a font box
 with a style box); making it a flat list is a larger change and has not been requested in detail yet. **Not verified:** a build or a device.
+
+### Fix 2026-10-04 (2nd): the File menu still said "Quit" on the phone (build b12)
+
+**File:** `libs/ui/KisMainWindow.cpp` (`krimbleApplyXmlGuiLabels`)
+
+George's screenshot of build b12 showed File > Quit although krita5.xmlgui says Exit for `file_quit`, while other labels from the menu
+file (for example View > Rulers) did show. The first version of the label code only looked at actions that are children of the
+window, but actions belong to the action collection, which is not necessarily below the window. Now it also uses the actions that
+are really in the menus (`menu->actions()`: the objects that are drawn), and it runs once more right before any menu is shown
+(`QMenu::aboutToShow`, connected after start-up). **Verified (standalone Qt test):** an action owned outside the window and shown in a
+menu changed from "&Quit" to "Exit". **Not verified:** a build or a device.

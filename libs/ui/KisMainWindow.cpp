@@ -809,14 +809,28 @@ static void krimbleApplyXmlGuiLabels(KisMainWindow *win)
     if (labels.isEmpty()) {
         return;
     }
+    // KRIMBLE 2026-10-04 (2nd): the first version only looked at actions that are children of the window. Quit stayed
+    // "Quit" on the phone (build b12): actions belong to the action collection, which is not necessarily below the
+    // window. Now the actions that are actually IN the menus are used as well (menu->actions()): those are the very
+    // objects that are drawn.
+    QList<QAction*> candidates;
     QList<QObject*> roots;
     roots << win << KoToolManager::instance();
     Q_FOREACH (QObject *root, roots) {
-        Q_FOREACH (QAction *action, root->findChildren<QAction*>()) {
-            const auto it = labels.constFind(action->objectName());
-            if (it != labels.constEnd() && action->text() != it.value()) {
-                action->setText(it.value());
-            }
+        candidates << root->findChildren<QAction*>();
+    }
+    Q_FOREACH (QMenu *menu, win->findChildren<QMenu*>()) {
+        candidates << menu->actions();
+    }
+    if (win->menuBar()) {
+        Q_FOREACH (QMenu *menu, win->menuBar()->findChildren<QMenu*>()) {
+            candidates << menu->actions();
+        }
+    }
+    Q_FOREACH (QAction *action, candidates) {
+        const auto it = labels.constFind(action->objectName());
+        if (it != labels.constEnd() && action->text() != it.value()) {
+            action->setText(it.value());
         }
     }
 }
@@ -1274,7 +1288,13 @@ KisMainWindow::KisMainWindow(QUuid uuid)
 
     // KRIMBLE 2026-10-04: apply the labels typed in krita5.xmlgui (see krimbleApplyXmlGuiLabels). Run
     // once everything is built, and again when a tool is chosen (tool actions appear later).
-    QTimer::singleShot(0, this, [this]() { krimbleApplyXmlGuiLabels(this); });
+    QTimer::singleShot(0, this, [this]() {
+        krimbleApplyXmlGuiLabels(this);
+        // and once more just before any menu is shown (KRIMBLE 2026-10-04, 2nd: Quit did not change on the phone)
+        Q_FOREACH (QMenu *menu, this->findChildren<QMenu*>()) {
+            connect(menu, &QMenu::aboutToShow, this, [this]() { krimbleApplyXmlGuiLabels(this); });
+        }
+    });
     connect(KoToolManager::instance(), &KoToolManager::changedTool, this,
             [this](KoCanvasController*) { krimbleApplyXmlGuiLabels(this); });
 
