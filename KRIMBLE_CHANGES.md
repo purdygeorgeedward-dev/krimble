@@ -2672,3 +2672,9 @@ AlignEnd, which reads reversed for left-to-right text. The new bar uses AlignLef
 **Verified:** the weight mapping numbers (Qt weight -> CSS weight) and the menu file (well-formed); the syntax checker reported no problem located in
 the new file (it could not follow every header). **Not verified:** a compile of the library, a build or a device. This is new code in the main
 library, so a compile error on the server is possible; how it looks and fits on the phone is untested.
+
+### Update 2026-10-05: toolbox hand (Pan) icon is solid
+
+George asked to see a solid hand for the toolbox and chose option A of three from an on-screen preview: four slim fingers and a thumb sweeping to the lower left,
+filled instead of outlined. `light_tool_pan.svg` and `dark_tool_pan.svg` (same names, so nothing in the code changes). **Verified:** both files are well-formed XML;
+rendered at 80, 32 and 16 pixels. **Not verified:** a build or a device.
