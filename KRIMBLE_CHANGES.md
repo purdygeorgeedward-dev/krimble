@@ -2631,3 +2631,23 @@ was found and fixed in the test. **Not verified:** a build or a device (how it f
 The earlier wording change ("Font Families" -> "Fonts", commit d0aa690) missed the label that George actually sees in the Text Properties panel,
 which lives in this QML file (my search had covered C++ and form files only). The panel label "Font Family" is now "Font"; the old line is
 kept as a comment. The label "Font Style" is unchanged. **Not verified:** a build or a device.
+
+## 2026-10-04 — Text Properties panel, step 1: Character and Paragraph in the order of the reference panels
+
+**Files:** `plugins/dockers/textproperties/qml/TextProperties.qml`, `TextPropertyBaseList.qml`, and the property files `FontKerning.qml`,
+`LetterSpacing.qml`, `BaselineShift.qml`, `TextDecoration.qml`, `TextTransform.qml`, `Language.qml`, `TextRendering.qml`, `TextIndent.qml`
+
+George sent four reference screenshots of the industry-standard Character, Paragraph, Character Styles and Paragraph Styles panels and the Type
+options bar and said "We need to match this structure"; step 1 of the agreed order (re-layout with what exists today):
+- **Tabs:** Character, Paragraph, Preset (was Paragraph, Character, Preset). The Character list is first in the stack to match.
+- **Order of the groups** (all 32 kept; the old order is in a comment): Character tab: Font, Font Style, Font Size, Line Height, Font Kerning,
+  Letter Spacing, Font Size Adjust, Word Spacing, Baseline Shift, Text Decoration, Text Transform, the OpenType groups (Capitals, Position,
+  Ligatures, Numeric, East-Asian, Features), Language, Text Rendering (anti-aliasing). Paragraph tab: Text Align, Text Indent, Direction,
+  Writing Mode, Text Area, then the line and word breaking options.
+- **Moved to the Character tab:** Language (was both) and Text Rendering (was Paragraph), as in the reference Character panel.
+- **Shown by default** (before only Font, Font Style, Font Size, Line Height and Text Align were): Font Kerning, Letter Spacing, Baseline Shift,
+  Text Decoration, Text Transform, Language, Text Rendering, Text Indent. The user can still hide groups with "Add Property".
+**Verified:** all edited files pass the QML syntax checker and every group is still in the list. **Not verified:** a build or a device (how the
+panel looks and fits). **Not done yet (later steps):** two controls side by side in one row, the icon row of faux bold/italic, caps, super/subscript,
+underline and strikethrough, the scale boxes, color, space before and after, hyphenation, separate Character Styles and Paragraph Styles
+lists, the Type options bar.

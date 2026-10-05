@@ -13,7 +13,10 @@ import org.krita.components 1.0 as Kis
 TextPropertyBase {
     propertyTitle: i18nc("@title:group", "Language");
     propertyName: "locale";
-    propertyType: TextPropertyConfigModel.Mixed;
+    // KRIMBLE 2026-10-04: was TextPropertyConfigModel.Mixed (it now sits in the Character tab, like the reference panel)
+    propertyType: TextPropertyConfigModel.Character;
+    // KRIMBLE 2026-10-04: shown by default, like the reference Character/Paragraph panels
+    visibilityState: TextPropertyConfigModel.AlwaysVisible;
     toolTip: i18nc("@info:tooltip",
                    "The language of this text shape. Language affects a number of properties, like glyph shape, upper- and lowercase and line breaking");
     searchTerms: i18nc("comma separated search terms for the language property, matching is case-insensitive",

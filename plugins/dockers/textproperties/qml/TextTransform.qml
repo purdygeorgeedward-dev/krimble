@@ -12,6 +12,8 @@ TextPropertyBase {
     propertyTitle: i18nc("@title:group", "Text Transform");
     propertyName: "text-transform";
     propertyType: TextPropertyConfigModel.Character;
+    // KRIMBLE 2026-10-04: shown by default, like the reference Character/Paragraph panels
+    visibilityState: TextPropertyConfigModel.AlwaysVisible;
     toolTip: i18nc("@info:tooltip",
                    "Text transform allows transforming the given range of characters, for example, by setting them uppercase, or switching out half-width forms for full-width forms.");
     searchTerms: i18nc("comma separated search terms for the text-transform property, matching is case-insensitive",

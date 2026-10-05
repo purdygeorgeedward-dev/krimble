@@ -160,54 +160,10 @@ ColumnLayout {
 
             model: ObjectModel {
                 id: propertyWidgetModel;
-                WritingMode {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                Direction {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                TextIndent{
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                TextAlign{
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                DominantBaseline {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                WhiteSpace {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                UnderlinePosition {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                HangingPunctuation {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                TabSize {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                TextRendering {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                FontSize {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                FontSizeAdjust {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
+    // KRIMBLE 2026-10-04: the groups are now in the order of the reference Character panel, then the Paragraph
+    // panel (font, style, size, leading, kerning, tracking, baseline shift, decoration, caps, OpenType, language,
+    // anti-aliasing; alignment, indent, direction ...). The earlier order was: WritingMode, Direction, TextIndent, TextAlign, DominantBaseline, WhiteSpace, UnderlinePosition, HangingPunctuation, TabSize, TextRendering, FontSize, FontSizeAdjust, FontFamily, FontStyle, LetterSpacing, WordSpacing, LineHeight, LineBreak, WordBreak, TextTransform, TextDecoration, OTLigatures, OTPosition, OTNumeric, OTCaps, OTEastAsian, OpenTypeFeatureSettings, FontKerning, BaselineShift, AlignmentBaseline, Language, TextAreaOptions
+
 
                 FontFamily {
                     dpi: canvasDPI;
@@ -218,11 +174,7 @@ ColumnLayout {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
-                LetterSpacing {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                WordSpacing {
+                FontSize {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
@@ -230,15 +182,23 @@ ColumnLayout {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
-                LineBreak {
+                FontKerning {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
-                WordBreak {
+                LetterSpacing {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
-                TextTransform {
+                FontSizeAdjust {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                WordSpacing {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                BaselineShift {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
@@ -246,7 +206,11 @@ ColumnLayout {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
-                OTLigatures {
+                TextTransform {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                OTCaps {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
@@ -254,11 +218,11 @@ ColumnLayout {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
-                OTNumeric {
+                OTLigatures {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
-                OTCaps {
+                OTNumeric {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
@@ -270,19 +234,27 @@ ColumnLayout {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
-                FontKerning {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                BaselineShift {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
-                AlignmentBaseline {
-                    dpi: canvasDPI;
-                    properties: propertiesModel;
-                }
                 Language {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                TextRendering {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                TextAlign{
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                TextIndent{
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                Direction {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                WritingMode {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
@@ -290,7 +262,38 @@ ColumnLayout {
                     dpi: canvasDPI;
                     properties: propertiesModel;
                 }
-            }
+                WhiteSpace {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                TabSize {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                LineBreak {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                WordBreak {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                HangingPunctuation {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                DominantBaseline {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                AlignmentBaseline {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }
+                UnderlinePosition {
+                    dpi: canvasDPI;
+                    properties: propertiesModel;
+                }}
         }
     }
 

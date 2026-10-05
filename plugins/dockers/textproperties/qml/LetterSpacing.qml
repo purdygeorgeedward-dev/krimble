@@ -14,6 +14,8 @@ TextPropertyBase {
     propertyTitle: i18nc("@label:spinbox", "Letter Spacing");
     propertyName: "letter-spacing";
     propertyType: TextPropertyConfigModel.Character;
+    // KRIMBLE 2026-10-04: shown by default, like the reference Character/Paragraph panels
+    visibilityState: TextPropertyConfigModel.AlwaysVisible;
     toolTip: i18nc("@info:tooltip",
                    "Letter spacing controls the spacing between visible clusters of characters.");
     searchTerms: i18nc("comma separated search terms for the letter-spacing property, matching is case-insensitive",

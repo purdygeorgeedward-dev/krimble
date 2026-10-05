@@ -12,6 +12,8 @@ TextPropertyBase {
     propertyTitle: i18nc("@title:group", "Text Decoration");
     propertyName: "text-decoration";
     propertyType: TextPropertyConfigModel.Character;
+    // KRIMBLE 2026-10-04: shown by default, like the reference Character/Paragraph panels
+    visibilityState: TextPropertyConfigModel.AlwaysVisible;
     toolTip: i18nc("@info:tooltip",
                    "Text decoration allows drawing underlines, overlines and striking through text.");
     searchTerms: i18nc("comma separated search terms for the text-decoration property, matching is case-insensitive",

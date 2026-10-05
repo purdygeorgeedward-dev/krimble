@@ -16,6 +16,8 @@ TextPropertyBase {
     propertyTitle: i18nc("@label", "Font Kerning");
     propertyName: "font-kerning";
     propertyType: TextPropertyConfigModel.Character;
+    // KRIMBLE 2026-10-04: shown by default, like the reference Character/Paragraph panels
+    visibilityState: TextPropertyConfigModel.AlwaysVisible;
     toolTip: i18nc("@info:tooltip",
                    "Turn font kerning on or off. Font kerning enables per-glyph spacing adjustments as determined by the font.");
     searchTerms: i18nc("comma separated search terms for the font-kerning property, matching is case-insensitive",

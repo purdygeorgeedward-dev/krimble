@@ -60,11 +60,12 @@ Control {
         anchors.right: parent.right;
         anchors.left: parent.left;
         anchors.top: parent.top;
-        Kis.TabButtonBase {
-            text: i18nc("@title:tab", "Paragraph")
-        }
+        // KRIMBLE 2026-10-04: Character first, then Paragraph (was Paragraph, Character), as in the reference panels.
         Kis.TabButtonBase {
             text: i18nc("@title:tab", "Character")
+        }
+        Kis.TabButtonBase {
+            text: i18nc("@title:tab", "Paragraph")
         }
         Kis.TabButtonBase {
             text: i18nc("@title:tab", "Preset")
@@ -78,17 +79,7 @@ Control {
         anchors.left: parent.left;
         anchors.top: tabs.bottom;
 
-        TextPropertyBaseList {
-            id: paragraphPropertyList;
-            propertyType: TextPropertyConfigModel.Paragraph;
-            configModel: root.configModel;
-            canvasDPI: root.canvasDPI;
-            locales: canvasObserver.locales;
-            propertiesModel: canvasObserver.textProperties;
-
-            onCallPropertyVisibilityConfig: canvasObserver.callModalTextPropertyConfigDialog();
-        }
-
+        // KRIMBLE 2026-10-04: the Character list comes first, then the Paragraph list (the order of the tabs above).
         TextPropertyBaseList {
             id: characterPropertyList;
             propertyType: TextPropertyConfigModel.Character;
@@ -97,6 +88,17 @@ Control {
             locales: canvasObserver.locales;
             enabled: canvasObserver.characterProperties.enabled;
             propertiesModel: canvasObserver.characterProperties;
+
+            onCallPropertyVisibilityConfig: canvasObserver.callModalTextPropertyConfigDialog();
+        }
+
+        TextPropertyBaseList {
+            id: paragraphPropertyList;
+            propertyType: TextPropertyConfigModel.Paragraph;
+            configModel: root.configModel;
+            canvasDPI: root.canvasDPI;
+            locales: canvasObserver.locales;
+            propertiesModel: canvasObserver.textProperties;
 
             onCallPropertyVisibilityConfig: canvasObserver.callModalTextPropertyConfigDialog();
         }

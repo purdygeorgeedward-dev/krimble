@@ -14,6 +14,8 @@ TextPropertyBase {
     propertyTitle: i18nc("@label", "Baseline Shift");
     propertyName: "baseline-shift";
     propertyType: TextPropertyConfigModel.Character;
+    // KRIMBLE 2026-10-04: shown by default, like the reference Character/Paragraph panels
+    visibilityState: TextPropertyConfigModel.AlwaysVisible;
     toolTip: i18nc("@info:tooltip",
                    "Baseline shift allows moving the text away from the baseline, either by predefined super and subscript values, or by a fixed amount.");
     searchTerms: i18nc("comma separated search terms for the baseline-shift property, matching is case-insensitive",

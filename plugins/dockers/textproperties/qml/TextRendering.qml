@@ -11,7 +11,10 @@ import org.krita.flake.text 1.0
 TextPropertyBase {
     propertyTitle: i18nc("@title:group", "Text Rendering");
     propertyName: "text-rendering";
-    propertyType: TextPropertyConfigModel.Paragraph;
+    // KRIMBLE 2026-10-04: was TextPropertyConfigModel.Paragraph (it now sits in the Character tab, like the reference panel)
+    propertyType: TextPropertyConfigModel.Character;
+    // KRIMBLE 2026-10-04: shown by default, like the reference Character/Paragraph panels
+    visibilityState: TextPropertyConfigModel.AlwaysVisible;
     toolTip: i18nc("@info:tooltip",
                    "Text rendering controls the hinting and rendering style for the property");
     searchTerms: i18nc("comma separated search terms for the text-rendering property, matching is case-insensitive",

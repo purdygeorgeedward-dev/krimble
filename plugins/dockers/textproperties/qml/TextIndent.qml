@@ -14,6 +14,8 @@ CollapsibleGroupProperty {
     propertyTitle: i18nc("@title:group", "Text Indent");
     propertyName: "text-indent";
     propertyType: TextPropertyConfigModel.Paragraph;
+    // KRIMBLE 2026-10-04: shown by default, like the reference Character/Paragraph panels
+    visibilityState: TextPropertyConfigModel.AlwaysVisible;
     toolTip: i18nc("@info:tooltip",
                    "Text indent allows setting indentation at the line start. Only works when the text is wrapping.");
     searchTerms: i18nc("comma separated search terms for the text-indent property, matching is case-insensitive",
