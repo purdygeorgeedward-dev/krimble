@@ -2692,3 +2692,9 @@ George asked for the pointing-finger icon to be solid like the hand and pen. Aft
 then "Too thick", and chose S3: the same paths as the old outline icon, filled with no edge line (so the shape is the centre line of the old outline), plus a small filler that closes
 the notch where the finger meets the hand. `light_krita_tool_smudge.svg` and `dark_krita_tool_smudge.svg` (same names, so nothing in the code changes). **Verified:** both files are
 well-formed XML; rendered at 72, 32 and 16 pixels. **Not verified:** a build or a device.
+
+### Update 2026-10-05: toolbox arrow (Edit Shapes) icon is solid
+
+George asked for "the little arrow icon" to be solid too and chose F2: the old outline arrow's own path, filled, with a thin 0.6 edge line (F1, with no edge, was the slimmer alternative).
+`light_shape_handling.svg` and `dark_shape_handling.svg` (same names, so nothing in the code changes). Note: the Select Shapes arrow in the same toolbox style is also solid, so the
+hollow/solid pair is gone. **Verified:** both files are well-formed XML; rendered at 72, 32 and 16 pixels. **Not verified:** a build or a device.
