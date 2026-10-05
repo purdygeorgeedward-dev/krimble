@@ -2678,3 +2678,10 @@ library, so a compile error on the server is possible; how it looks and fits on 
 George asked to see a solid hand for the toolbox and chose option A of three from an on-screen preview: four slim fingers and a thumb sweeping to the lower left,
 filled instead of outlined. `light_tool_pan.svg` and `dark_tool_pan.svg` (same names, so nothing in the code changes). **Verified:** both files are well-formed XML;
 rendered at 80, 32 and 16 pixels. **Not verified:** a build or a device.
+
+### Update 2026-10-05: toolbox Pen icon is a solid nib with a split point
+
+George asked for a solid pen, then "a little pointier", then "the end should stick out more" and to "get that shape on the end, the point" (a metal nib). He chose option A4
+from an on-screen preview: a tilted solid nib with a round collar, a round breather hole, a slit that runs through the very end so the tip is two small rounded tines,
+and a long narrow point that reaches the edge of the icon. `light_krita_draw_path.svg` and `dark_krita_draw_path.svg` (same names, so nothing in the code changes).
+**Verified:** both files are well-formed XML; rendered at 88, 32 and 16 pixels. **Not verified:** a build or a device.
