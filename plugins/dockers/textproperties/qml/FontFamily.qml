@@ -11,7 +11,9 @@ import org.krita.components 1.0 as Kis
 
 CollapsibleGroupProperty {
     id: root;
-    propertyTitle: i18nc("@label", "Font Family");
+    // KRIMBLE 2026-10-04: shown as "Font" (George: "It's just fonts."); this is the label in the Text Properties panel.
+    // propertyTitle: i18nc("@label", "Font Family");
+    propertyTitle: i18nc("@label", "Font");
     propertyName: "font-family";
     propertyType: TextPropertyConfigModel.Character;
     visibilityState: TextPropertyConfigModel.AlwaysVisible;

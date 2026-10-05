@@ -2623,3 +2623,11 @@ its own step (1.5 -> 2.5 with step 0.25); a short tap opened the pad without cha
 100; 3.75 worked in a decimal box; Cancel kept the value; a swipe before the long press did nothing. A compile problem (a cast needing a Qt macro)
 was found and fixed in the test. **Not verified:** a build or a device (how it feels under a finger, and the bar-style classes `KisSliderSpinBox` /
 `KisDoubleSliderSpinBox` themselves, which the test could not include).
+
+### Update 2026-10-04: "Font Family" label in the Text Properties panel is now "Font"
+
+**File:** `plugins/dockers/textproperties/qml/FontFamily.qml`
+
+The earlier wording change ("Font Families" -> "Fonts", commit d0aa690) missed the label that George actually sees in the Text Properties panel,
+which lives in this QML file (my search had covered C++ and form files only). The panel label "Font Family" is now "Font"; the old line is
+kept as a comment. The label "Font Style" is unchanged. **Not verified:** a build or a device.
