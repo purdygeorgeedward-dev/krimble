@@ -2685,3 +2685,10 @@ George asked for a solid pen, then "a little pointier", then "the end should sti
 from an on-screen preview: a tilted solid nib with a round collar, a round breather hole, a slit that runs through the very end so the tip is two small rounded tines,
 and a long narrow point that reaches the edge of the icon. `light_krita_draw_path.svg` and `dark_krita_draw_path.svg` (same names, so nothing in the code changes).
 **Verified:** both files are well-formed XML; rendered at 88, 32 and 16 pixels. **Not verified:** a build or a device.
+
+### Update 2026-10-05: toolbox Smudge (pointing finger) icon is solid
+
+George asked for the pointing-finger icon to be solid like the hand and pen. After a redrawn hand (rejected: lower hand too small) he asked for the existing outline simply filled in,
+then "Too thick", and chose S3: the same paths as the old outline icon, filled with no edge line (so the shape is the centre line of the old outline), plus a small filler that closes
+the notch where the finger meets the hand. `light_krita_tool_smudge.svg` and `dark_krita_tool_smudge.svg` (same names, so nothing in the code changes). **Verified:** both files are
+well-formed XML; rendered at 72, 32 and 16 pixels. **Not verified:** a build or a device.
