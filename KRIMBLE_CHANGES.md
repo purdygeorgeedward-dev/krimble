@@ -2698,3 +2698,9 @@ well-formed XML; rendered at 72, 32 and 16 pixels. **Not verified:** a build or 
 George asked for "the little arrow icon" to be solid too and chose F2: the old outline arrow's own path, filled, with a thin 0.6 edge line (F1, with no edge, was the slimmer alternative).
 `light_shape_handling.svg` and `dark_shape_handling.svg` (same names, so nothing in the code changes). Note: the Select Shapes arrow in the same toolbox style is also solid, so the
 hollow/solid pair is gone. **Verified:** both files are well-formed XML; rendered at 72, 32 and 16 pixels. **Not verified:** a build or a device.
+
+### Fix 2026-10-05: link error in the Type Options toolbar (undefined symbol KoSvgText::parseFontStyle)
+
+The build of 2026-10-05 compiled everything but stopped at the link step: `undefined symbol: KoSvgText::parseFontStyle(QString const&)`. The function exists in the flake library but
+is not exported, so the main library could not call it. `KisTypeOptionsBar.cpp` now builds the value directly (`KoSvgText::CssFontStyleData(QFont::StyleItalic / StyleNormal)`, an inline
+type), as the library's own code does elsewhere. The old call is kept as a comment. **Not verified:** the link (needs a build); no other undefined symbol was reported.

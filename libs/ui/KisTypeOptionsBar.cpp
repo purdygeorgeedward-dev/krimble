@@ -203,8 +203,11 @@ void KisTypeOptionsBar::slotFontChanged()
     KoSvgTextProperties out;
     out.setProperty(KoSvgTextProperties::FontFamiliesId, QVariant(QStringList() << m_font->currentFamily()));
     out.setProperty(KoSvgTextProperties::FontWeightId, QVariant(cssWeightFromQtWeight(font.weight())));
+    // (KoSvgText::parseFontStyle is not exported from the library, so the value is built directly.)
+    // out.setProperty(KoSvgTextProperties::FontStyleId,
+    //                 QVariant::fromValue(KoSvgText::parseFontStyle(font.italic() ? QStringLiteral("italic") : QStringLiteral("normal"))));
     out.setProperty(KoSvgTextProperties::FontStyleId,
-                    QVariant::fromValue(KoSvgText::parseFontStyle(font.italic() ? QStringLiteral("italic") : QStringLiteral("normal"))));
+                    QVariant::fromValue(KoSvgText::CssFontStyleData(font.italic() ? QFont::StyleItalic : QFont::StyleNormal)));
     applyToCharacters(out);
 }
 
