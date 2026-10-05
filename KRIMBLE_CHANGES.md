@@ -2579,3 +2579,13 @@ likewise top and bottom); when the finger is lifted, all areas are allowed again
 **Verified (standalone Qt test, same code):** finger in the middle or 100 px from a side: no dock area allowed; 20 px from the left side:
 left only; 20 px from the right side: right only; top-left corner: left and top; after lifting the finger: all areas again; a docked
 toolbox untouched. **Not verified:** a build or a device (whether it feels right while dragging by touch; the distance may need tuning).
+
+## 2026-10-04 — "Font Families" is now just "Fonts" in the interface
+
+**Files:** `libs/ui/KisApplication.cpp`, `libs/widgetutils/kis_font_family_combo_box.cpp`
+
+George: "Font families in Krita is a LIE. IT'S JUST FONTS." The only two places where the user sees the word "family" were changed:
+the name of the font resource type in the resource manager, "Font Families" -> "Fonts", and the tooltip of the font box in the text
+tool, "Font Family" -> "Font". The old lines are kept as comments. Names inside the code (`KoFontFamily`, `FontFamilies`, the
+resource folder) are not user-visible and are unchanged. **Not changed:** how the font box groups fonts (it still pairs a font box
+with a style box); making it a flat list is a larger change and has not been requested in detail yet. **Not verified:** a build or a device.
