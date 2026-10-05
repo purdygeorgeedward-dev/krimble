@@ -2600,3 +2600,26 @@ window, but actions belong to the action collection, which is not necessarily be
 are really in the menus (`menu->actions()`: the objects that are drawn), and it runs once more right before any menu is shown
 (`QMenu::aboutToShow`, connected after start-up). **Verified (standalone Qt test):** an action owned outside the window and shown in a
 menu changed from "&Quit" to "Exit". **Not verified:** a build or a device.
+
+## 2026-10-04 — Number fields on Android: Krimble's number pad on tap, long press + drag to change, arrows decorative
+
+**File:** `libs/ui/KisApplication.cpp` (Android; new classes `KrimbleNumberPad` and `KrimbleNumberFields`)
+
+George: tapping a number brought up Cut/Copy/Paste over the view, so numbers could not be typed; the up/down arrows were too small to tap;
+"I want to be able to long press, then drag up and down to change a numeric value." and "Make the up down arrows decorative but actually do
+the drag. 1 and 2." Cause: the bar-style fields (`kis_slider_spin_box_p.h`, `startEditing()`) select all their text when editing starts, and plain
+number boxes use the normal text editing; on Android both bring up the system selection handles and the Cut/Copy/Paste bar.
+**Now, for every number field** (all QSpinBox / QDoubleSpinBox, including the bar-style ones such as Opacity and Font Size):
+- **Short tap:** Krimble's own number pad opens (big buttons 0-9, minus, decimal point, backspace, Clear, Cancel, OK). The system text editing,
+  handles and Cut/Copy/Paste bar are never used. What is typed replaces the value; it is limited to the field's range; Cancel changes nothing.
+- **Long press (350 ms), then drag up or down:** the value changes (one step per 9 logical px; up raises it); wide ranges move faster
+  (x5 above 500 steps, x20 above 2000); a small tip shows the value; lift the finger to stop. Moving before the long press does nothing.
+- **Arrows:** still drawn, but decorative: touching them does the same as touching the field.
+The old way of sliding a bar-style field sideways with the finger is replaced on Android by this (every touch on a number field is handled
+here). The numbers are the constants at the top of `KrimbleNumberFields` (`LongPressMs`, `MovePixels`, `TapSlop`). Not touched: the text
+tool's on-canvas text (the "bubbles"), other platforms, text fields that are not number fields.
+**Verified (standalone Qt test, same code):** long press + drag up 45 px moved 50 -> 55 and down below the start -> 45; a decimal box moved in
+its own step (1.5 -> 2.5 with step 0.25); a short tap opened the pad without changing the value; typing 7 2 OK gave 72; 999 in a 0-100 field gave
+100; 3.75 worked in a decimal box; Cancel kept the value; a swipe before the long press did nothing. A compile problem (a cast needing a Qt macro)
+was found and fixed in the test. **Not verified:** a build or a device (how it feels under a finger, and the bar-style classes `KisSliderSpinBox` /
+`KisDoubleSliderSpinBox` themselves, which the test could not include).
