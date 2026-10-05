@@ -1463,4 +1463,14 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Text>Custom toolbar 2</Text>
 </ToolBar>
 
+
+<ToolBar name="TypeOptionsBar" fullWidth="false" position="top">
+    <Text>Type Options</Text>
+    <Action name="type_font"/>
+    <Action name="type_size"/>
+    <Action name="type_align_left"/>
+    <Action name="type_align_center"/>
+    <Action name="type_align_right"/>
+</ToolBar>
+
 </kpartgui>

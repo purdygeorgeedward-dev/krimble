@@ -57,6 +57,7 @@ void KisTextPropertiesManager::setTextPropertiesInterface(KoSvgTextPropertiesInt
         slotInterfaceSelectionChanged();
         slotCharacterInterfaceSelectionChanged();
     }
+    Q_EMIT sigInterfaceChanged(interface);      // KRIMBLE 2026-10-04: (also for nullptr)
 }
 
 KoSvgTextPropertyData textDataProperties(QList<KoSvgTextProperties> props, QSet<KoSvgTextProperties::PropertyId> propIds) {

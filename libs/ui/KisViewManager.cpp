@@ -124,6 +124,7 @@
 #include <KisIdleTasksManager.h>
 #include <KisImageBarrierLock.h>
 #include <KisTextPropertiesManager.h>
+#include <KisTypeOptionsBar.h>
 #include <kis_selection.h>
 #include <KisUniqueColorSet.h>
 
@@ -234,6 +235,7 @@ public:
     KisInputManager inputManager;
     KisIdleTasksManager idleTasksManager;
     KisTextPropertiesManager textPropertyManager;
+    KisTypeOptionsBar *typeOptionsBar {nullptr};     // KRIMBLE 2026-10-04
 
     KisSignalAutoConnectionsStore viewConnections;
     KSelectAction *actionAuthor {nullptr}; // Select action for author profile.
@@ -351,6 +353,8 @@ KisViewManager::KisViewManager(QWidget *parent, KisKActionCollection *_actionCol
     d->canvasResourceProvider.setBGColor(cfg.readKoColor("LastBackGroundColor",background));
     d->canvasResourceProvider.setColorHistoryColors(cfg.readKoColors("LastColorHistory"));
     d->textPropertyManager.setCanvasResourceProvider(&d->canvasResourceProvider);
+    // KRIMBLE 2026-10-04: the Type Options toolbar (see KisTypeOptionsBar.h)
+    d->typeOptionsBar = new KisTypeOptionsBar(this);
 
     // Initialize the old imagesize plugin
     new ImageSize(this);

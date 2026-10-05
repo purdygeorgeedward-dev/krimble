@@ -2651,3 +2651,24 @@ options bar and said "We need to match this structure"; step 1 of the agreed ord
 panel looks and fits). **Not done yet (later steps):** two controls side by side in one row, the icon row of faux bold/italic, caps, super/subscript,
 underline and strikethrough, the scale boxes, color, space before and after, hyphenation, separate Character Styles and Paragraph Styles
 lists, the Type options bar.
+
+## 2026-10-04 — "Type Options" toolbar (first version): font and style, size, align left / center / right
+
+**Files:** new `libs/ui/KisTypeOptionsBar.h` / `.cpp`; `libs/ui/KisTextPropertiesManager.h` / `.cpp` (new signal `sigInterfaceChanged`);
+`libs/ui/KisViewManager.cpp` (creates the bar); `libs/ui/CMakeLists.txt`; `krita/krita5.xmlgui` (new block `TypeOptionsBar`, added at George's request:
+"We have custom toolbars, so it should be possible to get close", then "Yes" to the block)
+
+A horizontal bar of the most used text controls under the menu bar, shown only while the Type tool is active, like the options bar of the
+industry-standard editors (George's reference screenshots). The controls are widget actions in the normal action collection (like the brush
+controls), so the toolbar can be rearranged with Customize Toolbar. They read and write through the same text properties interface as the Text
+Properties panel (`KoSvgTextPropertiesInterface`), so the panel and the bar agree, and everything goes through the tool's own undo handling.
+**In this first version:** `type_font` (font and style boxes), `type_size` (in points, using the document's resolution), `type_align_left`,
+`type_align_center`, `type_align_right` (physical left / center / right). The font box sets family, weight and italic. The bar is hidden (actions and
+toolbar) unless the Type tool is active; the toolbar overflow button "»" holds whatever does not fit on a narrow screen.
+**Not made yet** (from the block George approved): orientation, anti-aliasing, color, Text Properties panel button, cancel and confirm. The
+block in `krita5.xmlgui` lists only the controls that exist; the others get added to it as they are made.
+**Observed, not changed:** the existing shortcut table in `SvgTextShortCuts.cpp` maps "svg_align_right" to AlignStart and "svg_align_left" to
+AlignEnd, which reads reversed for left-to-right text. The new bar uses AlignLeft / AlignRight (which are defined as the physical sides).
+**Verified:** the weight mapping numbers (Qt weight -> CSS weight) and the menu file (well-formed); the syntax checker reported no problem located in
+the new file (it could not follow every header). **Not verified:** a compile of the library, a build or a device. This is new code in the main
+library, so a compile error on the server is possible; how it looks and fits on the phone is untested.
