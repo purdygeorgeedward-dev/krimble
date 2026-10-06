@@ -532,11 +532,11 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         </Action>
 
         <Action name="mirrorNodeX">
-            <text>Mirror Layer Horizontally</text>
+            <text>Flip Horizontal</text>
         </Action>
 
         <Action name="mirrorNodeY">
-            <text>Mirror Layer Vertically</text>
+            <text>Flip Vertical</text>
         </Action>
 
         <Menu name="Rotate">
@@ -571,39 +571,39 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Menu name="LayerTransformAll">
         <text>Transform &amp;All</text>
         <Action name="mirrorAllNodesX">
-            <text>Mirror All Layers Horizontally</text>
+            <text>Flip Horizontal</text>
         </Action>
 
         <Action name="mirrorAllNodesY">
-            <text>Mirror All Layers Vertically</text>
+            <text>Flip Vertical</text>
         </Action>
 
         <Action name="scaleAllLayers">
-            <text>Scale All Layers...</text>
+            <text>Scale...</text>
         </Action>
 
         <Menu name="Rotate">
             <text>&amp;Rotate</text>
             <Action name="rotateAllLayers">
-                <text>Rotate All Layers...</text>
+                <text>Angle...</text>
             </Action>
 
                      <Separator/>
             <Action name="rotateAllLayersCW90">
-                <text>Rotate All Layers 90° CW</text>
+                <text>90° Right</text>
             </Action>
 
             <Action name="rotateAllLayersCCW90">
-                <text>Rotate All Layers 90° CCW</text>
+                <text>90° Left</text>
             </Action>
 
             <Action name="rotateAllLayers180">
-                <text>Rotate All Layers 180°</text>
+                <text>180°</text>
             </Action>
 
         </Menu>
         <Action name="shearAllLayers">
-            <text>Shear All Layers...</text>
+            <text>Shear...</text>
         </Action>
 
     </Menu>
@@ -615,27 +615,27 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         </Action>
 
         <Action name="convert_to_transparency_mask">
-            <text>Convert to Transparency Mask</text>
+            <text>Transparency Mask</text>
         </Action>
 
         <Action name="convert_to_filter_mask">
-            <text>Convert to Filter Mask</text>
+            <text>Filter Mask</text>
         </Action>
 
         <Action name="convert_to_selection_mask">
-            <text>Convert to Selection Mask</text>
+            <text>Selection Mask</text>
         </Action>
 
         <Action name="convert_to_file_layer">
-            <text>Convert to File Layer</text>
+            <text>File Layer</text>
         </Action>
 
         <Action name="convert_group_to_animated">
-            <text>Convert to Animated Layer</text>
+            <text>Animated Layer</text>
         </Action>
 
         <Action name="layercolorspaceconversion">
-            <text>Convert Layer to Profile...</text>
+            <text>Color Profile...</text>
         </Action>
 
     </Menu>
@@ -727,7 +727,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <Menu name="LayerSplitAlphaMenu">
             <text>Split Alpha</text>
             <Action name="split_alpha_into_mask">
-                <text>Split Alpha into Mask</text>
+                <text>Into Mask</text>
             </Action>
 
             <Action name="split_alpha_write">
@@ -735,7 +735,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
             </Action>
 
             <Action name="split_alpha_save_merged">
-                <text>Split Alpha and Save Merged</text>
+                <text>Save Merged</text>
             </Action>
             
         </Menu>
@@ -940,15 +940,15 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
                      <Separator/>
                      
         <Action name="selectopaque_add">
-            <text>Add to Selection</text>
+            <text>Add</text>
         </Action>
         
         <Action name="selectopaque_subtract">
-            <text>Subtract from Selection</text>
+            <text>Subtract</text>
         </Action>
         
         <Action name="selectopaque_intersect">
-            <text>Intersect with Selection</text>
+            <text>Intersect</text>
         </Action>
     </Menu>
     

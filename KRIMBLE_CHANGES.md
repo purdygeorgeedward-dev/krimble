@@ -2814,3 +2814,33 @@ George: "If Window is constructed on the fly, use View menu instead." The Window
 - **Panels** (the submenu) stays in the Window menu, where the code already puts it; it is not repeated in View.
 - **Window menu code:** the block added in the 4th entry is switched off with `#if 0` (kept, not deleted). The Help part (everything from Presets down) is unchanged. The Settings menu stays removed.
 **Verified:** the menu file is well-formed; each moved action appears once in the file. **Not verified:** a build or a device.
+
+## 2026-10-06 (6th) — Menu labels: repetition removed (21 labels)
+
+**File:** `krita/krita5.xmlgui` (text only; George: "Yes, eliminating repetition is a good idea.")
+
+Where a submenu name already says the verb or the object, the item no longer repeats it. Old text -> new text (action name):
+
+- `selec`: "opaque_add	Add " -> "o Selection	Add"
+- `selec`: "opaque_sub" -> "ract	Subtract from Selection	Subtract"
+- `selec`: "opaque_in" -> "ersect	Intersect with Selection	Intersect"
+- `mirrorNodeX	Mirror Layer Horizon`: "ally	Flip Horizon" -> "al"
+- `mirrorNodeY	Mirror Layer Ver`: "ically	Flip Ver" -> "ical"
+- `mirrorAllNodesX	Mirror All Layers Horizon`: "ally	Flip Horizon" -> "al"
+- `mirrorAllNodesY	Mirror All Layers Ver`: "ically	Flip Ver" -> "ical"
+- `scaleAllLayers	Scale All Layers...	Scale...`: "" -> ""
+- `shearAllLayers	Shear All Layers...	Shear...`: "" -> ""
+- `ro`: "a" -> "eAllLayers	Rotate All Layers...	Angle..."
+- `ro`: "a" -> "eAllLayersCW90	Rotate All Layers 90° CW	90° Right"
+- `ro`: "a" -> "eAllLayersCCW90	Rotate All Layers 90° CCW	90° Left"
+- `ro`: "a" -> "eAllLayers180	Rotate All Layers 180°	180°"
+- `conver`: "_" -> "o_transparency_mask	Convert to Transparency Mask	Transparency Mask"
+- `conver`: "_" -> "o_filter_mask	Convert to Filter Mask	Filter Mask"
+- `conver`: "_" -> "o_selection_mask	Convert to Selection Mask	Selection Mask"
+- `conver`: "_" -> "o_file_layer	Convert to File Layer	File Layer"
+- `conver`: "_group_" -> "o_animated	Convert to Animated Layer	Animated Layer"
+- `layercolorspaceconversion	Conver`: " Layer " -> "o Profile...	Color Profile..."
+- `spli`: "_alpha_in" -> "o_mask	Split Alpha into Mask	Into Mask"
+
+Not changed on purpose: items whose action also appears in the Edit > Transform menu (Rotate Layer, 90 deg, 180 deg), because one action has one label everywhere; the other suggestions from the list (Open as Copy, Export As, the Select > Convert group, Type, Image, Help, the paint-only View items) wait for George.
+**Verified:** the menu file is well-formed and each of the 21 changes matched exactly one entry. **Not verified:** a build or a device.
