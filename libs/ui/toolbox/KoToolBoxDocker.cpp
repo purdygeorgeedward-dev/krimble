@@ -18,6 +18,9 @@
 #include <QMenu>
 #include <QActionGroup>
 #include <QVBoxLayout>
+#include <QMainWindow>
+#include <QApplication>
+#include <QEvent>
 
 // Full KisKActionCollection definition needed here (forward decl in KoToolManager.h isn't enough) —
 // KoToolBoxDocker.cpp calls actionCollection()->action(...), which needs the complete type.
@@ -61,6 +64,19 @@ KoToolBoxDocker::KoToolBoxDocker(KoToolBox *toolBox)
     m_containerLayout->addWidget(m_scrollArea, 0);
     m_containerLayout->addStretch(1);
     setWidget(toolBoxContainer);
+
+    // KRIMBLE 2026-10-06: snap to whole icon columns, and keep the columns through a screen rotation
+    m_snapTimer = new QTimer(this);
+    m_snapTimer->setSingleShot(true);
+    m_snapTimer->setInterval(250);
+    connect(m_snapTimer, &QTimer::timeout, this, &KoToolBoxDocker::snapToColumns);
+    m_restoreTimer = new QTimer(this);
+    m_restoreTimer->setSingleShot(true);
+    m_restoreTimer->setInterval(300);
+    connect(m_restoreTimer, &QTimer::timeout, this, [this]() {
+        applyColumns();
+        QTimer::singleShot(500, this, [this]() { m_windowResizing = false; });
+    });
 
     QLabel *w = new QLabel(" ", this);
     w->setFrameShape(QFrame::StyledPanel);
@@ -127,6 +143,19 @@ void KoToolBoxDocker::setViewManager(KisViewManager *viewManager)
     m_toolBox->setViewManager(viewManager);
     m_viewManager = viewManager;
 
+    // KRIMBLE 2026-10-06: remembered number of columns, applied once at start, and the rotation watcher
+    {
+        KConfigGroup cfg(KSharedConfig::openConfig(), "krimble");
+        m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 2), 4);
+        if (m_viewManager) {
+            if (QWidget *window = m_viewManager->mainWindowAsQWidget()) {
+                window->installEventFilter(this);
+            }
+        }
+        m_windowResizing = true;
+        m_restoreTimer->start(1200);
+    }
+
     // Krimble: construct the color swap widget once a real KisViewManager
     // (and its canvasResourceProvider) is available -- not possible any
     // earlier, since the docker only gets a real one here.
@@ -188,6 +217,71 @@ void KoToolBoxDocker::resizeEvent(QResizeEvent *event)
     if (m_orientation == Auto) {
         setToolBoxOrientation(width() > height() ? Qt::Horizontal : Qt::Vertical);
     }
+    // KRIMBLE 2026-10-06: when the docked toolbox is resized by hand (not by a rotation, not by us), snap it to a
+    // whole number of icon columns a moment after the resize stops.
+    if (m_snapTimer && !m_windowResizing && !m_applying && !isFloating()) {
+        m_snapTimer->start();
+    }
+}
+
+bool KoToolBoxDocker::eventFilter(QObject *watched, QEvent *event)
+{
+    // KRIMBLE 2026-10-06: a resize of the main window (screen rotation) must not change how many columns the
+    // toolbox has: remember that it is happening, and put the width back when it has settled.
+    if (event->type() == QEvent::Resize && m_viewManager && watched == m_viewManager->mainWindowAsQWidget()) {
+        m_windowResizing = true;
+        if (m_snapTimer) m_snapTimer->stop();
+        if (m_restoreTimer) m_restoreTimer->start();
+    }
+    return QDockWidget::eventFilter(watched, event);
+}
+
+int KoToolBoxDocker::iconWidth() const
+{
+    // the toolbox's smallest width is one icon
+    return qMax(1, m_toolBox->minimumSizeHint().width());
+}
+
+int KoToolBoxDocker::chromeWidth() const
+{
+    // everything that is not icons: panel frame, margins, a scroll bar if there is one
+    return qMax(0, width() - m_scrollArea->viewport()->width());
+}
+
+void KoToolBoxDocker::applyColumns()
+{
+    QMainWindow *mainWindow = qobject_cast<QMainWindow*>(parentWidget());
+    if (!mainWindow || isFloating() || !isVisible()) return;
+    const Qt::DockWidgetArea area = mainWindow->dockWidgetArea(this);
+    if (area != Qt::LeftDockWidgetArea && area != Qt::RightDockWidgetArea) return;
+
+    const int target = m_columns * iconWidth() + chromeWidth();
+    if (qAbs(width() - target) < 2) return;
+
+    m_applying = true;
+    mainWindow->resizeDocks({this}, {target}, Qt::Horizontal);
+    QTimer::singleShot(400, this, [this]() { m_applying = false; });
+}
+
+void KoToolBoxDocker::snapToColumns()
+{
+    if (isFloating() || !isVisible()) return;
+    // do not fight a finger that is still down on the separator
+    if (QApplication::mouseButtons() != Qt::NoButton) {
+        m_snapTimer->start();
+        return;
+    }
+    const Qt::DockWidgetArea area = m_dockArea;
+    if (area != Qt::LeftDockWidgetArea && area != Qt::RightDockWidgetArea) return;
+
+    const int columns = qBound(1, qRound(qreal(m_scrollArea->viewport()->width()) / iconWidth()), 4);
+    if (columns != m_columns) {
+        m_columns = columns;
+        KConfigGroup cfg(KSharedConfig::openConfig(), "krimble");
+        cfg.writeEntry("ToolBoxColumns", m_columns);
+        cfg.sync();
+    }
+    applyColumns();
 }
 
 void KoToolBoxDocker::updateToolBoxOrientation(Qt::DockWidgetArea area)

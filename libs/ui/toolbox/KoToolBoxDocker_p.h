@@ -13,6 +13,7 @@
 #include <kis_mainwindow_observer.h>
 
 #include <QDockWidget>
+#include <QTimer>
 
 class KoCanvasBase;
 class KoToolBox;
@@ -38,6 +39,7 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
+    bool eventFilter(QObject *watched, QEvent *event) override; // KRIMBLE 2026-10-06: watches the main window for rotation
     void contextMenuEvent(QContextMenuEvent *event) override;
 
 protected Q_SLOTS:
@@ -59,6 +61,13 @@ private:
     void changeLayoutDir(Qt::LayoutDirection);
     void changeOrientation(Orientation);
     void changeCompact(bool);
+    // KRIMBLE 2026-10-06: the toolbox keeps its number of icon columns when the screen rotates, and snaps to a
+    // whole number of columns when it is resized (George: "It should maintain its size. Also, why not snap to
+    // multiples of tool icon columns on scale?").
+    void snapToColumns();
+    void applyColumns();
+    int iconWidth() const;
+    int chromeWidth() const;
 
 private:
     KoToolBox *m_toolBox;
@@ -70,6 +79,11 @@ private:
     Qt::DockWidgetArea m_dockArea {Qt::NoDockWidgetArea};
     Qt::LayoutDirection m_layoutDir {Qt::LayoutDirectionAuto};
     Orientation m_orientation {Auto};
+    int m_columns {2};                 // Krimble: the number of icon columns the user wants (2 = the default look)
+    QTimer *m_snapTimer {nullptr};     // Krimble: runs a moment after a resize of the docked toolbox stops
+    QTimer *m_restoreTimer {nullptr};  // Krimble: runs a moment after the main window stops resizing (rotation)
+    bool m_windowResizing {false};     // Krimble: true while the main window is being resized (rotation)
+    bool m_applying {false};           // Krimble: true while we set the width ourselves
 };
 
 #endif // _KO_TOOLBOX_DOCKER_H_

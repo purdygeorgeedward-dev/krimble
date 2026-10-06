@@ -2765,3 +2765,15 @@ The splash screen (also the About tab, which reuses it) drew two logo files on t
 - Neither logo is created any more: the code that built them is kept as comments, and the loading text label takes the place it had before (just below where the logo and banner were).
 - `krita-branding.svgz` itself stays in the project (it is still used as the window icon); it is only no longer drawn on this screen.
 **Verified:** the syntax checker reports no error in `kis_splash_screen.cpp`; both `.qrc` files are well-formed. **Not verified:** a build or a device (that the start-up splash and the About tab look right without the logo).
+
+## 2026-10-06 (2nd) — Toolbox keeps its columns through a screen rotation, and snaps to whole icon columns
+
+**Files:** `libs/ui/toolbox/KoToolBoxDocker.cpp`, `libs/ui/toolbox/KoToolBoxDocker_p.h`
+
+George: "The toolbox reverts to a single column when the display rotates. It should maintain its size. Also, why not snap to multiples of tool icon columns on scale?" ("Fix the toolbox.")
+- **Remembered columns:** the number of icon columns (default 2, 1 to 4) is kept in the settings (`krimble/ToolBoxColumns`) and applied once after start.
+- **Rotation:** a filter on the main window notices the resize caused by a rotation; once the window has settled (300 ms) the toolbox width is set back to the remembered number of columns (icons x columns + the panel's own frame).
+  Resizes that happen during the rotation are not taken as the user's choice.
+- **Snap:** when the docked toolbox (left or right side) is resized by hand, 250 ms after the resize stops (and the finger is up) it snaps to the nearest whole number of columns and remembers it.
+- Only for a toolbox docked on the left or right side; a floating one is left alone.
+**Verified:** the syntax checker reports no error in the toolbox files. **Not verified:** a build or a device: how it behaves during a real rotation on Android is untested (the order of the window and panel resizes is the risk).
