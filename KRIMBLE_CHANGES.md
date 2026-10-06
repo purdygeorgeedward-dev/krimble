@@ -2819,28 +2819,29 @@ George: "If Window is constructed on the fly, use View menu instead." The Window
 
 **File:** `krita/krita5.xmlgui` (text only; George: "Yes, eliminating repetition is a good idea.")
 
-Where a submenu name already says the verb or the object, the item no longer repeats it. Old text -> new text (action name):
+Where a submenu name already says the verb or the object, the item no longer repeats it. Action name: old text -> new text:
 
-- `selec`: "opaque_add	Add " -> "o Selection	Add"
-- `selec`: "opaque_sub" -> "ract	Subtract from Selection	Subtract"
-- `selec`: "opaque_in" -> "ersect	Intersect with Selection	Intersect"
-- `mirrorNodeX	Mirror Layer Horizon`: "ally	Flip Horizon" -> "al"
-- `mirrorNodeY	Mirror Layer Ver`: "ically	Flip Ver" -> "ical"
-- `mirrorAllNodesX	Mirror All Layers Horizon`: "ally	Flip Horizon" -> "al"
-- `mirrorAllNodesY	Mirror All Layers Ver`: "ically	Flip Ver" -> "ical"
-- `scaleAllLayers	Scale All Layers...	Scale...`: "" -> ""
-- `shearAllLayers	Shear All Layers...	Shear...`: "" -> ""
-- `ro`: "a" -> "eAllLayers	Rotate All Layers...	Angle..."
-- `ro`: "a" -> "eAllLayersCW90	Rotate All Layers 90° CW	90° Right"
-- `ro`: "a" -> "eAllLayersCCW90	Rotate All Layers 90° CCW	90° Left"
-- `ro`: "a" -> "eAllLayers180	Rotate All Layers 180°	180°"
-- `conver`: "_" -> "o_transparency_mask	Convert to Transparency Mask	Transparency Mask"
-- `conver`: "_" -> "o_filter_mask	Convert to Filter Mask	Filter Mask"
-- `conver`: "_" -> "o_selection_mask	Convert to Selection Mask	Selection Mask"
-- `conver`: "_" -> "o_file_layer	Convert to File Layer	File Layer"
-- `conver`: "_group_" -> "o_animated	Convert to Animated Layer	Animated Layer"
-- `layercolorspaceconversion	Conver`: " Layer " -> "o Profile...	Color Profile..."
-- `spli`: "_alpha_in" -> "o_mask	Split Alpha into Mask	Into Mask"
+- `selectopaque_add`: "Add to Selection" -> "Add"
+- `selectopaque_subtract`: "Subtract from Selection" -> "Subtract"
+- `selectopaque_intersect`: "Intersect with Selection" -> "Intersect"
+- `mirrorNodeX`: "Mirror Layer Horizontally" -> "Flip Horizontal"
+- `mirrorNodeY`: "Mirror Layer Vertically" -> "Flip Vertical"
+- `mirrorAllNodesX`: "Mirror All Layers Horizontally" -> "Flip Horizontal"
+- `mirrorAllNodesY`: "Mirror All Layers Vertically" -> "Flip Vertical"
+- `scaleAllLayers`: "Scale All Layers..." -> "Scale..."
+- `shearAllLayers`: "Shear All Layers..." -> "Shear..."
+- `rotateAllLayers`: "Rotate All Layers..." -> "Angle..."
+- `rotateAllLayersCW90`: "Rotate All Layers 90° CW" -> "90° Right"
+- `rotateAllLayersCCW90`: "Rotate All Layers 90° CCW" -> "90° Left"
+- `rotateAllLayers180`: "Rotate All Layers 180°" -> "180°"
+- `convert_to_transparency_mask`: "Convert to Transparency Mask" -> "Transparency Mask"
+- `convert_to_filter_mask`: "Convert to Filter Mask" -> "Filter Mask"
+- `convert_to_selection_mask`: "Convert to Selection Mask" -> "Selection Mask"
+- `convert_to_file_layer`: "Convert to File Layer" -> "File Layer"
+- `convert_group_to_animated`: "Convert to Animated Layer" -> "Animated Layer"
+- `layercolorspaceconversion`: "Convert Layer to Profile..." -> "Color Profile..."
+- `split_alpha_into_mask`: "Split Alpha into Mask" -> "Into Mask"
+- `split_alpha_save_merged`: "Split Alpha and Save Merged" -> "Save Merged"
 
 Not changed on purpose: items whose action also appears in the Edit > Transform menu (Rotate Layer, 90 deg, 180 deg), because one action has one label everywhere; the other suggestions from the list (Open as Copy, Export As, the Select > Convert group, Type, Image, Help, the paint-only View items) wait for George.
 **Verified:** the menu file is well-formed and each of the 21 changes matched exactly one entry. **Not verified:** a build or a device.
