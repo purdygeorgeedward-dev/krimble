@@ -129,3 +129,12 @@ server's shell profile, and ~/krimble-release.jks present on the server.
 - Last confirmed working state (per KRIMBLE_STATUS.md, 2026-09-06):
   libkrita_arm64-v8a.so compiles and links clean. No confirmed
   packaged APK yet as of that date.
+
+## Server helper scripts (added 2026-10-06)
+
+The build settings and the long build / package / check commands live in `tools/server/`. Copy them once to the home folder of the server:
+
+    cd ~/krimble && git pull origin master && cp tools/server/kb-*.sh ~/ && chmod +x ~/kb-*.sh
+
+Then the whole routine is four short commands: `~/kb-build.sh` (pull the code and build), `~/kb-status.sh` (how it is going, in plain words), `~/kb-package.sh` (make the APK once the build has finished) and `~/kb-apk.sh` (check the APK, name it, print the copy line for the phone).
+`kb-env.sh` holds the settings that used to have to be pasted into every new SSH session. `kb-build.sh` will not start a second build; `kb-package.sh` always leaves exactly one packaging run.

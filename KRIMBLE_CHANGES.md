@@ -2910,3 +2910,10 @@ The thin side button (which already resized the right-hand panels reliably in bu
 Build `build-install16` (and `17`) stopped at 80%: "No rule to make target .../splash/banner.svg, needed by krita/qrc_splash-android.cpp". CMake reads a `.qrc` list with a plain text search, so the old `file` entry for `banner.svg`
 that I had kept inside an XML comment (7th change, "comment out, don't delete") was still read as a real entry, and the file no longer exists. The comment now describes the removal in words only and no longer contains the `file` tag.
 **Verified:** both files are well-formed and contain no `file` entry naming `banner.svg`. **Not verified:** the build.
+
+## 2026-10-06 (12th) — Server helper scripts (short, fixed build commands)
+
+**Files:** `tools/server/kb-env.sh`, `kb-build.sh`, `kb-package.sh`, `kb-status.sh`, `kb-apk.sh`; `BUILD_ANDROID.md`
+
+George: "You send me the same goddamned things over and over. It's confusing. You need to make these stupid things clearer." The long commands (the settings block, the build, the packaging, the checks) were pasted again and again and a double paste started two packaging runs at once.
+The commands are now fixed scripts on the server; every step is one short name that never changes (`~/kb-build.sh`, `~/kb-status.sh`, `~/kb-package.sh`, `~/kb-apk.sh`), each prints plain words, and the build and packaging scripts cannot be started twice by mistake. **Verified:** all five scripts pass a syntax check (`bash -n`). **Not verified:** a run on the server.
