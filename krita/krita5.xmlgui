@@ -942,15 +942,15 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
                      <Separator/>
                      
         <Action name="selectopaque_add">
-            <text>Add</text>
+            <text>Union</text>
         </Action>
         
         <Action name="selectopaque_subtract">
-            <text>Subtract</text>
+            <text>Difference</text>
         </Action>
         
         <Action name="selectopaque_intersect">
-            <text>Intersect</text>
+            <text>Intersection</text>
         </Action>
     </Menu>
     

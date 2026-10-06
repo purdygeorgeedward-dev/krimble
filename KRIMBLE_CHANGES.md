@@ -2859,3 +2859,12 @@ Not changed on purpose: items whose action also appears in the Edit > Transform 
 **Select > Convert:** the four items that began with "Convert" are now in a submenu named Convert, so their names no longer repeat it.
 **Not changed (waiting for George):** Purge Unused Image Data (Unused is a safety word: "Purge Image Data" would sound like it deletes the image), Remove Character Transforms, Flip Canvas Horizontal / Vertical, Edit Layer Metadata..., the Layer > Convert terms, the Help items.
 **Verified:** the menu file is well-formed; each changed action appears once. **Not verified:** a build or a device (a new submenu in the Select menu).
+
+## 2026-10-06 (8th) — Select > Select Opaque: Boolean terms
+
+**File:** `krita/krita5.xmlgui` (George: "9. Can be changed to what you just said. A pro knows these terms." and "I'm trying to find ways to make menus more slender.")
+- `selectopaque_add`: "Add" -> "Union"
+- `selectopaque_subtract`: "Subtract" -> "Difference"
+- `selectopaque_intersect`: "Intersect" -> "Intersection"
+(The earlier text was "Add to Selection" / "Subtract from Selection" / "Intersect with Selection"; see the 6th entry.) These combine the opaque-pixel selection with the current selection as Boolean set operations.
+**Verified:** the menu file is well-formed and each change matched exactly one entry. **Not verified:** a build or a device.
