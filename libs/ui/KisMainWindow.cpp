@@ -3865,6 +3865,44 @@ void KisMainWindow::updateWindowMenu()
    menu->addSeparator();
     menu->addAction(d->dockWidgetMenu);
 
+    // KRIMBLE 2026-10-06: the Settings menu is gone (George: "Move everything below Presets in the Settings menu to
+    // the Help menu. Everything above that move to Window menu. Then remove Settings menu."). What was above
+    // "Presets..." now ends the Window menu. ("Panels" is the entry added just above; the rest of the old Settings
+    // entries below Presets are in the Help menu, see krita5.xmlgui.) The texts are the ones the Settings menu showed.
+    {
+        auto addNamed = [this, menu](const char *name, const QString &text = QString()) {
+            if (QAction *action = actionCollection()->action(QLatin1String(name))) {
+                if (!text.isEmpty()) {
+                    action->setText(text);
+                }
+                menu->addAction(action);
+            }
+        };
+        menu->addSeparator();
+        addNamed("change_interface_scale", i18nc("@action:inmenu", "Interface Scale..."));
+        menu->addSeparator();
+        addNamed("theme_menu", i18nc("@action:inmenu", "&Themes"));
+        addNamed("style_menu", i18nc("@action:inmenu", "&Styles"));
+        addNamed("switch_application_language", i18nc("@action:inmenu", "Language..."));
+        menu->addSeparator();
+        addNamed("options_configure_toolbars", i18nc("@action:inmenu", "Customize Toolbar..."));
+        // The Settings menu had a merge point for the automatic list of toolbars; the same list is built here.
+        QMenu *toolbarsMenu = menu->addMenu(i18nc("@action:inmenu", "&Toolbars"));
+        Q_FOREACH (KToolBar *toolBar, toolBars()) {
+            const QString title = toolBar->windowTitle().isEmpty() ? toolBar->objectName() : toolBar->windowTitle();
+            QAction *toggle = toolbarsMenu->addAction(title);
+            toggle->setCheckable(true);
+            toggle->setChecked(toolBar->isVisible());
+            connect(toggle, &QAction::toggled, toolBar, &QWidget::setVisible);
+        }
+        addNamed("lock_toolbars", i18nc("@action:inmenu", "Lock Toolbars"));
+        menu->addSeparator();
+        addNamed("view_toggledockers", i18nc("@action:inmenu", "Toggle &Panels"));
+        addNamed("settings_detach_panel_menu");
+        addNamed("settings_attach_panel_menu");
+        addNamed("settings_toggle_right_panels");
+    }
+
     bool showMdiArea = windows.count( ) > 0;
     if (!showMdiArea) {
         showWelcomeScreen(true); // see workaround in function in header

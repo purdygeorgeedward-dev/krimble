@@ -1293,72 +1293,23 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 -->
 
 
-<Menu name="settings">
-    <text>Setti&amp;ngs</text>
+<Action name="window"/>
 
-    <Action name="change_interface_scale">
-        <text>Interface Scale...</text>
-        <toolTip>Interface Scale</toolTip>
-        <iconText>Interface Scale</iconText>
-    </Action>
+                     <Separator/>
+
+<Menu name="help">
+    <text>&amp;Help</text>
+    <Action name="help_contents"/>
     
                      <Separator/>
                      
-    <Action name="theme_menu">
-        <text>&amp;Themes</text>
-    </Action>
-    
-    <Action name="style_menu">
-        <text>&amp;Styles</text>
-    </Action>
-    
-    <Action name="switch_application_language">
-        <text>Language...</text>
-        <toolTip>Switch Application Language</toolTip>
-        <iconText>Language</iconText>
-    </Action>
-    
+    <Action name="help_report_bug"/>
+    <Action name="help_feature_request"/>
+    <Action name="help_krimble_website"/>
+    <Action name="help_krimble_forum"/>
+
                      <Separator/>
-                     
-    <Action name="options_configure_toolbars">
-        <text>Customize Toolbar...</text>
-        <toolTip>Customize Toolbar</toolTip>
-        <iconText>Customize Toolbar</iconText>
-    </Action>
-    
-    <Merge name="StandardToolBarMenuHandler"/>
-    <Action name="lock_toolbars">
-        <text>Lock Toolbars</text>
-    </Action>
-    
-                     <Separator/>
-                     
-    <Action name="view_toggledockers">
-        <text>Toggle &amp;Panels</text>
-        <toolTip>Show or Hide Panels</toolTip>
-        <iconText>Panels</iconText>
-    </Action>
-    
-    <Action name="settings_dockers_menu">
-        <text>Panels</text>
-        <toolTip>Panels</toolTip>
-        <iconText>Panels</iconText>
-    </Action>
-    
-    <Action name="settings_detach_panel_menu">
-        <text>Detach Panel</text>
-    </Action>
-    
-    <Action name="settings_attach_panel_menu">
-        <text>Attach Panel</text>
-    </Action>
-    
-    <Action name="settings_toggle_right_panels">
-        <text>Hide Right Panels</text>
-    </Action>
-    
-                     <Separator/>
-                     
+
     <Action name="manage_resources">
         <text>Presets...</text>
         <toolTip>Manage Presets</toolTip>
@@ -1393,22 +1344,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         <toolTip>Reset Preferences</toolTip>
         <iconText>Reset Preferences</iconText>
     </Action>
-</Menu>
-
-<Action name="window"/>
-
-                     <Separator/>
-
-<Menu name="help">
-    <text>&amp;Help</text>
-    <Action name="help_contents"/>
-    
-                     <Separator/>
-                     
-    <Action name="help_report_bug"/>
-    <Action name="help_feature_request"/>
-    <Action name="help_krimble_website"/>
-    <Action name="help_krimble_forum"/>
     
                      <Separator/>
                      

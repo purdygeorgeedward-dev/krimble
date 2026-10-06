@@ -2790,3 +2790,15 @@ Menus (`QMenu`) and every other platform keep the old behaviour (the old line is
 **Pop-ups that use this code (so all are covered):** brush presets, brush settings editor, gradient chooser and editor, pattern / widget choosers, panel HUD, color set widget, resource item choosers, storage chooser, file-format export options.
 **Analysis only, nothing changed:** the biggest top-level menus (items counted from `krita5.xmlgui`, nested ones included): Layer 85, View 54, Image 42, Edit 35, Type 23; the Filter menu is filled at run time. Qt scrolls a menu that is taller than the screen.
 **Verified:** the syntax checker reports no error in `KisPopupButton.cpp`. **Not verified:** a build or a device (how the Presets pop-up looks and scrolls; whether the capped size is comfortable).
+
+## 2026-10-06 (4th) — Settings menu removed: its items moved to Window and Help
+
+**Files:** `krita/krita5.xmlgui` (edited with George's explicit instruction), `libs/ui/KisMainWindow.cpp`
+
+George: "Move everything below Presets in the Settings menu to the Help menu. Everything above that move to Window menu. Then remove Settings menu."
+- **Help menu** (in `krita5.xmlgui`, after the website / forum entries, before About), in the old order: Presets..., Resource Libraries..., (supporter bundles), separator, (donations, subscriptions), separator, Author Profile..., separator, Reset Preferences...
+  (Presets... itself went with the group below it, so Presets and Resource Libraries stay together.)
+- **Window menu** (built in code, `KisMainWindow::updateWindowMenu`; it is not in the menu file) now ends with: separator, Interface Scale..., separator, Themes, Styles, Language..., separator, Customize Toolbar..., Toolbars (new submenu with a
+  check box per toolbar: it replaces the automatic toolbar list the Settings menu got from a merge point), Lock Toolbars, separator, Toggle Panels, Detach Panel, Attach Panel, Hide Right Panels. "Panels" was already in Window.
+- **Settings menu:** the empty menu element is removed from the menu file. No action entry was deleted: every moved action appears exactly once (checked). The texts the Settings menu showed are set on the actions in the code.
+**Verified:** the menu file is well-formed; braces and parentheses of the new code are balanced. **Not verified:** a build (KisMainWindow.cpp cannot be compiled in my test setup, so a compile error is possible) or a device.
