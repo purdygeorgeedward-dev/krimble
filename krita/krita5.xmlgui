@@ -27,10 +27,12 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
       
                  <Separator/>
                  -->
-      <Action name="file_import_file"/>
+      <Action name="file_import_file">
+         <text>Open as Untitled...</text>
+      </Action>
       <Action name="file_export_file"/>
       <Action name="file_export_advanced">
-         <text>Export.../Export Options</text>
+         <text>Export Options...</text>
         </Action>
         
                   <Separator/>
@@ -341,7 +343,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     </Action>
 
     <Action name="resizeimagetolayer">
-        <text>Crop to Current Layer</text>
+        <text>Crop to Layer</text>
     </Action>
 
     <Action name="resizeimagetoselection">
@@ -907,26 +909,26 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     </Action>
     
     <Action name="edit_selection">
-        <text>Edit in Quick Mask Mode</text>
+        <text>QuickMask Edit</text>
     </Action>
     
                      <Separator/>
                      
-    <Action name="convert_to_vector_selection">
-        <text>Convert to Vector Selection</text>
-    </Action>
-    
-    <Action name="convert_to_raster_selection">
-        <text>Convert to Raster Selection</text>
-    </Action>
-    
-    <Action name="convert_shapes_to_vector_selection">
-        <text>Convert Shapes to Vector Selection</text>
-    </Action>
-    
-    <Action name="convert_selection_to_shape">
-        <text>Convert Selection to Shape</text>
-    </Action>
+    <Menu name="SelectConvert">
+        <text>&amp;Convert</text>
+        <Action name="convert_to_vector_selection">
+            <text>To Vector Selection</text>
+        </Action>
+        <Action name="convert_to_raster_selection">
+            <text>To Raster Selection</text>
+        </Action>
+        <Action name="convert_shapes_to_vector_selection">
+            <text>Shapes to Vector Selection</text>
+        </Action>
+        <Action name="convert_selection_to_shape">
+            <text>Selection to Shape</text>
+        </Action>
+    </Menu>
     
                      <Separator/>
                      

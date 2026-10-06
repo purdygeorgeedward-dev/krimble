@@ -2845,3 +2845,17 @@ Where a submenu name already says the verb or the object, the item no longer rep
 
 Not changed on purpose: items whose action also appears in the Edit > Transform menu (Rotate Layer, 90 deg, 180 deg), because one action has one label everywhere; the other suggestions from the list (Open as Copy, Export As, the Select > Convert group, Type, Image, Help, the paint-only View items) wait for George.
 **Verified:** the menu file is well-formed and each of the 21 changes matched exactly one entry. **Not verified:** a build or a device.
+
+## 2026-10-06 (7th) — More menu labels, and a Select > Convert submenu
+
+**File:** `krita/krita5.xmlgui` (George's choices from the suggestion list)
+
+- file_import_file: (Open existing Document as Untitled Document...) -> Open as Untitled...
+- file_export_advanced: Export.../Export Options -> Export Options...
+- Select: four Convert items moved into a new Convert submenu (convert_to_vector_selection: To Vector Selection; convert_to_raster_selection: To Raster Selection; convert_shapes_to_vector_selection: Shapes to Vector Selection; convert_selection_to_shape: Selection to Shape)
+- edit_selection: Edit in Quick Mask Mode -> QuickMask Edit
+- resizeimagetolayer: Crop to Current Layer -> Crop to Layer
+
+**Select > Convert:** the four items that began with "Convert" are now in a submenu named Convert, so their names no longer repeat it.
+**Not changed (waiting for George):** Purge Unused Image Data (Unused is a safety word: "Purge Image Data" would sound like it deletes the image), Remove Character Transforms, Flip Canvas Horizontal / Vertical, Edit Layer Metadata..., the Layer > Convert terms, the Help items.
+**Verified:** the menu file is well-formed; each changed action appears once. **Not verified:** a build or a device (a new submenu in the Select menu).
