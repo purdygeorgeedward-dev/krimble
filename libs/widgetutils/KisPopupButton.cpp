@@ -17,6 +17,9 @@
 #include <QStylePainter>
 #include <QWindow>
 #include <QMenu>
+#include <QScrollArea>
+#include <QScroller>
+#include "KisKineticScroller.h"
 
 #include "kis_global.h"
 #include <kis_debug.h>
@@ -147,7 +150,26 @@ void KisPopupButton::setPopupWidget(QWidget* widget)
 
         m_d->popupWidget = widget;
 
+        // KRIMBLE 2026-10-06 (Android): the pop-ups (brush presets, brush settings editor, gradients, patterns...)
+        // were as big as their contents, which on a phone is bigger than the screen. Their content now sits in a
+        // scroll area (finger scrolling) and the pop-up is capped to the screen in adjustPosition().
+        // Original line (kept for all other platforms and for menus):
+        // m_d->frame->layout()->addWidget(m_d->popupWidget);
+#ifdef Q_OS_ANDROID
+        if (!menu) {
+            QScrollArea *scroll = new QScrollArea(m_d->frame);
+            scroll->setFrameShape(QFrame::NoFrame);
+            scroll->setWidgetResizable(true);
+            scroll->setWidget(m_d->popupWidget);
+            QScroller *scroller = KisKineticScroller::createPreconfiguredScroller(scroll);
+            Q_UNUSED(scroller);
+            m_d->frame->layout()->addWidget(scroll);
+        } else {
+            m_d->frame->layout()->addWidget(m_d->popupWidget);
+        }
+#else
         m_d->frame->layout()->addWidget(m_d->popupWidget);
+#endif
 
         if (menu) {
             // The menu may decide to hide itself in response to user input.
@@ -266,6 +288,17 @@ void KisPopupButton::adjustPosition()
         return getCurrentScreen();
     }();
     QRect screenRect = screen->availableGeometry();
+#ifdef Q_OS_ANDROID
+    // KRIMBLE 2026-10-06: cap the pop-up to the screen (60 % x 85 % in landscape, 92 % x 65 % in portrait);
+    // what does not fit scrolls (see setPopupWidget()).
+    if (m_d->popupWidget && !qobject_cast<QMenu *>(m_d->popupWidget)) {
+        const bool landscape = screenRect.width() > screenRect.height();
+        const QSize maxSize(int(screenRect.width() * (landscape ? 0.60 : 0.92)),
+                            int(screenRect.height() * (landscape ? 0.85 : 0.65)));
+        popSize = m_d->frame->sizeHint().boundedTo(maxSize);
+        popupRect.setSize(popSize);
+    }
+#endif
     if (m_d->isPopupDetached) {
         if (m_d->isDetachedGeometrySet) {
             popupRect.moveTo(m_d->frame->geometry().topLeft());

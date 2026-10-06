@@ -2777,3 +2777,16 @@ George: "The toolbox reverts to a single column when the display rotates. It sho
 - **Snap:** when the docked toolbox (left or right side) is resized by hand, 250 ms after the resize stops (and the finger is up) it snaps to the nearest whole number of columns and remembers it.
 - Only for a toolbox docked on the left or right side; a floating one is left alone.
 **Verified:** the syntax checker reports no error in the toolbox files. **Not verified:** a build or a device: how it behaves during a real rotation on Android is untested (the order of the window and panel resizes is the risk).
+
+## 2026-10-06 (3rd) — Pop-up windows fit the screen and scroll (Android)
+
+**File:** `libs/widgetutils/KisPopupButton.cpp`
+
+George (testing b19): "Presets opens another massive unusable mega-menu. Reduce it. Analyze for other mega menus that need to be shrunk."
+The brush Presets pop-up (and every other pop-up opened from a pop-up button) was as large as its contents, more than a phone screen. On Android:
+- the pop-up's content is placed in a scroll area with finger scrolling (the same kinetic scroller the app uses elsewhere), and
+- the pop-up is capped to 60 % x 85 % of the screen in landscape (92 % x 65 % in portrait); whatever does not fit scrolls.
+Menus (`QMenu`) and every other platform keep the old behaviour (the old line is kept as a comment).
+**Pop-ups that use this code (so all are covered):** brush presets, brush settings editor, gradient chooser and editor, pattern / widget choosers, panel HUD, color set widget, resource item choosers, storage chooser, file-format export options.
+**Analysis only, nothing changed:** the biggest top-level menus (items counted from `krita5.xmlgui`, nested ones included): Layer 85, View 54, Image 42, Edit 35, Type 23; the Filter menu is filled at run time. Qt scrolls a menu that is taller than the screen.
+**Verified:** the syntax checker reports no error in `KisPopupButton.cpp`. **Not verified:** a build or a device (how the Presets pop-up looks and scrolls; whether the capped size is comfortable).
