@@ -323,11 +323,11 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
                      <Separator/>
                      
         <Action name="mirrorImageHorizontal">
-            <text>Flip Canvas Horizontal</text>
+            <text>Flip Horizontal</text>
         </Action>
         
         <Action name="mirrorImageVertical">
-            <text>Flip Canvas Vertical</text>
+            <text>Flip Vertical</text>
         </Action>
         
     </Menu>
@@ -371,7 +371,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     </Action>
 
     <Action name="purge_unused_image_data">
-        <text>Purge Unused Image Data</text>
+        <text>Purge Unused Data</text>
     </Action>
     
                      <Separator/>
@@ -617,23 +617,23 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         </Action>
 
         <Action name="convert_to_transparency_mask">
-            <text>Transparency Mask</text>
+            <text>To Transparency Mask</text>
         </Action>
 
         <Action name="convert_to_filter_mask">
-            <text>Filter Mask</text>
+            <text>To Filter Mask</text>
         </Action>
 
         <Action name="convert_to_selection_mask">
-            <text>Selection Mask</text>
+            <text>To Selection Mask</text>
         </Action>
 
         <Action name="convert_to_file_layer">
-            <text>File Layer</text>
+            <text>To File Layer</text>
         </Action>
 
         <Action name="convert_group_to_animated">
-            <text>Animated Layer</text>
+            <text>To Animated Layer</text>
         </Action>
 
         <Action name="layercolorspaceconversion">
@@ -715,7 +715,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
                      <Separator/>
 
     <Action name="EditLayerMetaData">
-        <text>Edit Layer Metadata...</text>
+        <text>Edit Metadata...</text>
     </Action>
 
     <Action name="histogram">
@@ -847,7 +847,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
         
     </Menu>
     <Action name="svg_remove_transforms_from_range">
-        <text>Remove Character Transforms</text>
+        <text>Reset Letter Positions</text>
     </Action>
 </Menu>
 

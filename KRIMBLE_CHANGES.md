@@ -2868,3 +2868,24 @@ Not changed on purpose: items whose action also appears in the Edit > Transform 
 - `selectopaque_intersect`: "Intersect" -> "Intersection"
 (The earlier text was "Add to Selection" / "Subtract from Selection" / "Intersect with Selection"; see the 6th entry.) These combine the opaque-pixel selection with the current selection as Boolean set operations.
 **Verified:** the menu file is well-formed and each change matched exactly one entry. **Not verified:** a build or a device.
+
+## 2026-10-06 (9th) — Menu labels: the remaining proposals applied (10 labels)
+
+**File:** `krita/krita5.xmlgui` (George: "Apply your other best use suggestions.")
+
+Action name: old text -> new text:
+
+- `convert_to_transparency_mask`: "Transparency Mask" -> "To Transparency Mask"
+- `convert_to_filter_mask`: "Filter Mask" -> "To Filter Mask"
+- `convert_to_selection_mask`: "Selection Mask" -> "To Selection Mask"
+- `convert_to_file_layer`: "File Layer" -> "To File Layer"
+- `convert_group_to_animated`: "Animated Layer" -> "To Animated Layer"
+- `svg_remove_transforms_from_range`: "Remove Character Transforms" -> "Reset Letter Positions"
+- `purge_unused_image_data`: "Purge Unused Image Data" -> "Purge Unused Data"
+- `mirrorImageHorizontal`: "Flip Canvas Horizontal" -> "Flip Horizontal"
+- `mirrorImageVertical`: "Flip Canvas Vertical" -> "Flip Vertical"
+- `EditLayerMetaData`: "Edit Layer Metadata..." -> "Edit Metadata..."
+
+Kept the word "Unused" in the purge item on purpose ("Purge Image Data" would sound like it deletes the image). "Reset Letter Positions" clears the shifts and rotations set by hand on single letters of the selected text.
+Not changed on purpose: "Show Global Selection Mask" (the word Global tells it apart from the Selection Mask layer type), the shared rotate-layer items (one action, one label in two menus), the Help items and the paint-only View items (George: leave / undecided).
+**Verified:** the menu file is well-formed and each of the 10 changes matched exactly one entry. **Not verified:** a build or a device.
