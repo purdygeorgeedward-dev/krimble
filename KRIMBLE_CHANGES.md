@@ -2902,3 +2902,11 @@ The thin side button (which already resized the right-hand panels reliably in bu
 - **No collapse button:** a tap does not collapse the panels any more. A tap, or a drag, opens them when they are hidden.
 - **Collapse by closeness to the side:** when a drag ends within 56 px of the window's right edge, or with the panels narrower than 120 px, the right-hand panels hide; the grip then sits on the window's right edge and a drag from it opens them again.
 **Verified:** braces and parentheses balance (the file as a whole already had one unmatched brace character before this change, in a string or comment). **Not verified:** a build (KisMainWindow.cpp cannot be compiled in my test setup) or a device. The dotted Qt bar itself is still unfixed.
+
+## 2026-10-06 (11th) — Build fix: the commented-out banner line in the splash resource lists
+
+**Files:** `krita/data/splash/splash.qrc`, `krita/data/splash/splash-android.qrc`
+
+Build `build-install16` (and `17`) stopped at 80%: "No rule to make target .../splash/banner.svg, needed by krita/qrc_splash-android.cpp". CMake reads a `.qrc` list with a plain text search, so the old `file` entry for `banner.svg`
+that I had kept inside an XML comment (7th change, "comment out, don't delete") was still read as a real entry, and the file no longer exists. The comment now describes the removal in words only and no longer contains the `file` tag.
+**Verified:** both files are well-formed and contain no `file` entry naming `banner.svg`. **Not verified:** the build.

@@ -5,9 +5,9 @@
 -->
 <RCC version="1.0">
     <qresource prefix="/splash">
-        <!-- KRIMBLE 2026-10-06: the Krita wordmark (banner.svg) is removed from the source. Original line:
-        <file>banner.svg</file>
-        -->
+        <!-- KRIMBLE 2026-10-06: the Krita wordmark (banner.svg) is removed from the source. The old entry was a file
+             element naming it; it is not repeated here, because CMake reads this list with a plain text search and would
+             still see it inside a comment (the build then stops: no rule to make that file). -->
         <!-- KRIMBLE 2026-10-02: splash images are now JPG (about 380 KB each instead of
              about 2 MB each) and the PNGs are no longer packaged. The PNG files stay in
              the repository. Original lines:
