@@ -3865,6 +3865,9 @@ void KisMainWindow::updateWindowMenu()
    menu->addSeparator();
     menu->addAction(d->dockWidgetMenu);
 
+    // KRIMBLE 2026-10-06 (2nd): George: "If Window is constructed on the fly, use View menu instead." The former Settings
+    // items above Presets are now in the View menu (krita5.xmlgui), so the block below is switched off (kept, not deleted).
+#if 0
     // KRIMBLE 2026-10-06: the Settings menu is gone (George: "Move everything below Presets in the Settings menu to
     // the Help menu. Everything above that move to Window menu. Then remove Settings menu."). What was above
     // "Presets..." now ends the Window menu. ("Panels" is the entry added just above; the rest of the old Settings
@@ -3902,6 +3905,7 @@ void KisMainWindow::updateWindowMenu()
         addNamed("settings_attach_panel_menu");
         addNamed("settings_toggle_right_panels");
     }
+#endif
 
     bool showMdiArea = windows.count( ) > 0;
     if (!showMdiArea) {

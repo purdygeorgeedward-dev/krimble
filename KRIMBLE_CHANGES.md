@@ -2802,3 +2802,15 @@ George: "Move everything below Presets in the Settings menu to the Help menu. Ev
   check box per toolbar: it replaces the automatic toolbar list the Settings menu got from a merge point), Lock Toolbars, separator, Toggle Panels, Detach Panel, Attach Panel, Hide Right Panels. "Panels" was already in Window.
 - **Settings menu:** the empty menu element is removed from the menu file. No action entry was deleted: every moved action appears exactly once (checked). The texts the Settings menu showed are set on the actions in the code.
 **Verified:** the menu file is well-formed; braces and parentheses of the new code are balanced. **Not verified:** a build (KisMainWindow.cpp cannot be compiled in my test setup, so a compile error is possible) or a device.
+
+## 2026-10-06 (5th) — The former Settings items above Presets go in the View menu, not Window
+
+**Files:** `krita/krita5.xmlgui` (George's instruction), `libs/ui/KisMainWindow.cpp`
+
+George: "If Window is constructed on the fly, use View menu instead." The Window menu is built in code (it is cleared and refilled every time it opens), so the 4th entry above is changed:
+- **View menu** (end of the menu, after a separator), in the old order: Interface Scale..., separator, Themes, Styles, Language..., separator, the automatic toolbar list (the merge point comes back here, so the code-built "Toolbars" submenu is not needed), Lock Toolbars,
+  separator, Toggle Panels, Detach Panel, Attach Panel, Hide Right Panels. The action entries are the original ones with their texts.
+- **Customize Toolbar...** already exists in the Edit menu, so it is not repeated in View (it appears once, in Edit).
+- **Panels** (the submenu) stays in the Window menu, where the code already puts it; it is not repeated in View.
+- **Window menu code:** the block added in the 4th entry is switched off with `#if 0` (kept, not deleted). The Help part (everything from Presets down) is unchanged. The Settings menu stays removed.
+**Verified:** the menu file is well-formed; each moved action appears once in the file. **Not verified:** a build or a device.
