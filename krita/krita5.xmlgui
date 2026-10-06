@@ -1475,6 +1475,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 
 <ToolBar name="BrushOptions" fullWidth="false" position="top">
     <Text>Brush Options</Text>
+    <Action name="brush_color_wells"/>
     <Action name="show_brush_presets"/>
     <Action name="show_brush_editor"/>
     <Action name="brushslider1"/>

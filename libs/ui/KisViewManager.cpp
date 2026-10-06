@@ -125,6 +125,7 @@
 #include <KisImageBarrierLock.h>
 #include <KisTextPropertiesManager.h>
 #include <KisTypeOptionsBar.h>
+#include <KisBrushColorWells.h>
 #include <kis_selection.h>
 #include <KisUniqueColorSet.h>
 
@@ -355,6 +356,7 @@ KisViewManager::KisViewManager(QWidget *parent, KisKActionCollection *_actionCol
     d->textPropertyManager.setCanvasResourceProvider(&d->canvasResourceProvider);
     // KRIMBLE 2026-10-04: the Type Options toolbar (see KisTypeOptionsBar.h)
     d->typeOptionsBar = new KisTypeOptionsBar(this);
+    new KisBrushColorWells(this);       // KRIMBLE 2026-10-05: color wells for the Brush Options toolbar
 
     // Initialize the old imagesize plugin
     new ImageSize(this);

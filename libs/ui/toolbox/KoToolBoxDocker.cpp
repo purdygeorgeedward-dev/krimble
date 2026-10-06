@@ -54,7 +54,12 @@ KoToolBoxDocker::KoToolBoxDocker(KoToolBox *toolBox)
     m_containerLayout = new QVBoxLayout(toolBoxContainer);
     m_containerLayout->setContentsMargins(0, 0, 0, 0);
     m_containerLayout->setSpacing(4);
-    m_containerLayout->addWidget(m_scrollArea, 1);
+    // KRIMBLE 2026-10-05: the tool grid no longer takes all the height (it was stretch 1, which pushed the
+    // color wells and the screen mode button to the very bottom of the panel). It keeps its natural height, the
+    // wells follow right under it, and the spare space goes to the stretch after them.
+    // m_containerLayout->addWidget(m_scrollArea, 1);
+    m_containerLayout->addWidget(m_scrollArea, 0);
+    m_containerLayout->addStretch(1);
     setWidget(toolBoxContainer);
 
     QLabel *w = new QLabel(" ", this);
@@ -131,7 +136,9 @@ void KoToolBoxDocker::setViewManager(KisViewManager *viewManager)
         m_dualColorButton = new KoDualColorButton(viewManager->canvasResourceProvider(), displayRenderer,
                                                     viewManager->mainWindowAsQWidget(), viewManager->mainWindowAsQWidget());
         m_dualColorButton->setFixedSize(28, 28);
-        m_containerLayout->addWidget(m_dualColorButton, 0, Qt::AlignHCenter);
+        // KRIMBLE 2026-10-05: inserted right after the tool grid (index 1), before the stretch
+        // m_containerLayout->addWidget(m_dualColorButton, 0, Qt::AlignHCenter);
+        m_containerLayout->insertWidget(1, m_dualColorButton, 0, Qt::AlignHCenter);
 
         connect(m_dualColorButton, SIGNAL(foregroundColorChanged(KoColor)), viewManager->canvasResourceProvider(), SLOT(slotSetFGColor(KoColor)));
         connect(m_dualColorButton, SIGNAL(backgroundColorChanged(KoColor)), viewManager->canvasResourceProvider(), SLOT(slotSetBGColor(KoColor)));
@@ -155,7 +162,9 @@ void KoToolBoxDocker::setViewManager(KisViewManager *viewManager)
             screenModeButton->setFixedSize(28, 28);
             screenModeButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
             screenModeButton->setAutoRaise(true);
-            m_containerLayout->addWidget(screenModeButton, 0, Qt::AlignHCenter);
+            // KRIMBLE 2026-10-05: inserted right after the color wells (index 2), before the stretch
+            // m_containerLayout->addWidget(screenModeButton, 0, Qt::AlignHCenter);
+            m_containerLayout->insertWidget(2, screenModeButton, 0, Qt::AlignHCenter);
         }
     }
 }

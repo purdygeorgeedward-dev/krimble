@@ -2733,3 +2733,14 @@ editor, size / opacity / flow sliders, blend mode, mirror tools) exist as toolba
   Edge softness is in the brush settings editor (Brush Tip) for now; quick softness minus / plus buttons are a later step.
 **Build note:** the plugin comes back, so the next build reconfigures CMake and builds the plugin; `libkritapresetdocker*` will be in the APK again (the APK check line that wants none for it must be dropped).
 **Not verified:** a build or a device (that the toolbar shows the controls, and how they fit).
+
+## 2026-10-05 (2nd) — Color wells on the Brush Options toolbar; the toolbox's color wells sit right under the tools
+
+**Files:** `libs/ui/toolbox/KoToolBoxDocker.cpp`; new `libs/ui/KisBrushColorWells.h` / `.cpp`; `libs/ui/KisViewManager.cpp`; `libs/ui/CMakeLists.txt`; `krita/krita5.xmlgui`
+
+George: "I think it might be a good idea to have color wells on the brush toolbar. Also the ones under the toolbox seem to end up way down low instead of right under the toolbox."
+- **Toolbox:** the tool grid had stretch 1 in the panel's layout, so it took all the height and pushed the foreground/background color wells and the screen mode button to the very bottom.
+  It now has stretch 0 (its natural height), the wells and the button are inserted right after it, and a stretch after them takes the spare space. The old lines are kept as comments.
+- **Brush Options toolbar:** a new toolbar item `brush_color_wells` (same two-squares widget and the same connections as the toolbox wells; 40 x 40 px) is the first item of the `BrushOptions` block in `krita5.xmlgui`.
+**Verified:** the syntax checker reported no error located in the new file; the menu file is well-formed. **Not verified:** a build or a device (that the wells sit under the tools at every panel size,
+and how the toolbar looks). New code in the main library: a compile or link error on the server is possible.

@@ -175,6 +175,7 @@ set(kritaui_LIB_SRCS
     KisImageThumbnailStrokeStrategy.cpp
     KisTextPropertiesManager.cpp
     KisTypeOptionsBar.cpp
+    KisBrushColorWells.cpp
     KisLongPressEventFilter.cpp
 
     opengl/kis_opengl.cpp
