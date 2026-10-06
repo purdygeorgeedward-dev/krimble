@@ -2754,3 +2754,14 @@ The thin side button is switched on again (the `#if 0` around its creation is `#
 (a child of the canvas area, placed from that area's own size, which is where the right-hand panels begin; hidden on the Welcome page): tap = hide / show the right panels; long press or a sideways
 swipe = resize them. In build b4 its resize had been confirmed working; the problems were its position and size, which this version changes. **Not verified on a device:** this version has been
 tested only in a standalone Qt test, never on the phone. The dotted Qt bar between the canvas and the panels is a separate, still unsolved problem.
+
+## 2026-10-06 — Krita wordmark removed; no logo on the splash / About screen
+
+**Files:** `libs/ui/kis_splash_screen.cpp`, `krita/data/splash/splash.qrc`, `krita/data/splash/splash-android.qrc`, `krita/data/splash/banner.svg` (deleted)
+
+George (about the About window): "About KRITA?" then "Remove the Krita logo completely from the source and keep that paw icon out of that screen."
+The splash screen (also the About tab, which reuses it) drew two logo files on top of the picture: the orange K with the paw (`krita-branding.svgz`) and the white "KRITA" wordmark (`splash/banner.svg`).
+- `banner.svg` (the Krita wordmark) is deleted from the source and its line in both `.qrc` files is commented out.
+- Neither logo is created any more: the code that built them is kept as comments, and the loading text label takes the place it had before (just below where the logo and banner were).
+- `krita-branding.svgz` itself stays in the project (it is still used as the window icon); it is only no longer drawn on this screen.
+**Verified:** the syntax checker reports no error in `kis_splash_screen.cpp`; both `.qrc` files are well-formed. **Not verified:** a build or a device (that the start-up splash and the About tab look right without the logo).

@@ -59,9 +59,14 @@ KisSplashScreen::KisSplashScreen(bool themed, QWidget *parent, Qt::WindowFlags f
     m_loadingTextLabel->setAlignment(Qt::AlignRight | Qt::AlignTop);
     addDropShadow(m_loadingTextLabel);
 
-    m_brandingSvg = new QSvgWidget(QStringLiteral(":/krita-branding.svgz"), lblSplash);
-    m_bannerSvg = new QSvgWidget(QStringLiteral(":/splash/banner.svg"), lblSplash);
-    addDropShadow(m_bannerSvg);
+    // KRIMBLE 2026-10-06: the logo (orange K with paw) and the "KRITA" wordmark (banner.svg, now removed from the
+    // source) are no longer drawn on the splash / About screen (George: "Remove the Krita logo completely from the
+    // source and keep that paw icon out of that screen"). Original lines:
+    // m_brandingSvg = new QSvgWidget(QStringLiteral(":/krita-branding.svgz"), lblSplash);
+    // m_bannerSvg = new QSvgWidget(QStringLiteral(":/splash/banner.svg"), lblSplash);
+    // addDropShadow(m_bannerSvg);
+    m_brandingSvg = nullptr;
+    m_bannerSvg = nullptr;
 
     m_artCreditsLabel = new QLabel(lblSplash);
     m_artCreditsLabel->setTextFormat(Qt::PlainText);
@@ -128,18 +133,22 @@ void KisSplashScreen::updateSplashImage()
     img.setDevicePixelRatio(devicePixelRatioF());
     lblSplash->setPixmap(img);
 
-    // Align banner to top-left with margin.
-    m_bannerSvg->setFixedHeight(bannerHeight);
-    m_bannerSvg->setFixedWidth(bannerHeight * m_bannerSvg->sizeHint().width() / m_bannerSvg->sizeHint().height());
-    m_bannerSvg->move(width - m_bannerSvg->width() - marginRight, marginTop);
-
-    // Place logo to the left of banner.
-    m_brandingSvg->setFixedSize(bannerHeight, bannerHeight);
-    m_brandingSvg->move(m_bannerSvg->x() - m_brandingSvg->width(), marginTop);
-
-    // Place loading text immediately below.
-    m_loadingTextLabel->move(marginRight, m_brandingSvg->geometry().bottom());
-    m_loadingTextLabel->setFixedWidth(m_bannerSvg->geometry().right() - marginRight);
+    // KRIMBLE 2026-10-06: no logo and no banner any more; the loading text keeps the place it had (just below
+    // where they used to be). Original lines:
+    // // Align banner to top-left with margin.
+    // m_bannerSvg->setFixedHeight(bannerHeight);
+    // m_bannerSvg->setFixedWidth(bannerHeight * m_bannerSvg->sizeHint().width() / m_bannerSvg->sizeHint().height());
+    // m_bannerSvg->move(width - m_bannerSvg->width() - marginRight, marginTop);
+    //
+    // // Place logo to the left of banner.
+    // m_brandingSvg->setFixedSize(bannerHeight, bannerHeight);
+    // m_brandingSvg->move(m_bannerSvg->x() - m_brandingSvg->width(), marginTop);
+    //
+    // // Place loading text immediately below.
+    // m_loadingTextLabel->move(marginRight, m_brandingSvg->geometry().bottom());
+    // m_loadingTextLabel->setFixedWidth(m_bannerSvg->geometry().right() - marginRight);
+    m_loadingTextLabel->move(marginRight, marginTop + bannerHeight - 1);
+    m_loadingTextLabel->setFixedWidth((width - marginRight - 1) - marginRight);
 
     // Place credits text on bottom right with similar margins.
     m_artCreditsLabel->setText(source.artistCredit);
