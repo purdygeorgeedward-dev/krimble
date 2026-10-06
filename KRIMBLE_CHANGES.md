@@ -2889,3 +2889,16 @@ Action name: old text -> new text:
 Kept the word "Unused" in the purge item on purpose ("Purge Image Data" would sound like it deletes the image). "Reset Letter Positions" clears the shifts and rotations set by hand on single letters of the selected text.
 Not changed on purpose: "Show Global Selection Mask" (the word Global tells it apart from the Selection Mask layer type), the shared rotate-layer items (one action, one label in two menus), the Help items and the paint-only View items (George: leave / undecided).
 **Verified:** the menu file is well-formed and each of the 10 changes matched exactly one entry. **Not verified:** a build or a device.
+
+## 2026-10-06 (10th) — Side panel: a full-height resize grip, no collapse button; collapse by closeness to the side
+
+**File:** `libs/ui/KisMainWindow.cpp` (Android)
+
+George: "I think the added collapse button on the side panel is less useful than actually making the scale gadget reliable. it could just collapse on close proximity to the side."
+The thin side button (which already resized the right-hand panels reliably in build b4) is now the resize grip, since Qt's own dotted bar between the canvas and the panels has not been grabbable on the phone since 2026-10-02 and its cause was never found.
+- **Shape:** a full-height strip, 36 px wide, along the right edge of the canvas area (where the panels begin), with a dark line and a light line beside it (the separator made visible), a few dots in the middle, and a faint band while it is held.
+  It covers the 36 px of the canvas next to the panels: a stroke cannot start there.
+- **Resize:** press and drag sideways (the drag starts after 8 px, no long press); left = wider.
+- **No collapse button:** a tap does not collapse the panels any more. A tap, or a drag, opens them when they are hidden.
+- **Collapse by closeness to the side:** when a drag ends within 56 px of the window's right edge, or with the panels narrower than 120 px, the right-hand panels hide; the grip then sits on the window's right edge and a drag from it opens them again.
+**Verified:** braces and parentheses balance (the file as a whole already had one unmatched brace character before this change, in a string or comment). **Not verified:** a build (KisMainWindow.cpp cannot be compiled in my test setup) or a device. The dotted Qt bar itself is still unfixed.

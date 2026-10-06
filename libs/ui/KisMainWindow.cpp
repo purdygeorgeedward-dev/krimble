@@ -433,14 +433,20 @@ class KrimbleSideBarButton : public QWidget
 public:
     // onTap: quick tap. onDrag(dx): finger moved dx pixels sideways since the drag began
     // (negative = to the left); onDragStart is called once when a drag begins.
+    // KRIMBLE 2026-10-06: onRelease(globalX) is called when a drag ends (the panels collapse when the finger is let
+    // go close to the side). The widget is now a full-height grip along the panels' edge, see paintEvent().
     KrimbleSideBarButton(QWidget *parent, std::function<void()> onTap,
-                         std::function<void()> onDragStart, std::function<void(int)> onDrag)
-        : QWidget(parent), m_onTap(onTap), m_onDragStart(onDragStart), m_onDrag(onDrag)
+                         std::function<void()> onDragStart, std::function<void(int)> onDrag,
+                         std::function<void(int)> onRelease = nullptr)
+        : QWidget(parent), m_onTap(onTap), m_onDragStart(onDragStart), m_onDrag(onDrag), m_onRelease(onRelease)
     {
         setObjectName(QStringLiteral("krimbleRightPanelHandle"));
         // A thin sliver on the edge of the panels. The touch area is wider than what is drawn
         // (22 x 140), so it is easy to press, but only a 6 px sliver is visible.
-        setFixedSize(22, 140);
+        // KRIMBLE 2026-10-06: a full-height strip (36 px wide) along the panels' edge instead of a 22 x 140 button;
+        // the height is set by krimbleUpdateRightPanelUi(). Old line:
+        // setFixedSize(22, 140);
+        setFixedWidth(36);
         m_timer.setSingleShot(true);
         m_timer.setInterval(350);
         connect(&m_timer, &QTimer::timeout, this, [this]() {
@@ -478,7 +484,8 @@ protected:
             return;
         }
         const int dx = event->globalPos().x() - m_press.x();
-        if (!m_dragging && qAbs(dx) > 16) {
+        // KRIMBLE 2026-10-06: a drag starts after 8 px (was 16)
+        if (!m_dragging && qAbs(dx) > 8) {
             beginDrag();
         }
         if (m_dragging && m_onDrag) {
@@ -498,6 +505,11 @@ protected:
             const std::function<void()> action = m_onTap;
             QTimer::singleShot(0, this, [action]() { action(); });
         }
+        if (wasDragging && m_onRelease) {
+            const std::function<void(int)> release = m_onRelease;
+            const int globalX = event->globalPos().x();
+            QTimer::singleShot(0, this, [release, globalX]() { release(globalX); });
+        }
         event->accept();
     }
     void paintEvent(QPaintEvent *) override
@@ -511,13 +523,29 @@ protected:
         QColor grip = palette().color(QPalette::HighlightedText);
         grip.setAlpha(230);
         if (!m_collapsed) {
-            // A thin rounded sliver (6 px wide, 90 px tall) at the right side of the touch area,
-            // which sits against the left edge of the panels.
-            const QRectF sliver(width() - 10, (height() - 90) / 2.0, 6, 90);
-            p.drawRoundedRect(sliver, 3, 3);
-            p.setBrush(grip);
-            for (int i = -1; i <= 1; ++i) {
-                p.drawEllipse(QPointF(sliver.center().x(), height() / 2.0 + i * 9), 1.2, 1.2);
+            // KRIMBLE 2026-10-06: the grip is the panels' edge: a dark line with a light line beside it (so it can be
+            // seen), a faint band while it is held, and a few dots in the middle. Old drawing (a 6 px sliver):
+            // const QRectF sliver(width() - 10, (height() - 90) / 2.0, 6, 90);
+            // p.drawRoundedRect(sliver, 3, 3);
+            // p.setBrush(grip);
+            // for (int i = -1; i <= 1; ++i) {
+            //     p.drawEllipse(QPointF(sliver.center().x(), height() / 2.0 + i * 9), 1.2, 1.2);
+            // }
+            p.setRenderHint(QPainter::Antialiasing, false);
+            if (m_pressed || m_dragging) {
+                QColor band = palette().color(QPalette::Highlight);
+                band.setAlpha(m_dragging ? 90 : 60);
+                p.fillRect(rect(), band);
+            }
+            p.fillRect(QRect(width() - 3, 0, 1, height()), QColor(0, 0, 0, 170));          // the darker line
+            p.fillRect(QRect(width() - 2, 0, 1, height()), QColor(255, 255, 255, 110));    // the highlight beside it
+            p.setRenderHint(QPainter::Antialiasing, true);
+            QColor dots = palette().color(QPalette::HighlightedText);
+            dots.setAlpha(200);
+            p.setPen(Qt::NoPen);
+            p.setBrush(dots);
+            for (int i = -3; i <= 3; ++i) {
+                p.drawEllipse(QPointF(width() - 9, height() / 2.0 + i * 12), 1.8, 1.8);
             }
         } else {
             // Panels hidden: a slightly wider tab on the window's right edge with an arrow.
@@ -544,6 +572,7 @@ private:
     std::function<void()> m_onTap;
     std::function<void()> m_onDragStart;
     std::function<void(int)> m_onDrag;
+    std::function<void(int)> m_onRelease;
     QTimer m_timer;
     QPoint m_press;
     bool m_pressed {false};
@@ -618,7 +647,10 @@ static void krimbleUpdateRightPanelUi(QMainWindow *win)
         return;
     }
     button->setCollapsed(!anyVisible);
-    button->move(area->width() - button->width(), (area->height() - button->height()) / 2);
+    // KRIMBLE 2026-10-06: full height along the panels' edge. Old line:
+    // button->move(area->width() - button->width(), (area->height() - button->height()) / 2);
+    button->setFixedHeight(area->height());
+    button->move(area->width() - button->width(), 0);
     button->show();
     button->raise();
 }
@@ -1267,7 +1299,12 @@ KisMainWindow::KisMainWindow(QUuid uuid)
         d->mdiArea->setObjectName(QStringLiteral("krimbleCanvasArea"));
         new KrimbleSideBarButton(d->mdiArea,
             [this]() {                                             // tap
-                krimbleSetRightPanelsHidden(this, !krimbleRightDocks(this, true).isEmpty());
+                // KRIMBLE 2026-10-06: no collapse button any more (George: collapse by closeness to the side).
+                // A tap still opens the panels when they are hidden. Old body:
+                // krimbleSetRightPanelsHidden(this, !krimbleRightDocks(this, true).isEmpty());
+                if (krimbleRightDocks(this, true).isEmpty()) {
+                    krimbleSetRightPanelsHidden(this, false);
+                }
                 krimbleUpdateRightPanelUi(this);
             },
             [this, dragState]() {                                  // drag begins
@@ -1280,6 +1317,15 @@ KisMainWindow::KisMainWindow(QUuid uuid)
             [this, dragState](int dx) {                            // drag moves (left = wider)
                 krimbleSetRightPanelsWidth(this, dragState->startWidth - dx);
                 krimbleUpdateRightPanelUi(this);
+            },
+            [this](int globalX) {                                  // drag ends
+                // KRIMBLE 2026-10-06: collapse by closeness to the side: let go within 56 px of the right edge of
+                // the window, or with the panels dragged below 120 px wide.
+                const int rightEdge = mapToGlobal(QPoint(width(), 0)).x();
+                if (globalX >= rightEdge - 56 || krimbleRightPanelsWidth(this) < 120) {
+                    krimbleSetRightPanelsHidden(this, true);
+                    krimbleUpdateRightPanelUi(this);
+                }
             });
         // krimbleRightPanelHandle(this)->hide();      // KRIMBLE 2026-10-04: it is placed and shown by krimbleUpdateRightPanelUi
     }
