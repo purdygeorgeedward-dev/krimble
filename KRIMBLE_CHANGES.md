@@ -2719,3 +2719,17 @@ George asked for the metal sleeve to be a little smaller with nothing else shrun
 K4: the sleeve is shorter and thinner than Z1 (half-width 0.68 -> 0.47, wall 0.28), runs from 7.9 to 12.2 along the brush so it meets the hair, and the hair (original curved shape at 62%, centred on the stick) sits
 0.8 further down the brush. Handle and hair shape and size are unchanged. Replaces the Z1 version saved earlier today. `light_krita_tool_freehand.svg` and `dark_krita_tool_freehand.svg`
 (same names). **Verified:** both files are well-formed XML; rendered at 16, 32 and 72 pixels. **Not verified:** a build or a device.
+
+## 2026-10-05 — Brushes panel back, and a "Brush Options" toolbar
+
+**Files:** `plugins/dockers/CMakeLists.txt`, `krita/krita5.xmlgui` (edited with George's permission: "Yes")
+
+George, after testing build b17: "We may have to bring back the brushes. I was trying to use brushes and had no controls for size or softness or other properties."
+When the Brushes panel (the `presetdocker` plugin) was switched off on 2026-10-03 the only brush controls left on screen went with it: the brush controls (presets button, brush settings
+editor, size / opacity / flow sliders, blend mode, mirror tools) exist as toolbar widget actions in `KisPaintopBox`, but no toolbar in `krita5.xmlgui` listed them.
+- **Brushes panel:** `add_subdirectory(presetdocker)` is active again (the earlier decision to leave it out is reversed; the comment above the line says so).
+- **Brush Options toolbar:** new block `BrushOptions` in `krita5.xmlgui`, next to the Type Options toolbar: `show_brush_presets`, `show_brush_editor`, `brushslider1`, `brushslider2`, `brushslider3`,
+  `composite_actions`, `mirror_actions` (all names exist in the code and appear once in the file). Size, opacity and flow are number fields, so the number pad and long-press drag apply to them.
+  Edge softness is in the brush settings editor (Brush Tip) for now; quick softness minus / plus buttons are a later step.
+**Build note:** the plugin comes back, so the next build reconfigures CMake and builds the plugin; `libkritapresetdocker*` will be in the APK again (the APK check line that wants none for it must be dropped).
+**Not verified:** a build or a device (that the toolbar shows the controls, and how they fit).

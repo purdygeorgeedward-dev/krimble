@@ -1473,4 +1473,15 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="type_align_right"/>
 </ToolBar>
 
+<ToolBar name="BrushOptions" fullWidth="false" position="top">
+    <Text>Brush Options</Text>
+    <Action name="show_brush_presets"/>
+    <Action name="show_brush_editor"/>
+    <Action name="brushslider1"/>
+    <Action name="brushslider2"/>
+    <Action name="brushslider3"/>
+    <Action name="composite_actions"/>
+    <Action name="mirror_actions"/>
+</ToolBar>
+
 </kpartgui>
