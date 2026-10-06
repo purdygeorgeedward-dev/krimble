@@ -1256,7 +1256,11 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     // KRIMBLE 2026-10-04 (2nd): was switched on again, hanging on the canvas area (d->mdiArea) instead of the
     // window; SWITCHED OFF AGAIN at George's decision ("Comment out the sliver. I'll worry about it later.").
     // To bring it back change "#if 0" to "#ifdef Q_OS_ANDROID".
-#if 0
+    // KRIMBLE 2026-10-05: ON AGAIN (George: "At one point that side gadget was working"): the version that hangs on
+    // the canvas area and is placed from that area's own size. Tap = hide / show the right panels; long press or a
+    // sideways swipe = resize them. To park it again change the line below back to "#if 0".
+    // #if 0
+#ifdef Q_OS_ANDROID
     {
         struct DragState { int startWidth {0}; };
         auto dragState = std::make_shared<DragState>();

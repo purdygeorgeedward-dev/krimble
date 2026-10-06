@@ -2744,3 +2744,13 @@ George: "I think it might be a good idea to have color wells on the brush toolba
 - **Brush Options toolbar:** a new toolbar item `brush_color_wells` (same two-squares widget and the same connections as the toolbox wells; 40 x 40 px) is the first item of the `BrushOptions` block in `krita5.xmlgui`.
 **Verified:** the syntax checker reported no error located in the new file; the menu file is well-formed. **Not verified:** a build or a device (that the wells sit under the tools at every panel size,
 and how the toolbar looks). New code in the main library: a compile or link error on the server is possible.
+
+## 2026-10-05 (3rd) — Side button (sliver) switched on again
+
+**File:** `libs/ui/KisMainWindow.cpp` (Android)
+
+George, after testing build b17 (where the side button is off): "Side panel gadget does nothing. Not resize. Not collapse." and "At one point that side gadget was working."
+The thin side button is switched on again (the `#if 0` around its creation is `#ifdef Q_OS_ANDROID` again; the `#if 0` line is kept as a comment). It is the canvas-area version of 2026-10-04
+(a child of the canvas area, placed from that area's own size, which is where the right-hand panels begin; hidden on the Welcome page): tap = hide / show the right panels; long press or a sideways
+swipe = resize them. In build b4 its resize had been confirmed working; the problems were its position and size, which this version changes. **Not verified on a device:** this version has been
+tested only in a standalone Qt test, never on the phone. The dotted Qt bar between the canvas and the panels is a separate, still unsolved problem.
