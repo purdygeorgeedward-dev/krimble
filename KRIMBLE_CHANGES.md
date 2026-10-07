@@ -2958,3 +2958,12 @@ George (testing b26): "Lasso looks like a word balloon. Needs dashes. All select
 - **Magnetic lasso:** the horseshoe magnet is a little smaller and has a dashed line under it (the edge it follows).
 **Verified:** all six files are well-formed XML; drawn at 80 px. **Not verified:** a build or a device (legibility at 16 px).
 **Not done:** the Burn icon (hand with a ring of finger and thumb): George rejected every version so far; he sent a photo of his own hand and the original tool menu as the reference.
+
+## 2026-10-07 (4th) — Burn tool icon: the darkroom hand
+
+**Files:** `krita/pics/tools/SVG/16/light_krita_tool_burn.svg`, `dark_krita_tool_burn.svg`
+
+George (testing b26): the old Burn icon, a raised-palm outline, was "the hand outline with a slash through it ... no idea". He explained that Burn is the hand shaped as in the darkroom technique (a pinch or claw that lets light through a small opening), sent a photo of his own hand and the original tool menu as the reference, and rejected several drawings of mine (an OK-sign hand, library icons, a curled hand), one of them because it was "cut off" with a hard edge.
+The new icon is the outline of his own hand from the photo: side view, thumb and finger meeting with a diamond-shaped opening, the back of the hand arching over, the arm ending in a round shape (no hard cut). Solid, like the other icons. George: "W2 is fine."
+(No Adobe artwork was used or traced.)
+**Verified:** both files are well-formed XML; drawn at 16, 32 and 110 px. **Not verified:** a build or a device.
