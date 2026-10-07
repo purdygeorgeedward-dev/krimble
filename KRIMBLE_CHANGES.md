@@ -2947,3 +2947,14 @@ George (he floated the toolbox on purpose): "I made the toolbox float. I don't w
 George (testing b26): "Brush works now, but icon looks bad. Super tiny." The K4 brush was a thin line inside the 16 px box. Two bolder versions were shown (BR1, BR2); George: "Br1 is better."
 BR1 has a thicker handle, a thicker hollow metal sleeve and a bigger tuft of hair (the original curved shape, centred on the stick), and uses the whole diagonal of the box. Replaces the K4 version of 2026-10-05.
 **Verified:** both files are well-formed XML; drawn at 72, 32 and 16 px. **Not verified:** a build or a device.
+
+## 2026-10-07 (3rd) — Dashes on the lasso icons
+
+**Files:** `krita/pics/tools/SVG/16/light_` and `dark_` `tool_outline_selection.svg`, `tool_polygonal_selection.svg`, `tool_magnetic_selection.svg`
+
+George (testing b26): "Lasso looks like a word balloon. Needs dashes. All selection tools need dashes." The rectangle, ellipse and "similar color" selection icons were already dashed.
+- **Lasso:** the loop is dashed, the little tail stays solid.
+- **Polygonal lasso:** the polygon is dashed, the tail stays solid.
+- **Magnetic lasso:** the horseshoe magnet is a little smaller and has a dashed line under it (the edge it follows).
+**Verified:** all six files are well-formed XML; drawn at 80 px. **Not verified:** a build or a device (legibility at 16 px).
+**Not done:** the Burn icon (hand with a ring of finger and thumb): George rejected every version so far; he sent a photo of his own hand and the original tool menu as the reference.
