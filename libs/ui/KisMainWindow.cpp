@@ -1291,8 +1291,9 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     // KRIMBLE 2026-10-05: ON AGAIN (George: "At one point that side gadget was working"): the version that hangs on
     // the canvas area and is placed from that area's own size. Tap = hide / show the right panels; long press or a
     // sideways swipe = resize them. To park it again change the line below back to "#if 0".
-    // #if 0
-#ifdef Q_OS_ANDROID
+    // KRIMBLE 2026-10-07: OFF AGAIN (George: "Still have unwanted extra gadget on edge of side panel", and it covered
+    // the X that closes a document tab). To bring it back change "#if 0" to "#ifdef Q_OS_ANDROID".
+#if 0
     {
         struct DragState { int startWidth {0}; };
         auto dragState = std::make_shared<DragState>();

@@ -512,6 +512,9 @@ protected:
         default:
             return false;
         }
+        if (m_replaying) {
+            return false;       // KRIMBLE 2026-10-07: our own replay of a short tap
+        }
         QAbstractSpinBox *spin = spinFor(watched);
         if (!spin && m_state == Idle) {
             return false;
@@ -525,6 +528,8 @@ protected:
             m_spin = spin;
             m_state = Pending;
             m_pressPos = mouse->globalPos();
+            m_pressWidget = qobject_cast<QWidget*>(watched);      // KRIMBLE 2026-10-07: to hand a short tap back to the field
+            m_pressLocal = mouse->pos();
             m_startValue = valueOf(spin);
             m_timer.start();
             return true;
@@ -550,22 +555,34 @@ protected:
             m_timer.stop();
             const State state = m_state;
             QPointer<QAbstractSpinBox> spin2 = m_spin;
+            QPointer<QWidget> pressWidget = m_pressWidget;
+            const QPoint pressLocal = m_pressLocal;
+            const QPoint pressGlobal = m_pressPos;
             m_state = Idle;
             m_spin = nullptr;
             QToolTip::hideText();
-            if (state == Pending && spin2) {
-                // a short tap: Krimble's own number pad
-                QTimer::singleShot(0, this, [spin2]() {
-                    if (!spin2) {
+            if (state == Pending && spin2 && pressWidget) {
+                // KRIMBLE 2026-10-07: a short tap no longer opens Krimble's number pad (George: "GIGANTIC NUMERIC
+                // KEYPAD APPEARS!! DO NOT WANT!!"). The tap is handed back to the field, as if it had not been
+                // caught: the press and the release are sent to it again. Old behaviour, kept as a comment:
+                // QTimer::singleShot(0, this, [spin2]() {
+                //     if (!spin2) { return; }
+                //     KrimbleNumberPad *pad = new KrimbleNumberPad(spin2, [spin2](double v) {
+                //         if (spin2) { KrimbleNumberFields::setSpinValue(spin2, v); }
+                //     });
+                //     pad->setAttribute(Qt::WA_DeleteOnClose);
+                //     pad->open();
+                // });
+                QTimer::singleShot(0, this, [this, pressWidget, pressLocal, pressGlobal]() {
+                    if (!pressWidget) {
                         return;
                     }
-                    KrimbleNumberPad *pad = new KrimbleNumberPad(spin2, [spin2](double v) {
-                        if (spin2) {
-                            KrimbleNumberFields::setSpinValue(spin2, v);
-                        }
-                    });
-                    pad->setAttribute(Qt::WA_DeleteOnClose);
-                    pad->open();
+                    m_replaying = true;
+                    QMouseEvent press(QEvent::MouseButtonPress, pressLocal, pressGlobal, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+                    QCoreApplication::sendEvent(pressWidget, &press);
+                    QMouseEvent release(QEvent::MouseButtonRelease, pressLocal, pressGlobal, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+                    QCoreApplication::sendEvent(pressWidget, &release);
+                    m_replaying = false;
                 });
             }
             return true;
@@ -627,6 +644,9 @@ private:
     }
 
     QPointer<QAbstractSpinBox> m_spin;
+    QPointer<QWidget> m_pressWidget;     // KRIMBLE 2026-10-07
+    QPoint m_pressLocal;                 // KRIMBLE 2026-10-07
+    bool m_replaying {false};            // KRIMBLE 2026-10-07
     State m_state {Idle};
     QPoint m_pressPos;
     double m_startValue {0.0};

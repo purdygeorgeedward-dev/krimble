@@ -2917,3 +2917,15 @@ that I had kept inside an XML comment (7th change, "comment out, don't delete") 
 
 George: "You send me the same goddamned things over and over. It's confusing. You need to make these stupid things clearer." The long commands (the settings block, the build, the packaging, the checks) were pasted again and again and a double paste started two packaging runs at once.
 The commands are now fixed scripts on the server; every step is one short name that never changes (`~/kb-build.sh`, `~/kb-status.sh`, `~/kb-package.sh`, `~/kb-apk.sh`), each prints plain words, and the build and packaging scripts cannot be started twice by mistake. **Verified:** all five scripts pass a syntax check (`bash -n`). **Not verified:** a run on the server.
+
+## 2026-10-06 (13th) — Fixes after testing b26: no number pad, no "No Text" menu, About Krimble, edge strip off
+
+**Files:** `libs/ui/KisApplication.cpp`, `libs/widgetutils/xmlgui/ktoolbarhandler.cpp`, `krita/krita5.xmlgui`, `libs/ui/KisMainWindow.cpp`
+
+George tested b26 and sent a long list. These four are fixed:
+- **Big number pad:** "GIGANTIC NUMERIC KEYPAD APPEARS!! DO NOT WANT!!" A short tap on a number field no longer opens Krimble's number pad; the tap is handed back to the field (the press and release are sent to it again). Long press and drag still change the value. The pad's code stays in the file as a comment.
+- **"No Text" menu:** the toolbar-list handler of the menu library had the removed Settings menu written into it, so KXmlGui made a new menu called "settings" without a text. It now points at the View menu.
+- **Help menu:** the entry reads "About Krimble".
+- **Edge strip on the side panel:** switched off again (`#if 0`). It was an unwanted extra gadget, did not resize, and (full height from the top) covered the X of the document tab, which is why the X stopped working.
+**Not fixed yet (from the same list):** the toolbox and side panel cannot be resized (the dotted bar); the toolbox shows a corner gadget and a minimum width at start, and its color wells float; panels cannot be stacked (they become tabs); the toolbox went back to one column when the side panel was collapsed from the menu; number drag works on Width but not Height; the rotation gadget at the bottom; the New Image dialog is too big; the whole UI disappeared once with no way back; the Brush icon is too small; the hand-with-a-slash icon; dashes on the selection-tool icons (the lasso looks like a speech bubble); Tool Options should name the active tool.
+**Verified:** `KisApplication.cpp` passes the syntax check; the menu file is well-formed. **Not verified:** a build or a device.

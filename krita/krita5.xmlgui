@@ -1402,7 +1402,9 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     
                      <Separator/>
                      
-    <Action name="help_about_app"/>
+    <Action name="help_about_app">
+        <text>About Krimble</text>
+    </Action>
     
 </Menu>
 

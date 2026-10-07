@@ -31,7 +31,10 @@ const char actionListName[] = "show_menu_and_toolbar_actionlist";
 const char guiDescription[] = ""
                              "<!DOCTYPE kpartgui><kpartgui name=\"StandardToolBarMenuHandler\">"
                              "<MenuBar>"
-                             "    <Menu name=\"settings\">"
+                             // KRIMBLE 2026-10-07: the Settings menu is gone; its toolbar list now goes into the View menu
+                             // (left over, it showed up as a menu called "No Text"). Old line:
+                             // "    <Menu name=\"settings\">"
+                             "    <Menu name=\"view\">"
                              "        <ActionList name=\"%1\" />"
                              "    </Menu>"
                              "</MenuBar>"
