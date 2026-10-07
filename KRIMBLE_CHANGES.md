@@ -2939,3 +2939,11 @@ George (he floated the toolbox on purpose): "I made the toolbox float. I don't w
 - **Two edge strips** instead (inside a 24 px margin the floating toolbox gets, so they cover no tool icon): the right strip changes the width in whole icon columns (1 to 4, remembered in the same setting as the docked toolbox), the bottom strip changes the height (at least 160 px).
   Each strip shows a dark line with a light line beside it and three dots.
 **Verified:** the syntax checker reports no error in the toolbox files; the brace count of `KisMainWindow.cpp` has the same one-off difference as before. **Not verified:** a build or a device (whether a finger can grab the 24 px strips on a floating window).
+
+## 2026-10-07 (2nd) — Toolbox Brush icon: bolder, fills the icon (BR1)
+
+**Files:** `krita/pics/tools/SVG/16/light_krita_tool_freehand.svg`, `dark_krita_tool_freehand.svg`
+
+George (testing b26): "Brush works now, but icon looks bad. Super tiny." The K4 brush was a thin line inside the 16 px box. Two bolder versions were shown (BR1, BR2); George: "Br1 is better."
+BR1 has a thicker handle, a thicker hollow metal sleeve and a bigger tuft of hair (the original curved shape, centred on the stick), and uses the whole diagonal of the box. Replaces the K4 version of 2026-10-05.
+**Verified:** both files are well-formed XML; drawn at 72, 32 and 16 px. **Not verified:** a build or a device.
