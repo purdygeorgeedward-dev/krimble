@@ -2929,3 +2929,13 @@ George tested b26 and sent a long list. These four are fixed:
 - **Edge strip on the side panel:** switched off again (`#if 0`). It was an unwanted extra gadget, did not resize, and (full height from the top) covered the X of the document tab, which is why the X stopped working.
 **Not fixed yet (from the same list):** the toolbox and side panel cannot be resized (the dotted bar); the toolbox shows a corner gadget and a minimum width at start, and its color wells float; panels cannot be stacked (they become tabs); the toolbox went back to one column when the side panel was collapsed from the menu; number drag works on Width but not Height; the rotation gadget at the bottom; the New Image dialog is too big; the whole UI disappeared once with no way back; the Brush icon is too small; the hand-with-a-slash icon; dashes on the selection-tool icons (the lasso looks like a speech bubble); Tool Options should name the active tool.
 **Verified:** `KisApplication.cpp` passes the syntax check; the menu file is well-formed. **Not verified:** a build or a device.
+
+## 2026-10-07 — Floating toolbox: no corner gadget, no minimum width, two edge strips
+
+**Files:** `libs/ui/toolbox/KoToolBoxDocker.cpp`, `libs/ui/toolbox/KoToolBoxDocker_p.h`, `libs/ui/KisMainWindow.cpp`
+
+George (he floated the toolbox on purpose): "I made the toolbox float. I don't want it to have a corner sizing gadget." Earlier: "It now has a min width."
+- **No corner gadget** on the floating toolbox: the shared floating-panel code (`KisMainWindow.cpp`) skips the handle, the reserved bottom strip and the 150 x 120 minimum for the panel named ToolBox. Other floating panels are unchanged.
+- **Two edge strips** instead (inside a 24 px margin the floating toolbox gets, so they cover no tool icon): the right strip changes the width in whole icon columns (1 to 4, remembered in the same setting as the docked toolbox), the bottom strip changes the height (at least 160 px).
+  Each strip shows a dark line with a light line beside it and three dots.
+**Verified:** the syntax checker reports no error in the toolbox files; the brace count of `KisMainWindow.cpp` has the same one-off difference as before. **Not verified:** a build or a device (whether a finger can grab the 24 px strips on a floating window).

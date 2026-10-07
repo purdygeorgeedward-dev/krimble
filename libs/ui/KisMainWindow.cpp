@@ -3544,7 +3544,11 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
                     if (contentLayout) {
                         contentLayout->setSizeConstraint(QLayout::SetNoConstraint);
                     }
-                    content->setMinimumSize(150, 120);
+                    // KRIMBLE 2026-10-07: the toolbox keeps its own small minimum (George: it must not get a minimum width)
+                    if (dockWidget->objectName() != QLatin1String("ToolBox")) {
+                        content->setMinimumSize(150, 120);
+                    }
+                    // content->setMinimumSize(150, 120);   // old line, for every floating panel
                 } else if (dockWidget->property("krimbleContentMin").isValid()) {
                     content->setMinimumSize(dockWidget->property("krimbleContentMin").toSize());
                     if (contentLayout) {
@@ -3562,7 +3566,9 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
             // const int gripStrip = 26;     // KRIMBLE 2026-10-04 (2nd pass): 20, matches the 20 px handle
             const int gripStrip = 20;
             const bool stripped = dockWidget->property("krimbleGripStrip").toBool();
-            if (floating && !stripped) {
+            // KRIMBLE 2026-10-07: not for the toolbox (it has edge strips of its own, no corner gadget)
+            const bool isToolBox = dockWidget->objectName() == QLatin1String("ToolBox");
+            if (floating && !stripped && !isToolBox) {
                 QMargins m = dockWidget->contentsMargins();
                 m.setBottom(m.bottom() + gripStrip);
                 dockWidget->setContentsMargins(m);
@@ -3581,7 +3587,17 @@ QDockWidget* KisMainWindow::createDockWidget(KoDockFactoryBase* factory)
             // KisFloatingDockSizeGrip *grip = dockWidget->findChild<KisFloatingDockSizeGrip*>();
             KisFloatingDockSizeGrip *grip = static_cast<KisFloatingDockSizeGrip*>(
                 dockWidget->findChild<QWidget*>(QStringLiteral("krimbleResizeHandle"), Qt::FindDirectChildrenOnly));
-            if (floating) {
+            if (floating && isToolBox) {
+                // KRIMBLE 2026-10-07: the toolbox has no corner gadget: it keeps the size it had while docked and is
+                // resized by the two edge strips in KoToolBoxDocker.
+                const QSize dockedSize = dockWidget->property("krimbleDockedSize").toSize();
+                if (dockedSize.isValid()) {
+                    dockWidget->resize(dockedSize);
+                }
+                if (grip) {
+                    grip->hide();
+                }
+            } else if (floating) {
                 if (!grip) {
                     grip = new KisFloatingDockSizeGrip(dockWidget);
                     dockWidget->installEventFilter(new KisFloatingDockGripPlacer(dockWidget, grip));

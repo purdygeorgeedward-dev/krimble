@@ -66,6 +66,13 @@ private:
     // multiples of tool icon columns on scale?").
     void snapToColumns();
     void applyColumns();
+public:
+    // KRIMBLE 2026-10-07: a floating toolbox has no corner gadget; it is resized by two edge strips (right edge: width,
+    // snapped to whole icon columns; bottom edge: height). Called by the strips while they are dragged.
+    void floatingEdgeDrag(const QSize &startSize, const QPoint &delta, bool changeWidth, bool changeHeight);
+private Q_SLOTS:
+    void setFloatingEdges(bool floating);
+private:
     int iconWidth() const;
     int chromeWidth() const;
 
@@ -84,6 +91,8 @@ private:
     QTimer *m_restoreTimer {nullptr};  // Krimble: runs a moment after the main window stops resizing (rotation)
     bool m_windowResizing {false};     // Krimble: true while the main window is being resized (rotation)
     bool m_applying {false};           // Krimble: true while we set the width ourselves
+    QWidget *m_edgeRight {nullptr};    // Krimble: edge strip, only while floating
+    QWidget *m_edgeBottom {nullptr};   // Krimble: edge strip, only while floating
 };
 
 #endif // _KO_TOOLBOX_DOCKER_H_

@@ -21,6 +21,9 @@
 #include <QMainWindow>
 #include <QApplication>
 #include <QEvent>
+#include <QPainter>
+#include <QMouseEvent>
+#include <QPaintEvent>
 
 // Full KisKActionCollection definition needed here (forward decl in KoToolManager.h isn't enough) —
 // KoToolBoxDocker.cpp calls actionCollection()->action(...), which needs the complete type.
@@ -40,6 +43,66 @@
 #include <kis_canvas2.h>
 #include <kis_image.h>
 #include <kis_icon_utils.h>
+
+// KRIMBLE 2026-10-07: an edge strip of the floating toolbox. Dragging it changes the toolbox's width (right strip) or
+// height (bottom strip). It lives in a margin the toolbox gets while it floats, so it covers none of the tool icons.
+class KrimbleToolBoxEdge : public QWidget
+{
+public:
+    KrimbleToolBoxEdge(KoToolBoxDocker *dock, bool vertical)
+        : QWidget(dock), m_dock(dock), m_vertical(vertical)
+    {
+        setAttribute(Qt::WA_NoSystemBackground, true);
+        setMouseTracking(false);
+    }
+
+protected:
+    void paintEvent(QPaintEvent *) override
+    {
+        QPainter p(this);
+        // the edge: a dark line with a light line beside it, and a few dots, so it can be seen and found
+        if (m_vertical) {
+            p.fillRect(QRect(width() - 6, 0, 1, height()), QColor(0, 0, 0, 170));
+            p.fillRect(QRect(width() - 5, 0, 1, height()), QColor(255, 255, 255, 110));
+        } else {
+            p.fillRect(QRect(0, height() - 6, width(), 1), QColor(0, 0, 0, 170));
+            p.fillRect(QRect(0, height() - 5, width(), 1), QColor(255, 255, 255, 110));
+        }
+        p.setRenderHint(QPainter::Antialiasing, true);
+        p.setPen(Qt::NoPen);
+        QColor dots = palette().color(QPalette::HighlightedText);
+        dots.setAlpha(190);
+        p.setBrush(dots);
+        for (int i = -1; i <= 1; ++i) {
+            if (m_vertical) {
+                p.drawEllipse(QPointF(width() - 12, height() / 2.0 + i * 10), 1.6, 1.6);
+            } else {
+                p.drawEllipse(QPointF(width() / 2.0 + i * 10, height() - 12), 1.6, 1.6);
+            }
+        }
+    }
+    void mousePressEvent(QMouseEvent *event) override
+    {
+        m_press = event->globalPos();
+        m_start = m_dock->size();
+        event->accept();
+    }
+    void mouseMoveEvent(QMouseEvent *event) override
+    {
+        m_dock->floatingEdgeDrag(m_start, event->globalPos() - m_press, m_vertical, !m_vertical);
+        event->accept();
+    }
+    void mouseReleaseEvent(QMouseEvent *event) override
+    {
+        event->accept();
+    }
+
+private:
+    KoToolBoxDocker *m_dock;
+    bool m_vertical;
+    QPoint m_press;
+    QSize m_start;
+};
 
 KoToolBoxDocker::KoToolBoxDocker(KoToolBox *toolBox)
     // KRIMBLE 2026-10-02: panel renamed "Toolbox" -> "Tools".
@@ -73,6 +136,13 @@ KoToolBoxDocker::KoToolBoxDocker(KoToolBox *toolBox)
     m_restoreTimer = new QTimer(this);
     m_restoreTimer->setSingleShot(true);
     m_restoreTimer->setInterval(300);
+    m_edgeRight = new KrimbleToolBoxEdge(this, true);
+    m_edgeBottom = new KrimbleToolBoxEdge(this, false);
+    m_edgeRight->hide();
+    m_edgeBottom->hide();
+    connect(this, &QDockWidget::topLevelChanged, this, &KoToolBoxDocker::setFloatingEdges);
+    // the toolbox may already be floating when the app starts (saved layout): no signal comes then
+    QTimer::singleShot(0, this, [this]() { setFloatingEdges(isFloating()); });
     connect(m_restoreTimer, &QTimer::timeout, this, [this]() {
         applyColumns();
         QTimer::singleShot(500, this, [this]() { m_windowResizing = false; });
@@ -217,6 +287,13 @@ void KoToolBoxDocker::resizeEvent(QResizeEvent *event)
     if (m_orientation == Auto) {
         setToolBoxOrientation(width() > height() ? Qt::Horizontal : Qt::Vertical);
     }
+    if (m_edgeRight && m_edgeBottom && isFloating()) {
+        const int e = 24;
+        m_edgeRight->setGeometry(width() - e, 0, e, height() - e);
+        m_edgeBottom->setGeometry(0, height() - e, width(), e);
+        m_edgeRight->raise();
+        m_edgeBottom->raise();
+    }
     // KRIMBLE 2026-10-06: when the docked toolbox is resized by hand (not by a rotation, not by us), snap it to a
     // whole number of icon columns a moment after the resize stops.
     if (m_snapTimer && !m_windowResizing && !m_applying && !isFloating()) {
@@ -234,6 +311,59 @@ bool KoToolBoxDocker::eventFilter(QObject *watched, QEvent *event)
         if (m_restoreTimer) m_restoreTimer->start();
     }
     return QDockWidget::eventFilter(watched, event);
+}
+
+void KoToolBoxDocker::setFloatingEdges(bool floating)
+{
+    // KRIMBLE 2026-10-07: floating: no corner gadget, a 24 px margin at the right and at the bottom holds the two edge
+    // strips; docked: the margins and the strips go away.
+    const int e = 24;
+    QMargins m = contentsMargins();
+    const bool has = property("krimbleToolBoxEdges").toBool();
+    if (floating && !has) {
+        m.setRight(m.right() + e);
+        m.setBottom(m.bottom() + e);
+        setContentsMargins(m);
+        setProperty("krimbleToolBoxEdges", true);
+    } else if (!floating && has) {
+        m.setRight(qMax(0, m.right() - e));
+        m.setBottom(qMax(0, m.bottom() - e));
+        setContentsMargins(m);
+        setProperty("krimbleToolBoxEdges", false);
+    }
+    m_edgeRight->setVisible(floating);
+    m_edgeBottom->setVisible(floating);
+    if (floating) {
+        m_edgeRight->setGeometry(width() - e, 0, e, height() - e);
+        m_edgeBottom->setGeometry(0, height() - e, width(), e);
+        m_edgeRight->raise();
+        m_edgeBottom->raise();
+    }
+}
+
+void KoToolBoxDocker::floatingEdgeDrag(const QSize &startSize, const QPoint &delta, bool changeWidth, bool changeHeight)
+{
+    int w = startSize.width();
+    int h = startSize.height();
+    if (changeWidth) {
+        // whole icon columns only (1 to 4): the icons plus everything around them
+        const int icons = iconWidth();
+        const int around = chromeWidth();
+        const int columns = qBound(1, qRound(qreal(startSize.width() - around + delta.x()) / icons), 4);
+        w = columns * icons + around;
+        if (columns != m_columns) {
+            m_columns = columns;
+            KConfigGroup cfg(KSharedConfig::openConfig(), "krimble");
+            cfg.writeEntry("ToolBoxColumns", m_columns);
+            cfg.sync();
+        }
+    }
+    if (changeHeight) {
+        h = qMax(160, startSize.height() + delta.y());
+    }
+    if (w != width() || h != height()) {
+        resize(w, h);
+    }
 }
 
 int KoToolBoxDocker::iconWidth() const
