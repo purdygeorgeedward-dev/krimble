@@ -262,7 +262,9 @@ android {
         // library and fail the final packaging step entirely.
         ndkVersion "22.1.7171670"
 
-        targetSdkVersion 35
+        // Krimble 2026-10-09: was 35. Google Play requires API 36. Built and accepted by Play on 2026-10-08 via server-side sed.
+        // targetSdkVersion 35
+        targetSdkVersion 36
         minSdkVersion 24
         versionCode project.ext.constant * 1000000 + versionMajor * 10000 + versionMinor * 100 + versionRelease
         versionName "1.0.0-beta2"

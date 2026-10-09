@@ -2979,3 +2979,38 @@ George supplied a new icon: white K and paw on solid orange (#F96301).
 - **Play Store PNGs:** full orange icon, 512 px.
 - The main and "next" variants use the same image. Adaptive icon XMLs and the 12dp inset are unchanged.
 **Verified:** foreground recomposited on orange matches the source (max pixel difference 2/255); file sizes and modes checked. **Not verified:** a build or a device.
+
+## 2026-10-09 (2nd) — Google Play AAB: API 36, AAB script, size reduction
+
+**Files (repo):** `packaging/android/apk/build.gradle` (targetSdkVersion 35 → 36), `build-tools/ci-scripts/krimble-build-aab.py` (new)
+**Server only, not in the repo:** `~/aab-build.py` (now copied into the repo as above); the temporary CMake strip hook (removed again); any other uncommitted edits to the server's `build.gradle` (not yet captured)
+
+From two ChatGPT session transcripts George supplied on 2026-10-09 (work done 2026-10-08). Not re-verified on the server.
+
+**1. ARM64 only**
+- `KDECI_ANDROID_ABI=arm64-v8a`, `KDECI_WORKDIR_PATH=$HOME/kwd`, built from `~/kwd/krita`.
+
+**2. Target API 35 → 36**
+- Done on the server with `sed -i 's/targetSdkVersion 35/targetSdkVersion 36/'`. Now also in the repo (2026-10-09). `compileSdk` stays 35.
+
+**3. AAB script**
+- `~/aab-build.py` = `build-android-package.py` with `assembleRelease` → `bundleRelease` and output match `*.apk` → `*.aab`. Now `build-tools/ci-scripts/krimble-build-aab.py`.
+- Run: `cd ~/kwd/krita && python3 <script> --package-type release`
+- Result: `krimble-arm64-v8a-1.0.0-beta2-release.aab`, 271,313,916 bytes (258.8 MiB), `BUILD SUCCESSFUL`.
+
+**4. Size reduction: native debug symbols**
+- Cause: debug information in the native libraries, not debug code. C++ was already built with `-O3 -DNDEBUG`.
+- Largest file, `lib_kritalcmsengine_arm64-v8a.so`: 219,082,456 → 23,180,648 bytes (89.4% smaller).
+- Test: `llvm-strip --strip-debug` on a copy of that library, about 209 MB → about 31 MB.
+- Tried: a CMake hook in `~/krimble/packaging/android/apk/assets/ECM/toolchain/ECMAndroidDeployQt.cmake` plus a helper `strip-android-libs.cmake`. Removed afterward with `sed -i '/strip-android-libs\.cmake/d'` and `rm`. That path is not in the repo.
+- Final fix: Gradle's `stripReleaseDebugSymbols` task. Which change made it start working is not recorded here.
+- Clean rebuild: `python3 ~/krimble/build-tools/ci-scripts/build-android-package.py --package-type release`
+- APK: about 509 MB → 165,553,065 bytes (157.8 MiB), about 67% smaller.
+- The 157.8 MiB figure is the APK. The 258.8 MiB figure is the AAB. They are different outputs. Whether the AAB had stripping applied is not known.
+- `build.gradle` line 263 has `ndkVersion "22.1.7171670"`. Its comment says a mismatched NDK version makes AGP fail to strip native libraries. Not changed.
+
+**5. Google Play (internal testing track)**
+- The size check and the target-API check passed.
+- Rejected: version code `5050400` was already used. The transcript does not say this was resolved. `versionName` is still `1.0.0-beta2` in the repo.
+
+**Not verified:** a build or a device. Repo changes here are the API 36 value and the new script only.
