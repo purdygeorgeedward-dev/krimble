@@ -245,9 +245,20 @@ android {
      * (including alpha and beta) release of versionMajor.versionMinor
      * branch
      */
+    // Krimble 2026-10-09: read the build counter (~/krimble-build-number.txt, bumped on every make by libs/version/KrimbleBuildStamp.cmake)
+    // so versionName and versionCode follow it. 0 = file missing or unreadable, then the old fixed values are used.
+    def krimbleBuildNumber = 0
+    try {
+        def counterFile = new File(System.properties['user.home'] as String, 'krimble-build-number.txt')
+        if (counterFile.exists()) {
+            def counterText = counterFile.text.trim()
+            if (counterText ==~ /^[0-9]+$/) { krimbleBuildNumber = counterText.toInteger() }
+        }
+    } catch (Exception e) { }
     // Krimble 2026-10-09: was 0. Version code 5050400 was already used on Google Play; 1 gives 5050401.
     // def versionRelease  = 0
-    def versionRelease  = 1
+    // def versionRelease  = 1
+    def versionRelease  = krimbleBuildNumber > 0 ? krimbleBuildNumber : 1
 
     defaultConfig {
         // compileSdk moved to the top of the android{} block above -
@@ -273,7 +284,8 @@ android {
         versionCode project.ext.constant * 1000000 + versionMajor * 10000 + versionMinor * 100 + versionRelease
         // Krimble 2026-10-09: was "1.0.0-beta2". Now matches the 1.0.29-beta release published 2026-10-07 (asset krimble-arm64-v8a-1.0.29-beta-release.apk).
         // versionName "1.0.0-beta2"
-        versionName "1.0.29-beta"
+        // versionName "1.0.29-beta"
+        versionName krimbleBuildNumber > 0 ? "1.0.${krimbleBuildNumber}-beta" : "1.0.29-beta"
         def unstableSuffix = System.getenv('KRITA_UNSTABLE_PACKAGE_SUFFIX')
         archivesBaseName = System.getenv('KRITA_BUILD_APPBUNDLE') ? "krimble-$versionName$unstableSuffix" : "krimble-$abi-$versionName$unstableSuffix"
     }

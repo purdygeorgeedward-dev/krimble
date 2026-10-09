@@ -3028,3 +3028,16 @@ Found by comparing the server's uncommitted `git diff` to the repo. These server
 - The older comment above `ndkVersion` (claims r22b is installed) is now outdated and left in place.
 - The repo's `build.gradle` now has all 3 server-side edits (API 36, versionRelease, ndkVersion), plus the new `versionName`.
 **Not captured:** the server's modified `.kde-ci.yml` (its diff was not provided). **Not verified:** a build or a device.
+
+## 2026-10-09 (4th) — build.gradle: versionName and version code follow the build counter
+
+**Files:** `packaging/android/apk/build.gradle`
+
+`versionName` and `versionRelease` were hardcoded, so the APK's version never changed between builds and a fixed `versionRelease` would repeat Google Play's duplicate-version-code rejection on every upload.
+- `build.gradle` now reads `~/krimble-build-number.txt` (the counter `libs/version/KrimbleBuildStamp.cmake` adds 1 to on every make).
+- `versionName` = `1.0.<counter>-beta`. `versionRelease` = the counter, so the version code rises with every build (counter 37 → 5050437).
+- If the file is missing or not a number, the old fixed values apply (`1.0.29-beta`, `versionRelease` 1).
+- Past counter 99 the version code runs into the `versionMinor` digits but still rises.
+- Replaces the fixed values from the 3rd entry above. Old lines are commented out.
+- `kb-apk.sh` still writes `Krimble-Beta2-` into copied file names. Unchanged.
+**Not verified:** a Gradle run, a build, or a device.
