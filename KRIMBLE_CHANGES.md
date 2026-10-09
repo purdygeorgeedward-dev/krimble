@@ -3014,3 +3014,15 @@ From two ChatGPT session transcripts George supplied on 2026-10-09 (work done 20
 - Rejected: version code `5050400` was already used. The transcript does not say this was resolved. `versionName` is still `1.0.0-beta2` in the repo.
 
 **Not verified:** a build or a device. Repo changes here are the API 36 value and the new script only.
+
+## 2026-10-09 (3rd) — build.gradle: versionRelease 1, ndkVersion 27.3.13750724, versionName 1.0.29-beta
+
+**Files:** `packaging/android/apk/build.gradle`
+
+Found by comparing the server's uncommitted `git diff` to the repo. These server-side edits were never committed.
+- `versionRelease` 0 → 1. Version code becomes 5050401. Google Play rejected 5050400 as already used. `versionName` is set separately (see below).
+- `ndkVersion` "22.1.7171670" → "27.3.13750724". The server's 2026-10-08 builds, which stripped native libraries successfully, used this value. The repo's old comment says a mismatched NDK version makes AGP fail to strip every native library, so this edit is the likely cause of the APK drop from about 509 MB to 157.8 MiB. The transcripts do not confirm this.
+- `versionName` "1.0.0-beta2" → "1.0.29-beta", matching the release published 2026-10-07 (`krimble-arm64-v8a-1.0.29-beta-release.apk`, tag `1.0.29b`, commit `f01a17e`, 158 MB). The name had not changed through many earlier builds.
+- The older comment above `ndkVersion` (claims r22b is installed) is now outdated and left in place.
+- The repo's `build.gradle` now has all 3 server-side edits (API 36, versionRelease, ndkVersion), plus the new `versionName`.
+**Not captured:** the server's modified `.kde-ci.yml` (its diff was not provided). **Not verified:** a build or a device.

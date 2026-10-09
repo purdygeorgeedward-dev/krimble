@@ -245,7 +245,9 @@ android {
      * (including alpha and beta) release of versionMajor.versionMinor
      * branch
      */
-    def versionRelease  = 0
+    // Krimble 2026-10-09: was 0. Version code 5050400 was already used on Google Play; 1 gives 5050401.
+    // def versionRelease  = 0
+    def versionRelease  = 1
 
     defaultConfig {
         // compileSdk moved to the top of the android{} block above -
@@ -260,14 +262,18 @@ android {
         // was hardcoded to 27.3.13750724, a version that was never
         // installed here, which made AGP fail to strip every native
         // library and fail the final packaging step entirely.
-        ndkVersion "22.1.7171670"
+        // Krimble 2026-10-09: was "22.1.7171670". The server builds on 2026-10-08 (which stripped native libraries successfully) used 27.3.13750724. The comment above is outdated.
+        // ndkVersion "22.1.7171670"
+        ndkVersion "27.3.13750724"
 
         // Krimble 2026-10-09: was 35. Google Play requires API 36. Built and accepted by Play on 2026-10-08 via server-side sed.
         // targetSdkVersion 35
         targetSdkVersion 36
         minSdkVersion 24
         versionCode project.ext.constant * 1000000 + versionMajor * 10000 + versionMinor * 100 + versionRelease
-        versionName "1.0.0-beta2"
+        // Krimble 2026-10-09: was "1.0.0-beta2". Now matches the 1.0.29-beta release published 2026-10-07 (asset krimble-arm64-v8a-1.0.29-beta-release.apk).
+        // versionName "1.0.0-beta2"
+        versionName "1.0.29-beta"
         def unstableSuffix = System.getenv('KRITA_UNSTABLE_PACKAGE_SUFFIX')
         archivesBaseName = System.getenv('KRITA_BUILD_APPBUNDLE') ? "krimble-$versionName$unstableSuffix" : "krimble-$abi-$versionName$unstableSuffix"
     }
