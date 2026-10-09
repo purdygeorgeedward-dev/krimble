@@ -2967,3 +2967,15 @@ George (testing b26): the old Burn icon, a raised-palm outline, was "the hand ou
 The new icon is the outline of his own hand from the photo: side view, thumb and finger meeting with a diamond-shaped opening, the back of the hand arching over, the arm ending in a round shape (no hard cut). Solid, like the other icons. George: "W2 is fine."
 (No Adobe artwork was used or traced.)
 **Verified:** both files are well-formed XML; drawn at 16, 32 and 110 px. **Not verified:** a build or a device.
+
+## 2026-10-09 — New launcher icon: white K+paw on orange
+
+**Files:** `packaging/android/apk/res/drawable-nodpi/ic_launcher_fg.webp`, `ic_launcher_next_fg.webp`; `res/values/ic_launcher_background.xml`, `ic_launcher_next_background.xml`; all `res/mipmap-*/ic_launcher*.webp` (mdpi, hdpi, xhdpi, xxhdpi, xxxhdpi; main, next, round, next_round); `ic_launcher-playstore.png`, `ic_launcher_next-playstore.png`
+
+George supplied a new icon: white K and paw on solid orange (#F96301).
+- **Foreground:** white K+paw with the orange removed (transparent), so the themed (monochrome) icon stays a K+paw shape and not a solid square.
+- **Background color:** #FFFFFF → #F96301 (old line commented out).
+- **Legacy mipmaps:** full orange icon; round files circle-masked.
+- **Play Store PNGs:** full orange icon, 512 px.
+- The main and "next" variants use the same image. Adaptive icon XMLs and the 12dp inset are unchanged.
+**Verified:** foreground recomposited on orange matches the source (max pixel difference 2/255); file sizes and modes checked. **Not verified:** a build or a device.
