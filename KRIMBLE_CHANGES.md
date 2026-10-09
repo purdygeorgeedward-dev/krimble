@@ -3013,6 +3013,7 @@ From two ChatGPT session transcripts George supplied on 2026-10-09 (work done 20
 - The size check and the target-API check passed.
 - Rejected: version code `5050400` was already used. The transcript does not say this was resolved. `versionName` is still `1.0.0-beta2` in the repo.
 
+**Timeline (unconfirmed):** ChatGPT's recovered records place the AAB work on 2026-10-07 and the stripping work around 2026-10-07/08. An earlier ChatGPT summary said 2026-10-08. The GitHub release 1.0.29b (158 MB, stripped) is dated 2026-10-07. Recovered times: AAB packaging began ~12:32 UTC on 2026-10-07; the androiddeployqt / ECMAndroidDeployQt.cmake investigation ~19:43 MDT; the stripReleaseDebugSymbols result (lib_kritalcmsengine 219 MB → 23.2 MB) ~21:18 MDT. The "2026-10-08" dates elsewhere in this entry are unconfirmed.
 **Not verified:** a build or a device. Repo changes here are the API 36 value and the new script only.
 
 ## 2026-10-09 (3rd) — build.gradle: versionRelease 1, ndkVersion 27.3.13750724, versionName 1.0.29-beta
