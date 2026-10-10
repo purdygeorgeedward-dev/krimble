@@ -14,21 +14,29 @@
 
 set(ENV{TZ} "America/Denver")
 string(TIMESTAMP KRIMBLE_STAMP "%y%m%d-%H%M")
-# Build number: a counter that goes up by one on every build. It is kept in the file given
-# with -DCOUNTER=<file>. If the file is missing, counting starts at 1. To start from another
-# number, write the number BEFORE the one you want into that file.
+# KRIMBLE 2026-10-10: the number shown in the app is now the hand-set version number from build.gradle
+# (krimbleBuildNumber), the same number the APK's versionName uses. The build counter below is no longer used.
 set(KRIMBLE_NUMBER 0)
-if(COUNTER AND EXISTS "${COUNTER}")
-    file(READ "${COUNTER}" KRIMBLE_COUNTER_TEXT)
-    string(STRIP "${KRIMBLE_COUNTER_TEXT}" KRIMBLE_COUNTER_TEXT)
-    if(KRIMBLE_COUNTER_TEXT MATCHES "^[0-9]+$")
-        set(KRIMBLE_NUMBER ${KRIMBLE_COUNTER_TEXT})
+set(KRIMBLE_GRADLE_FILE "${SRC}/packaging/android/apk/build.gradle")
+if(EXISTS "${KRIMBLE_GRADLE_FILE}")
+    file(READ "${KRIMBLE_GRADLE_FILE}" KRIMBLE_GRADLE_TEXT)
+    if(KRIMBLE_GRADLE_TEXT MATCHES "(^|\n)[ \t]*def krimbleBuildNumber[ \t]*=[ \t]*([0-9]+)")
+        set(KRIMBLE_NUMBER ${CMAKE_MATCH_2})
     endif()
 endif()
-math(EXPR KRIMBLE_NUMBER "${KRIMBLE_NUMBER} + 1")
-if(COUNTER)
-    file(WRITE "${COUNTER}" "${KRIMBLE_NUMBER}\n")
-endif()
+# (old counter, replaced by the above)
+# set(KRIMBLE_NUMBER 0)
+# if(COUNTER AND EXISTS "${COUNTER}")
+#     file(READ "${COUNTER}" KRIMBLE_COUNTER_TEXT)
+#     string(STRIP "${KRIMBLE_COUNTER_TEXT}" KRIMBLE_COUNTER_TEXT)
+#     if(KRIMBLE_COUNTER_TEXT MATCHES "^[0-9]+$")
+#         set(KRIMBLE_NUMBER ${KRIMBLE_COUNTER_TEXT})
+#     endif()
+# endif()
+# math(EXPR KRIMBLE_NUMBER "${KRIMBLE_NUMBER} + 1")
+# if(COUNTER)
+#     file(WRITE "${COUNTER}" "${KRIMBLE_NUMBER}\n")
+# endif()
 # Month and day as in the APK file names: "Oct3".
 string(TIMESTAMP KRIMBLE_MONTH "%b")
 string(TIMESTAMP KRIMBLE_DAY "%d")

@@ -3143,3 +3143,13 @@ Panels had to be dragged to be docked. Now a long-press opens a menu: Dock Left,
 ## 2026-10-10 — Version 31
 
 `krimbleBuildNumber` 30 → 31 in `build.gradle`: version `1.0.31-beta`, version code 5050431.
+
+## 2026-10-10 (15th) — App shows the hand-set version number, not the build counter
+
+**Files:** `libs/version/KrimbleBuildStamp.cmake`
+
+On launch 1.0.31 showed "1.0.44". The app built its version from the old build counter, which kept rising on every make and packaging run; the hand-set number only reached the APK's Android version.
+- `KrimbleBuildStamp.cmake` now reads `krimbleBuildNumber` from `packaging/android/apk/build.gradle`. The app shows `1.0.<number>-beta (<date>, git <hash>)`, the same number as the APK's versionName.
+- The counter code is commented out. `~/krimble-build-number.txt` is no longer updated or read.
+- A version change now needs `kb-build.sh` (about 2 minutes) before `kb-package.sh`.
+**Not verified:** a build or a device.
