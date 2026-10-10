@@ -3111,3 +3111,12 @@ The 2026-10-09 section of `BUILD_ANDROID.md` still described the counter-based v
 - Section 3: verified that two fresh builds with no strip hook came out at about 157.8 MiB, so no hook is needed. Why Gradle's stripping started working stays marked unconfirmed.
 - Section 6: `.kde-ci.yml` is generated output; the build.gradle pull conflict is resolved; new gotchas (`kb-status.sh` can show an old result; packaging deletes `_packaging`).
 - New section 7: the release-build routine, step by step.
+
+## 2026-10-10 (12th) — Toolbox: no more 4-column limit; wider grab strip between docks (Android)
+
+**Files:** `libs/ui/toolbox/KoToolBoxDocker.cpp`, `libs/widgetutils/KisWideDockSeparatorStyle.cpp`
+
+The toolbox could not be stretched past 4 icon columns, so a wide, horizontal toolbox was impossible, and the strips between the docks were too thin to grab by finger.
+- The most columns is now 40 (was 4) in all three places that capped it: the saved-columns read, the floating-toolbox edge drag, and the docked snap. The "Columns" menu still offers 1 to 4; wider is by dragging. Old lines commented out.
+- On Android the strip between docks (toolbox, canvas, right panels) is at least 20 px (was Qt's default doubled), the same touch size as the dialog edges. Each strip takes 20 px of width.
+**Not verified:** a build or a device.

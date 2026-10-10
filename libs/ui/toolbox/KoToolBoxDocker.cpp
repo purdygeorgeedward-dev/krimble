@@ -218,7 +218,9 @@ void KoToolBoxDocker::setViewManager(KisViewManager *viewManager)
         KConfigGroup cfg(KSharedConfig::openConfig(), "krimble");
         // Krimble 2026-10-09: was default 2. No column count was ever saved (the handle can't be dragged on touch), so every rotation forced 2 columns. Default is now 1.
         // m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 2), 4);
-        m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 1), 4);
+        // m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 1), 4);
+        // Krimble 2026-10-10: the most columns is now 40 (was 4), so the toolbox can be stretched as wide as the screen and go horizontal.
+        m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 1), 40);
         if (m_viewManager) {
             if (QWidget *window = m_viewManager->mainWindowAsQWidget()) {
                 window->installEventFilter(this);
@@ -351,7 +353,9 @@ void KoToolBoxDocker::floatingEdgeDrag(const QSize &startSize, const QPoint &del
         // whole icon columns only (1 to 4): the icons plus everything around them
         const int icons = iconWidth();
         const int around = chromeWidth();
-        const int columns = qBound(1, qRound(qreal(startSize.width() - around + delta.x()) / icons), 4);
+        // const int columns = qBound(1, qRound(qreal(startSize.width() - around + delta.x()) / icons), 4);
+        // Krimble 2026-10-10: cap raised from 4 to 40 columns
+        const int columns = qBound(1, qRound(qreal(startSize.width() - around + delta.x()) / icons), 40);
         w = columns * icons + around;
         if (columns != m_columns) {
             m_columns = columns;
@@ -406,7 +410,9 @@ void KoToolBoxDocker::snapToColumns()
     const Qt::DockWidgetArea area = m_dockArea;
     if (area != Qt::LeftDockWidgetArea && area != Qt::RightDockWidgetArea) return;
 
-    const int columns = qBound(1, qRound(qreal(m_scrollArea->viewport()->width()) / iconWidth()), 4);
+    // const int columns = qBound(1, qRound(qreal(m_scrollArea->viewport()->width()) / iconWidth()), 4);
+    // Krimble 2026-10-10: cap raised from 4 to 40 columns
+    const int columns = qBound(1, qRound(qreal(m_scrollArea->viewport()->width()) / iconWidth()), 40);
     if (columns != m_columns) {
         m_columns = columns;
         KConfigGroup cfg(KSharedConfig::openConfig(), "krimble");
