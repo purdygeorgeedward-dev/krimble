@@ -15,6 +15,10 @@
 #include <QBitmap>
 #ifdef Q_OS_ANDROID
 #include <QGuiApplication>
+#include <QApplication>
+#include <QStyledItemDelegate>
+#include <QListView>
+#include <QPainter>
 #include <QScreen>
 #endif
 #include <QCheckBox>
@@ -2721,6 +2725,43 @@ static QWidget *krimblePrefsPage(QWidget *page)
 #endif
 }
 
+#ifdef Q_OS_ANDROID
+// KRIMBLE 2026-10-09: the left list of the Preferences window was about 31% of the screen, sized by its longest one-line title.
+// This draws each entry as icon on top, title wrapped under it, in a fixed narrow width.
+class KrimblePrefsListDelegate : public QStyledItemDelegate
+{
+public:
+    KrimblePrefsListDelegate(int itemWidth, QObject *parent) : QStyledItemDelegate(parent), m_w(itemWidth) {}
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
+    {
+        const int pad = 6;
+        const QRect t = option.fontMetrics.boundingRect(QRect(0, 0, m_w - 2 * pad, 0), Qt::AlignHCenter | Qt::TextWordWrap, index.data(Qt::DisplayRole).toString());
+        return QSize(m_w, pad + option.decorationSize.height() + 2 + t.height() + pad);
+    }
+    void paint(QPainter *p, const QStyleOptionViewItem &option, const QModelIndex &index) const override
+    {
+        const int pad = 6;
+        QStyleOptionViewItem opt = option;
+        initStyleOption(&opt, index);
+        const QString text = opt.text;
+        opt.text.clear();
+        opt.icon = QIcon();
+        QStyle *style = opt.widget ? opt.widget->style() : QApplication::style();
+        style->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, p, opt.widget);
+        const bool selected = opt.state & QStyle::State_Selected;
+        const QSize isz = option.decorationSize;
+        index.data(Qt::DecorationRole).value<QIcon>().paint(p, QRect(opt.rect.x() + (opt.rect.width() - isz.width()) / 2, opt.rect.y() + pad, isz.width(), isz.height()), Qt::AlignCenter, selected ? QIcon::Selected : QIcon::Normal);
+        const QRect tr(opt.rect.x() + pad, opt.rect.y() + pad + isz.height() + 2, opt.rect.width() - 2 * pad, opt.rect.height() - (pad + isz.height() + 2 + pad));
+        p->save();
+        p->setPen(opt.palette.color(selected ? QPalette::HighlightedText : QPalette::Text));
+        p->drawText(tr, Qt::AlignHCenter | Qt::AlignTop | Qt::TextWordWrap, text);
+        p->restore();
+    }
+private:
+    int m_w;
+};
+#endif
+
 KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
     : KPageDialog(parent)
 {
@@ -2907,6 +2948,14 @@ KisDlgPreferences::KisDlgPreferences(QWidget* parent, const char* name)
         const QSize hint = sizeHint();
         resize(qMin(hint.width(), int(screenSize.width() * 0.95)),
                qMin(hint.height(), int(screenSize.height() * 0.90)));
+        // KRIMBLE 2026-10-09: narrow left list (see KrimblePrefsListDelegate above). Only used if the list is found and has one row per page.
+        if (QListView *navList = findChild<QListView*>()) {
+            if (navList->model() && navList->model()->rowCount() == m_pages.size()) {
+                const int shortSide = qMin(screenSize.width(), screenSize.height());
+                navList->setItemDelegate(new KrimblePrefsListDelegate(int(shortSide * 0.20), navList));
+                navList->setUniformItemSizes(false);
+            }
+        }
     }
 #endif
 }

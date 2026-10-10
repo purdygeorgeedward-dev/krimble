@@ -86,11 +86,14 @@ private:
     Qt::DockWidgetArea m_dockArea {Qt::NoDockWidgetArea};
     Qt::LayoutDirection m_layoutDir {Qt::LayoutDirectionAuto};
     Orientation m_orientation {Auto};
-    int m_columns {2};                 // Krimble: the number of icon columns the user wants (2 = the default look)
+    // Krimble 2026-10-09: default is 1 column (was 2), so a screen rotation never changes the column count.
+    // int m_columns {2};                 // Krimble: the number of icon columns the user wants (2 = the default look)
+    int m_columns {1};                 // Krimble: the number of icon columns the user wants (1 = the default look)
     QTimer *m_snapTimer {nullptr};     // Krimble: runs a moment after a resize of the docked toolbox stops
     QTimer *m_restoreTimer {nullptr};  // Krimble: runs a moment after the main window stops resizing (rotation)
     bool m_windowResizing {false};     // Krimble: true while the main window is being resized (rotation)
     bool m_applying {false};           // Krimble: true while we set the width ourselves
+    QAction *m_columnActions[4] {nullptr, nullptr, nullptr, nullptr}; // Krimble 2026-10-09: the "Columns" menu entries (1 to 4)
     QWidget *m_edgeRight {nullptr};    // Krimble: edge strip, only while floating
     QWidget *m_edgeBottom {nullptr};   // Krimble: edge strip, only while floating
 };

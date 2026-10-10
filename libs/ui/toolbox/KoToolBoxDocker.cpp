@@ -216,7 +216,9 @@ void KoToolBoxDocker::setViewManager(KisViewManager *viewManager)
     // KRIMBLE 2026-10-06: remembered number of columns, applied once at start, and the rotation watcher
     {
         KConfigGroup cfg(KSharedConfig::openConfig(), "krimble");
-        m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 2), 4);
+        // Krimble 2026-10-09: was default 2. No column count was ever saved (the handle can't be dragged on touch), so every rotation forced 2 columns. Default is now 1.
+        // m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 2), 4);
+        m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 1), 4);
         if (m_viewManager) {
             if (QWidget *window = m_viewManager->mainWindowAsQWidget()) {
                 window->installEventFilter(this);
@@ -571,6 +573,29 @@ void KoToolBoxDocker::contextMenuEvent(QContextMenuEvent *event)
             orientAuto->setChecked(true);
             break;
         }
+
+        // Krimble 2026-10-09: "Columns" choice. The size handle is hard to grab on touch, so the number of icon columns (1 to 4)
+        // can be picked here. The choice is saved ("krimble/ToolBoxColumns") and kept through a rotation.
+        m_contextMenu->addSection(i18n("Columns"));
+        QActionGroup *columnsActionGroup = new QActionGroup(m_contextMenu);
+        for (int i = 0; i < 4; ++i) {
+            QAction *columnsAction = m_contextMenu->addAction(i18np("1 column", "%1 columns", i + 1));
+            columnsAction->setActionGroup(columnsActionGroup);
+            columnsAction->setCheckable(true);
+            m_columnActions[i] = columnsAction;
+            connect(columnsAction, &QAction::triggered, this, [this, i]() {
+                m_columns = i + 1;
+                KConfigGroup cfg(KSharedConfig::openConfig(), "krimble");
+                cfg.writeEntry("ToolBoxColumns", m_columns);
+                cfg.sync();
+                applyColumns();
+            });
+        }
+    }
+
+    // Krimble 2026-10-09: tick the current column count each time the menu opens
+    for (int i = 0; i < 4; ++i) {
+        if (m_columnActions[i]) m_columnActions[i]->setChecked(m_columns == i + 1);
     }
 
     m_contextMenu->exec(event->globalPos());

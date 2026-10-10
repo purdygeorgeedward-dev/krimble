@@ -3061,3 +3061,23 @@ The File > New dialog's minimum size (about 1415 × 1375 px) was bigger than the
 - The width, height and resolution boxes, their unit dropdowns and the Predefined dropdown are about 20% narrower (maximum widths 90/95/130 → 72/76/104). Old lines commented out.
 - All Android only (`Q_OS_ANDROID`).
 **Not verified:** a compile, a build, or a device. The white bands around the dialog in the screenshots are not addressed.
+
+## 2026-10-09 (7th) — Toolbox: columns choice menu, default 1 column
+
+**Files:** `libs/ui/toolbox/KoToolBoxDocker.cpp`, `libs/ui/toolbox/KoToolBoxDocker_p.h`
+
+Screen rotation switched the toolbox from 1 column to 2. Cause: no column count was ever saved (the size handle can't be dragged on touch), so each rotation applied the built-in default, 2.
+- Default is now 1 column (was 2), so rotation keeps 1.
+- New "Columns" section in the toolbox's right-click menu: 1, 2, 3 or 4 columns. The choice is saved ("krimble/ToolBoxColumns") and kept through rotation. The current count is ticked.
+- Old default lines commented out.
+**Not verified:** a compile, a build, or a device. The sizing handles (hard to grab on touch) are not fixed by this entry.
+
+## 2026-10-09 (8th) — Preferences: narrow left list with wrapped titles (Android)
+
+**Files:** `libs/ui/dialogs/kis_dlg_preferences.cc`
+
+The left list of the Preferences window was about 31% of the screen wide, sized by its longest one-line title ("Canvas Input Settings").
+- On Android the list is drawn by a new `KrimblePrefsListDelegate`: icon on top, title wrapped under it, fixed width of 20% of the screen's short side.
+- It is used only if the list is found and has one row per page. Otherwise nothing changes.
+- Added includes: `QApplication`, `QStyledItemDelegate`, `QListView`, `QPainter`.
+**Not verified:** a compile, a build, or a device.
