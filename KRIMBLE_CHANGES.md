@@ -3171,3 +3171,10 @@ George wanted the panel controls in the Window menu, not View, and the toolbar c
 - The Toolbars list is built by `updateWindowMenu()` each time the submenu opens, instead of by the KDE merge point in View.
 - The same entries are commented out of the View menu in `krita5.xmlgui`. Interface Scale and Language stay in View.
 **Not verified:** a build or a device.
+
+## 2026-10-10 (18th) — Dock separators: black line with a highlight line (Android)
+
+**Files:** `libs/widgetutils/KisWideDockSeparatorStyle.cpp`
+
+The 16th entry's three dots were invisible. The strip between docks is now a black line (2 px) with a translucent white highlight line (2 px) beside it, centered in the wide strip: to the right of the black line on a vertical strip, below it on a horizontal one. The grab width is unchanged.
+**Not verified:** a build or a device.

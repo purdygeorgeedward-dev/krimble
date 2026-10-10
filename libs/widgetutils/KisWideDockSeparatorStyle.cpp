@@ -31,20 +31,24 @@ void KisWideDockSeparatorStyle::drawPrimitive(PrimitiveElement element, const QS
 {
 #ifdef Q_OS_ANDROID
     if (element == QStyle::PE_IndicatorDockWidgetResizeHandle) {
-        // Krimble 2026-10-10: the wide strip is only a touch target. Draw three small dots in its middle (the grip), and no
-        // line or band, so it does not look like a thick border around the toolbox and panels.
+        // Krimble 2026-10-10: the wide strip is only a touch target. It is drawn as a black line with a highlight line right
+        // beside it (below it, or to its right), centered in the strip, so it stands out without a thick border.
+        // (The first version drew three faint dots, which were not visible.)
         painter->save();
-        painter->setRenderHint(QPainter::Antialiasing, true);
         painter->setPen(Qt::NoPen);
-        QColor dotColor = option->palette.color(QPalette::WindowText);
-        dotColor.setAlpha(110);
-        painter->setBrush(dotColor);
         const QRect r = option->rect;
         const bool tall = r.height() >= r.width();
-        const QPointF c = r.center();
-        for (int i = -1; i <= 1; ++i) {
-            const QPointF p = tall ? QPointF(c.x(), c.y() + i * 14) : QPointF(c.x() + i * 14, c.y());
-            painter->drawEllipse(p, 3.0, 3.0);
+        const int lineWidth = 2;
+        const QColor blackLine(0, 0, 0);
+        const QColor highlightLine(255, 255, 255, 110);
+        if (tall) {
+            const int x = r.center().x() - lineWidth;
+            painter->fillRect(QRect(x, r.top(), lineWidth, r.height()), blackLine);
+            painter->fillRect(QRect(x + lineWidth, r.top(), lineWidth, r.height()), highlightLine);
+        } else {
+            const int y = r.center().y() - lineWidth;
+            painter->fillRect(QRect(r.left(), y, r.width(), lineWidth), blackLine);
+            painter->fillRect(QRect(r.left(), y + lineWidth, r.width(), lineWidth), highlightLine);
         }
         painter->restore();
         return;
