@@ -3185,3 +3185,20 @@ The 16th entry's three dots were invisible. The strip between docks is now a bla
 
 The 17th entry's Toolbars list used `KToolBar`, a class that does not exist in this program (it is `KisToolBar`). The native build stopped with 6 errors on lines 3945 and 3946. One name changed; old line commented out.
 **Not verified:** a build.
+
+## 2026-10-10 (20th) — Window menu: View's items moved in, Panels grouped with the panel items
+
+**Files:** `krita/krita5.xmlgui`, `libs/ui/KisMainWindow.cpp`
+
+George wanted fewer items in View. Interface Scale, Themes, Styles, Language, Toolbars and Lock Toolbars move to Window, in their old View order and separators. Panels ▸ moves down so it sits directly on top of Toggle Panels, Detach Panel, Attach Panel and Hide Right Panels with no separator. The pushed block (17th entry) and the two original Panels lines are kept under `#if 0` or commented out.
+**Not verified:** a build or a device.
+
+## 2026-10-10 (21st) — Fix: separator lines were on the dock strips; now on the menu dividers. No shortcut text in menus.
+
+**Files:** `libs/widgetutils/KisWideDockSeparatorStyle.cpp`, `libs/widgetutils/KisWideDockSeparatorStyle.h`
+
+The 18th entry drew a black line with a highlight line on the dock strips (toolbox, canvas, panels). George meant the divider lines between menu items, which were invisible.
+- Dock strips: back to three small dots. Grab width unchanged. The line code is kept under `#if 0`.
+- Menu dividers (Android): a black line (2 px) with a highlight line (2 px) below it; divider height at least 8. Titled section dividers (for example "Icon Size") keep their default look.
+- Menus show no keyboard shortcut text and reserve no column for it on Android (no keyboard on a touch screen), so menus are as wide as their longest label. Qt works out the column width before it asks the style; if that includes the shortcut width, the narrowing will not show.
+**Not verified:** a build or a device.

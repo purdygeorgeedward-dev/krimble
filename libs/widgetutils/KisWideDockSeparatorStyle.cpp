@@ -31,9 +31,27 @@ void KisWideDockSeparatorStyle::drawPrimitive(PrimitiveElement element, const QS
 {
 #ifdef Q_OS_ANDROID
     if (element == QStyle::PE_IndicatorDockWidgetResizeHandle) {
-        // Krimble 2026-10-10: the wide strip is only a touch target. It is drawn as a black line with a highlight line right
-        // beside it (below it, or to its right), centered in the strip, so it stands out without a thick border.
-        // (The first version drew three faint dots, which were not visible.)
+        // Krimble 2026-10-10 (2nd): the wide strip is only a touch target. Draw three small dots in its middle (the grip), and no
+        // line or band, so it does not look like a thick border around the toolbox and panels.
+        painter->save();
+        painter->setRenderHint(QPainter::Antialiasing, true);
+        painter->setPen(Qt::NoPen);
+        QColor dotColor = option->palette.color(QPalette::WindowText);
+        dotColor.setAlpha(150);
+        painter->setBrush(dotColor);
+        const QRect r = option->rect;
+        const bool tall = r.height() >= r.width();
+        const QPointF c = r.center();
+        for (int i = -1; i <= 1; ++i) {
+            const QPointF p = tall ? QPointF(c.x(), c.y() + i * 14) : QPointF(c.x() + i * 14, c.y());
+            painter->drawEllipse(p, 3.0, 3.0);
+        }
+        painter->restore();
+        return;
+
+        // Krimble 2026-10-10 (2nd): the black-line-and-highlight version (18th entry), drawn on the dock strips by mistake.
+        // Kept, not deleted. It is not reached.
+#if 0
         painter->save();
         painter->setPen(Qt::NoPen);
         const QRect r = option->rect;
@@ -51,8 +69,59 @@ void KisWideDockSeparatorStyle::drawPrimitive(PrimitiveElement element, const QS
             painter->fillRect(QRect(r.left(), y + lineWidth, r.width(), lineWidth), highlightLine);
         }
         painter->restore();
-        return;
+#endif
     }
 #endif
     QProxyStyle::drawPrimitive(element, option, painter, widget);
+}
+
+void KisWideDockSeparatorStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+{
+#ifdef Q_OS_ANDROID
+    if (element == QStyle::CE_MenuItem) {
+        if (const QStyleOptionMenuItem *menuItem = qstyleoption_cast<const QStyleOptionMenuItem *>(option)) {
+            if (menuItem->menuItemType == QStyleOptionMenuItem::Separator && menuItem->text.isEmpty()) {
+                // Krimble 2026-10-10: the divider between menu items: a black line with a highlight line below it.
+                const QRect r = menuItem->rect;
+                const int y = r.center().y();
+                painter->save();
+                painter->setPen(Qt::NoPen);
+                painter->fillRect(QRect(r.left() + 6, y - 1, r.width() - 12, 2), QColor(0, 0, 0));
+                painter->fillRect(QRect(r.left() + 6, y + 1, r.width() - 12, 2), QColor(255, 255, 255, 110));
+                painter->restore();
+                return;
+            }
+            // Krimble 2026-10-10: draw the item without its shortcut text (no keyboard on a touch screen).
+            QStyleOptionMenuItem plain(*menuItem);
+            const int tab = plain.text.indexOf(QLatin1Char('\t'));
+            if (tab >= 0) plain.text = plain.text.left(tab);
+            plain.tabWidth = 0;
+            QProxyStyle::drawControl(element, &plain, painter, widget);
+            return;
+        }
+    }
+#endif
+    QProxyStyle::drawControl(element, option, painter, widget);
+}
+
+QSize KisWideDockSeparatorStyle::sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const
+{
+#ifdef Q_OS_ANDROID
+    if (type == QStyle::CT_MenuItem) {
+        if (const QStyleOptionMenuItem *menuItem = qstyleoption_cast<const QStyleOptionMenuItem *>(option)) {
+            if (menuItem->menuItemType == QStyleOptionMenuItem::Separator && menuItem->text.isEmpty()) {
+                QSize s = QProxyStyle::sizeFromContents(type, option, size, widget);
+                s.setHeight(qMax(s.height(), 8));
+                return s;
+            }
+            // Krimble 2026-10-10: no keyboard on a touch screen, so no shortcut text and no column reserved for it.
+            QStyleOptionMenuItem plain(*menuItem);
+            const int tab = plain.text.indexOf(QLatin1Char('\t'));
+            if (tab >= 0) plain.text = plain.text.left(tab);
+            plain.tabWidth = 0;
+            return QProxyStyle::sizeFromContents(type, &plain, size, widget);
+        }
+    }
+#endif
+    return QProxyStyle::sizeFromContents(type, option, size, widget);
 }

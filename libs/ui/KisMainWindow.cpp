@@ -3925,9 +3925,46 @@ void KisMainWindow::updateWindowMenu()
         }
     }
 
-   menu->addSeparator();
-    menu->addAction(d->dockWidgetMenu);
+    // Krimble 2026-10-10 (3rd): Panels now sits with the panel items at the end of the menu (below).
+    // menu->addSeparator();
+    // menu->addAction(d->dockWidgetMenu);
 
+    // Krimble 2026-10-10 (2nd): these items keep the order and separators they had in the View menu; Panels sits with the panel items.
+    {
+        auto addActionByName = [this, menu](const char *name) {
+            if (QAction *action = actionCollection()->action(QLatin1String(name))) {
+                menu->addAction(action);
+            }
+        };
+        menu->addSeparator();
+        addActionByName("change_interface_scale");
+        menu->addSeparator();
+        addActionByName("theme_menu");
+        addActionByName("style_menu");
+        addActionByName("switch_application_language");
+        menu->addSeparator();
+        QMenu *toolbarsMenu = menu->addMenu(i18nc("@action:inmenu", "&Toolbars"));
+        connect(toolbarsMenu, &QMenu::aboutToShow, this, [this, toolbarsMenu]() {
+            toolbarsMenu->clear();
+            Q_FOREACH (KisToolBar *toolBar, toolBars()) {
+                const QString title = toolBar->windowTitle().isEmpty() ? toolBar->objectName() : toolBar->windowTitle();
+                QAction *toggle = toolbarsMenu->addAction(title);
+                toggle->setCheckable(true);
+                toggle->setChecked(toolBar->isVisible());
+                connect(toggle, &QAction::toggled, toolBar, &QWidget::setVisible);
+            }
+        });
+        addActionByName("lock_toolbars");
+        menu->addSeparator();
+        menu->addAction(d->dockWidgetMenu);
+        addActionByName("view_toggledockers");
+        addActionByName("settings_detach_panel_menu");
+        addActionByName("settings_attach_panel_menu");
+        addActionByName("settings_toggle_right_panels");
+    }
+
+    // Krimble 2026-10-10: the first version of the block above (kept, not deleted).
+#if 0
     // Krimble 2026-10-10: panel, toolbar and appearance controls live in the Window menu, not the View menu (George).
     {
         menu->addSeparator();
@@ -3963,6 +4000,7 @@ void KisMainWindow::updateWindowMenu()
             }
         }
     }
+#endif
 
     // KRIMBLE 2026-10-06 (2nd): George: "If Window is constructed on the fly, use View menu instead." The former Settings
     // items above Presets are now in the View menu (krita5.xmlgui), so the block below is switched off (kept, not deleted).

@@ -1287,11 +1287,13 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
 
                      <Separator/>
 
+    <!-- Krimble 2026-10-10: Interface Scale moved to the Window menu (KisMainWindow::updateWindowMenu).
     <Action name="change_interface_scale">
         <text>Interface Scale...</text>
         <toolTip>Interface Scale</toolTip>
         <iconText>Interface Scale</iconText>
     </Action>
+    -->
     
                      <Separator/>
                      
@@ -1305,11 +1307,13 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     </Action>
     -->
     
+    <!-- Krimble 2026-10-10: Language moved to the Window menu (KisMainWindow::updateWindowMenu).
     <Action name="switch_application_language">
         <text>Language...</text>
         <toolTip>Switch Application Language</toolTip>
         <iconText>Language</iconText>
     </Action>
+    -->
     
                      <Separator/>
                      
