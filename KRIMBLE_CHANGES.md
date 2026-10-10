@@ -3041,3 +3041,12 @@ Found by comparing the server's uncommitted `git diff` to the repo. These server
 - Replaces the fixed values from the 3rd entry above. Old lines are commented out.
 - `kb-apk.sh` still writes `Krimble-Beta2-` into copied file names. Unchanged.
 **Not verified:** a Gradle run, a build, or a device.
+
+## 2026-10-09 (5th) — Launcher icon replaced again: larger K+paw
+
+**Files:** `packaging/android/apk/res/drawable-nodpi/ic_launcher_fg.webp`, `ic_launcher_next_fg.webp`; all `res/mipmap-*/ic_launcher*.webp` (mdpi, hdpi, xhdpi, xxhdpi, xxxhdpi; main, next, round, next_round); `ic_launcher-playstore.png`, `ic_launcher_next-playstore.png`
+
+Replaces the 2026-10-09 icon. On George's phone the first version's K and paw sat too small in the orange. The new file (white K+paw on #F96301, 1024 × 1024) has a larger mark.
+- Same method as the first icon: foreground = white K+paw with the orange removed; legacy mipmaps = full orange icon, round files circle-masked; Play Store PNGs 512 px. Background color XMLs unchanged (#F96301).
+- Fit check against the adaptive-icon mask at the current 12 dp inset: farthest point of the K is 32.0 dp from center (safe zone 33 dp); the paw's right toe is 34.8 dp (mask edge 36 dp). Nothing is clipped. The toe is outside the safe zone by about 1.8 dp, intended: the paw is off center.
+**Verified:** foreground recomposited on orange matches the source (max pixel difference 2/255); file sizes and modes. **Not verified:** how it looks on a device.
