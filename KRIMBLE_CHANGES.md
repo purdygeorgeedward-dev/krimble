@@ -3081,3 +3081,13 @@ The left list of the Preferences window was about 31% of the screen wide, sized 
 - It is used only if the list is found and has one row per page. Otherwise nothing changes.
 - Added includes: `QApplication`, `QStyledItemDelegate`, `QListView`, `QPainter`.
 **Not verified:** a compile, a build, or a device.
+
+## 2026-10-09 (9th) — APK file name follows the build counter
+
+**Files:** `tools/server/kb-apk.sh`
+
+The copied APK was named `Krimble-Beta2-<date>-b<counter>.apk`. `Beta2` was hardcoded, so the name disagreed with the app's own version (`1.0.<counter>-beta`).
+- The name is now `Krimble-1.0.<counter>-beta-<date>.apk`, for example `Krimble-1.0.42-beta-Oct9-2202.apk`. Date and time are still Mountain time.
+- The old line is commented out.
+- The server's `~/kb-apk.sh` is a separate copy and must be refreshed from the repo: `cp ~/krimble/tools/server/kb-apk.sh ~/kb-apk.sh`.
+**Not verified:** a run on the server.

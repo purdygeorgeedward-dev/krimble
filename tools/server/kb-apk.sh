@@ -4,7 +4,9 @@ A=$(ls -t ~/kwd/krita/_packaging/*.apk 2>/dev/null | head -n 1)
 if [ -z "$A" ]; then echo "NO APK FOUND. Run ~/kb-package.sh first."; exit 1; fi
 echo "APK MADE: $(date -r "$A")"
 grep -E "NUMBER|GIT" ~/kwd/krita/_build/libs/version/krimble_build_stamp.h
-N="Krimble-Beta2-$(TZ=America/Denver date -r "$A" +%b%-d-%H%M)-b$(cat ~/krimble-build-number.txt).apk"
+# Krimble 2026-10-09: was Krimble-Beta2-<date>-b<counter>.apk. Name now follows the build counter, same as versionName in build.gradle.
+# N="Krimble-Beta2-$(TZ=America/Denver date -r "$A" +%b%-d-%H%M)-b$(cat ~/krimble-build-number.txt).apk"
+N="Krimble-1.0.$(cat ~/krimble-build-number.txt)-beta-$(TZ=America/Denver date -r "$A" +%b%-d-%H%M).apk"
 cp "$A" ~/"$N"
 ls -l ~/"$N" | cut -c25-140
 echo "-----"
