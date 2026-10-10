@@ -3928,6 +3928,40 @@ void KisMainWindow::updateWindowMenu()
    menu->addSeparator();
     menu->addAction(d->dockWidgetMenu);
 
+    // Krimble 2026-10-10: panel, toolbar and appearance controls live in the Window menu, not the View menu (George).
+    {
+        menu->addSeparator();
+        const char *panelActions[] = {"view_toggledockers", "settings_detach_panel_menu", "settings_attach_panel_menu", "settings_toggle_right_panels"};
+        for (const char *name : panelActions) {
+            if (QAction *action = actionCollection()->action(QLatin1String(name))) {
+                menu->addAction(action);
+            }
+        }
+        menu->addSeparator();
+        // The View menu got its toolbar list from a KDE merge point; the same list is built here, fresh each time it opens.
+        QMenu *toolbarsMenu = menu->addMenu(i18nc("@action:inmenu", "&Toolbars"));
+        connect(toolbarsMenu, &QMenu::aboutToShow, this, [this, toolbarsMenu]() {
+            toolbarsMenu->clear();
+            Q_FOREACH (KToolBar *toolBar, toolBars()) {
+                const QString title = toolBar->windowTitle().isEmpty() ? toolBar->objectName() : toolBar->windowTitle();
+                QAction *toggle = toolbarsMenu->addAction(title);
+                toggle->setCheckable(true);
+                toggle->setChecked(toolBar->isVisible());
+                connect(toggle, &QAction::toggled, toolBar, &QWidget::setVisible);
+            }
+        });
+        if (QAction *lockToolbars = actionCollection()->action(QLatin1String("lock_toolbars"))) {
+            menu->addAction(lockToolbars);
+        }
+        menu->addSeparator();
+        const char *appearanceActions[] = {"theme_menu", "style_menu"};
+        for (const char *name : appearanceActions) {
+            if (QAction *action = actionCollection()->action(QLatin1String(name))) {
+                menu->addAction(action);
+            }
+        }
+    }
+
     // KRIMBLE 2026-10-06 (2nd): George: "If Window is constructed on the fly, use View menu instead." The former Settings
     // items above Presets are now in the View menu (krita5.xmlgui), so the block below is switched off (kept, not deleted).
 #if 0

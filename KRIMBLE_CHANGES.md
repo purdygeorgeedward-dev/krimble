@@ -3161,3 +3161,13 @@ On launch 1.0.31 showed "1.0.44". The app built its version from the old build c
 The widened strip between docks (20, from the 12th entry) made it possible to grab the toolbox and side panels, but Qt draws a line and a band in the whole strip, which looked like a big border around the toolbox.
 - On Android the strip is now drawn as three small dots in its middle, with no line or band. The grab width is unchanged.
 **Not verified:** a build or a device.
+
+## 2026-10-10 (17th) — Window menu: panel, toolbar and appearance controls moved from View
+
+**Files:** `krita/krita5.xmlgui`, `libs/ui/KisMainWindow.cpp`
+
+George wanted the panel controls in the Window menu, not View, and the toolbar controls and Themes and Styles with them, because the View menu had too much in it.
+- Window now ends with: Toggle Panels, Detach Panel, Attach Panel, Hide Right Panels, then Toolbars and Lock Toolbars, then Themes and Styles.
+- The Toolbars list is built by `updateWindowMenu()` each time the submenu opens, instead of by the KDE merge point in View.
+- The same entries are commented out of the View menu in `krita5.xmlgui`. Interface Scale and Language stay in View.
+**Not verified:** a build or a device.

@@ -1295,6 +1295,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     
                      <Separator/>
                      
+    <!-- Krimble 2026-10-10: Themes and Styles moved to the Window menu (KisMainWindow::updateWindowMenu).
     <Action name="theme_menu">
         <text>&amp;Themes</text>
     </Action>
@@ -1302,6 +1303,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="style_menu">
         <text>&amp;Styles</text>
     </Action>
+    -->
     
     <Action name="switch_application_language">
         <text>Language...</text>
@@ -1311,6 +1313,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     
                      <Separator/>
                      
+    <!-- Krimble 2026-10-10: the toolbar and panel items moved to the Window menu (KisMainWindow::updateWindowMenu).
     <Merge name="StandardToolBarMenuHandler"/>
     <Action name="lock_toolbars">
         <text>Lock Toolbars</text>
@@ -1336,6 +1339,7 @@ xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0  http://www.kde.org
     <Action name="settings_toggle_right_panels">
         <text>Hide Right Panels</text>
     </Action>
+    -->
 
 </Menu>
 
