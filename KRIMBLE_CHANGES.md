@@ -3153,3 +3153,11 @@ On launch 1.0.31 showed "1.0.44". The app built its version from the old build c
 - The counter code is commented out. `~/krimble-build-number.txt` is no longer updated or read.
 - A version change now needs `kb-build.sh` (about 2 minutes) before `kb-package.sh`.
 **Not verified:** a build or a device.
+
+## 2026-10-10 (16th) — Dock grab strip drawn as three dots only (Android)
+
+**Files:** `libs/widgetutils/KisWideDockSeparatorStyle.cpp`, `libs/widgetutils/KisWideDockSeparatorStyle.h`
+
+The widened strip between docks (20, from the 12th entry) made it possible to grab the toolbox and side panels, but Qt draws a line and a band in the whole strip, which looked like a big border around the toolbox.
+- On Android the strip is now drawn as three small dots in its middle, with no line or band. The grab width is unchanged.
+**Not verified:** a build or a device.

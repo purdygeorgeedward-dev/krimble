@@ -21,6 +21,7 @@ class KRITAWIDGETUTILS_EXPORT KisWideDockSeparatorStyle : public QProxyStyle
 public:
     KisWideDockSeparatorStyle(QStyle *baseStyle);
     int pixelMetric(PixelMetric metric, const QStyleOption *option = nullptr, const QWidget *widget = nullptr) const override;
+    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget = nullptr) const override; // Krimble 2026-10-10: grip dots only, no line or band
 };
 
 #endif // KISWIDEDOCKSEPARATORSTYLE_H

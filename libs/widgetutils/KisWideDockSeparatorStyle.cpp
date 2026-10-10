@@ -4,6 +4,8 @@
 #include "KisWideDockSeparatorStyle.h"
 
 #include <QStyleFactory>
+#include <QPainter>
+#include <QStyleOption>
 
 KisWideDockSeparatorStyle::KisWideDockSeparatorStyle(QStyle *baseStyle)
     : QProxyStyle(QStyleFactory::create(baseStyle->objectName()))
@@ -23,4 +25,30 @@ int KisWideDockSeparatorStyle::pixelMetric(PixelMetric metric, const QStyleOptio
     }
 
     return QProxyStyle::pixelMetric(metric, option, widget);
+}
+
+void KisWideDockSeparatorStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+{
+#ifdef Q_OS_ANDROID
+    if (element == QStyle::PE_IndicatorDockWidgetResizeHandle) {
+        // Krimble 2026-10-10: the wide strip is only a touch target. Draw three small dots in its middle (the grip), and no
+        // line or band, so it does not look like a thick border around the toolbox and panels.
+        painter->save();
+        painter->setRenderHint(QPainter::Antialiasing, true);
+        painter->setPen(Qt::NoPen);
+        QColor dotColor = option->palette.color(QPalette::WindowText);
+        dotColor.setAlpha(110);
+        painter->setBrush(dotColor);
+        const QRect r = option->rect;
+        const bool tall = r.height() >= r.width();
+        const QPointF c = r.center();
+        for (int i = -1; i <= 1; ++i) {
+            const QPointF p = tall ? QPointF(c.x(), c.y() + i * 14) : QPointF(c.x() + i * 14, c.y());
+            painter->drawEllipse(p, 3.0, 3.0);
+        }
+        painter->restore();
+        return;
+    }
+#endif
+    QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
