@@ -74,13 +74,21 @@ KisCustomImageWidget::KisCustomImageWidget(QWidget* parent, qint32 defWidth, qin
     // width, which made the dialog wider than a portrait screen and left large
     // empty gaps. Cap them (values are in the app's scaled pixels, about 123
     // before). Only maximums are set, so nothing gets smaller than it needs.
-    doubleWidth->setMaximumWidth(90);
-    doubleHeight->setMaximumWidth(90);
-    doubleResolution->setMaximumWidth(90);
-    cmbWidthUnit->setMaximumWidth(95);
-    cmbHeightUnit->setMaximumWidth(95);
-    cmbResolutionUnit->setMaximumWidth(95);
-    cmbPredefined->setMaximumWidth(130);
+    // KRIMBLE 2026-10-09: narrowed about 20% (was 90 / 95 / 130)
+    // doubleWidth->setMaximumWidth(90);
+    // doubleHeight->setMaximumWidth(90);
+    // doubleResolution->setMaximumWidth(90);
+    // cmbWidthUnit->setMaximumWidth(95);
+    // cmbHeightUnit->setMaximumWidth(95);
+    // cmbResolutionUnit->setMaximumWidth(95);
+    // cmbPredefined->setMaximumWidth(130);
+    doubleWidth->setMaximumWidth(72);
+    doubleHeight->setMaximumWidth(72);
+    doubleResolution->setMaximumWidth(72);
+    cmbWidthUnit->setMaximumWidth(76);
+    cmbHeightUnit->setMaximumWidth(76);
+    cmbResolutionUnit->setMaximumWidth(76);
+    cmbPredefined->setMaximumWidth(104);
 #endif
 
     txtName->setText(imageName);

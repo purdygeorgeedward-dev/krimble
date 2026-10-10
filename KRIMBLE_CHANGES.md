@@ -3050,3 +3050,14 @@ Replaces the 2026-10-09 icon. On George's phone the first version's K and paw sa
 - Same method as the first icon: foreground = white K+paw with the orange removed; legacy mipmaps = full orange icon, round files circle-masked; Play Store PNGs 512 px. Background color XMLs unchanged (#F96301).
 - Fit check against the adaptive-icon mask at the current 12 dp inset: farthest point of the K is 32.0 dp from center (safe zone 33 dp); the paw's right toe is 34.8 dp (mask edge 36 dp). Nothing is clipped. The toe is outside the safe zone by about 1.8 dp, intended: the paw is off center.
 **Verified:** foreground recomposited on orange matches the source (max pixel difference 2/255); file sizes and modes. **Not verified:** how it looks on a device.
+
+## 2026-10-09 (6th) — New-document dialog: scrolls, fits the screen, narrower entry boxes (Android)
+
+**Files:** `libs/ui/KisOpenPane.cpp`, `libs/ui/dialogs/KisDlgCreateNewDocument.cpp`, `libs/ui/widgets/kis_custom_image_widget.cc`
+
+The File > New dialog's minimum size (about 1415 × 1375 px) was bigger than the screen in both orientations: the left side was off-screen in portrait, and Create/Cancel were off the bottom in landscape.
+- Each custom page (Custom Document, Create from Clipboard) is wrapped in a scroll area with touch dragging, so everything, Create and Cancel included, is reachable by scrolling.
+- The dialog opens no wider than 95% and no taller than 90% of the screen.
+- The width, height and resolution boxes, their unit dropdowns and the Predefined dropdown are about 20% narrower (maximum widths 90/95/130 → 72/76/104). Old lines commented out.
+- All Android only (`Q_OS_ANDROID`).
+**Not verified:** a compile, a build, or a device. The white bands around the dialog in the screenshots are not addressed.

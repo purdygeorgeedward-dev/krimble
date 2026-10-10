@@ -22,6 +22,7 @@
 #include <QDropEvent>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QScrollArea>
 #include <QMimeData>
 
 #include <klocalizedstring.h>
@@ -289,7 +290,22 @@ void KisOpenPane::addCustomDocumentWidget(QWidget *widget, const QString& title,
 {
     Q_ASSERT(widget);
 
-    QTreeWidgetItem* item = addPane(title, untranslatedName, icon, widget, d->m_freeCustomWidgetIndex);
+    // KRIMBLE 2026-10-09: the Custom Document and Create from Clipboard pages need more room than a phone screen has
+    // (about 1415 x 1375 px), so Create/Cancel ended up off-screen. On Android each page sits in a scroll area:
+    // everything, Create and Cancel included, is reachable by dragging.
+    QWidget *paneWidget = widget;
+#ifdef Q_OS_ANDROID
+    {
+        QScrollArea *scrollArea = new QScrollArea;
+        scrollArea->setWidgetResizable(true);
+        scrollArea->setFrameShape(QFrame::NoFrame);
+        scrollArea->setWidget(widget);
+        KisKineticScroller::createPreconfiguredScroller(scrollArea);
+        paneWidget = scrollArea;
+    }
+#endif
+    // QTreeWidgetItem* item = addPane(title, untranslatedName, icon, widget, d->m_freeCustomWidgetIndex);
+    QTreeWidgetItem* item = addPane(title, untranslatedName, icon, paneWidget, d->m_freeCustomWidgetIndex);
     ++d->m_freeCustomWidgetIndex;
     KConfigGroup cfgGrp( KSharedConfig::openConfig(), "TemplateChooserDialog");
 

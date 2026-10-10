@@ -12,6 +12,9 @@
 #include "kis_image_from_clipboard_widget.h"
 #include "KisPart.h"
 
+#include <QGuiApplication>
+#include <QScreen>
+
 
 KisDlgCreateNewDocument::KisDlgCreateNewDocument(QWidget* parent)
     : KisOpenPane(parent, KisImportExportManager::supportedMimeTypes(KisImportExportManager::Import), QStringLiteral("templates/"))
@@ -42,6 +45,15 @@ KisDlgCreateNewDocument::KisDlgCreateNewDocument(QWidget* parent)
 
     connect(this, SIGNAL(documentSelected(KisDocument*)), KisPart::instance(), SLOT(startCustomDocument(KisDocument*)));
     connect(this, SIGNAL(openTemplate(QUrl)), KisPart::instance(), SLOT(openTemplate(QUrl)));
+
+#ifdef Q_OS_ANDROID
+    // KRIMBLE 2026-10-09: open no wider than 95% and no taller than 90% of the screen; the pages scroll inside.
+    if (QScreen *scr = QGuiApplication::primaryScreen()) {
+        const QSize screenSize = scr->availableGeometry().size();
+        resize(qMin(sizeHint().width(), int(screenSize.width() * 0.95)),
+               qMin(sizeHint().height(), int(screenSize.height() * 0.90)));
+    }
+#endif
 }
 
 void KisDlgCreateNewDocument::SelectPage(Page page)
