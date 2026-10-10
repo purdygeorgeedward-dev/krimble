@@ -3129,3 +3129,17 @@ The foreground/background color wells at the bottom of the toolbox were fixed at
 - They now grow with the toolbox width: 28 px at 1 column (as before), about 50 px at 2 columns, up to 72 px when wider. Set in `resizeEvent`.
 - The wells in the brush toolbar (`KisBrushColorWells.cpp`, 40 × 40) are unchanged.
 **Not verified:** a build or a device.
+
+## 2026-10-10 (14th) — Panels and toolbox: dock menu on long-press
+
+**Files:** `libs/widgets/KoDockWidgetTitleBar.cpp`, `libs/widgets/KoDockWidgetTitleBar.h`, `libs/ui/toolbox/KoToolBoxDocker.cpp`, `libs/ui/toolbox/KoToolBoxDocker_p.h`
+
+Panels had to be dragged to be docked. Now a long-press opens a menu: Dock Left, Dock Right, Dock Top, Dock Bottom, Undock. The panel's current place is ticked; places it may not go are greyed.
+- Panels: long-press on the title bar. Applies to every panel that uses the shared title bar (about 30). A locked panel shows no menu.
+- Toolbox: a new "Dock" section in its existing long-press menu, below Columns.
+- Not covered: the Animation Timeline and Animation Curves, which have their own title bars. The bottom corners are not changed.
+**Not verified:** a build or a device.
+
+## 2026-10-10 — Version 31
+
+`krimbleBuildNumber` 30 → 31 in `build.gradle`: version `1.0.31-beta`, version code 5050431.

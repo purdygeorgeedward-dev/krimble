@@ -18,6 +18,9 @@
 
 #include <QAbstractButton>
 #include <QAction>
+#include <QMenu>
+#include <QMainWindow>
+#include <QContextMenuEvent>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QStyle>
@@ -244,3 +247,39 @@ void KoDockWidgetTitleBar::Private::updateButtonSizes()
 
 //have to include this because of Q_PRIVATE_SLOT
 #include "moc_KoDockWidgetTitleBar.cpp"
+
+void KoDockWidgetTitleBar::contextMenuEvent(QContextMenuEvent *event)
+{
+    // KRIMBLE 2026-10-10: docking from a menu, no dragging: Dock Left / Right / Top / Bottom, and Undock (float).
+    QDockWidget *dock = qobject_cast<QDockWidget*>(parentWidget());
+    QMainWindow *mainWindow = dock ? qobject_cast<QMainWindow*>(dock->parentWidget()) : nullptr;
+    if (!dock || !mainWindow || d->lockButton->isChecked()) {
+        QWidget::contextMenuEvent(event);
+        return;
+    }
+    const Qt::DockWidgetArea current = dock->isFloating() ? Qt::NoDockWidgetArea : mainWindow->dockWidgetArea(dock);
+    QMenu menu(this);
+    const struct { QString text; Qt::DockWidgetArea area; } entries[] = {
+        {i18n("Dock Left"), Qt::LeftDockWidgetArea},
+        {i18n("Dock Right"), Qt::RightDockWidgetArea},
+        {i18n("Dock Top"), Qt::TopDockWidgetArea},
+        {i18n("Dock Bottom"), Qt::BottomDockWidgetArea}
+    };
+    for (const auto &entry : entries) {
+        QAction *action = menu.addAction(entry.text);
+        action->setCheckable(true);
+        action->setChecked(current == entry.area);
+        action->setEnabled(dock->allowedAreas() & entry.area);
+        const Qt::DockWidgetArea area = entry.area;
+        connect(action, &QAction::triggered, dock, [dock, mainWindow, area]() {
+            mainWindow->addDockWidget(area, dock);
+            dock->show();
+        });
+    }
+    menu.addSeparator();
+    QAction *undock = menu.addAction(i18n("Undock"));
+    undock->setCheckable(true);
+    undock->setChecked(dock->isFloating());
+    connect(undock, &QAction::triggered, dock, [dock]() { dock->setFloating(true); });
+    menu.exec(event->globalPos());
+}

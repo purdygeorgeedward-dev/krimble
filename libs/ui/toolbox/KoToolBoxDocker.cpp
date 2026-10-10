@@ -605,11 +605,49 @@ void KoToolBoxDocker::contextMenuEvent(QContextMenuEvent *event)
                 applyColumns();
             });
         }
+
+        // Krimble 2026-10-10: "Dock" section: Dock Left / Right / Top / Bottom and Undock, same as the long-press menu on other panels' title bars.
+        m_contextMenu->addSection(i18n("Dock"));
+        const struct { QString text; Qt::DockWidgetArea area; } dockEntries[] = {
+            {i18n("Dock Left"), Qt::LeftDockWidgetArea},
+            {i18n("Dock Right"), Qt::RightDockWidgetArea},
+            {i18n("Dock Top"), Qt::TopDockWidgetArea},
+            {i18n("Dock Bottom"), Qt::BottomDockWidgetArea}
+        };
+        for (int i = 0; i < 4; ++i) {
+            QAction *dockAction = m_contextMenu->addAction(dockEntries[i].text);
+            dockAction->setCheckable(true);
+            m_dockActions[i] = dockAction;
+            const Qt::DockWidgetArea area = dockEntries[i].area;
+            connect(dockAction, &QAction::triggered, this, [this, area]() {
+                if (QMainWindow *mainWindow = qobject_cast<QMainWindow*>(parentWidget())) {
+                    mainWindow->addDockWidget(area, this);
+                    show();
+                }
+            });
+        }
+        m_dockActions[4] = m_contextMenu->addAction(i18n("Undock"));
+        m_dockActions[4]->setCheckable(true);
+        connect(m_dockActions[4], &QAction::triggered, this, [this]() { setFloating(true); });
     }
 
     // Krimble 2026-10-09: tick the current column count each time the menu opens
     for (int i = 0; i < 4; ++i) {
         if (m_columnActions[i]) m_columnActions[i]->setChecked(m_columns == i + 1);
+    }
+
+    // Krimble 2026-10-10: tick where the toolbox is now, grey out places it may not go
+    {
+        QMainWindow *dockMainWindow = qobject_cast<QMainWindow*>(parentWidget());
+        const Qt::DockWidgetArea dockCurrent = (dockMainWindow && !isFloating()) ? dockMainWindow->dockWidgetArea(this) : Qt::NoDockWidgetArea;
+        const Qt::DockWidgetArea dockAreas[4] = {Qt::LeftDockWidgetArea, Qt::RightDockWidgetArea, Qt::TopDockWidgetArea, Qt::BottomDockWidgetArea};
+        for (int i = 0; i < 4; ++i) {
+            if (m_dockActions[i]) {
+                m_dockActions[i]->setChecked(dockCurrent == dockAreas[i]);
+                m_dockActions[i]->setEnabled(allowedAreas() & dockAreas[i]);
+            }
+        }
+        if (m_dockActions[4]) m_dockActions[4]->setChecked(isFloating());
     }
 
     m_contextMenu->exec(event->globalPos());

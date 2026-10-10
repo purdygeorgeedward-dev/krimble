@@ -94,6 +94,7 @@ private:
     bool m_windowResizing {false};     // Krimble: true while the main window is being resized (rotation)
     bool m_applying {false};           // Krimble: true while we set the width ourselves
     QAction *m_columnActions[4] {nullptr, nullptr, nullptr, nullptr}; // Krimble 2026-10-09: the "Columns" menu entries (1 to 4)
+    QAction *m_dockActions[5] {nullptr, nullptr, nullptr, nullptr, nullptr}; // Krimble 2026-10-10: the "Dock" menu entries: left, right, top, bottom, undock
     QWidget *m_edgeRight {nullptr};    // Krimble: edge strip, only while floating
     QWidget *m_edgeBottom {nullptr};   // Krimble: edge strip, only while floating
 };
