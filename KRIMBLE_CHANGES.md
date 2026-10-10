@@ -3120,3 +3120,12 @@ The toolbox could not be stretched past 4 icon columns, so a wide, horizontal to
 - The most columns is now 40 (was 4) in all three places that capped it: the saved-columns read, the floating-toolbox edge drag, and the docked snap. The "Columns" menu still offers 1 to 4; wider is by dragging. Old lines commented out.
 - On Android the strip between docks (toolbox, canvas, right panels) is at least 20 px (was Qt's default doubled), the same touch size as the dialog edges. Each strip takes 20 px of width.
 **Not verified:** a build or a device.
+
+## 2026-10-10 (13th) — Toolbox: color wells grow with the toolbox width
+
+**Files:** `libs/ui/toolbox/KoToolBoxDocker.cpp`
+
+The foreground/background color wells at the bottom of the toolbox were fixed at 28 × 28 px, about one icon wide.
+- They now grow with the toolbox width: 28 px at 1 column (as before), about 50 px at 2 columns, up to 72 px when wider. Set in `resizeEvent`.
+- The wells in the brush toolbar (`KisBrushColorWells.cpp`, 40 × 40) are unchanged.
+**Not verified:** a build or a device.

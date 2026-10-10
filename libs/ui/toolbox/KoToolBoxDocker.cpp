@@ -291,6 +291,14 @@ void KoToolBoxDocker::resizeEvent(QResizeEvent *event)
     if (m_orientation == Auto) {
         setToolBoxOrientation(width() > height() ? Qt::Horizontal : Qt::Vertical);
     }
+    // Krimble 2026-10-10: the foreground/background color wells at the bottom grow with the toolbox width:
+    // one icon wide at 1 column (as before), up to 72 px when the toolbox is wider.
+    if (m_dualColorButton && m_scrollArea) {
+        const int wellSize = qBound(28, m_scrollArea->viewport()->width() - 8, 72);
+        if (m_dualColorButton->width() != wellSize) {
+            m_dualColorButton->setFixedSize(wellSize, wellSize);
+        }
+    }
     if (m_edgeRight && m_edgeBottom && isFloating()) {
         const int e = 24;
         m_edgeRight->setGeometry(width() - e, 0, e, height() - e);
