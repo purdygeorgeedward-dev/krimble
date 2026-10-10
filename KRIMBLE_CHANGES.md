@@ -3091,3 +3091,13 @@ The copied APK was named `Krimble-Beta2-<date>-b<counter>.apk`. `Beta2` was hard
 - The old line is commented out.
 - The server's `~/kb-apk.sh` is a separate copy and must be refreshed from the repo: `cp ~/krimble/tools/server/kb-apk.sh ~/kb-apk.sh`.
 **Not verified:** a run on the server.
+
+## 2026-10-09 (10th) — Version number is set by hand
+
+**Files:** `packaging/android/apk/build.gradle`, `tools/server/kb-apk.sh`
+
+George wants no automation on version numbers. The counter had also grown on `make` and packaging runs that were never released (28 on 2026-10-07, 42 on 2026-10-10 UTC).
+- `build.gradle`: one hand-set number, `krimbleBuildNumber` (now 30). `versionName` = `1.0.<number>-beta`; `versionRelease` = the number, so the version code is 5050400 + the number. Change that one number for each release build. Google Play needs a higher number for every upload. The counter-file reading is commented out. Replaces the counter-based values from the 4th entry.
+- `kb-apk.sh`: the APK copy is named `Krimble-<version from the APK's own file name>-<date>.apk`, for example `Krimble-1.0.30-beta-Oct9-2230.apk`. Replaces the 9th entry's counter-based name.
+- The build counter inside the app (splash, logs) is unchanged and is now separate from the version number.
+- Server: the `~/kb-*.sh` files are copies and must be refreshed from the repo.
