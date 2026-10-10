@@ -220,7 +220,9 @@ void KoToolBoxDocker::setViewManager(KisViewManager *viewManager)
         // m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 2), 4);
         // m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 1), 4);
         // Krimble 2026-10-10: the most columns is now 40 (was 4), so the toolbox can be stretched as wide as the screen and go horizontal.
-        m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 1), 40);
+        // Krimble 2026-10-10 (2nd): default is 2 columns (George).
+        // m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 1), 40);
+        m_columns = qBound(1, cfg.readEntry("ToolBoxColumns", 2), 40);
         if (m_viewManager) {
             if (QWidget *window = m_viewManager->mainWindowAsQWidget()) {
                 window->installEventFilter(this);
@@ -308,7 +310,9 @@ void KoToolBoxDocker::resizeEvent(QResizeEvent *event)
     }
     // KRIMBLE 2026-10-06: when the docked toolbox is resized by hand (not by a rotation, not by us), snap it to a
     // whole number of icon columns a moment after the resize stops.
-    if (m_snapTimer && !m_windowResizing && !m_applying && !isFloating()) {
+    // Krimble 2026-10-10: only a resize made with a finger or mouse down may change the column count. A rotation has none down.
+    // if (m_snapTimer && !m_windowResizing && !m_applying && !isFloating()) {
+    if (m_snapTimer && !m_windowResizing && !m_applying && !isFloating() && QApplication::mouseButtons() != Qt::NoButton) {
         m_snapTimer->start();
     }
 }
@@ -410,6 +414,8 @@ void KoToolBoxDocker::applyColumns()
 void KoToolBoxDocker::snapToColumns()
 {
     if (isFloating() || !isVisible()) return;
+    // Krimble 2026-10-10: never change the saved column count during a rotation or while we are setting the width ourselves.
+    if (m_windowResizing || m_applying) return;
     // do not fight a finger that is still down on the separator
     if (QApplication::mouseButtons() != Qt::NoButton) {
         m_snapTimer->start();

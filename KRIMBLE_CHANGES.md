@@ -3202,3 +3202,12 @@ The 18th entry drew a black line with a highlight line on the dock strips (toolb
 - Menu dividers (Android): a black line (2 px) with a highlight line (2 px) below it; divider height at least 8. Titled section dividers (for example "Icon Size") keep their default look.
 - Menus show no keyboard shortcut text and reserve no column for it on Android (no keyboard on a touch screen), so menus are as wide as their longest label. Qt works out the column width before it asks the style; if that includes the shortcut width, the narrowing will not show.
 **Not verified:** a build or a device.
+
+## 2026-10-10 (22nd) — Toolbox: default 2 columns; a rotation can no longer change the saved column count
+
+**Files:** `libs/ui/toolbox/KoToolBoxDocker.cpp`, `libs/ui/toolbox/KoToolBoxDocker_p.h`
+
+The toolbox went from 1 column in portrait to 7 in landscape on rotation: a late resize after the rotation could be saved as the user's column choice.
+- The width is only snapped and saved after a resize made with a finger or mouse down (a drag), or from the Columns menu. `snapToColumns` also does nothing during a rotation or while the code is setting the width itself.
+- The default is now 2 columns (was 1). Old lines commented out.
+**Not verified:** a build or a device.

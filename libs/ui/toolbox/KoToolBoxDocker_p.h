@@ -88,7 +88,9 @@ private:
     Orientation m_orientation {Auto};
     // Krimble 2026-10-09: default is 1 column (was 2), so a screen rotation never changes the column count.
     // int m_columns {2};                 // Krimble: the number of icon columns the user wants (2 = the default look)
-    int m_columns {1};                 // Krimble: the number of icon columns the user wants (1 = the default look)
+    // Krimble 2026-10-10 (2nd): default is 2 columns (George).
+    // int m_columns {1};                 // Krimble: the number of icon columns the user wants (1 = the default look)
+    int m_columns {2};                 // Krimble: the number of icon columns the user wants (2 = the default look)
     QTimer *m_snapTimer {nullptr};     // Krimble: runs a moment after a resize of the docked toolbox stops
     QTimer *m_restoreTimer {nullptr};  // Krimble: runs a moment after the main window stops resizing (rotation)
     bool m_windowResizing {false};     // Krimble: true while the main window is being resized (rotation)
