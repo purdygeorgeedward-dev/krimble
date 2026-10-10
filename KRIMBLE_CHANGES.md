@@ -3101,3 +3101,13 @@ George wants no automation on version numbers. The counter had also grown on `ma
 - `kb-apk.sh`: the APK copy is named `Krimble-<version from the APK's own file name>-<date>.apk`, for example `Krimble-1.0.30-beta-Oct9-2230.apk`. Replaces the 9th entry's counter-based name.
 - The build counter inside the app (splash, logs) is unchanged and is now separate from the version number.
 - Server: the `~/kb-*.sh` files are copies and must be refreshed from the repo.
+
+## 2026-10-09 (11th) — BUILD_ANDROID.md: version routine, size-fix verification, server gotchas (docs only)
+
+**Files:** `BUILD_ANDROID.md`
+
+The 2026-10-09 section of `BUILD_ANDROID.md` still described the counter-based version and the old APK names after the version number was changed to hand-set (10th entry).
+- Section 2 rewritten: the hand-set number and what it controls, the Play Store rule (each upload needs a higher number), the routine where Claude asks for the number before each build, why the counter was dropped, the counter explained as separate, the new APK file names.
+- Section 3: verified that two fresh builds with no strip hook came out at about 157.8 MiB, so no hook is needed. Why Gradle's stripping started working stays marked unconfirmed.
+- Section 6: `.kde-ci.yml` is generated output; the build.gradle pull conflict is resolved; new gotchas (`kb-status.sh` can show an old result; packaging deletes `_packaging`).
+- New section 7: the release-build routine, step by step.

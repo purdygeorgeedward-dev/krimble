@@ -159,45 +159,66 @@ dated 2026-10-08 04:28 UTC on the server]
 Packaging the APK with `build-android-package.py` was confirmed working
 2026-09-26 and has been run many times since. [verified]
 
-### 2. The build counter and version numbers
+### 2. Version numbers (rewritten 2026-10-09)
 
-Two different numbers exist. Do not mix them up.
+**The version is set by hand. Nothing sets it automatically.**
 
-**The build counter** [verified]
-- File: `~/krimble-build-number.txt` on the server (one number).
-- `libs/version/CMakeLists.txt` adds a target, `krimble_build_stamp`, that
-  runs on every `make`. It runs `libs/version/KrimbleBuildStamp.cmake`.
-- That script adds 1 to the counter and writes
-  `~/kwd/krita/_build/libs/version/krimble_build_stamp.h` (number, date,
-  git hash). `KritaVersionWrapper.cpp` shows these in the app.
-- So the counter counts `make` runs. Failed builds and extra `make` runs
-  use up numbers too.
-- To start from another number, write the number BEFORE the one you want
-  into the file.
-- If the file is lost, counting restarts at 1.
+- File: `packaging/android/apk/build.gradle`. One number:
+  `def krimbleBuildNumber = 30`
+- That one number gives:
+  - `versionName` = `1.0.<number>-beta` (so `1.0.30-beta`)
+  - `versionRelease` = the number, so the Android version code =
+    `5000000 + 50000 + 400 + number` = `5050400 + number`
+    (the 5,000,000 is `project.ext.constant`, worked out from the used code
+    5050400, not read from the file; major 5, minor 4) [verified in repo]
+- Google Play rejects an upload whose version code it has already seen. Every
+  upload needs a higher number than every earlier upload. 5050400 was used by
+  an earlier upload and was rejected as a duplicate (2026-10-07).
+- When leaving beta: the text `-beta` is in the `versionName` line. Change it
+  to `-rc1`, `-rc2`, then drop the suffix for the release.
 
-**The Android version** (`packaging/android/apk/build.gradle`) [verified]
-- `versionCode = project.ext.constant*1000000 + versionMajor*10000 +
-  versionMinor*100 + versionRelease` (major 5, minor 4; the constant is 5,
-  worked out from 5050400, not read from the file). `versionRelease` is the
-  last two digits.
-- Google Play rejects an upload whose versionCode was already used.
-  5050400 was used by an earlier upload, so `versionRelease` was changed
-  0 -> 1 (5050401). A fixed value repeats the rejection on the next upload.
+**Routine (George's choice, 2026-10-09).** Before each build:
+1. Claude asks George for the number.
+2. Claude checks it is higher than the last number used.
+3. Claude changes the one line, shows the diff, and on approval pushes it
+   (logged with date and time).
+4. George pulls on the server and builds (section 7).
+Each bump is one line in `KRIMBLE_CHANGES.md` under "Version numbers".
+
+**Why by hand:**
 - `versionName` was hardcoded `"1.0.0-beta2"` for many builds, so the APK
-  never showed a new version. It was changed to `"1.0.29-beta"` on
-  2026-10-09 to match the GitHub release 1.0.29b (2026-10-07).
-- Status 2026-10-09: the repo has the fixed values above. A change to make
-  `versionName` and `versionRelease` follow the build counter was drafted
-  and is NOT yet in the repo. [unconfirmed until pushed]
-- Not verified: whether `create-apk` also runs the stamp target (which
-  would bump the counter during packaging, so the app's number and the
-  APK's version could differ by 1).
+  never showed a new version.
+- On 2026-10-09 a counter-based version was tried. It was dropped the same
+  day: the counter (below) grew on `make` and packaging runs that were never
+  released, reaching 42 when the last release was 1.0.29. George wanted no
+  automation.
+- 1.0.29-beta matches the GitHub release 1.0.29b (2026-10-07, commit
+  f01a17e, 158 MB). The next build is 30.
+
+**The build counter (separate from the version. Ignore it for releases.)**
+[verified]
+- File: `~/krimble-build-number.txt` on the server.
+- `libs/version/KrimbleBuildStamp.cmake` adds 1 to it every time the stamp
+  target runs, and writes `krimble_build_stamp.h` (number, date, git hash).
+  The app shows these in the splash and logs.
+- The stamp target runs on every `make` AND on every `kb-package.sh` run
+  (packaging rebuilds the version library first). Measured 2026-10-09:
+  37 -> 39 after one build and one packaging run; 39 -> 42 after one build
+  and two packaging runs. That is +1 for each run.
+- So the counter counts runs, not releases. It is not the version name and
+  not the version code. Its value was 42 on 2026-10-10 04:07 UTC.
+- If the file is lost, counting restarts at 1. This does not affect the
+  version.
 
 **APK file names** [verified]
-- `kb-apk.sh` names the copy `Krimble-Beta2-<MonDay>-<HHMM>-b<counter>.apk`
-  (Mountain time, from the APK file's time). `Beta2` is hardcoded in the
-  script. Who chose it is not recorded.
+- `kb-apk.sh` names the copy `Krimble-<versionName>-<MonDay>-<HHMM>.apk`,
+  for example `Krimble-1.0.30-beta-Oct9-2230.apk`. The version is read from
+  the APK's own file name. The date and time are Mountain time, from the
+  APK file's time.
+- Before 2026-10-09 it was `Krimble-Beta2-<date>-b<counter>.apk` (`Beta2`
+  hardcoded; who chose it is not recorded).
+- The server's `~/kb-*.sh` are copies. After a pull, refresh them:
+  `cp ~/krimble/tools/server/kb-*.sh ~/`
 
 ### 3. Why the package was about 509 MB, and the fix
 
@@ -224,13 +245,24 @@ Two different numbers exist. Do not mix them up.
    which runs as part of a release package build. No custom strip step
    remains.
 
-**Why Gradle's stripping started working** [unconfirmed]
-- Theory: `ndkVersion` in `build.gradle` was `"22.1.7171670"`, an NDK that
-  was not installed where Gradle looks. The repo's own comment says a
-  mismatched NDK makes AGP fail to strip native libraries. Changing it to
-  `"27.3.13750724"` (server history line 1891) came before the strip tests.
-- Nobody has compared the Gradle log for that task before and after.
-- If the package ever grows back to about 500 MB, check `ndkVersion` first.
+**Verified 2026-10-09: no strip hook is needed** [verified]
+- Two fresh builds, on a server with no strip hook and no strip helper
+  (confirmed absent), produced
+  `krimble-arm64-v8a-1.0.39-beta-release.apk` (165,508,434 bytes) and
+  `krimble-arm64-v8a-1.0.42-beta-release.apk` (165,517,982 bytes), both about
+  157.8 MiB.
+- So the size fix needs only: the repo as it is, NDK 27.3.13750724 installed,
+  and `ndkVersion "27.3.13750724"` in `build.gradle`.
+- The server's `.bash_history` merges several SSH sessions, so its line order
+  cannot show whether the hook ran before the last 2026-10-07 builds. The
+  fresh builds settle that: Gradle's own stripping is enough.
+
+**Still unconfirmed:** that the `ndkVersion` change is what made Gradle's
+stripping start working. The repo's own comment says a mismatched NDK makes
+AGP fail to strip native libraries, and the change came before the strip
+tests, but nobody compared the Gradle log before and after.
+- If a package ever grows back to about 500 MB, check `ndkVersion` in
+  `build.gradle` and the NDK folder under `~/Android/sdk/ndk/` first.
 
 ### 4. NDK versions: only 27.3.13750724 is correct
 
@@ -289,12 +321,51 @@ stripped APK (157.8 MiB). Not known whether stripping was applied to the AAB.
 - `~/Krimble-Beta2-*.apk` (11 files, pre-strip, 486 to 497 MB each) were
   deleted. The stripped 158 MB APK exists only as the GitHub release asset.
 - The server's `~/krimble/.kde-ci.yml` is modified (a 168-line dependency
-  list replacing the repo's 19 lines; made before 2026-10-01). Do not
-  discard it without reading its diff.
-- Before `git pull` in `~/krimble`, the server's uncommitted edits to
-  `packaging/android/apk/build.gradle` will conflict. Its edits (API 36,
-  `versionRelease`, `ndkVersion`) are now in the repo.
+  list replacing the repo's 19 lines). It is generated output: server history
+  shows `generate-deps-file.py -o .kde-ci.yml`. It was made before
+  2026-10-01 and can be regenerated. Do not overwrite it without reading its
+  diff.
+- Done 2026-10-09: the server's own edits to `build.gradle` were discarded
+  with `git checkout -- packaging/android/apk/build.gradle` once the same
+  edits were in the repo. `git pull` now works. The server's modified
+  `.kde-ci.yml` was left alone.
 - `kb-build.sh` runs `git pull origin master | tail -n 2` and does not stop
-  if the pull fails. A failed pull builds the old code without warning.
+  if the pull fails. A failed pull builds the old code without warning. Check
+  that the line `CODE VERSION:` in its output is the commit you expect.
+- **`kb-status.sh` can show an old result.** Its PACKAGING line reads the
+  last packaging log and lists the newest APK in `_packaging`. Right after a
+  build, "PACKAGING: FINISHED OK" and an old APK mean nothing: packaging has
+  not run yet. Run `kb-package.sh`.
+- **`kb-package.sh` and `krimble-build-aab.py` both delete everything in
+  `~/kwd/krita/_packaging`.** Move an APK or AAB you want to keep out first.
+  Running `kb-package.sh` twice is safe: the second run stops the first and
+  leaves one run.
+- Old AAB kept: `~/Krimble-old-Oct8.aab` (271 MB, version code 5050400, built
+  before the version changes).
+- Copies of APKs on the phone: `Downloads/` on George's phone.
 - The history of every command run on the server is in `~/.bash_history`.
   Long commands: always `setsid nohup ... < /dev/null &`, not `nohup` alone.
+
+### 7. Routine for a release build (added 2026-10-09)
+
+Runs on the cloud server unless marked. Check each result before the next
+step.
+
+1. Claude sets the version number and pushes (section 2).
+2. Pull and refresh the scripts:
+   `cd ~/krimble && git pull origin master | tail -3 && cp tools/server/kb-*.sh ~/ && git log -1 --oneline`
+   The last line must be the commit Claude pushed.
+3. Only if C++ files changed since the last build: `~/kb-build.sh`, then
+   `~/kb-status.sh` until it says BUILD: FINISHED OK. Check that
+   `CODE VERSION:` in the output matches. If only `build.gradle` or other
+   non-C++ files changed, skip this step. [expected; the skip has not been
+   run yet]
+4. `~/kb-package.sh`. About 10 minutes.
+5. `~/kb-status.sh`. PACKAGING must say FINISHED OK and list an APK whose
+   name contains the new version. If it lists an old APK, packaging has not
+   finished.
+6. `~/kb-apk.sh`. It copies and names the APK and prints the copy line.
+7. Type `exit`. On the phone, in Termux (not on the server), run the `scp`
+   line it printed. The APK lands in `Downloads/`.
+8. Size check: a normal APK is about 158 MB (165.5 million bytes). About
+   500 MB means stripping failed (section 3).
