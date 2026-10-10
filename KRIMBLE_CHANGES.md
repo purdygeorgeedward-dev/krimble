@@ -3178,3 +3178,10 @@ George wanted the panel controls in the Window menu, not View, and the toolbar c
 
 The 16th entry's three dots were invisible. The strip between docks is now a black line (2 px) with a translucent white highlight line (2 px) beside it, centered in the wide strip: to the right of the black line on a vertical strip, below it on a horizontal one. The grab width is unchanged.
 **Not verified:** a build or a device.
+
+## 2026-10-10 (19th) — Fix: build error in the Window menu code
+
+**Files:** `libs/ui/KisMainWindow.cpp`
+
+The 17th entry's Toolbars list used `KToolBar`, a class that does not exist in this program (it is `KisToolBar`). The native build stopped with 6 errors on lines 3945 and 3946. One name changed; old line commented out.
+**Not verified:** a build.

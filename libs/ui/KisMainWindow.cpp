@@ -3942,7 +3942,9 @@ void KisMainWindow::updateWindowMenu()
         QMenu *toolbarsMenu = menu->addMenu(i18nc("@action:inmenu", "&Toolbars"));
         connect(toolbarsMenu, &QMenu::aboutToShow, this, [this, toolbarsMenu]() {
             toolbarsMenu->clear();
-            Q_FOREACH (KToolBar *toolBar, toolBars()) {
+            // Q_FOREACH (KToolBar *toolBar, toolBars()) {
+            // (KisToolBar: this program's own toolbar class. The KDE name KToolBar does not exist here.)
+            Q_FOREACH (KisToolBar *toolBar, toolBars()) {
                 const QString title = toolBar->windowTitle().isEmpty() ? toolBar->objectName() : toolBar->windowTitle();
                 QAction *toggle = toolbarsMenu->addAction(title);
                 toggle->setCheckable(true);
